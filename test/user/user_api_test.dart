@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -25,7 +26,11 @@ void main() {
   test('/v2/user/me 200', () async {
     String body = await loadJson("user/me.json");
     Map<String, dynamic> map = jsonDecode(body);
-    _adapter.setResponse(ResponseBody.fromString(body, 200));
+    _adapter.setResponse(ResponseBody.fromString(
+        body,
+        200,
+        DioHttpHeaders.fromMap(
+            {HttpHeaders.contentTypeHeader: ContentType.json})));
     User user = await _userApi.me();
 
     expect(user.id, map["id"]);

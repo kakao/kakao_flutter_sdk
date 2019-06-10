@@ -37,7 +37,6 @@ class AuthApi {
 
   Future<AccessTokenResponse> _issueAccessToken(data) async {
     return await ApiFactory.handleApiError(() async {
-      print(data);
       Response response = await dio.post("$OAUTH_HOST/oauth/token", data: data);
       return AccessTokenResponse.fromJson(response.data);
     });

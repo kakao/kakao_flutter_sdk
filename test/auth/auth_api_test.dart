@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
@@ -16,7 +17,7 @@ void main() {
   MockAdapter _adapter;
   AuthApi _authApi;
 
-  const MethodChannel channel = MethodChannel('kakao_context');
+  const MethodChannel channel = MethodChannel('kakao_flutter_sdk');
 
   setUp(() {
     _dio = Dio();
@@ -36,7 +37,11 @@ void main() {
   test('/oauth/token 200', () async {
     String body = await loadJson("auth/token_with_rt_and_scopes.json");
     Map<String, dynamic> map = jsonDecode(body);
-    _adapter.setResponse(ResponseBody.fromString(body, 200));
+    _adapter.setResponse(ResponseBody.fromString(
+        body,
+        200,
+        DioHttpHeaders.fromMap(
+            {HttpHeaders.contentTypeHeader: ContentType.json})));
     var response = await _authApi.issueAccessToken("auth_code",
         redirectUri: "kakaosample_app_key://oauth", clientId: "sample_app_key");
     expect(response.accessToken, map["access_token"]);

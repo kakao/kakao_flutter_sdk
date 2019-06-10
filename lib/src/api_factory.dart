@@ -51,10 +51,8 @@ class ApiFactory {
   }
 
   static Error transformApiError(DioError e) {
-    debugPrint(e.toString());
     if (e.response == null) return KakaoClientError();
     if (e.request.baseUrl == OAUTH_HOST) {
-      debugPrint(e.response.data.toString());
       return KakaoAuthError();
     }
     return KakaoApiError();
