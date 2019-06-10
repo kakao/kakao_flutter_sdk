@@ -1,0 +1,21 @@
+{
+  "id": 1376016924426814086,
+  "has_signed_up": true,
+  "properties": {
+    "nickname": "Kevin \"Test\"",
+    "thumbnail_image": "http://~~~~~/o.jpg",
+    "profile_image": "http://~~~~~~/o.jpg"
+  },
+  "for_partner": {
+    "uuid": "YVNjU2pZbkJ6T3xLfVFjVm9aaloO",
+    "remaining_invite_count": 20,
+    "remaining_group_msg_count": 5
+  },
+  "kakao_account": {
+    "has_email": true,
+    "is_email_verified": true,
+    "email": "kevin.kang@kakaocorp.com",
+    "is_kakaotalk_user": true,
+    "has_phone_number": false
+  }
+}

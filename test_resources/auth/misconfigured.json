@@ -1,0 +1,4 @@
+{
+  "error": "misconfigured",
+  "error_description": "invalid android_key_hash or ios_bundle_id or web_site_url"
+}
