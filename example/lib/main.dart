@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/main.dart';
-import 'package:kakao_flutter_sdk_example/login.dart';
-import 'package:kakao_flutter_sdk_example/story.dart';
-import 'package:kakao_flutter_sdk_example/talk.dart';
-import 'package:kakao_flutter_sdk_example/user.dart';
+
+import 'login.dart';
+import 'user.dart';
+import 'story.dart';
+import 'talk.dart';
 
 void main() => runApp(MyApp());
 
@@ -18,16 +19,6 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     KakaoContext.clientId = "dd4e9cb75815cbdf7d87ed721a659baf";
-    _checkAccessToken();
-  }
-
-  _checkAccessToken() async {
-    var token = await AccessTokenRepo.instance.fromCache();
-    debugPrint("token: ${token.accessToken}");
-    debugPrint("token: ${token.refreshToken}");
-    if (token.refreshToken == null) {
-      Navigator.of(_scaffoldKey.currentContext).pushReplacementNamed('/login');
-    }
   }
 
   @override
@@ -36,7 +27,8 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
       title: "Kakao Flutter SDK Sample",
       initialRoute: "/",
       routes: {
-        "/": (context) => MainScreen(),
+        "/": (context) => SplashScreen(),
+        "/main": (context) => MainScreen(),
         "/login": (context) => LoginScreen()
       },
     );
@@ -49,6 +41,37 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     } catch (e) {
       debugPrint(e.toString());
     }
+  }
+}
+
+class SplashScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return SplashState();
+  }
+}
+
+class SplashState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _checkAccessToken();
+  }
+
+  _checkAccessToken() async {
+    var token = await AccessTokenRepo.instance.fromCache();
+    debugPrint(token.toString());
+    if (token.refreshToken == null) {
+      print("gogo here...");
+      Navigator.of(context).pushReplacementNamed('/login');
+    } else {
+      Navigator.of(context).pushReplacementNamed("/main");
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }
 
@@ -77,7 +100,7 @@ class _MainScreenState extends State<MainScreen>
       ),
       body: TabBarView(
         controller: _controller,
-        children: [UserView(), TalkView(), StoryView()],
+        children: [UserScreen(), TalkScreen(), StoryScreen()],
       ),
       bottomNavigationBar: TabBar(
         controller: _controller,

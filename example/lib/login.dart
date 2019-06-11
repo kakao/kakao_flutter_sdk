@@ -30,15 +30,13 @@ class _LoginState extends State<LoginScreen> {
   _issueAccessToken(String authCode) async {
     try {
       var token = await AuthApi.instance.issueAccessToken(authCode);
-      print("after token");
       AccessTokenRepo.instance.toCache(token);
-      Navigator.of(context).pushReplacementNamed("/");
+      Navigator.of(context).pushReplacementNamed("/main");
     } catch (e) {}
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         title: Text("Kakao Flutter SDK Login"),
