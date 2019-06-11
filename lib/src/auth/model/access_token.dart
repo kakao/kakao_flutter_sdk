@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class AccessToken {
   AccessToken(this.accessToken, this.accessTokenExpiresAt, this.refreshToken,
       this.refreshTokenExpiresAt, this.scopes);
@@ -7,4 +9,13 @@ class AccessToken {
   String refreshToken;
   DateTime refreshTokenExpiresAt;
   List<String> scopes;
+
+  @override
+  String toString() {
+    return jsonEncode({
+      "access_token": accessToken,
+      "refresh_token": refreshToken,
+      "scopes": scopes
+    });
+  }
 }
