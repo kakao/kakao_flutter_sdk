@@ -6,10 +6,14 @@ import 'package:kakao_flutter_sdk/main.dart';
 import 'package:kakao_flutter_sdk/src/talk/model/plus_friends_response.dart';
 import 'package:kakao_flutter_sdk/src/talk/model/talk_profile.dart';
 
+export 'package:kakao_flutter_sdk/src/talk/model/talk_profile.dart';
+
 class TalkApi {
   TalkApi(this.dio);
 
   final Dio dio;
+
+  static final TalkApi instance = TalkApi(ApiFactory.authApi);
 
   Future<TalkProfile> profile() async {
     return ApiFactory.handleApiError(() async {

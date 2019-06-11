@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/rendering.dart';
 import 'package:kakao_flutter_sdk/src/auth/access_token_repo.dart';
 import 'package:kakao_flutter_sdk/src/auth/auth_api.dart';
 
@@ -12,7 +11,6 @@ class AccessTokenInterceptor extends Interceptor {
   @override
   onRequest(RequestOptions options) async {
     var token = await AccessTokenRepo.instance.fromCache();
-    debugPrint(token.toString());
     options.headers["Authorization"] = "Bearer ${token.accessToken}";
     return options;
   }

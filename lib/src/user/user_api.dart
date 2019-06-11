@@ -15,6 +15,8 @@ class UserApi {
 
   final Dio dio;
 
+  static final UserApi instance = UserApi(ApiFactory.authApi);
+
   Future<User> me() async {
     return ApiFactory.handleApiError(() async {
       Response response = await dio.get("/v2/user/me");
