@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:dio/dio.dart';
 
 class MockAdapter extends HttpClientAdapter {
@@ -6,6 +7,14 @@ class MockAdapter extends HttpClientAdapter {
 
   void setResponse(ResponseBody responseBody) {
     this._responseBody = responseBody;
+  }
+
+  void setResponseString(String body, int statusCode) {
+    this._responseBody = ResponseBody.fromString(
+        body,
+        statusCode,
+        DioHttpHeaders.fromMap(
+            {HttpHeaders.contentTypeHeader: ContentType.json}));
   }
 
   @override
