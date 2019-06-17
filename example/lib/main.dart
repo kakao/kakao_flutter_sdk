@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/main.dart';
 
+import 'link.dart';
 import 'login.dart';
 import 'user.dart';
 import 'story.dart';
@@ -88,7 +89,7 @@ class _MainScreenState extends State<MainScreen>
   @override
   void initState() {
     super.initState();
-    _controller = TabController(length: 3, vsync: this);
+    _controller = TabController(length: 4, vsync: this);
   }
 
   @override
@@ -99,7 +100,7 @@ class _MainScreenState extends State<MainScreen>
       ),
       body: TabBarView(
         controller: _controller,
-        children: [UserScreen(), TalkScreen(), StoryScreen()],
+        children: [UserScreen(), TalkScreen(), StoryScreen(), LinkScreen()],
       ),
       bottomNavigationBar: TabBar(
         controller: _controller,
@@ -120,6 +121,10 @@ class _MainScreenState extends State<MainScreen>
             text: "Story",
             // title: Text("Story")
           ),
+          Tab(
+            icon: Icon(Icons.ac_unit, color: Color.fromARGB(255, 0, 0, 0)),
+            text: "Link",
+          )
         ],
         onTap: setTabIndex,
       ),

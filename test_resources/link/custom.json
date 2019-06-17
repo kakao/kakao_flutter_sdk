@@ -1,0 +1,60 @@
+{
+  "template_id": 4718,
+  "template_msg": {
+    "P": {
+      "TP": "Feed",
+      "ME": "${ME}",
+      "SID": "capri_259500",
+      "DID": "http://www.kakao.com",
+      "SNM": "eagerlevel2_19_rich_board_game",
+      "SIC": "http://alpha-api1-kage.kakao.com/14/dn/ZSaDggnBui/P4OUogTxkSubXGUardt1ak/o.jpg",
+      "SST": {
+        "SR": "receiver",
+        "L": {
+          "LPC": "https://alpha-apps.kakao.com/feedblock?lang=${DENY_MESSAGE_LANG}&target_app_key=28c9e9852fc4102af29517b8b9b36c14",
+          "LMO": "https://alpha-apps.kakao.com/feedblock?lang=${DENY_MESSAGE_LANG}&target_app_key=28c9e9852fc4102af29517b8b9b36c14",
+          "LAT": "inweb",
+          "LAA": true
+        }
+      },
+      "L": {
+        "LCA": "kakao28c9e9852fc4102af29517b8b9b36c14://kakaolink",
+        "LCI": "kakao28c9e9852fc4102af29517b8b9b36c14://kakaolink",
+        "LPC": "http://www.kakao.com",
+        "LMO": "http://www.kakao.com"
+      },
+      "LA": "market://details?id=com.kakao.game.rich.test&from=feed내친구 수옥이 별명",
+      "LI": "https://itunes.apple.com/app/id-1?from=feed내친구 수옥이 별명",
+      "VA": "6.0.0",
+      "VI": "5.9.8",
+      "VW": "2.5.1",
+      "VM": "2.2.0",
+      "FW": true,
+      "RF": "out-client"
+    },
+    "C": {
+      "TI": {
+        "TD": {
+          "T": "group chat message"
+        }
+      },
+      "BUL": [
+        {
+          "BU": {
+            "T": "앱으로 이동"
+          },
+          "L": {
+            "LCA": "kakao28c9e9852fc4102af29517b8b9b36c14://kakaolink?",
+            "LCI": "kakao28c9e9852fc4102af29517b8b9b36c14://kakaolink?key1=value1"
+          }
+        }
+      ]
+    }
+  },
+  "warning_msg": {
+    "P.L.LMO": "http://v.media.daum.net/v/20170112114428275. app does not have DOMAIN_CHECK_PASS permission. get the permission or it will be dropped."
+  },
+  "argument_msg": {
+    "${androidAppParam}": "there's no given value."
+  }
+}
