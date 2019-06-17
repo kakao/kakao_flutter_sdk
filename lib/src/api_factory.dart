@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/widgets.dart';
 import 'package:kakao_flutter_sdk/main.dart';
 import 'package:kakao_flutter_sdk/src/access_token_interceptor.dart';
 import 'package:kakao_flutter_sdk/src/constants.dart';

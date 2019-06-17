@@ -4,6 +4,7 @@
         <activity
                 android:name=".AuthCodeCustomTabsActivity"
                 android:theme="@style/TransparentCompat"
-                android:launchMode="singleTask"/>
+                android:launchMode="singleTask"
+        android:exported="false"/>
     </application>
 </manifest>

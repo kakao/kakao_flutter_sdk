@@ -30,7 +30,7 @@ class AuthApi {
     var origin = await KakaoContext.origin;
     return Platform.isAndroid
         ? {"android_key_hash": origin}
-        : Platform.isIOS ? {"ios_bundle_id": origin} : throw KakaoClientError();
+        : Platform.isIOS ? {"ios_bundle_id": origin} : {};
   }
 
   Future<AccessTokenResponse> refreshAccessToken(String refreshToken,

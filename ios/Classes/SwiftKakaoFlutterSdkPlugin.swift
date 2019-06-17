@@ -21,7 +21,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin {
         let args = call.arguments as! Dictionary<String, String>
         let url = args["url"]
         let redirectUri = args["redirect_uri"]
-        launchWithBrowserTab(url: url!, redirectUri: redirectUri!, result: result)
+        launchWithBrowserTab(url: url!, redirectUri: redirectUri, result: result)
     default:
       result(FlutterMethodNotImplemented)
     }
@@ -31,11 +31,11 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin {
         return "os/\(os()) lang/\(lang()) res/\(res()) device/\(device()) origin/\(origin()) app_ver/\(appVer())"
     }
     
-    private func launchWithBrowserTab(url: String, redirectUri: String, result: @escaping FlutterResult) {
+    private func launchWithBrowserTab(url: String, redirectUri: String?, result: @escaping FlutterResult) {
         var keepMe: Any? = nil
         let completionHandler = { (url: URL?, err: Error?) in
             keepMe = nil
-            
+
             if let err = err {
                 if #available(iOS 12, *) {
                     if case ASWebAuthenticationSessionError.Code.canceledLogin = err {
@@ -54,13 +54,13 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin {
             result(url?.absoluteString)
         }
         let urlObject = URL(string: url)!
-        let redirectUriObject = URL(string: redirectUri)!
+        let redirectUriObject: URL? = redirectUri == nil ? nil : URL(string: redirectUri!)
         if #available(iOS 12, *) {
-            let session = ASWebAuthenticationSession(url: urlObject, callbackURLScheme: redirectUriObject.scheme, completionHandler: completionHandler)
+            let session = ASWebAuthenticationSession(url: urlObject, callbackURLScheme: redirectUriObject?.scheme, completionHandler: completionHandler)
             session.start()
             keepMe = session
         } else {
-            let session = SFAuthenticationSession(url: urlObject, callbackURLScheme: redirectUriObject.scheme, completionHandler: completionHandler)
+            let session = SFAuthenticationSession(url: urlObject, callbackURLScheme: redirectUriObject?.scheme, completionHandler: completionHandler)
             session.start()
             keepMe = session
         }

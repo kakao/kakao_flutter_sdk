@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'package:kakao_flutter_sdk/main.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,11 +16,8 @@ class _LoginState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    if (_sub != null) _sub.cancel();
     super.dispose();
   }
-
-  StreamSubscription _sub;
 
   _issueAccessToken(String authCode) async {
     try {

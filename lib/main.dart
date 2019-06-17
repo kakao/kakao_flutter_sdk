@@ -8,8 +8,11 @@ export 'src/auth/auth_code.dart';
 export 'src/user/user_api.dart';
 export 'src/talk/talk_api.dart';
 export 'src/story/story_api.dart';
+export 'src/link/link_api.dart';
+export 'src/link/link_client.dart';
 export 'src/api_factory.dart';
 export 'src/kakao_context.dart';
+export 'src/auth/default_browser.dart';
 
 class KakaoFlutterSdk {
   static const MethodChannel _channel =

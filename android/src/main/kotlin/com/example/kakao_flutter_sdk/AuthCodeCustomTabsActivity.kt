@@ -46,9 +46,8 @@ class AuthCodeCustomTabsActivity : Activity() {
     super.onNewIntent(intent)
 
     val url = intent?.dataString
-    println(url)
-    println(KakaoFlutterSdkPlugin.redirectUri)
-    if (url?.startsWith(KakaoFlutterSdkPlugin.redirectUri) == true) {
+    val redirectUri = KakaoFlutterSdkPlugin.redirectUri
+    if (redirectUri != null && url?.startsWith(redirectUri) == true) {
       KakaoFlutterSdkPlugin.redirectUriResult.success(url.toString())
     }
     this.finish()
