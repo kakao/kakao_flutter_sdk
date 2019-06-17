@@ -1,52 +1,28 @@
 PODS:
   - Flutter (1.0.0)
-  - flutter_custom_tabs (0.0.1):
-    - Flutter
-  - kakao_flutter_sdk (0.0.1):
-    - Flutter
-  - package_info (0.0.1):
+  - kakao_flutter_sdk (0.1.0):
     - Flutter
   - shared_preferences (0.0.1):
-    - Flutter
-  - uni_links (0.0.1):
-    - Flutter
-  - url_launcher (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `.symlinks/flutter/ios`)
-  - flutter_custom_tabs (from `.symlinks/plugins/flutter_custom_tabs/ios`)
   - kakao_flutter_sdk (from `.symlinks/plugins/kakao_flutter_sdk/ios`)
-  - package_info (from `.symlinks/plugins/package_info/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
-  - uni_links (from `.symlinks/plugins/uni_links/ios`)
-  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: ".symlinks/flutter/ios"
-  flutter_custom_tabs:
-    :path: ".symlinks/plugins/flutter_custom_tabs/ios"
   kakao_flutter_sdk:
     :path: ".symlinks/plugins/kakao_flutter_sdk/ios"
-  package_info:
-    :path: ".symlinks/plugins/package_info/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
-  uni_links:
-    :path: ".symlinks/plugins/uni_links/ios"
-  url_launcher:
-    :path: ".symlinks/plugins/url_launcher/ios"
 
 SPEC CHECKSUMS:
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
-  flutter_custom_tabs: 9f7596dc1593f2e0d0562ce888dde6447751e97c
-  kakao_flutter_sdk: 57dbd0b944356c09857bafa5648af1a23c6fe0ff
-  package_info: 78cabb3c322943c55d39676f4a5bfc748c01d055
+  kakao_flutter_sdk: 7088291abb64174ed9276b5b82486ec9113a7957
   shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
-  uni_links: d97da20c7701486ba192624d99bffaaffcfc298a
-  url_launcher: 0067ddb8f10d36786672aa0722a21717dba3a298
 
-PODFILE CHECKSUM: b7d0755641915265774624f3b3be49c5c073d379
+PODFILE CHECKSUM: 14ad2ebdc4889b6dcf49ae71037510a7da3b01d6
 
 COCOAPODS: 1.6.1

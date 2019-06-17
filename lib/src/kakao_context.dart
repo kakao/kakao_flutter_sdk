@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/services.dart';
-import 'package:package_info/package_info.dart';
 
 class KakaoContext {
   static const MethodChannel _channel =
@@ -15,11 +14,6 @@ class KakaoContext {
 
   static Future<String> get kaHeader async {
     final String kaHeader = await _channel.invokeMethod("getKaHeader");
-    return kaHeader;
-  }
-
-  static Future<String> get appVer async {
-    var platform = await PackageInfo.fromPlatform();
-    return platform.version;
+    return "flutter_sdk/0.1.0 $kaHeader";
   }
 }

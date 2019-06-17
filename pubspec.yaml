@@ -1,6 +1,6 @@
 name: kakao_flutter_sdk
 description: A flutter plugin for Kakao API
-version: 0.0.1
+version: 0.1.0+1
 author: Hara kang
 homepage:
 
@@ -11,10 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   json_annotation: ^2.0.0
-  dio: 2.1.0
+  dio: ^2.1.0
   shared_preferences: ^0.5.3
-  package_info: ^0.4.0+4
-  flutter_custom_tabs: ^0.6.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

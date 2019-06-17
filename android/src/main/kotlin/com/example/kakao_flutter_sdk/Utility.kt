@@ -48,8 +48,7 @@ object Utility {
      * Generate KA header used by Kakao API for client verification, statistics, and customer support.
      */
     fun getKAHeader(context: Context): String {
-        return String.format("%s/%s %s/android-%s %s/%s-%s %s/%s %s/%s %s/%s %s/%s",
-                Constants.SDK, BuildConfig.VERSION_NAME,
+        return String.format("%s/android-%s %s/%s-%s %s/%s %s/%s %s/%s %s/%s",
                 Constants.OS, Build.VERSION.SDK_INT,
                 Constants.LANG, Locale.getDefault().language.toLowerCase(), Locale.getDefault().country.toUpperCase(),
                 Constants.ORIGIN, getKeyHash(context),

@@ -21,7 +21,6 @@ class StoryState extends State<StoryScreen> {
     try {
       var isStoryUser = await StoryApi.instance.isStoryUser();
       if (isStoryUser) {
-        print("isStoryUser");
         var profile = await StoryApi.instance.profile();
 
         setState(() {

@@ -18,7 +18,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    KakaoContext.clientId = "dd4e9cb75815cbdf7d87ed721a659baf";
+    KakaoContext.clientId = "030ba7c59137629e86e8721eb1a22fd6";
   }
 
   @override
@@ -62,7 +62,6 @@ class SplashState extends State<SplashScreen> {
     var token = await AccessTokenRepo.instance.fromCache();
     debugPrint(token.toString());
     if (token.refreshToken == null) {
-      print("gogo here...");
       Navigator.of(context).pushReplacementNamed('/login');
     } else {
       Navigator.of(context).pushReplacementNamed("/main");

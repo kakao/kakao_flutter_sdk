@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:kakao_flutter_sdk/main.dart';
-import 'package:uni_links/uni_links.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -14,25 +13,24 @@ class _LoginState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _onUniLinks();
+  }
+
+  @override
+  void dispose() {
+    if (_sub != null) _sub.cancel();
+    super.dispose();
   }
 
   StreamSubscription _sub;
-  _onUniLinks() async {
-    _sub = getUriLinksStream().listen((Uri uri) {
-      var code = uri.queryParameters["code"];
-      if (code != null) {
-        _issueAccessToken(code);
-      }
-    }, onDone: () => {}, onError: (err, st) => {}, cancelOnError: true);
-  }
 
   _issueAccessToken(String authCode) async {
     try {
       var token = await AuthApi.instance.issueAccessToken(authCode);
       AccessTokenRepo.instance.toCache(token);
       Navigator.of(context).pushReplacementNamed("/main");
-    } catch (e) {}
+    } catch (e) {
+      print("error on issuing access token: ${e.toString()}");
+    }
   }
 
   @override
@@ -48,6 +46,7 @@ class _LoginState extends State<LoginScreen> {
   }
 
   _loginWithKakao() async {
-    AuthCodeClient().launchAutorizeUrl();
+    var code = await AuthCodeClient().launchAutorizeUrl();
+    _issueAccessToken(code);
   }
 }
