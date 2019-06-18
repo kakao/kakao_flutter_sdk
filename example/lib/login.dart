@@ -42,7 +42,7 @@ class _LoginState extends State<LoginScreen> {
   }
 
   _loginWithKakao() async {
-    var code = await AuthCodeClient().launchAutorizeUrl();
+    var code = await AuthCodeClient().request();
     _issueAccessToken(code);
   }
 }

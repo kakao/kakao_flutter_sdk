@@ -15,7 +15,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
@@ -33,14 +32,6 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         "/login": (context) => LoginScreen()
       },
     );
-  }
-
-  void _getToken() async {
-    try {
-      var user = await UserApi(ApiFactory.authApi).me();
-    } catch (e) {
-      debugPrint(e.toString());
-    }
   }
 }
 
