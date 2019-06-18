@@ -5,8 +5,10 @@ import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk/main.dart';
 import 'package:kakao_flutter_sdk/src/talk/model/plus_friends_response.dart';
 import 'package:kakao_flutter_sdk/src/talk/model/talk_profile.dart';
+import 'package:kakao_flutter_sdk/src/template/default_template.dart';
 
 export 'package:kakao_flutter_sdk/src/talk/model/talk_profile.dart';
+export 'package:kakao_flutter_sdk/src/template/default_template.dart';
 
 class TalkApi {
   TalkApi(this.dio);
@@ -23,29 +25,41 @@ class TalkApi {
     });
   }
 
-  Future<void> sendCustomMemo(
-      int templateId, Map<String, String> templateArgs) async {
-    return ApiFactory.handleApiError(() async {
-      await dio.post("/v2/api/talk/memo/send", data: {});
+  Future<void> customMemo(int templateId,
+      [Map<String, String> templateArgs]) async {
+    return _memo("", {
+      "template_id": templateId,
+      ...(templateArgs == null
+          ? {}
+          : {"template_args": jsonEncode(templateArgs)})
     });
   }
 
-  Future<void> sendDefaultMemo() async {
-    return ApiFactory.handleApiError(() async {
-      await dio.post("/v2/api/talk/memo/send", data: {});
+  Future<void> defaultMemo(DefaultTemplate template) async {
+    return _memo("default/", {"template_object": jsonEncode(template)});
+  }
+
+  Future<void> scrapMemo(String url,
+      {int templateId, Map<String, String> templateArgs}) async {
+    return _memo("scra/", {
+      "request_url": url,
+      ...(templateId == null ? {} : {"template_id": templateId}),
+      ...(templateArgs == null ? {} : {"template_args": templateArgs})
     });
   }
 
-  Future<void> sendScrapMemo() async {
+  Future<void> _memo(String pathPart, Map<String, dynamic> params) async {
     return ApiFactory.handleApiError(() async {
-      await dio.post("/v2/api/talk/memo/send", data: {});
+      await dio.post("/v2/api/talk/memo/${pathPart}send", data: params);
     });
   }
 
-  Future<PlusFriendsResponse> plusFriends(List<String> publicIds) async {
+  Future<PlusFriendsResponse> plusFriends([List<String> publicIds]) async {
     return ApiFactory.handleApiError(() async {
       Response response = await dio.get("/v2/api/talk/memo/send",
-          queryParameters: {"plus_friend_public_ids": jsonEncode(publicIds)});
+          queryParameters: publicIds == null
+              ? {}
+              : {"plus_friend_public_ids": jsonEncode(publicIds)});
       return PlusFriendsResponse.fromJson(response.data);
     });
   }

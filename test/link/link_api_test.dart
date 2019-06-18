@@ -25,7 +25,7 @@ void main() {
     _adapter.requestAssertions = (RequestOptions options) {};
     _adapter.setResponseString(body, 200);
 
-    var response = await _api.custom(4718, {"key1": "value1"});
+    var response = await _api.custom(4718, templateArgs: {"key1": "value1"});
     expect(response.templateId, map["template_id"]);
   });
 }
