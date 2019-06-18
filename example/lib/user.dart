@@ -23,7 +23,6 @@ class _UserState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) {
     if (_user == null) return Container();
-    print(jsonEncode(_user));
     return Container(
         padding: EdgeInsets.all(20),
         child: Column(
@@ -69,7 +68,6 @@ class _UserState extends State<UserScreen> {
   _getUser() async {
     try {
       var user = await UserApi.instance.me();
-
       setState(() {
         _user = user;
       });
@@ -84,8 +82,6 @@ class UserProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-
     Map<String, String> properties = _user.properties;
     return Column(
       children: <Widget>[

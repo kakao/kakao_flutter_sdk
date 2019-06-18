@@ -38,7 +38,6 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   void _getToken() async {
     try {
       var user = await UserApi(ApiFactory.authApi).me();
-      debugPrint(user.kakaoAccount.email);
     } catch (e) {
       debugPrint(e.toString());
     }

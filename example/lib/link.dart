@@ -18,17 +18,36 @@ class LinkState extends State<LinkScreen> {
   Widget build(BuildContext context) {
     return ListView(
       children: <Widget>[
-        ListTile(
-          title: Text("Custom"),
-          onTap: onTapCustom,
-        )
+        ListTile(title: Text("Custom"), onTap: onTapCustom),
+        ListTile(title: Text("Default"), onTap: onTapDefault),
+        ListTile(title: Text("Scrap"), onTap: onTapScrap)
       ],
     );
   }
 
+  void onTapDefault() async {
+    try {
+      var uri = await LinkClient.instance
+          .custom(16761, templateArgs: {"key1": "value1"});
+      await launchWithBrowserTab(uri);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   void onTapCustom() async {
     try {
-      var uri = await LinkClient.instance.custom(16761, {"key1": "value1"});
+      var uri = await LinkClient.instance
+          .custom(16761, templateArgs: {"key1": "value1"});
+      await launchWithBrowserTab(uri);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void onTapScrap() async {
+    try {
+      var uri = await LinkClient.instance.scrap("https://developers.kakao.com");
       await launchWithBrowserTab(uri);
     } catch (e) {
       print(e.toString());

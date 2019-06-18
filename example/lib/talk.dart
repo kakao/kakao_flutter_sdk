@@ -23,8 +23,15 @@ class TalkState extends State<TalkScreen> {
       children: <Widget>[
         Text(_profile.nickname),
         Image.network(_profile.profileImageUrl),
-        Image.network(_profile.thumbnailUrl),
-        Text(_profile.countryISO)
+        Text(_profile.countryISO),
+        RaisedButton(
+          child: Text("custom"),
+          onPressed: _customMemo,
+        ),
+        RaisedButton(
+          child: Text("default"),
+          onPressed: _defaultMemo,
+        )
       ],
     );
   }
@@ -37,5 +44,24 @@ class TalkState extends State<TalkScreen> {
         _profile = profile;
       });
     } catch (e) {}
+  }
+
+  _customMemo() async {
+    try {
+      await TalkApi.instance
+          .customMemo(16761, {"MESSAGE_TITLE": "FROM Flutter SDK Example"});
+    } catch (e) {}
+  }
+
+  _defaultMemo() async {
+    FeedTemplate template = FeedTemplate(Content(
+        "Default Feed Template",
+        "http://k.kakaocdn.net/dn/kit8l/btqgef9A1tc/pYHossVuvnkpZHmx5cgK8K/kakaolink40_original.png",
+        Link()));
+    try {
+      await TalkApi.instance.defaultMemo(template);
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

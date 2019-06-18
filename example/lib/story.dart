@@ -35,7 +35,6 @@ class StoryState extends State<StoryScreen> {
   @override
   Widget build(BuildContext context) {
     if (_profile == null) return Container();
-    print(_profile.toJson());
     return Text(_profile.nickname);
   }
 }
