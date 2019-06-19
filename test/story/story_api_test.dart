@@ -42,4 +42,11 @@ void main() {
     expect(profile.birthday, map["birthday"]);
     expect(profile.birthdayType, map["birthdayType"]);
   });
+
+  test("/v1/api/story/mystory 200", () async {
+    String body = await loadJson("story/stories.json");
+    _adapter.setResponseString(body, 200);
+    var stories = await _api.myStories();
+    print(stories);
+  });
 }
