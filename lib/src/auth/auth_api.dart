@@ -5,7 +5,6 @@ import 'package:kakao_flutter_sdk/src/api_factory.dart';
 import 'package:kakao_flutter_sdk/src/auth/model/access_token_response.dart';
 
 import 'package:kakao_flutter_sdk/src/kakao_context.dart';
-import 'package:kakao_flutter_sdk/src/kakao_error.dart';
 
 class AuthApi {
   AuthApi(this.dio);

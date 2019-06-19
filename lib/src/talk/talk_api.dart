@@ -42,7 +42,7 @@ class TalkApi {
 
   Future<void> scrapMemo(String url,
       {int templateId, Map<String, String> templateArgs}) async {
-    return _memo("scra/", {
+    return _memo("scrap/", {
       "request_url": url,
       ...(templateId == null ? {} : {"template_id": templateId}),
       ...(templateArgs == null ? {} : {"template_args": templateArgs})

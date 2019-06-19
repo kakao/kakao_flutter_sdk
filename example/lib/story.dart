@@ -28,7 +28,7 @@ class StoryState extends State<StoryScreen> {
         });
       }
     } catch (e) {
-      debugPrint(e);
+      debugPrint(e.toString());
     }
   }
 
