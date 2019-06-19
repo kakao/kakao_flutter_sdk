@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk/main.dart';
+import 'package:kakao_flutter_sdk/src/talk/model/friends_response.dart';
 import 'package:kakao_flutter_sdk/src/talk/model/plus_friends_response.dart';
 import 'package:kakao_flutter_sdk/src/talk/model/talk_profile.dart';
 import 'package:kakao_flutter_sdk/src/template/default_template.dart';
@@ -61,6 +62,17 @@ class TalkApi {
               ? {}
               : {"plus_friend_public_ids": jsonEncode(publicIds)});
       return PlusFriendsResponse.fromJson(response.data);
+    });
+  }
+
+  Future<FriendsResponse> friends({int offset, int limit, String order}) async {
+    return ApiFactory.handleApiError(() async {
+      Response response = await dio.get("/v1/friends", queryParameters: {
+        ...(offset == null ? {} : {"offset": offset}),
+        ...(limit == null ? {} : {"limit": limit}),
+        ...(order == null ? {} : {"order": order})
+      });
+      return FriendsResponse.fromJson(response.data);
     });
   }
 }
