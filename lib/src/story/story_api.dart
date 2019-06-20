@@ -97,14 +97,11 @@ class StoryApi {
 
   Future<List<String>> scrapImages(List<File> images) async {
     return ApiFactory.handleApiError(() async {
-      print("preparing data");
       Map<String, UploadFileInfo> data = images.asMap().map((index, image) =>
           MapEntry("file_${index + 1}",
               UploadFileInfo(image, image.path.split("/").last)));
-      print(data["file_1"].bytes.toString());
       Response response = await dio.post("/v1/api/story/upload/multi",
           data: FormData.from(data));
-      print("here here");
       return response.data;
     });
   }

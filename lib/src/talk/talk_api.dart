@@ -45,7 +45,9 @@ class TalkApi {
     return _memo("scrap/", {
       "request_url": url,
       ...(templateId == null ? {} : {"template_id": templateId}),
-      ...(templateArgs == null ? {} : {"template_args": templateArgs})
+      ...(templateArgs == null
+          ? {}
+          : {"template_args": jsonEncode(templateArgs)})
     });
   }
 
@@ -67,11 +69,9 @@ class TalkApi {
 
   Future<FriendsResponse> friends({int offset, int limit, String order}) async {
     return ApiFactory.handleApiError(() async {
-      Response response = await dio.get("/v1/friends", queryParameters: {
-        ...(offset == null ? {} : {"offset": offset}),
-        ...(limit == null ? {} : {"limit": limit}),
-        ...(order == null ? {} : {"order": order})
-      });
+      var params = {"offset": offset, "limit": limit, "order": order};
+      params.removeWhere((k, v) => v == null);
+      Response response = await dio.get("/v1/friends", queryParameters: params);
       return FriendsResponse.fromJson(response.data);
     });
   }

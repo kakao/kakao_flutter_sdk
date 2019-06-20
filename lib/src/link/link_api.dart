@@ -16,7 +16,9 @@ class LinkApi {
     return _validate("validate", {
       "link_ver": "4.0",
       "template_id": templateId,
-      "template_args": jsonEncode(templateArgs)
+      ...(templateArgs == null
+          ? {}
+          : {"template_args": jsonEncode(templateArgs)})
     });
   }
 
@@ -26,11 +28,14 @@ class LinkApi {
 
   Future<LinkResponse> scrap(String url,
       {int templateId, Map<String, String> templateArgs}) async {
-    return _validate("scrap", {
+    var params = {
       "request_url": url,
-      ...(templateId == null ? {} : {"template_id": templateId}),
-      ...(templateArgs == null ? {} : {"template_args": templateArgs})
-    });
+      "template_id": templateId,
+      ...(templateArgs == null
+          ? {}
+          : {"template_args": jsonEncode(templateArgs)})
+    };
+    return _validate("scrap", params);
   }
 
   Future<LinkResponse> _validate(String postfix, Map<String, dynamic> data) {
