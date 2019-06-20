@@ -3,6 +3,7 @@ import 'package:kakao_flutter_sdk/src/story/model/story_comment.dart';
 import 'package:kakao_flutter_sdk/src/story/model/story_image.dart';
 import 'package:kakao_flutter_sdk/src/story/model/story_like.dart';
 
+export 'package:kakao_flutter_sdk/src/story/model/story_like.dart';
 part 'story.g.dart';
 
 @JsonSerializable(
@@ -31,8 +32,21 @@ class Story {
   final List<StoryImage> images;
   final List<StoryLike> likes;
   final List<StoryComment> comments;
-  final String permission;
+  final StoryPermission permission;
 
   factory Story.fromJson(Map<String, dynamic> json) => _$StoryFromJson(json);
   Map<String, dynamic> toJson() => _$StoryToJson(this);
+
+  @override
+  String toString() => toJson().toString();
+}
+
+enum StoryPermission { PUBLIC, FRIEND, ONLY_ME }
+
+String permissionToParams(StoryPermission permission) {
+  return permission == StoryPermission.PUBLIC
+      ? "A"
+      : permission == StoryPermission.FRIEND
+          ? "F"
+          : permission == StoryPermission.ONLY_ME ? "M" : null;
 }

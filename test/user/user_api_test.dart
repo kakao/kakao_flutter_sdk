@@ -38,11 +38,15 @@ void main() {
 
     Account account = user.kakaoAccount;
     Map<String, dynamic> accountMap = map["kakao_account"];
-    expect(account.hasEmail, accountMap["has_email"]);
+    expect(account.emailNeedsAgreement, accountMap["email_needs_agreement"]);
     expect(account.email, accountMap["email"]);
     expect(account.isEmailVerified, accountMap["is_email_verified"]);
     expect(account.isKakaotalkUser, accountMap["is_kakaotalk_user"]);
-    expect(account.hasPhoneNumber, accountMap["has_phone_number"]);
+    expect(account.phoneNumberNeedsAgreement,
+        accountMap["phone_number_needs_agreement"]);
     expect(account.phoneNumber, accountMap["phone_number"]);
+
+    expect(account.ageRange, AgeRange.TWENTIES);
+    expect(account.gender, Gender.MALE);
   });
 }

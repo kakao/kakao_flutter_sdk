@@ -43,10 +43,20 @@ void main() {
     expect(profile.birthdayType, map["birthdayType"]);
   });
 
-  test("/v1/api/story/mystory 200", () async {
+  test("/v1/api/story/mystories 200", () async {
     String body = await loadJson("story/stories.json");
     _adapter.setResponseString(body, 200);
     var stories = await _api.myStories();
     print(stories);
+  });
+
+  test("/v1/api/story/mystory 200", () async {
+    String body = await loadJson("story/story.json");
+    _adapter.setResponseString(body, 200);
+
+    var story = await _api.myStory("AAAAAAA.CCCCCCCCCCC");
+    var likes = story.likes;
+    expect(likes[0].emoticon, Emoticon.COOL);
+    expect(story.permission, StoryPermission.PUBLIC);
   });
 }

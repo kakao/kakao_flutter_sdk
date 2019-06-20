@@ -21,5 +21,5 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'id': instance.id,
       'has_signed_up': instance.hasSignedUp,
       'properties': instance.properties,
-      'kakao_account': instance.kakaoAccount
+      'kakao_account': instance.kakaoAccount?.toJson()
     };

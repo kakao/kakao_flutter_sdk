@@ -10,6 +10,7 @@ import 'package:kakao_flutter_sdk/src/story/model/story.dart';
 import 'package:kakao_flutter_sdk/src/story/model/story_profile.dart';
 
 export 'package:kakao_flutter_sdk/src/story/model/story_profile.dart';
+export 'package:kakao_flutter_sdk/src/story/model/story.dart';
 
 class StoryApi {
   StoryApi(this.dio);
@@ -55,7 +56,7 @@ class StoryApi {
       {String content,
       List<String> images,
       String url,
-      String permission,
+      StoryPermission permission,
       bool enableShare,
       String androidExecParams,
       String iosExecParams,
@@ -67,7 +68,7 @@ class StoryApi {
         "content": content,
         "images": jsonEncode(images),
         "url": url,
-        "permission": permission,
+        "permission": permissionToParams(permission),
         "enable_share": enableShare,
         "android_exec_param": androidExecParams,
         "ios_exec_param": iosExecParams,

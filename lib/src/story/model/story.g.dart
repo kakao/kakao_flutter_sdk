@@ -28,7 +28,7 @@ Story _$StoryFromJson(Map<String, dynamic> json) {
               ? null
               : StoryComment.fromJson(e as Map<String, dynamic>))
           ?.toList(),
-      json['permission'] as String);
+      _$enumDecodeNullable(_$StoryPermissionEnumMap, json['permission']));
 }
 
 Map<String, dynamic> _$StoryToJson(Story instance) {
@@ -51,6 +51,32 @@ Map<String, dynamic> _$StoryToJson(Story instance) {
   writeNotNull('likes', instance.likes?.map((e) => e?.toJson())?.toList());
   writeNotNull(
       'comments', instance.comments?.map((e) => e?.toJson())?.toList());
-  writeNotNull('permission', instance.permission);
+  writeNotNull('permission', _$StoryPermissionEnumMap[instance.permission]);
   return val;
 }
+
+T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
+  if (source == null) {
+    throw ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return enumValues.entries
+      .singleWhere((e) => e.value == source,
+          orElse: () => throw ArgumentError(
+              '`$source` is not one of the supported values: '
+              '${enumValues.values.join(', ')}'))
+      .key;
+}
+
+T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source);
+}
+
+const _$StoryPermissionEnumMap = <StoryPermission, dynamic>{
+  StoryPermission.PUBLIC: 'PUBLIC',
+  StoryPermission.FRIEND: 'FRIEND',
+  StoryPermission.ONLY_ME: 'ONLY_ME'
+};

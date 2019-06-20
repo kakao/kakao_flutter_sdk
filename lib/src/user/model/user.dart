@@ -3,7 +3,7 @@ import 'package:kakao_flutter_sdk/src/user/model/account.dart';
 
 part 'user.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class User {
   User(this.hasSignedUp);
 
