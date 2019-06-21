@@ -78,4 +78,11 @@ enum AgeRange {
   NINTIES_AND_ABOVE
 }
 
-enum Gender { FEMALE, MALE, OTHER }
+enum Gender {
+  @JsonValue("female")
+  FEMALE,
+  @JsonValue("male")
+  MALE,
+  @JsonValue("other")
+  OTHER
+}

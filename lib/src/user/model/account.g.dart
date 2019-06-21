@@ -82,7 +82,7 @@ const _$AgeRangeEnumMap = <AgeRange, dynamic>{
 };
 
 const _$GenderEnumMap = <Gender, dynamic>{
-  Gender.FEMALE: 'FEMALE',
-  Gender.MALE: 'MALE',
-  Gender.OTHER: 'OTHER'
+  Gender.FEMALE: 'female',
+  Gender.MALE: 'male',
+  Gender.OTHER: 'other'
 };
