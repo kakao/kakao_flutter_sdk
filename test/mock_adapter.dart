@@ -11,10 +11,8 @@ class MockAdapter extends HttpClientAdapter {
   }
 
   void setResponseString(String body, int statusCode) {
-    this._responseBody = ResponseBody.fromString(
-        body,
-        statusCode,
-        DioHttpHeaders.fromMap(
+    this._responseBody = ResponseBody.fromString(body, statusCode,
+        headers: DioHttpHeaders.fromMap(
             {HttpHeaders.contentTypeHeader: ContentType.json}));
   }
 

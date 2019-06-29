@@ -21,11 +21,7 @@ void main() {
 
   test("/v1/api/story/isstoryuser 200", () async {
     String body = jsonEncode({"isStoryUser": true});
-    _adapter.setResponse(ResponseBody.fromString(
-        body,
-        200,
-        DioHttpHeaders.fromMap(
-            {HttpHeaders.contentTypeHeader: ContentType.json})));
+    _adapter.setResponseString(body, 200);
     bool isUser = await _api.isStoryUser();
     expect(isUser, true);
   });

@@ -26,11 +26,7 @@ void main() {
   test('/v2/user/me 200', () async {
     String body = await loadJson("user/me.json");
     Map<String, dynamic> map = jsonDecode(body);
-    _adapter.setResponse(ResponseBody.fromString(
-        body,
-        200,
-        DioHttpHeaders.fromMap(
-            {HttpHeaders.contentTypeHeader: ContentType.json})));
+    _adapter.setResponseString(body, 200);
     User user = await _userApi.me();
 
     expect(user.id, map["id"]);

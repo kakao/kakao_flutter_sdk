@@ -37,11 +37,7 @@ void main() {
   test('/oauth/token 200', () async {
     String body = await loadJson("auth/token_with_rt_and_scopes.json");
     Map<String, dynamic> map = jsonDecode(body);
-    _adapter.setResponse(ResponseBody.fromString(
-        body,
-        200,
-        DioHttpHeaders.fromMap(
-            {HttpHeaders.contentTypeHeader: ContentType.json})));
+    _adapter.setResponseString(body, 200);
     var response = await _authApi.issueAccessToken("auth_code",
         redirectUri: "kakaosample_app_key://oauth", clientId: "sample_app_key");
     expect(response.accessToken, map["access_token"]);

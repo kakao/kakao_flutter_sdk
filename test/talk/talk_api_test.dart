@@ -26,11 +26,7 @@ void main() {
   test("/v1/api/talk/profile 200", () async {
     String body = await loadJson("talk/profile.json");
     Map<String, dynamic> map = jsonDecode(body);
-    _adapter.setResponse(ResponseBody.fromString(
-        body,
-        200,
-        DioHttpHeaders.fromMap(
-            {HttpHeaders.contentTypeHeader: ContentType.json})));
+    _adapter.setResponseString(body, 200);
 
     TalkProfile profile = await _talkApi.profile();
     expect(map["nickName"], profile.nickname);
