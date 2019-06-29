@@ -20,6 +20,6 @@
     "age_range_needs_agreement": false,
     "age_range": "20~29",
     "gender_needs_agreement": false,
-    "gender": "MALE"
+    "gender": "male"
   }
 }
