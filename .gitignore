@@ -5,7 +5,7 @@
 .pub/
 
 build/
-
+coverage/
 .idea/
 *.iml
 
