@@ -1,6 +1,6 @@
 import 'package:kakao_flutter_sdk/src/auth/default_browser.dart';
 import 'package:kakao_flutter_sdk/src/kakao_context.dart';
-import 'package:kakao_flutter_sdk/src/kakao_error.dart';
+import 'package:kakao_flutter_sdk/src/common/kakao_auth_exception.dart';
 
 class AuthCodeClient {
   Future<String> request(
@@ -17,8 +17,6 @@ class AuthCodeClient {
     var queryParams = Uri.parse(redirectedUriString).queryParameters;
     var code = queryParams["code"];
     if (code != null) return code;
-    var error = queryParams["error"];
-    var errorDesc = queryParams["errorDescription"];
-    throw KakaoAuthError();
+    throw KakaoAuthException.fromJson(queryParams);
   }
 }

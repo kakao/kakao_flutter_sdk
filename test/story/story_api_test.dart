@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -43,7 +42,7 @@ void main() {
     String body = await loadJson("story/stories.json");
     _adapter.setResponseString(body, 200);
     var stories = await _api.myStories();
-    print(stories);
+    expect(stories.length, 3);
   });
 
   test("/v1/api/story/mystory 200", () async {

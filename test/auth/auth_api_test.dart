@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
@@ -7,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kakao_flutter_sdk/main.dart';
 import 'package:kakao_flutter_sdk/src/api_factory.dart';
 import 'package:kakao_flutter_sdk/src/constants.dart';
-import 'package:kakao_flutter_sdk/src/kakao_error.dart';
+import 'package:kakao_flutter_sdk/src/common/kakao_auth_exception.dart';
 
 import '../helper.dart';
 import '../mock_adapter.dart';
@@ -47,7 +46,7 @@ void main() {
     expect(response.scopes, map["scope"]);
   });
 
-  test('/oauth token 400', () async {
+  test('/oauth/token 400', () async {
     String body = await loadJson("auth/misconfigured.json");
     _adapter.setResponse(ResponseBody.fromString(body, 401));
     try {
@@ -55,13 +54,29 @@ void main() {
           redirectUri: "kakaosample_app_key://oauth",
           clientId: "sample_app_key");
       fail("Should not reach here");
+    } on KakaoAuthException catch (e) {
+      expect(e.error, AuthErrorCause.MISCONFIGURED);
     } catch (e) {
-      expect(e, isInstanceOf<KakaoAuthError>());
+      expect(e, isInstanceOf<KakaoAuthException>());
     }
-    // expect(
-    //     _authApi.issueAccessToken("authCode",
-    //         redirectUri: "kakaosample_app_key://oauth",
-    //         clientId: "sample_app_key"),
-    //     throwsA(TypeMatcher<KakaoApiError>()));
   });
+
+  test(
+      "/oauth/token 400 with wrong enum value and missing description should have both fields as null",
+      () async {
+    String body = jsonEncode({"error": "invalid_credentials"});
+    _adapter.setResponse(ResponseBody.fromString(body, 401));
+    try {
+      await _authApi.issueAccessToken("authCode",
+          redirectUri: "kakaosample_app_key://oauth",
+          clientId: "sample_app_key");
+      fail("Should not reach here");
+    } on KakaoAuthException catch (e) {
+      expect(e.error, AuthErrorCause.UNKNOWN);
+    } catch (e) {
+      expect(e, isInstanceOf<KakaoAuthException>());
+    }
+  },
+      skip:
+          "Json_serializable currently does not support deserializing unsupported enum values.");
 }

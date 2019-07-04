@@ -1,10 +1,13 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk/main.dart';
 import 'package:kakao_flutter_sdk/src/access_token_interceptor.dart';
+import 'package:kakao_flutter_sdk/src/common/kakao_api_exception.dart';
+import 'package:kakao_flutter_sdk/src/common/kakao_auth_exception.dart';
+import 'package:kakao_flutter_sdk/src/common/kakao_error.dart';
 import 'package:kakao_flutter_sdk/src/constants.dart';
-import 'package:kakao_flutter_sdk/src/kakao_error.dart';
 import 'package:kakao_flutter_sdk/src/kakao_context.dart';
 
 class ApiFactory {
@@ -49,13 +52,12 @@ class ApiFactory {
     }
   }
 
-  static Error transformApiError(DioError e) {
-    print(e.response.data.toString());
-    if (e.response == null) return KakaoClientError();
+  static Exception transformApiError(DioError e) {
+    if (e.response == null) return KakaoClientException(e.message);
     if (e.request.baseUrl == OAUTH_HOST) {
-      return KakaoAuthError();
+      return KakaoAuthException.fromJson(jsonDecode(e.response.data));
     }
-    return KakaoApiError();
+    return KakaoApiException.fromJson(jsonDecode(e.response.data));
   }
 
   static Interceptor appKeyInterceptor =

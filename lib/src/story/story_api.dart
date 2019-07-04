@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk/src/api_factory.dart';
-import 'package:kakao_flutter_sdk/src/kakao_error.dart';
+import 'package:kakao_flutter_sdk/src/common/kakao_error.dart';
 import 'package:kakao_flutter_sdk/src/story/model/link_info.dart';
 import 'package:kakao_flutter_sdk/src/story/model/story.dart';
 import 'package:kakao_flutter_sdk/src/story/model/story_profile.dart';
@@ -40,15 +40,15 @@ class StoryApi {
     });
   }
 
-  Future<List<Story>> myStories([String lastStoryId]) async {
+  Future<List<Story>> myStories([String lastId]) async {
     return ApiFactory.handleApiError(() async {
       Response response = await dio.get("/v1/api/story/mystories",
-          queryParameters: {"last_id": lastStoryId});
+          queryParameters: lastId == null ? {} : {"last_id": lastId});
       var data = response.data;
       if (data is List) {
         return data.map((entry) => Story.fromJson(entry)).toList();
       }
-      throw KakaoClientError();
+      throw KakaoClientException("Stories response is not a json array.");
     });
   }
 
