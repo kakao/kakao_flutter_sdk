@@ -3,7 +3,7 @@ import 'package:kakao_flutter_sdk/src/user/model/shipping_address.dart';
 
 part 'shipping_addresses.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class ShippingAddresses {
   int userId;
   bool shippingAddressesNeedsAgreement;

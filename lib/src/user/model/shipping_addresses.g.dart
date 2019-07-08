@@ -22,5 +22,6 @@ Map<String, dynamic> _$ShippingAddressesToJson(ShippingAddresses instance) =>
       'user_id': instance.userId,
       'shipping_addresses_needs_agreement':
           instance.shippingAddressesNeedsAgreement,
-      'shipping_addresses': instance.shippingAddresses
+      'shipping_addresses':
+          instance.shippingAddresses?.map((e) => e?.toJson())?.toList()
     };

@@ -1,15 +1,14 @@
 import 'package:json_annotation/json_annotation.dart';
 part 'plus_friend_info.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class PlusFriendInfo {
-  PlusFriendInfo(this.uuid, this.encodedId, this.relation, this.updatedAt);
+  PlusFriendInfo(this.uuid, this.publicId, this.relation, this.updatedAt);
   @JsonKey(name: "plus_friend_uuid")
   String uuid;
   @JsonKey(name: "plus_friend_public_id")
-  String encodedId;
+  String publicId;
   String relation;
-  @JsonKey(name: "updated_time")
   String updatedAt;
 
   factory PlusFriendInfo.fromJson(Map<String, dynamic> json) =>

@@ -11,13 +11,13 @@ PlusFriendInfo _$PlusFriendInfoFromJson(Map<String, dynamic> json) {
       json['plus_friend_uuid'] as String,
       json['plus_friend_public_id'] as String,
       json['relation'] as String,
-      json['updated_time'] as String);
+      json['updated_at'] as String);
 }
 
 Map<String, dynamic> _$PlusFriendInfoToJson(PlusFriendInfo instance) =>
     <String, dynamic>{
       'plus_friend_uuid': instance.uuid,
-      'plus_friend_public_id': instance.encodedId,
+      'plus_friend_public_id': instance.publicId,
       'relation': instance.relation,
-      'updated_time': instance.updatedAt
+      'updated_at': instance.updatedAt
     };

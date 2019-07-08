@@ -19,4 +19,7 @@ class StoryProfile {
   factory StoryProfile.fromJson(Map<String, dynamic> json) =>
       _$StoryProfileFromJson(json);
   Map<String, dynamic> toJson() => _$StoryProfileToJson(this);
+
+  @override
+  String toString() => toJson().toString();
 }

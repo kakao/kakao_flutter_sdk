@@ -3,7 +3,7 @@ import 'package:kakao_flutter_sdk/src/user/model/terms.dart';
 
 part 'service_terms.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class ServiceTerms {
   ServiceTerms(this.userId, this.allowedServiceTerms);
 

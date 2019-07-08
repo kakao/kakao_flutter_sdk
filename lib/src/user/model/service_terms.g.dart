@@ -18,5 +18,6 @@ ServiceTerms _$ServiceTermsFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$ServiceTermsToJson(ServiceTerms instance) =>
     <String, dynamic>{
       'user_id': instance.userId,
-      'allowed_service_terms': instance.allowedServiceTerms
+      'allowed_service_terms':
+          instance.allowedServiceTerms?.map((e) => e?.toJson())?.toList()
     };
