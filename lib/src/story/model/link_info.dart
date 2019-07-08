@@ -12,7 +12,7 @@ class LinkInfo {
   final String host;
   final String title;
   @JsonKey(name: "image")
-  final String images;
+  final List<String> images;
   final String description;
   final String section;
   final String type;

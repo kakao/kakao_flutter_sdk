@@ -12,7 +12,7 @@ LinkInfo _$LinkInfoFromJson(Map<String, dynamic> json) {
       json['requested_url'] as String,
       json['host'] as String,
       json['title'] as String,
-      json['image'] as String,
+      (json['image'] as List)?.map((e) => e as String)?.toList(),
       json['description'] as String,
       json['section'] as String,
       json['type'] as String);
