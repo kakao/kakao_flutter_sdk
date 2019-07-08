@@ -7,4 +7,9 @@ class KakaoException implements Exception {
 class KakaoClientException extends KakaoException {
   KakaoClientException(this.msg) : super(msg);
   final String msg;
+
+  @override
+  String toString() {
+    return "KakaoClientException: $msg";
+  }
 }
