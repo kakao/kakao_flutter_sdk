@@ -54,4 +54,41 @@ void main() {
     expect(likes[0].emoticon, Emoticon.COOL);
     expect(story.permission, StoryPermission.PUBLIC);
   });
+
+  group("/v1/api/story/delete/mystory", () {
+    test("with id", () async {
+      _adapter.setResponseString("", 200);
+      var storyId = "AAAAAAA.CCCCCCCCCCC";
+      _adapter.requestAssertions = (RequestOptions options) {
+        expect(options.method, "DELETE");
+        expect(options.path, "/v1/api/story/delete/mystory");
+        var params = options.queryParameters;
+        expect(params["id"], storyId);
+      };
+      await _api.deleteStory(storyId);
+    });
+  });
+
+  test("/v1/api/story/linkinfo 200", () async {
+    var body = await loadJson("story/linkinfo.json");
+    var map = jsonDecode(body);
+    _adapter.setResponseString(body, 200);
+
+    var url = "https://developers.kakao.com";
+    _adapter.requestAssertions = (RequestOptions options) {
+      expect(options.method, "GET");
+      expect(options.path, "/v1/api/story/linkinfo");
+      var params = options.queryParameters;
+      expect(params["url"], url);
+    };
+    var info = await _api.scrapLink(url);
+
+    expect(info.url, map["url"]);
+    expect(info.requestedUrl, map["requested_url"]);
+    expect(info.section, map["section"]);
+    expect(info.title, map["title"]);
+    expect(info.type, map["type"]);
+    expect(info.description, map["description"]);
+    expect(info.host, map["host"]);
+  });
 }

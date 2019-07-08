@@ -12,13 +12,13 @@ import '../mock_adapter.dart';
 void main() {
   Dio _dio;
   MockAdapter _adapter;
-  UserApi _userApi;
+  UserApi _api;
 
   setUp(() {
     _dio = Dio();
     _adapter = MockAdapter();
     _dio.httpClientAdapter = _adapter;
-    _userApi = UserApi(_dio);
+    _api = UserApi(_dio);
   });
   tearDown(() {});
 
@@ -26,7 +26,7 @@ void main() {
     String body = await loadJson("user/me.json");
     Map<String, dynamic> map = jsonDecode(body);
     _adapter.setResponseString(body, 200);
-    User user = await _userApi.me();
+    User user = await _api.me();
 
     expect(user.id, map["id"]);
     expect(user.hasSignedUp, map["has_signed_up"]);
@@ -43,5 +43,75 @@ void main() {
 
     expect(account.ageRange, AgeRange.TWENTIES);
     expect(account.gender, Gender.MALE);
+  });
+
+  test("/v1/user/access_token_info 200", () async {
+    var body = await loadJson("user/token_info.json");
+    Map<String, dynamic> map = jsonDecode(body);
+    _adapter.setResponseString(body, 200);
+
+    var tokenInfo = await _api.accessTokenInfo();
+    expect(tokenInfo.appId, map["appId"]);
+    expect(tokenInfo.id, map["id"]);
+    expect(tokenInfo.expiresInMillis, map["expiresInMillis"]);
+    expect(tokenInfo.toJson(), map);
+  });
+
+  test("/v1/user/shipping_addresses 200", () async {
+    String body = await loadJson("user/addresses.json");
+    Map<String, dynamic> map = jsonDecode(body);
+    _adapter.setResponseString(body, 200);
+
+    var res = await _api.shippingAddresses();
+
+    expect(res.userId, map["user_id"]);
+    expect(res.shippingAddressesNeedsAgreement,
+        map["shipping_addresses_needs_agreement"]);
+    var addresses = res.shippingAddresses;
+    var elements = map["shipping_addresses"];
+    expect(addresses.length, elements.length);
+
+    addresses.asMap().forEach((index, it) {
+      var element = elements[index];
+      expect(it.isDefault, element["default"]);
+      expect(it.id, element["id"]);
+      expect(it.name, element["name"]);
+      expect(it.baseAddress, element["base_address"]);
+      expect(it.detailAddress, element["detail_address"]);
+    });
+    res.toJson();
+  });
+
+  test("/v1/user/service/terms 200", () async {
+    String body = await loadJson("user/service_terms.json");
+    Map<String, dynamic> map = jsonDecode(body);
+    _adapter.setResponseString(body, 200);
+
+    var res = await _api.serviceTerms();
+    expect(res.userId, map["user_id"]);
+    var terms = res.allowedServiceTerms;
+    var elements = map["allowed_service_terms"];
+
+    expect(terms.length, elements.length);
+    terms.asMap().forEach((index, it) {
+      var element = elements[index];
+      expect(it.tag, element["tag"]);
+      expect(it.agreedAt, element["agreed_at"]);
+    });
+    res.toJson();
+  });
+
+  test("APIs with user id response 200", () async {
+    String body = await loadJson("user/id.json");
+    Map<String, dynamic> map = jsonDecode(body);
+    _adapter.setResponseString(body, 200);
+
+    var res = await _api.logout();
+    expect(res.id, map["id"]);
+
+    _adapter.setResponseString(body, 200);
+    res = await _api.unlink();
+    expect(res.id, map["id"]);
+    res.toJson();
   });
 }
