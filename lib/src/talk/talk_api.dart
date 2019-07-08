@@ -28,12 +28,11 @@ class TalkApi {
 
   Future<void> customMemo(int templateId,
       [Map<String, String> templateArgs]) async {
-    return _memo("", {
+    var params = {
       "template_id": templateId,
-      ...(templateArgs == null
-          ? {}
-          : {"template_args": jsonEncode(templateArgs)})
-    });
+      "template_args": templateArgs == null ? null : jsonEncode(templateArgs)
+    };
+    return _memo("", params);
   }
 
   Future<void> defaultMemo(DefaultTemplate template) async {
@@ -42,16 +41,16 @@ class TalkApi {
 
   Future<void> scrapMemo(String url,
       {int templateId, Map<String, String> templateArgs}) async {
-    return _memo("scrap/", {
+    var params = {
       "request_url": url,
-      ...(templateId == null ? {} : {"template_id": templateId}),
-      ...(templateArgs == null
-          ? {}
-          : {"template_args": jsonEncode(templateArgs)})
-    });
+      "template_id": templateId,
+      "template_args": templateArgs == null ? null : jsonEncode(templateArgs)
+    };
+    return _memo("scrap/", params);
   }
 
   Future<void> _memo(String pathPart, Map<String, dynamic> params) async {
+    params.removeWhere((k, v) => v == null);
     return ApiFactory.handleApiError(() async {
       await dio.post("/v2/api/talk/memo/${pathPart}send", data: params);
     });
@@ -59,7 +58,7 @@ class TalkApi {
 
   Future<PlusFriendsResponse> plusFriends([List<String> publicIds]) async {
     return ApiFactory.handleApiError(() async {
-      Response response = await dio.get("/v2/api/talk/memo/send",
+      Response response = await dio.get("/v1/api/talk/plusfriends",
           queryParameters: publicIds == null
               ? {}
               : {"plus_friend_public_ids": jsonEncode(publicIds)});
