@@ -1,0 +1,9 @@
+{
+  "user_id": 1119393777,
+  "allowed_service_terms": [
+    { "tag": "tnc3_201905", "agreed_at": "2019-07-05T05:29:15Z" },
+    { "tag": "pr_201905", "agreed_at": "2019-07-05T05:29:15Z" },
+    { "tag": "privacy_agree_201905", "agreed_at": "2019-07-05T05:29:15Z" },
+    { "tag": "over14", "agreed_at": "2019-07-05T05:29:15Z" }
+  ]
+}

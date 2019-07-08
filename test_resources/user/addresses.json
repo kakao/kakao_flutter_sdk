@@ -1,0 +1,51 @@
+{
+  "user_id": 12345,
+  "shipping_addresses_needs_agreement": false,
+  "shipping_addresses": [
+    {
+      "default": true,
+      "id": 319,
+      "name": "회사",
+      "is_default": true,
+      "updated_at": 1538448856,
+      "type": "NEW",
+      "base_address": "경기 성남시 분당구 판교역로 231 (삼평동, 에이치스퀘어 에스동)",
+      "detail_address": "6층",
+      "receiver_name": "판교",
+      "receiver_phone_number1": "031-123-2345",
+      "receiver_phone_number2": "",
+      "zone_number": "13494",
+      "zip_code": "463-400"
+    },
+    {
+      "default": false,
+      "id": 320,
+      "name": "회사",
+      "is_default": false,
+      "updated_at": 1538450389,
+      "type": "OLD",
+      "base_address": "경기 성남시 분당구 삼평동 680 (삼평동, 에이치스퀘어 에스동)",
+      "detail_address": "6층",
+      "receiver_name": "판교2",
+      "receiver_phone_number1": "010-0056-1234",
+      "receiver_phone_number2": "",
+      "zone_number": "13494",
+      "zip_code": "463-400"
+    },
+    {
+      "default": false,
+      "id": 321,
+      "name": "회사",
+      "is_default": false,
+      "updated_at": 1538450195,
+      "type": "OLD",
+      "base_address": "경기 성남시 분당구 삼평동 681 (삼평동, 에이치스퀘어 엔동)",
+      "detail_address": "7층",
+      "receiver_name": "판교4",
+      "receiver_phone_number1": "123-456-2225",
+      "receiver_phone_number2": "",
+      "zone_number": "13494",
+      "zip_code": "463-400"
+    }
+  ]
+}
