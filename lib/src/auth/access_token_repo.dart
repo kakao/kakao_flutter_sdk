@@ -12,7 +12,7 @@ class AccessTokenRepo {
 
   static final AccessTokenRepo instance = AccessTokenRepo();
 
-  void clear() async {
+  Future<void> clear() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.remove(atKey);
     preferences.remove(atExpiresAtKey);
