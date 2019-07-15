@@ -52,10 +52,10 @@ class StoryApi {
     });
   }
 
-  Future<Story> post(
+  Future<String> post(
       {String content,
       List<String> images,
-      String url,
+      LinkInfo linkInfo,
       StoryPermission permission,
       bool enableShare,
       String androidExecParams,
@@ -63,11 +63,12 @@ class StoryApi {
       String androidMarketParams,
       String iosParmetParams}) async {
     return ApiFactory.handleApiError(() async {
-      var postfix = images != null ? "photo" : url != null ? "link" : "note";
+      var postfix =
+          images != null ? "photo" : linkInfo != null ? "link" : "note";
       var data = {
         "content": content,
-        "images": jsonEncode(images),
-        "url": url,
+        "images": images == null ? null : jsonEncode(images),
+        "link_info": linkInfo == null ? null : jsonEncode(linkInfo),
         "permission": permissionToParams(permission),
         "enable_share": enableShare,
         "android_exec_param": androidExecParams,
@@ -77,7 +78,7 @@ class StoryApi {
       };
       data.removeWhere((k, v) => v == null);
       var response = await dio.post("/v1/api/story/post/$postfix", data: data);
-      return Story.fromJson(response.data);
+      return response.data["id"];
     });
   }
 
@@ -103,7 +104,9 @@ class StoryApi {
               UploadFileInfo(image, image.path.split("/").last)));
       Response response = await dio.post("/v1/api/story/upload/multi",
           data: FormData.from(data));
-      return response.data;
+      var urls = response.data;
+      if (urls is List) return urls.map((url) => url as String).toList();
+      throw KakaoClientException("Resposne should be an array.");
     });
   }
 }

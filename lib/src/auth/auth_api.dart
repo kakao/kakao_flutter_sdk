@@ -5,13 +5,14 @@ import 'package:kakao_flutter_sdk/src/api_factory.dart';
 import 'package:kakao_flutter_sdk/src/auth/model/access_token_response.dart';
 
 import 'package:kakao_flutter_sdk/src/kakao_context.dart';
+import 'package:platform/platform.dart';
 
 class AuthApi {
-  AuthApi(this.dio);
+  AuthApi(this.dio, [this.platform]);
 
   final Dio dio;
-
-  static final AuthApi instance = AuthApi(ApiFactory.kauthApi);
+  final Platform platform;
+  static final AuthApi instance = AuthApi(ApiFactory.kauthApi, LocalPlatform());
 
   Future<AccessTokenResponse> issueAccessToken(String authCode,
       {String redirectUri, String clientId}) async {
@@ -27,9 +28,9 @@ class AuthApi {
 
   Future<Map<String, String>> _platformData() async {
     var origin = await KakaoContext.origin;
-    return Platform.isAndroid
+    return platform.isAndroid
         ? {"android_key_hash": origin}
-        : Platform.isIOS ? {"ios_bundle_id": origin} : {};
+        : platform.isIOS ? {"ios_bundle_id": origin} : {};
   }
 
   Future<AccessTokenResponse> refreshAccessToken(String refreshToken,

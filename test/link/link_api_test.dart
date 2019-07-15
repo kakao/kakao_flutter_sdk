@@ -19,7 +19,7 @@ void main() {
   });
 
   test("send custom 200", () async {
-    String body = await loadJson("link/custom.json");
+    String body = await loadJson("link/validate.json");
     var map = jsonDecode(body);
 
     _adapter.requestAssertions = (RequestOptions options) {};

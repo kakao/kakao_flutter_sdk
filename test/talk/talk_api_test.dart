@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_test/flutter_test.dart' as prefix0;
 import 'package:kakao_flutter_sdk/src/talk/model/friend.dart';
 import 'package:kakao_flutter_sdk/src/talk/model/friends_response.dart';
+import 'package:kakao_flutter_sdk/src/talk/model/plus_friends_response.dart';
 import 'package:kakao_flutter_sdk/src/talk/model/talk_profile.dart';
 import 'package:kakao_flutter_sdk/src/talk/talk_api.dart';
 
@@ -33,6 +33,7 @@ void main() {
     expect(map["profileImageURL"], profile.profileImageUrl);
     expect(map["thumbnailURL"], profile.thumbnailUrl);
     expect(map["countryISO"], profile.countryISO);
+    expect(true, profile.toJson() != null);
   });
 
   bool compareFriend(Map<String, dynamic> element, Friend friend) {
@@ -55,6 +56,7 @@ void main() {
     List<Friend> friends = res.friends;
     friends.asMap().forEach(
         (idx, friend) => expect(true, compareFriend(elements[idx], friend)));
+    expect(true, res.toJson() != null);
   });
 
   group("/v2/api/talk/memo", () {
@@ -147,7 +149,7 @@ void main() {
 
   group("/v1/api/talk/plusfriends", () {
     var map;
-    var res;
+    PlusFriendsResponse res;
     setUp(() async {
       var body = await loadJson("talk/plus_friends.json");
       map = jsonDecode(body);
@@ -165,6 +167,7 @@ void main() {
         expect(friend.relation, element["relation"]);
         expect(friend.updatedAt, element["updated_at"]);
       });
+      expect(true, res.toJson() != null);
     });
 
     test("with no parameter", () async {

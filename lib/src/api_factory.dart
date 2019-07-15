@@ -9,6 +9,7 @@ import 'package:kakao_flutter_sdk/src/common/kakao_auth_exception.dart';
 import 'package:kakao_flutter_sdk/src/common/kakao_error.dart';
 import 'package:kakao_flutter_sdk/src/constants.dart';
 import 'package:kakao_flutter_sdk/src/kakao_context.dart';
+import 'package:platform/platform.dart';
 
 class ApiFactory {
   static final Dio kauthApi = _kauthApiInstance();
@@ -29,7 +30,8 @@ class ApiFactory {
     dio.options.baseUrl = API_HOST;
     dio.options.contentType =
         ContentType.parse("application/x-www-form-urlencoded");
-    var tokenInterceptor = AccessTokenInterceptor(dio, AuthApi(kauthApi));
+    var tokenInterceptor =
+        AccessTokenInterceptor(dio, AuthApi(kauthApi, LocalPlatform()));
     dio.interceptors.addAll([tokenInterceptor, kaInterceptor]);
     return dio;
   }

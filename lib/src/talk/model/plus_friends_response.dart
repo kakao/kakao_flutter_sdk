@@ -3,7 +3,7 @@ import 'package:kakao_flutter_sdk/src/talk/model/plus_friend_info.dart';
 
 part 'plus_friends_response.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class PlusFriendsResponse {
   PlusFriendsResponse(this.userId, this.plusFriends);
   int userId;

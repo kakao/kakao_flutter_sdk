@@ -3,8 +3,10 @@ import 'package:kakao_flutter_sdk/src/kakao_context.dart';
 import 'package:kakao_flutter_sdk/src/common/kakao_auth_exception.dart';
 
 class AuthCodeClient {
+  static final AuthCodeClient instance = AuthCodeClient();
+
   Future<String> request(
-      [String clientId, String redirectUri, List<String> scopes]) async {
+      {String clientId, String redirectUri, List<String> scopes}) async {
     var finalRedirectUri =
         redirectUri ?? "kakao${KakaoContext.clientId}://oauth";
     var url = Uri.https("kauth.kakao.com", "/oauth/authorize", {

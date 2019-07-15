@@ -1,7 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kakao_flutter_sdk/src//auth/access_token_repo.dart';
-import 'package:kakao_flutter_sdk/src/auth/access_token_repo.dart' as prefix0;
 import 'package:kakao_flutter_sdk/src/auth/model/access_token_response.dart';
 
 import '../helper.dart';
@@ -18,7 +17,7 @@ void main() {
       }
       return null;
     });
-    map = await loadJsonIntoMap('auth/token_with_rt_and_scopes.json');
+    map = await loadJsonIntoMap('oauth/token_with_rt_and_scopes.json');
     response = AccessTokenResponse.fromJson(map);
     repo = AccessTokenRepo();
   });

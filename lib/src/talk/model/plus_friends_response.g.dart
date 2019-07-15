@@ -20,5 +20,5 @@ Map<String, dynamic> _$PlusFriendsResponseToJson(
         PlusFriendsResponse instance) =>
     <String, dynamic>{
       'user_id': instance.userId,
-      'plus_friends': instance.plusFriends
+      'plus_friends': instance.plusFriends?.map((e) => e?.toJson())?.toList()
     };

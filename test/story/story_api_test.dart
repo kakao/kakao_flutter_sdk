@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kakao_flutter_sdk/src/story/model/link_info.dart';
 import 'package:kakao_flutter_sdk/src/story/story_api.dart';
 
 import '../helper.dart';
@@ -90,5 +92,79 @@ void main() {
     expect(info.type, map["type"]);
     expect(info.description, map["description"]);
     expect(info.host, map["host"]);
+  });
+
+  group("/v1/api/story/post", () {
+    var map;
+    setUp(() async {
+      map = {"id": "AAAAAAA.DDDDDDDDDDD"};
+      _adapter.setResponseString(jsonEncode(map), 200);
+    });
+    test("/note with minimal params", () async {
+      var content = "Story posting...";
+      _adapter.requestAssertions = (RequestOptions options) {
+        expect(options.method, "POST");
+        expect(options.path, "/v1/api/story/post/note");
+        Map<String, dynamic> params = options.data;
+        print(params);
+        expect(params.keys.length, 1);
+      };
+      var id = await _api.post(content: content);
+      expect(id, map["id"]);
+    });
+
+    test("/photo", () async {
+      var images = [
+        "https://developers.kakao.com/image1.png",
+        "https://developers.kakao.com/image1.png",
+        "https://developers.kakao.com/image1.png"
+      ];
+
+      _adapter.requestAssertions = (RequestOptions options) {
+        expect(options.method, "POST");
+        expect(options.path, "/v1/api/story/post/photo");
+        Map<String, dynamic> params = options.data;
+        expect(params.keys.length, 2);
+      };
+      var story =
+          await _api.post(images: images, permission: StoryPermission.FRIEND);
+      expect(story, map["id"]);
+    });
+
+    test("/link", () async {
+      var bodyMap = jsonDecode(await loadJson("story/linkinfo.json"));
+      var linkInfo = LinkInfo.fromJson(bodyMap);
+      _adapter.requestAssertions = (RequestOptions options) {
+        expect(options.method, "POST");
+        expect(options.path, "/v1/api/story/post/link");
+        Map<String, dynamic> params = options.data;
+        expect(params.length, 3);
+      };
+      var storyId = await _api.post(
+          linkInfo: linkInfo,
+          enableShare: false,
+          androidExecParams: "key1=value1&key2=value2");
+      expect(storyId, map["id"]);
+    });
+  });
+
+  group("/v1/api/story/upload/multi", () {
+    test("200", () async {
+      var body = await loadJson("story/multi.json");
+      var urls = jsonDecode(body);
+
+      _adapter.requestAssertions = (RequestOptions options) {
+        expect(options.method, "POST");
+        expect(options.path, "/v1/api/story/upload/multi");
+      };
+      _adapter.setResponseString(body, 200);
+      var files = [
+        File("test_resources/images/cat1.png"),
+        File("test_resources/images/cat2.png")
+      ];
+
+      var res = await _api.scrapImages(files);
+      expect(res, urls);
+    });
   });
 }

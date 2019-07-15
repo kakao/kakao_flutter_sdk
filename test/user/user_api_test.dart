@@ -23,7 +23,7 @@ void main() {
   tearDown(() {});
 
   test('/v2/user/me 200', () async {
-    String body = await loadJson("user/me.json");
+    String body = await loadJson("users/me.json");
     Map<String, dynamic> map = jsonDecode(body);
     _adapter.setResponseString(body, 200);
     User user = await _api.me();
@@ -42,11 +42,13 @@ void main() {
     expect(account.phoneNumber, accountMap["phone_number"]);
 
     expect(account.ageRange, AgeRange.TWENTIES);
-    expect(account.gender, Gender.MALE);
+    expect(account.gender, Gender.FEMALE);
+
+    expect(true, user.toJson() != null);
   });
 
   test("/v1/user/access_token_info 200", () async {
-    var body = await loadJson("user/token_info.json");
+    var body = await loadJson("users/token_info.json");
     Map<String, dynamic> map = jsonDecode(body);
     _adapter.setResponseString(body, 200);
 
@@ -58,7 +60,7 @@ void main() {
   });
 
   test("/v1/user/shipping_addresses 200", () async {
-    String body = await loadJson("user/addresses.json");
+    String body = await loadJson("users/addresses.json");
     Map<String, dynamic> map = jsonDecode(body);
     _adapter.setResponseString(body, 200);
 
@@ -83,7 +85,7 @@ void main() {
   });
 
   test("/v1/user/service/terms 200", () async {
-    String body = await loadJson("user/service_terms.json");
+    String body = await loadJson("users/service_terms.json");
     Map<String, dynamic> map = jsonDecode(body);
     _adapter.setResponseString(body, 200);
 
@@ -102,7 +104,7 @@ void main() {
   });
 
   test("APIs with user id response 200", () async {
-    String body = await loadJson("user/id.json");
+    String body = await loadJson("users/id.json");
     Map<String, dynamic> map = jsonDecode(body);
     _adapter.setResponseString(body, 200);
 
