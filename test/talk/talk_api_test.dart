@@ -24,7 +24,7 @@ void main() {
   });
 
   test("/v1/api/talk/profile 200", () async {
-    String body = await loadJson("talk/profile.json");
+    String body = await loadJson("talk/profile/profile.json");
     Map<String, dynamic> map = jsonDecode(body);
     _adapter.setResponseString(body, 200);
 
@@ -43,7 +43,7 @@ void main() {
   }
 
   test('/v1/friends 200', () async {
-    String body = await loadJson("talk/friends.json");
+    String body = await loadJson("talk/friends/friends.json");
     Map<String, dynamic> map = jsonDecode(body);
     _adapter.setResponseString(body, 200);
 
@@ -151,7 +151,7 @@ void main() {
     var map;
     PlusFriendsResponse res;
     setUp(() async {
-      var body = await loadJson("talk/plus_friends.json");
+      var body = await loadJson("talk/plusfriends/plus_friends.json");
       map = jsonDecode(body);
       _adapter.setResponseString(body, 200);
     });
