@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/main.dart';
 
+import 'add_story.dart';
 import 'link.dart';
 import 'login.dart';
+import 'story_detail.dart';
 import 'user.dart';
 import 'story.dart';
 import 'talk.dart';
@@ -29,7 +32,9 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
       routes: {
         "/": (context) => SplashScreen(),
         "/main": (context) => MainScreen(),
-        "/login": (context) => LoginScreen()
+        "/login": (context) => LoginScreen(),
+        "/stories/post": (context) => AddStoryScreen(),
+        "/stories/detail": (context) => StoryDetailScreen()
       },
     );
   }
@@ -76,6 +81,8 @@ class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
   int tabIndex = 0;
   TabController _controller;
+
+  String _title = "User API";
   @override
   void initState() {
     super.initState();
@@ -86,7 +93,17 @@ class _MainScreenState extends State<MainScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kakao Flutter SDK Sample'),
+        title: Text(_title),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(CupertinoIcons.add),
+            onPressed: () => {
+              Navigator.of(context).push(CupertinoPageRoute(
+                  fullscreenDialog: true,
+                  builder: (context) => AddStoryScreen()))
+            },
+          )
+        ],
       ),
       body: TabBarView(
         controller: _controller,
@@ -122,9 +139,27 @@ class _MainScreenState extends State<MainScreen>
   }
 
   void setTabIndex(index) {
+    String title;
+
+    switch (index) {
+      case 0:
+        title = "User API";
+        break;
+      case 1:
+        title = "Talk API";
+        break;
+      case 2:
+        title = "Story API";
+        break;
+      case 3:
+        title = "KakaoLink";
+        break;
+      default:
+    }
     setState(() {
       tabIndex = index;
       _controller.index = tabIndex;
+      _title = title;
     });
   }
 }
