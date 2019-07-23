@@ -59,7 +59,7 @@ class ApiFactory {
     if (e.request.baseUrl == OAUTH_HOST) {
       return KakaoAuthException.fromJson(jsonDecode(e.response.data));
     }
-    return KakaoApiException.fromJson(jsonDecode(e.response.data));
+    return KakaoApiException.fromJson(e.response.data);
   }
 
   static Interceptor appKeyInterceptor =

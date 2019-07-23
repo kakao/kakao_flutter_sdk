@@ -14,6 +14,9 @@ class KakaoApiException extends KakaoException {
   factory KakaoApiException.fromJson(Map<String, dynamic> json) =>
       _$KakaoApiExceptionFromJson(json);
   Map<String, dynamic> toJson() => _$KakaoApiExceptionToJson(this);
+
+  @override
+  String toString() => toJson().toString();
 }
 
 enum ApiErrorCause {
