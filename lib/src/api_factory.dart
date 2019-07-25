@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -57,7 +56,7 @@ class ApiFactory {
   static Exception transformApiError(DioError e) {
     if (e.response == null) return KakaoClientException(e.message);
     if (e.request.baseUrl == OAUTH_HOST) {
-      return KakaoAuthException.fromJson(jsonDecode(e.response.data));
+      return KakaoAuthException.fromJson(e.response.data);
     }
     return KakaoApiException.fromJson(e.response.data);
   }
