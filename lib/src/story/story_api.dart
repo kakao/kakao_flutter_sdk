@@ -63,11 +63,13 @@ class StoryApi {
       String androidMarketParams,
       String iosParmetParams}) async {
     return ApiFactory.handleApiError(() async {
-      var postfix =
-          images != null ? "photo" : linkInfo != null ? "link" : "note";
+      var postfix = images != null && images.isNotEmpty
+          ? "photo"
+          : linkInfo != null ? "link" : "note";
       var data = {
         "content": content,
-        "images": images == null ? null : jsonEncode(images),
+        "image_url_list":
+            images == null || images.isEmpty ? null : jsonEncode(images),
         "link_info": linkInfo == null ? null : jsonEncode(linkInfo),
         "permission": permissionToParams(permission),
         "enable_share": enableShare,
