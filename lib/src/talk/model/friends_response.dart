@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kakao_flutter_sdk/src/talk/model/friend.dart';
 
+export 'package:kakao_flutter_sdk/src/talk/model/friend.dart';
 part 'friends_response.g.dart';
 
 @JsonSerializable(
@@ -16,4 +17,7 @@ class FriendsResponse {
   factory FriendsResponse.fromJson(Map<String, dynamic> json) =>
       _$FriendsResponseFromJson(json);
   Map<String, dynamic> toJson() => _$FriendsResponseToJson(this);
+
+  @override
+  String toString() => toJson().toString();
 }

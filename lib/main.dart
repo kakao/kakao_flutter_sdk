@@ -11,6 +11,7 @@ export 'src/story/story_api.dart';
 export 'src/link/link_api.dart';
 export 'src/link/link_client.dart';
 export 'src/api_factory.dart';
+export 'src/common/kakao_error.dart';
 export 'src/kakao_context.dart';
 export 'src/auth/default_browser.dart';
 

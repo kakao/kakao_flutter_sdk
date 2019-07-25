@@ -1,3 +1,6 @@
+export 'kakao_auth_exception.dart';
+export 'kakao_api_exception.dart';
+
 class KakaoException implements Exception {
   KakaoException(this.message);
 

@@ -12,4 +12,7 @@ class StoryComment {
   factory StoryComment.fromJson(Map<String, dynamic> json) =>
       _$StoryCommentFromJson(json);
   Map<String, dynamic> toJson() => _$StoryCommentToJson(this);
+
+  @override
+  String toString() => toJson().toString();
 }

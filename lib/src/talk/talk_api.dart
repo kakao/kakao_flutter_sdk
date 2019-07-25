@@ -9,6 +9,7 @@ import 'package:kakao_flutter_sdk/src/talk/model/talk_profile.dart';
 import 'package:kakao_flutter_sdk/src/template/default_template.dart';
 
 export 'package:kakao_flutter_sdk/src/talk/model/talk_profile.dart';
+export 'package:kakao_flutter_sdk/src/talk/model/friends_response.dart';
 export 'package:kakao_flutter_sdk/src/template/default_template.dart';
 
 class TalkApi {

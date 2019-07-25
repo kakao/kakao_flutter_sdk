@@ -15,6 +15,9 @@ class KakaoAuthException extends KakaoException {
   factory KakaoAuthException.fromJson(Map<String, dynamic> json) =>
       _$KakaoAuthExceptionFromJson(json);
   Map<String, dynamic> toJson() => _$KakaoAuthExceptionToJson(this);
+
+  @override
+  String toString() => toJson().toString();
 }
 
 enum AuthErrorCause {
