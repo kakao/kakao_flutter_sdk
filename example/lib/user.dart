@@ -11,11 +11,13 @@ class UserScreen extends StatefulWidget {
 
 class _UserState extends State<UserScreen> {
   User _user;
+  AccessTokenInfo _tokenInfo;
 
   @override
   void initState() {
     super.initState();
     _getUser();
+    _getTokenInfo();
   }
 
   @override
@@ -35,6 +37,7 @@ class _UserState extends State<UserScreen> {
             _user != null && _user.properties["profile_image"] != null
                 ? Image.network(_user.properties["profile_image"])
                 : Container(),
+            TokenInfoBox(_tokenInfo),
             RaisedButton(
               child: Text("Logout"),
               onPressed: _logout,
@@ -42,7 +45,7 @@ class _UserState extends State<UserScreen> {
             RaisedButton(
               child: Text("Unlink"),
               onPressed: _unlink,
-            )
+            ),
           ],
         ));
   }
@@ -69,8 +72,23 @@ class _UserState extends State<UserScreen> {
       setState(() {
         _user = user;
       });
+    } on KakaoApiException catch (e) {
+      if (e.code == ApiErrorCause.INVALID_TOKEN) {
+        Navigator.of(context).pushReplacementNamed('/login');
+      }
     } catch (e) {
       debugPrint(e.toString());
+    }
+  }
+
+  _getTokenInfo() async {
+    try {
+      var tokenInfo = await UserApi.instance.accessTokenInfo();
+      setState(() {
+        _tokenInfo = tokenInfo;
+      });
+    } catch (e) {
+      print(e.toString());
     }
   }
 }
@@ -84,6 +102,22 @@ class UserProfile extends StatelessWidget {
     return Column(
       children: <Widget>[
         _user != null ? Text(_user.id.toString()) : Container(),
+      ],
+    );
+  }
+}
+
+class TokenInfoBox extends StatelessWidget {
+  TokenInfoBox(this.tokenInfo);
+  final AccessTokenInfo tokenInfo;
+  @override
+  Widget build(BuildContext context) {
+    if (tokenInfo == null) return Container();
+    return Column(
+      children: <Widget>[
+        Text("App id: ${tokenInfo.appId}"),
+        Text(
+            "Token expires in: ${(tokenInfo.expiresInMillis / 1000).floor()} seconds.")
       ],
     );
   }

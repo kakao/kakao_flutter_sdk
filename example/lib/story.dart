@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/main.dart';
 
+import 'story_detail.dart';
+
 class StoryScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -25,6 +27,10 @@ class StoryState extends State<StoryScreen> {
         await _getStoryProfile();
         await _getStories();
       }
+    } on KakaoApiException catch (e) {
+      if (e.code == ApiErrorCause.INVALID_TOKEN) {
+        Navigator.of(context).pushReplacementNamed('/login');
+      }
     } catch (e) {}
   }
 
@@ -37,7 +43,6 @@ class StoryState extends State<StoryScreen> {
 
   _getStories() async {
     var stories = await StoryApi.instance.myStories();
-    print(stories);
     setState(() {
       _stories = stories;
     });
@@ -50,7 +55,11 @@ class StoryState extends State<StoryScreen> {
         separatorBuilder: (context, index) => Divider(color: Colors.grey),
         itemCount: _stories.length,
         itemBuilder: (BuildContext context, int index) {
-          return StoryBox(_profile, _stories[index]);
+          return StoryBox(_stories[index], () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return StoryDetailScreen(_stories[index]);
+            }));
+          });
         });
   }
 }
@@ -58,24 +67,19 @@ class StoryState extends State<StoryScreen> {
 class StoryDate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return null;
   }
 }
 
 class StoryBox extends StatelessWidget {
-  StoryBox(this.profile, this.story);
-  final StoryProfile profile;
+  StoryBox(this.story, this.onTap);
   final Story story;
+  final void Function() onTap;
 
   @override
   Widget build(BuildContext context) {
-    print(this.story);
     return GestureDetector(
-        onTap: () {
-          Navigator.of(context)
-              .pushNamed("/stories/detail", arguments: this.story);
-        },
+        onTap: onTap,
         child: Column(
           children: <Widget>[
             Padding(

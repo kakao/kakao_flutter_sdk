@@ -10,31 +10,66 @@ class TalkScreen extends StatefulWidget {
 
 class TalkState extends State<TalkScreen> {
   TalkProfile _profile;
+  List<Friend> _friends = List();
+
   @override
   void initState() {
     super.initState();
     _getTalkProfile();
+    _getFriends();
   }
 
   @override
   Widget build(BuildContext context) {
     if (_profile == null) return Container();
-    return Column(
-      children: <Widget>[
-        Text(_profile.nickname),
-        Image.network(_profile.profileImageUrl),
-        Text(_profile.countryISO),
-        RaisedButton(
-          child: Text("custom"),
-          onPressed: _customMemo,
-        ),
-        RaisedButton(
-          child: Text("default"),
-          onPressed: _defaultMemo,
-        )
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(15),
+            child: Column(
+              children: <Widget>[
+                Text(
+                  "KakaoTalk Profile",
+                  style: TextStyle(fontSize: 15),
+                  textAlign: TextAlign.right,
+                ),
+                TalkProfileBox(_profile)
+              ],
+            ),
+          ),
+          Text("Friends", style: TextStyle(fontSize: 15)),
+          ListView.separated(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              separatorBuilder: (context, index) => Divider(color: Colors.grey),
+              itemCount: _friends.length,
+              itemBuilder: (context, index) {
+                final friend = _friends[index];
+
+                return GestureDetector(
+                    onTap: () => _friendsClicked(friend.userId),
+                    child: Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Row(children: <Widget>[
+                        Image.network(
+                          friend.profileThumbnailImage,
+                          width: 40,
+                          height: 40,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Text(friend.profileNickname),
+                        )
+                      ]),
+                    ));
+              }),
+        ],
+      ),
     );
   }
+
+  _friendsClicked(int userId) async {}
 
   _getTalkProfile() async {
     try {
@@ -43,7 +78,24 @@ class TalkState extends State<TalkScreen> {
       setState(() {
         _profile = profile;
       });
-    } catch (e) {}
+    } on KakaoApiException catch (e) {
+      if (e.code == ApiErrorCause.INVALID_TOKEN) {
+        Navigator.of(context).pushReplacementNamed('/login');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  _getFriends() async {
+    try {
+      var res = await TalkApi.instance.friends();
+      setState(() {
+        _friends = res.friends;
+      });
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   _customMemo() async {
@@ -63,5 +115,29 @@ class TalkState extends State<TalkScreen> {
     } catch (e) {
       print(e.toString());
     }
+  }
+}
+
+class TalkProfileBox extends StatelessWidget {
+  TalkProfileBox(this._profile);
+  final TalkProfile _profile;
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Image.network(
+                _profile.profileImageUrl,
+                width: 100,
+                height: 100,
+              ),
+              Text("${_profile.nickname} (${_profile.countryISO})"),
+            ],
+          )
+        ],
+      ),
+    );
   }
 }
