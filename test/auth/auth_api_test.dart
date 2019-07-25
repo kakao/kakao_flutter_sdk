@@ -68,7 +68,7 @@ void main() {
 
   test('/oauth/token 400', () async {
     String body = await loadJson("errors/misconfigured.json");
-    _adapter.setResponse(ResponseBody.fromString(body, 401));
+    _adapter.setResponseString(body, 401);
     try {
       await _authApi.issueAccessToken("authCode",
           redirectUri: "kakaosample_app_key://oauth",
@@ -135,7 +135,7 @@ void main() {
       "/oauth/token 400 with wrong enum value and missing description should have both fields as null",
       () async {
     String body = jsonEncode({"error": "invalid_credentials"});
-    _adapter.setResponse(ResponseBody.fromString(body, 401));
+    _adapter.setResponseString(body, 401);
     try {
       await _authApi.issueAccessToken("authCode",
           redirectUri: "kakaosample_app_key://oauth",
