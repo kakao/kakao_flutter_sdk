@@ -21,7 +21,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    KakaoContext.clientId = "030ba7c59137629e86e8721eb1a22fd6";
+    KakaoContext.clientId = "dd4e9cb75815cbdf7d87ed721a659baf";
   }
 
   @override
