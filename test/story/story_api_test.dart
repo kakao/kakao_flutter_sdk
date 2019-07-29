@@ -125,6 +125,9 @@ void main() {
         expect(options.path, "/v1/api/story/post/photo");
         Map<String, dynamic> params = options.data;
         expect(params.keys.length, 2);
+
+        var urls = jsonDecode(params["image_url_list"]) as List<dynamic>;
+        expect(urls.length, 3);
       };
       var story =
           await _api.post(images: images, permission: StoryPermission.FRIEND);
