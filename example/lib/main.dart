@@ -5,7 +5,6 @@ import 'package:kakao_flutter_sdk/main.dart';
 import 'add_story.dart';
 import 'link.dart';
 import 'login.dart';
-import 'story_detail.dart';
 import 'user.dart';
 import 'story.dart';
 import 'talk.dart';
@@ -34,7 +33,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         "/main": (context) => MainScreen(),
         "/login": (context) => LoginScreen(),
         "/stories/post": (context) => AddStoryScreen(),
-        "/stories/detail": (context) => StoryDetailScreen()
+        // "/stories/detail": (context) => StoryDetailScreen()
       },
     );
   }

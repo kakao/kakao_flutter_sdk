@@ -27,16 +27,7 @@ class TalkState extends State<TalkScreen> {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(15),
-            child: Column(
-              children: <Widget>[
-                Text(
-                  "KakaoTalk Profile",
-                  style: TextStyle(fontSize: 15),
-                  textAlign: TextAlign.right,
-                ),
-                TalkProfileBox(_profile)
-              ],
-            ),
+            child: TalkProfileBox(_profile),
           ),
           Text("Friends", style: TextStyle(fontSize: 15)),
           ListView.separated(
@@ -52,11 +43,10 @@ class TalkState extends State<TalkScreen> {
                     child: Padding(
                       padding: EdgeInsets.all(5),
                       child: Row(children: <Widget>[
-                        Image.network(
-                          friend.profileThumbnailImage,
-                          width: 40,
-                          height: 40,
-                        ),
+                        CircleAvatar(
+                            radius: 25,
+                            backgroundImage:
+                                NetworkImage(friend.profileThumbnailImage)),
                         Padding(
                           padding: EdgeInsets.only(left: 10),
                           child: Text(friend.profileNickname),
@@ -101,7 +91,7 @@ class TalkState extends State<TalkScreen> {
   _customMemo() async {
     try {
       await TalkApi.instance
-          .customMemo(16761, {"MESSAGE_TITLE": "FROM Flutter SDK Example"});
+          .customMemo(17125, {"MESSAGE_TITLE": "FROM Flutter SDK Example"});
     } catch (e) {}
   }
 
@@ -123,21 +113,10 @@ class TalkProfileBox extends StatelessWidget {
   final TalkProfile _profile;
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Image.network(
-                _profile.profileImageUrl,
-                width: 100,
-                height: 100,
-              ),
-              Text("${_profile.nickname} (${_profile.countryISO})"),
-            ],
-          )
-        ],
-      ),
-    );
+    return UserAccountsDrawerHeader(
+        accountName: Text(_profile.nickname),
+        accountEmail: Text(_profile.countryISO),
+        currentAccountPicture: CircleAvatar(
+            radius: 40, backgroundImage: NetworkImage(_profile.thumbnailUrl)));
   }
 }

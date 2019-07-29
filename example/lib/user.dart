@@ -24,19 +24,17 @@ class _UserState extends State<UserScreen> {
   Widget build(BuildContext context) {
     if (_user == null) return Container();
     return Container(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(15),
         child: Column(
           children: [
+            UserAccountsDrawerHeader(
+                accountEmail: Text(_user.kakaoAccount.email),
+                accountName: Text(_user.properties["nickname"]),
+                currentAccountPicture: CircleAvatar(
+                    radius: 40,
+                    backgroundImage:
+                        NetworkImage(_user.properties["profile_image"]))),
             _user != null ? Text(_user.id.toString()) : Container(),
-            _user != null && _user.kakaoAccount.email != null
-                ? Text(_user.kakaoAccount.email)
-                : Container(),
-            _user != null && _user.properties["nickname"] != null
-                ? Text(_user.properties["nickname"])
-                : Container(),
-            _user != null && _user.properties["profile_image"] != null
-                ? Image.network(_user.properties["profile_image"])
-                : Container(),
             TokenInfoBox(_tokenInfo),
             RaisedButton(
               child: Text("Logout"),
