@@ -8,24 +8,25 @@ part of 'account.dart';
 
 Account _$AccountFromJson(Map<String, dynamic> json) {
   return Account(
-      json['is_email_verified'] as bool,
-      json['is_email_valid'] as bool,
-      json['email_needs_agreement'] as bool,
-      json['email'] as String,
-      json['is_kakaotalk_user'] as bool,
-      json['phone_number_needs_agreement'] as bool,
-      json['phone_number'] as String,
-      json['age_range_needs_agreement'] as bool,
-      _$enumDecodeNullable(_$AgeRangeEnumMap, json['age_range']),
-      json['birthday_needs_agreement'] as bool,
-      json['birthday'] as String,
-      json['birthyear_needs_agreement'] as bool,
-      json['birthyear'] as String,
-      json['gender_needs_agreement'] as bool,
-      _$enumDecodeNullable(_$GenderEnumMap, json['gender']),
-      json['ci_needs_agreement'] as bool,
-      json['ci'] as String,
-      json['ci_authenticated_at'] as String);
+    json['is_email_verified'] as bool,
+    json['is_email_valid'] as bool,
+    json['email_needs_agreement'] as bool,
+    json['email'] as String,
+    json['is_kakaotalk_user'] as bool,
+    json['phone_number_needs_agreement'] as bool,
+    json['phone_number'] as String,
+    json['age_range_needs_agreement'] as bool,
+    _$enumDecodeNullable(_$AgeRangeEnumMap, json['age_range']),
+    json['birthday_needs_agreement'] as bool,
+    json['birthday'] as String,
+    json['birthyear_needs_agreement'] as bool,
+    json['birthyear'] as String,
+    json['gender_needs_agreement'] as bool,
+    _$enumDecodeNullable(_$GenderEnumMap, json['gender']),
+    json['ci_needs_agreement'] as bool,
+    json['ci'] as String,
+    json['ci_authenticated_at'] as String,
+  );
 }
 
 Map<String, dynamic> _$AccountToJson(Account instance) => <String, dynamic>{
@@ -46,7 +47,7 @@ Map<String, dynamic> _$AccountToJson(Account instance) => <String, dynamic>{
       'gender': _$GenderEnumMap[instance.gender],
       'ci_needs_agreement': instance.ciNeedsAgreement,
       'ci': instance.ci,
-      'ci_authenticated_at': instance.ciAuthenticatedAt
+      'ci_authenticated_at': instance.ciAuthenticatedAt,
     };
 
 T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {

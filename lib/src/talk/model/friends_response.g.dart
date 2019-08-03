@@ -8,13 +8,14 @@ part of 'friends_response.dart';
 
 FriendsResponse _$FriendsResponseFromJson(Map<String, dynamic> json) {
   return FriendsResponse(
-      (json['elements'] as List)
-          ?.map((e) =>
-              e == null ? null : Friend.fromJson(e as Map<String, dynamic>))
-          ?.toList(),
-      json['total_count'] as int,
-      json['before_url'] as String,
-      json['after_url'] as String);
+    (json['elements'] as List)
+        ?.map((e) =>
+            e == null ? null : Friend.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    json['total_count'] as int,
+    json['before_url'] as String,
+    json['after_url'] as String,
+  );
 }
 
 Map<String, dynamic> _$FriendsResponseToJson(FriendsResponse instance) {

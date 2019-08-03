@@ -8,15 +8,16 @@ part of 'story_like.dart';
 
 StoryLike _$StoryLikeFromJson(Map<String, dynamic> json) {
   return StoryLike(
-      _$enumDecodeNullable(_$EmoticonEnumMap, json['emoticon']),
-      json['actor'] == null
-          ? null
-          : StoryActor.fromJson(json['actor'] as Map<String, dynamic>));
+    _$enumDecodeNullable(_$EmoticonEnumMap, json['emoticon']),
+    json['actor'] == null
+        ? null
+        : StoryActor.fromJson(json['actor'] as Map<String, dynamic>),
+  );
 }
 
 Map<String, dynamic> _$StoryLikeToJson(StoryLike instance) => <String, dynamic>{
       'emoticon': _$EmoticonEnumMap[instance.emoticon],
-      'actor': instance.actor?.toJson()
+      'actor': instance.actor?.toJson(),
     };
 
 T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {

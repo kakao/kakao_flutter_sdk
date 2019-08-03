@@ -8,9 +8,10 @@ part of 'kakao_auth_exception.dart';
 
 KakaoAuthException _$KakaoAuthExceptionFromJson(Map<String, dynamic> json) {
   return KakaoAuthException(
-      _$enumDecodeNullable(_$AuthErrorCauseEnumMap, json['error']) ??
-          AuthErrorCause.UNKNOWN,
-      json['error_description'] as String);
+    _$enumDecodeNullable(_$AuthErrorCauseEnumMap, json['error']) ??
+        AuthErrorCause.UNKNOWN,
+    json['error_description'] as String,
+  );
 }
 
 Map<String, dynamic> _$KakaoAuthExceptionToJson(KakaoAuthException instance) {

@@ -8,18 +8,19 @@ part of 'shipping_address.dart';
 
 ShippingAddress _$ShippingAddressFromJson(Map<String, dynamic> json) {
   return ShippingAddress(
-      json['id'] as int,
-      json['name'] as String,
-      json['is_default'] as bool,
-      json['updated_at'] as int,
-      json['type'] as String,
-      json['base_address'] as String,
-      json['detail_address'] as String,
-      json['receiver_name'] as String,
-      json['receiver_phone_number1'] as String,
-      json['receiver_phone_number2'] as String,
-      json['zone_number'] as String,
-      json['zip_code'] as String);
+    json['id'] as int,
+    json['name'] as String,
+    json['is_default'] as bool,
+    json['updated_at'] as int,
+    json['type'] as String,
+    json['base_address'] as String,
+    json['detail_address'] as String,
+    json['receiver_name'] as String,
+    json['receiver_phone_number1'] as String,
+    json['receiver_phone_number2'] as String,
+    json['zone_number'] as String,
+    json['zip_code'] as String,
+  );
 }
 
 Map<String, dynamic> _$ShippingAddressToJson(ShippingAddress instance) =>
@@ -35,5 +36,5 @@ Map<String, dynamic> _$ShippingAddressToJson(ShippingAddress instance) =>
       'receiver_phone_number1': instance.receiverPhoneNumber1,
       'receiver_phone_number2': instance.receiverPhoneNumber2,
       'zone_number': instance.zoneNumber,
-      'zip_code': instance.zipCode
+      'zip_code': instance.zipCode,
     };

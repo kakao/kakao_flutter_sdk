@@ -8,12 +8,13 @@ part of 'access_token_response.dart';
 
 AccessTokenResponse _$AccessTokenResponseFromJson(Map<String, dynamic> json) {
   return AccessTokenResponse(
-      json['access_token'] as String,
-      json['expires_in'] as int,
-      json['refresh_token'] as String,
-      json['refresh_token_expires_in'] as int,
-      json['scope'] as String,
-      json['token_type'] as String);
+    json['access_token'] as String,
+    json['expires_in'] as int,
+    json['refresh_token'] as String,
+    json['refresh_token_expires_in'] as int,
+    json['scope'] as String,
+    json['token_type'] as String,
+  );
 }
 
 Map<String, dynamic> _$AccessTokenResponseToJson(
@@ -24,5 +25,5 @@ Map<String, dynamic> _$AccessTokenResponseToJson(
       'refresh_token': instance.refreshToken,
       'refresh_token_expires_in': instance.refreshTokenExpiresIn,
       'scope': instance.scopes,
-      'token_type': instance.tokenType
+      'token_type': instance.tokenType,
     };

@@ -8,14 +8,15 @@ part of 'story_comment.dart';
 
 StoryComment _$StoryCommentFromJson(Map<String, dynamic> json) {
   return StoryComment(
-      json['text'] as String,
-      json['writer'] == null
-          ? null
-          : StoryActor.fromJson(json['writer'] as Map<String, dynamic>));
+    json['text'] as String,
+    json['writer'] == null
+        ? null
+        : StoryActor.fromJson(json['writer'] as Map<String, dynamic>),
+  );
 }
 
 Map<String, dynamic> _$StoryCommentToJson(StoryComment instance) =>
     <String, dynamic>{
       'text': instance.text,
-      'writer': instance.writer?.toJson()
+      'writer': instance.writer?.toJson(),
     };

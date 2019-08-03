@@ -7,8 +7,13 @@ part of 'terms.dart';
 // **************************************************************************
 
 Terms _$TermsFromJson(Map<String, dynamic> json) {
-  return Terms(json['tag'] as String, json['agreed_at'] as String);
+  return Terms(
+    json['tag'] as String,
+    json['agreed_at'] as String,
+  );
 }
 
-Map<String, dynamic> _$TermsToJson(Terms instance) =>
-    <String, dynamic>{'tag': instance.tag, 'agreed_at': instance.agreedAt};
+Map<String, dynamic> _$TermsToJson(Terms instance) => <String, dynamic>{
+      'tag': instance.tag,
+      'agreed_at': instance.agreedAt,
+    };

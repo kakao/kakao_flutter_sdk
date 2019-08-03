@@ -8,14 +8,15 @@ part of 'link_info.dart';
 
 LinkInfo _$LinkInfoFromJson(Map<String, dynamic> json) {
   return LinkInfo(
-      json['url'] as String,
-      json['requested_url'] as String,
-      json['host'] as String,
-      json['title'] as String,
-      (json['image'] as List)?.map((e) => e as String)?.toList(),
-      json['description'] as String,
-      json['section'] as String,
-      json['type'] as String);
+    json['url'] as String,
+    json['requested_url'] as String,
+    json['host'] as String,
+    json['title'] as String,
+    (json['image'] as List)?.map((e) => e as String)?.toList(),
+    json['description'] as String,
+    json['section'] as String,
+    json['type'] as String,
+  );
 }
 
 Map<String, dynamic> _$LinkInfoToJson(LinkInfo instance) {

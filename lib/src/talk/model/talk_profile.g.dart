@@ -8,10 +8,11 @@ part of 'talk_profile.dart';
 
 TalkProfile _$TalkProfileFromJson(Map<String, dynamic> json) {
   return TalkProfile(
-      json['nickName'] as String,
-      json['profileImageURL'] as String,
-      json['thumbnailURL'] as String,
-      json['countryISO'] as String);
+    json['nickName'] as String,
+    json['profileImageURL'] as String,
+    json['thumbnailURL'] as String,
+    json['countryISO'] as String,
+  );
 }
 
 Map<String, dynamic> _$TalkProfileToJson(TalkProfile instance) =>
@@ -19,5 +20,5 @@ Map<String, dynamic> _$TalkProfileToJson(TalkProfile instance) =>
       'nickName': instance.nickname,
       'profileImageURL': instance.profileImageUrl,
       'thumbnailURL': instance.thumbnailUrl,
-      'countryISO': instance.countryISO
+      'countryISO': instance.countryISO,
     };

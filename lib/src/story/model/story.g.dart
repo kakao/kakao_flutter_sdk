@@ -8,27 +8,27 @@ part of 'story.dart';
 
 Story _$StoryFromJson(Map<String, dynamic> json) {
   return Story(
-      json['id'] as String,
-      json['url'] as String,
-      json['content'] as String,
-      json['created_at'] as String,
-      json['media_type'] as String,
-      json['comment_count'] as int,
-      json['like_count'] as int,
-      (json['media'] as List)
-          ?.map((e) =>
-              e == null ? null : StoryImage.fromJson(e as Map<String, dynamic>))
-          ?.toList(),
-      (json['likes'] as List)
-          ?.map((e) =>
-              e == null ? null : StoryLike.fromJson(e as Map<String, dynamic>))
-          ?.toList(),
-      (json['comments'] as List)
-          ?.map((e) => e == null
-              ? null
-              : StoryComment.fromJson(e as Map<String, dynamic>))
-          ?.toList(),
-      _$enumDecodeNullable(_$StoryPermissionEnumMap, json['permission']));
+    json['id'] as String,
+    json['url'] as String,
+    json['content'] as String,
+    json['created_at'] as String,
+    json['media_type'] as String,
+    json['comment_count'] as int,
+    json['like_count'] as int,
+    (json['media'] as List)
+        ?.map((e) =>
+            e == null ? null : StoryImage.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    (json['likes'] as List)
+        ?.map((e) =>
+            e == null ? null : StoryLike.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    (json['comments'] as List)
+        ?.map((e) =>
+            e == null ? null : StoryComment.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    _$enumDecodeNullable(_$StoryPermissionEnumMap, json['permission']),
+  );
 }
 
 Map<String, dynamic> _$StoryToJson(Story instance) {

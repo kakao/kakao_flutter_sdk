@@ -7,7 +7,9 @@ part of 'user.dart';
 // **************************************************************************
 
 User _$UserFromJson(Map<String, dynamic> json) {
-  return User(json['has_signed_up'] as bool)
+  return User(
+    json['has_signed_up'] as bool,
+  )
     ..id = json['id'] as int
     ..properties = (json['properties'] as Map<String, dynamic>)?.map(
       (k, e) => MapEntry(k, e as String),
@@ -21,5 +23,5 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'id': instance.id,
       'has_signed_up': instance.hasSignedUp,
       'properties': instance.properties,
-      'kakao_account': instance.kakaoAccount?.toJson()
+      'kakao_account': instance.kakaoAccount?.toJson(),
     };

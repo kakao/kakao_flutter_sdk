@@ -8,11 +8,12 @@ part of 'story_image.dart';
 
 StoryImage _$StoryImageFromJson(Map<String, dynamic> json) {
   return StoryImage(
-      json['xlarge'] as String,
-      json['large'] as String,
-      json['medium'] as String,
-      json['small'] as String,
-      json['original'] as String);
+    json['xlarge'] as String,
+    json['large'] as String,
+    json['medium'] as String,
+    json['small'] as String,
+    json['original'] as String,
+  );
 }
 
 Map<String, dynamic> _$StoryImageToJson(StoryImage instance) {
