@@ -1,19 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/main.dart';
 
-class LinkScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return LinkState();
-  }
-}
-
-class LinkState extends State<LinkScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class LinkScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -23,6 +11,7 @@ class LinkState extends State<LinkScreen> {
         ListTile(title: Text("Scrap"), onTap: onTapScrap)
       ],
     );
+    ;
   }
 
   void onTapDefault() async {

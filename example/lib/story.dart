@@ -1,67 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kakao_flutter_sdk/main.dart';
+import 'package:kakao_flutter_sdk_example/story_bloc/bloc.dart';
+import 'package:kakao_flutter_sdk_example/story_detail.dart';
 
-import 'story_detail.dart';
-
-class StoryScreen extends StatefulWidget {
+class StoryScreen extends StatelessWidget {
   @override
-  State<StatefulWidget> createState() {
-    return StoryState();
-  }
-}
-
-class StoryState extends State<StoryScreen> {
-  @override
-  void initState() {
-    super.initState();
-    _checkStoryUser();
-  }
-
-  StoryProfile _profile;
-  List<Story> _stories;
-
-  _checkStoryUser() async {
-    try {
-      var isStoryUser = await StoryApi.instance.isStoryUser();
-      if (isStoryUser) {
-        await _getStoryProfile();
-        await _getStories();
-      }
-    } on KakaoApiException catch (e) {
-      if (e.code == ApiErrorCause.INVALID_TOKEN) {
-        Navigator.of(context).pushReplacementNamed('/login');
-      }
-    } catch (e) {}
-  }
-
-  _getStoryProfile() async {
-    var profile = await StoryApi.instance.profile();
-    setState(() {
-      _profile = profile;
-    });
-  }
-
-  _getStories() async {
-    var stories = await StoryApi.instance.myStories();
-    setState(() {
-      _stories = stories;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (_stories == null) return Container();
-    return ListView.separated(
-        separatorBuilder: (context, index) => Divider(color: Colors.grey),
-        itemCount: _stories.length,
-        itemBuilder: (BuildContext context, int index) {
-          return StoryBox(_stories[index], () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              return StoryDetailScreen(_stories[index]);
-            }));
-          });
-        });
-  }
+  Widget build(BuildContext context) =>
+      BlocBuilder<StoryBloc, StoryState>(builder: (context, state) {
+        if (state is NotStoryUser) return Container();
+        if (state is StoriesFetched) {
+          final _stories = state.stories;
+          return BlocListener<StoryDetailBloc, StoryDetailState>(
+              listener: (context, state) {
+                if (state is StoryDetailFetchStarted) {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return StoryDetailScreen();
+                  }));
+                }
+              },
+              child: ListView.separated(
+                  separatorBuilder: (context, index) =>
+                      Divider(color: Colors.grey),
+                  itemCount: _stories.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return StoryBox(_stories[index], () {
+                      BlocProvider.of<StoryDetailBloc>(context)
+                          .dispatch(FetchStoryDetail(_stories[index]));
+                    });
+                  }));
+        }
+        return Container();
+      });
 }
 
 class StoryDate extends StatelessWidget {

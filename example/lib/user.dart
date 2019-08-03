@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:kakao_flutter_sdk/main.dart';
+import 'package:kakao_flutter_sdk_example/user_bloc/bloc.dart';
+import 'package:kakao_flutter_sdk_example/user_bloc/user_bloc.dart';
 
 class UserScreen extends StatefulWidget {
   @override
@@ -10,43 +13,51 @@ class UserScreen extends StatefulWidget {
 }
 
 class _UserState extends State<UserScreen> {
-  User _user;
+  // User _user;
   AccessTokenInfo _tokenInfo;
 
   @override
   void initState() {
     super.initState();
-    _getUser();
     _getTokenInfo();
   }
 
   @override
-  Widget build(BuildContext context) {
-    if (_user == null) return Container();
-    return Container(
-        padding: EdgeInsets.all(15),
-        child: Column(
-          children: [
-            UserAccountsDrawerHeader(
-                accountEmail: Text(_user.kakaoAccount.email),
-                accountName: Text(_user.properties["nickname"]),
-                currentAccountPicture: CircleAvatar(
-                    radius: 40,
-                    backgroundImage:
-                        NetworkImage(_user.properties["profile_image"]))),
-            _user != null ? Text(_user.id.toString()) : Container(),
-            TokenInfoBox(_tokenInfo),
-            RaisedButton(
-              child: Text("Logout"),
-              onPressed: _logout,
-            ),
-            RaisedButton(
-              child: Text("Unlink"),
-              onPressed: _unlink,
-            ),
-          ],
-        ));
-  }
+  Widget build(BuildContext context) => BlocBuilder<UserBloc, UserState>(
+        builder: (context, state) {
+          if (state is UserFetched) {
+            final _user = state.user;
+            return Container(
+                padding: EdgeInsets.all(15),
+                child: Column(
+                  children: [
+                    UserAccountsDrawerHeader(
+                        accountEmail: Text(_user.kakaoAccount.email),
+                        accountName: Text(_user.properties["nickname"]),
+                        currentAccountPicture: CircleAvatar(
+                            radius: 40,
+                            backgroundImage: NetworkImage(
+                                _user.properties["profile_image"]))),
+                    _user != null ? Text(_user.id.toString()) : Container(),
+                    TokenInfoBox(_tokenInfo),
+                    RaisedButton(
+                      child: Text("Logout"),
+                      onPressed: _logout,
+                      color: Colors.orange,
+                      textColor: Colors.white,
+                    ),
+                    RaisedButton(
+                      child: Text("Unlink"),
+                      onPressed: _unlink,
+                      color: Colors.red,
+                      textColor: Colors.white,
+                    ),
+                  ],
+                ));
+          }
+          return Container();
+        },
+      );
 
   _logout() async {
     try {
@@ -64,20 +75,20 @@ class _UserState extends State<UserScreen> {
     } catch (e) {}
   }
 
-  _getUser() async {
-    try {
-      var user = await UserApi.instance.me();
-      setState(() {
-        _user = user;
-      });
-    } on KakaoApiException catch (e) {
-      if (e.code == ApiErrorCause.INVALID_TOKEN) {
-        Navigator.of(context).pushReplacementNamed('/login');
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
+  // _getUser() async {
+  //   try {
+  //     var user = await UserApi.instance.me();
+  //     setState(() {
+  //       _user = user;
+  //     });
+  //   } on KakaoApiException catch (e) {
+  //     if (e.code == ApiErrorCause.INVALID_TOKEN) {
+  //       Navigator.of(context).pushReplacementNamed('/login');
+  //     }
+  //   } catch (e) {
+  //     debugPrint(e.toString());
+  //   }
+  // }
 
   _getTokenInfo() async {
     try {

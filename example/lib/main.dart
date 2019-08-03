@@ -1,6 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/main.dart';
+import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kakao_flutter_sdk_example/bloc_delegate.dart';
+import 'package:kakao_flutter_sdk_example/story_bloc/bloc.dart';
+import 'package:kakao_flutter_sdk_example/talk_bloc/bloc.dart';
+import 'package:kakao_flutter_sdk_example/user_bloc/bloc.dart';
 
 import 'add_story.dart';
 import 'link.dart';
@@ -9,7 +15,30 @@ import 'user.dart';
 import 'story.dart';
 import 'talk.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  KakaoContext.clientId = "dd4e9cb75815cbdf7d87ed721a659baf";
+  BlocSupervisor.delegate = MyBlocDelegate();
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider<UserBloc>(
+        builder: (context) => UserBloc(),
+      ),
+      BlocProvider<StoryBloc>(
+        builder: (context) => StoryBloc(),
+      ),
+      BlocProvider<TalkBloc>(
+        builder: (context) => TalkBloc(),
+      ),
+      BlocProvider<FriendsBloc>(
+        builder: (context) => FriendsBloc(),
+      ),
+      BlocProvider<StoryDetailBloc>(
+        builder: (context) => StoryDetailBloc(),
+      )
+    ],
+    child: MyApp(),
+  ));
+}
 
 class MyApp extends StatefulWidget {
   @override
@@ -20,7 +49,6 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    KakaoContext.clientId = "dd4e9cb75815cbdf7d87ed721a659baf";
   }
 
   @override
@@ -85,6 +113,7 @@ class _MainScreenState extends State<MainScreen>
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<UserBloc>(context).dispatch(UserFetchStarted());
     _controller = TabController(length: 4, vsync: this);
   }
 
@@ -143,12 +172,16 @@ class _MainScreenState extends State<MainScreen>
     switch (index) {
       case 0:
         title = "User API";
+        BlocProvider.of<UserBloc>(context).dispatch(UserFetchStarted());
         break;
       case 1:
         title = "Talk API";
+        BlocProvider.of<TalkBloc>(context).dispatch(FetchTalkProfile());
+        BlocProvider.of<FriendsBloc>(context).dispatch(FetchFriends());
         break;
       case 2:
         title = "Story API";
+        BlocProvider.of<StoryBloc>(context).dispatch(FetchStories());
         break;
       case 3:
         title = "KakaoLink";
