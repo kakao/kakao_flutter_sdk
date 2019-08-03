@@ -9,12 +9,16 @@ class AuthCodeClient {
       {String clientId, String redirectUri, List<String> scopes}) async {
     var finalRedirectUri =
         redirectUri ?? "kakao${KakaoContext.clientId}://oauth";
-    var url = Uri.https("kauth.kakao.com", "/oauth/authorize", {
+
+    final params = {
       "client_id": clientId ?? KakaoContext.clientId,
       "redirect_uri": finalRedirectUri,
       "response_type": "code",
-      "approval_type": "individual"
-    });
+      "approval_type": "individual",
+      "scope": scopes == null ? null : scopes.join(" ")
+    };
+    params.removeWhere((k, v) => v == null);
+    var url = Uri.https("kauth.kakao.com", "/oauth/authorize", params);
     var redirectedUriString = await launchWithBrowserTab(url, finalRedirectUri);
     var queryParams = Uri.parse(redirectedUriString).queryParameters;
     var code = queryParams["code"];
