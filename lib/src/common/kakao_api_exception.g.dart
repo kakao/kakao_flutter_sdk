@@ -8,9 +8,13 @@ part of 'kakao_api_exception.dart';
 
 KakaoApiException _$KakaoApiExceptionFromJson(Map<String, dynamic> json) {
   return KakaoApiException(
-      _$enumDecodeNullable(_$ApiErrorCauseEnumMap, json['code']) ??
-          ApiErrorCause.UNKNOWN,
-      json['msg'] as String);
+    _$enumDecodeNullable(_$ApiErrorCauseEnumMap, json['code']) ??
+        ApiErrorCause.UNKNOWN,
+    json['msg'] as String,
+    json['api_type'] as String,
+    (json['required_scopes'] as List)?.map((e) => e as String)?.toList(),
+    (json['allowed_scopes'] as List)?.map((e) => e as String)?.toList(),
+  );
 }
 
 Map<String, dynamic> _$KakaoApiExceptionToJson(KakaoApiException instance) {
@@ -24,6 +28,9 @@ Map<String, dynamic> _$KakaoApiExceptionToJson(KakaoApiException instance) {
 
   writeNotNull('code', _$ApiErrorCauseEnumMap[instance.code]);
   writeNotNull('msg', instance.msg);
+  writeNotNull('api_type', instance.apiType);
+  writeNotNull('required_scopes', instance.requiredScopes);
+  writeNotNull('allowed_scopes', instance.allowedScopes);
   return val;
 }
 

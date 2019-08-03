@@ -3,13 +3,18 @@ import 'package:kakao_flutter_sdk/src/common/kakao_error.dart';
 
 part 'kakao_api_exception.g.dart';
 
-@JsonSerializable(includeIfNull: false)
+@JsonSerializable(includeIfNull: false, fieldRename: FieldRename.snake)
 class KakaoApiException extends KakaoException {
-  KakaoApiException(this.code, this.msg) : super(msg);
+  KakaoApiException(this.code, this.msg, this.apiType, this.requiredScopes,
+      this.allowedScopes)
+      : super(msg);
 
   @JsonKey(defaultValue: ApiErrorCause.UNKNOWN)
   final ApiErrorCause code;
   final String msg;
+  final String apiType;
+  final List<String> requiredScopes;
+  final List<String> allowedScopes;
 
   factory KakaoApiException.fromJson(Map<String, dynamic> json) =>
       _$KakaoApiExceptionFromJson(json);
