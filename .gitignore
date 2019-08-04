@@ -10,3 +10,5 @@ coverage/
 *.iml
 
 *.log
+
+.flutter-plugins
