@@ -43,82 +43,32 @@ class StoryDetailScreen extends StatelessWidget {
                   )));
         },
       );
-
-  void showDeleteDialog(BuildContext context, Story story) async {
-    showCupertinoDialog(
-        context: context,
-        builder: (context) => CupertinoAlertDialog(
-              title: Text("Delete this story"),
-              content: Text("Are you sure you want to delete this story?"),
-              actions: <Widget>[
-                CupertinoDialogAction(
-                  isDestructiveAction: true,
-                  child: Text("Confirm"),
-                  onPressed: () {
-                    BlocProvider.of<StoryDetailBloc>(context)
-                        .dispatch(DeleteStory(story));
-                    // deleteStory(id);
-                  },
-                ),
-                CupertinoDialogAction(
-                  isDestructiveAction: true,
-                  child: Text("Cancel"),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-              ],
-            ));
-  }
 }
-//   void deleteStory(String id) async {
-//     try {
-//       await StoryApi.instance.deleteStory(id);
-//       Navigator.of(context).pop();
-//     } catch (e) {
-//       print(e);
-//     }
-//   }
-// }
 
-// class _StoryDetailState extends State<StoryDetailScreen> {
-//   _StoryDetailState(this.story);
-//   Story story;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _loadStoryDetail(story.id);
-//   }
-
-//   _loadStoryDetail(String id) async {
-//     final detail = await StoryApi.instance.myStory(id);
-//     print(detail);
-//     setState(() {
-//       story = detail;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: AppBar(
-//           title: Text("Id: ${story.id}"),
-//           actions: <Widget>[
-//             IconButton(
-//               icon: Icon(CupertinoIcons.delete_simple),
-//               onPressed: () => showDeleteDialog(story.id),
-//             )
-//           ],
-//         ),
-//         body: SingleChildScrollView(
-//           child: Column(
-//             children: <Widget>[
-//               StoryBox(story, () => {}),
-//               CommentsList(story.comments)
-//             ],
-//           ),
-//         ));
-//   }
-// }
+void showDeleteDialog(BuildContext context, Story story) async {
+  showCupertinoDialog(
+      context: context,
+      builder: (context) => CupertinoAlertDialog(
+            title: Text("Delete this story"),
+            content: Text("Are you sure you want to delete this story?"),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                isDestructiveAction: true,
+                child: Text("Confirm"),
+                onPressed: () {
+                  BlocProvider.of<StoryDetailBloc>(context)
+                      .dispatch(DeleteStory(story));
+                  // deleteStory(id);
+                },
+              ),
+              CupertinoDialogAction(
+                isDestructiveAction: true,
+                child: Text("Cancel"),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ));
+}
 
 class CommentsList extends StatelessWidget {
   CommentsList(this.comments);

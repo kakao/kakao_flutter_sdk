@@ -52,7 +52,57 @@ class StoryApi {
     });
   }
 
-  Future<String> post(
+  Future<String> postNote(String content,
+          {StoryPermission permission,
+          bool enableShare,
+          String androidExecParams,
+          String iosExecParams,
+          String androidMarketParams,
+          String iosMarketParams}) =>
+      _post(
+          content: content,
+          permission: permission,
+          enableShare: enableShare,
+          androidExecParams: androidExecParams,
+          iosExecParams: iosExecParams,
+          androidMarketParams: androidMarketParams,
+          iosMarketParams: iosMarketParams);
+
+  Future<String> postPhotos(List<String> images,
+          {String content,
+          StoryPermission permission,
+          bool enableShare,
+          String androidExecParams,
+          String iosExecParams,
+          String androidMarketParams,
+          String iosMarketParams}) =>
+      _post(
+          images: images,
+          permission: permission,
+          enableShare: enableShare,
+          androidExecParams: androidExecParams,
+          iosExecParams: iosExecParams,
+          androidMarketParams: androidMarketParams,
+          iosMarketParams: iosMarketParams);
+
+  Future<String> postLink(LinkInfo linkInfo,
+          {String content,
+          StoryPermission permission,
+          bool enableShare,
+          String androidExecParams,
+          String iosExecParams,
+          String androidMarketParams,
+          String iosMarketParams}) =>
+      _post(
+          linkInfo: linkInfo,
+          permission: permission,
+          enableShare: enableShare,
+          androidExecParams: androidExecParams,
+          iosExecParams: iosExecParams,
+          androidMarketParams: androidMarketParams,
+          iosMarketParams: iosMarketParams);
+
+  Future<String> _post(
       {String content,
       List<String> images,
       LinkInfo linkInfo,
@@ -61,7 +111,7 @@ class StoryApi {
       String androidExecParams,
       String iosExecParams,
       String androidMarketParams,
-      String iosParmetParams}) async {
+      String iosMarketParams}) async {
     return ApiFactory.handleApiError(() async {
       var postfix = images != null && images.isNotEmpty
           ? "photo"
@@ -76,7 +126,7 @@ class StoryApi {
         "android_exec_param": androidExecParams,
         "ios_exec_param": iosExecParams,
         "android_market_param": androidMarketParams,
-        "ios_market_param": iosParmetParams
+        "ios_market_param": iosMarketParams
       };
       data.removeWhere((k, v) => v == null);
       var response = await dio.post("/v1/api/story/post/$postfix", data: data);

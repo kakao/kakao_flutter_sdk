@@ -34,6 +34,9 @@ void main() {
       ),
       BlocProvider<StoryDetailBloc>(
         builder: (context) => StoryDetailBloc(),
+      ),
+      BlocProvider<PostStoryBloc>(
+        builder: (context) => PostStoryBloc(),
       )
     ],
     child: MyApp(),

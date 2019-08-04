@@ -75,21 +75,6 @@ class _UserState extends State<UserScreen> {
     } catch (e) {}
   }
 
-  // _getUser() async {
-  //   try {
-  //     var user = await UserApi.instance.me();
-  //     setState(() {
-  //       _user = user;
-  //     });
-  //   } on KakaoApiException catch (e) {
-  //     if (e.code == ApiErrorCause.INVALID_TOKEN) {
-  //       Navigator.of(context).pushReplacementNamed('/login');
-  //     }
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //   }
-  // }
-
   _getTokenInfo() async {
     try {
       var tokenInfo = await UserApi.instance.accessTokenInfo();

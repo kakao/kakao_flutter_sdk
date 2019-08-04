@@ -109,7 +109,7 @@ void main() {
         print(params);
         expect(params.keys.length, 1);
       };
-      var id = await _api.post(content: content);
+      var id = await _api.postNote(content);
       expect(id, map["id"]);
     });
 
@@ -130,7 +130,7 @@ void main() {
         expect(urls.length, 3);
       };
       var story =
-          await _api.post(images: images, permission: StoryPermission.FRIEND);
+          await _api.postPhotos(images, permission: StoryPermission.FRIEND);
       expect(story, map["id"]);
     });
 
@@ -143,10 +143,8 @@ void main() {
         Map<String, dynamic> params = options.data;
         expect(params.length, 3);
       };
-      var storyId = await _api.post(
-          linkInfo: linkInfo,
-          enableShare: false,
-          androidExecParams: "key1=value1&key2=value2");
+      var storyId = await _api.postLink(linkInfo,
+          enableShare: false, androidExecParams: "key1=value1&key2=value2");
       expect(storyId, map["id"]);
     });
   });
