@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'bloc.dart';
-import 'package:kakao_flutter_sdk/main.dart';
+import 'package:kakao_flutter_sdk/user.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   final UserApi _userApi;

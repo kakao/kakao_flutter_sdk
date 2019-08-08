@@ -1,19 +1,12 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
-import 'package:kakao_flutter_sdk/src/api_factory.dart';
+import 'package:kakao_flutter_sdk/src/common/api_factory.dart';
 
 import 'model/access_token_info.dart';
 import 'model/service_terms.dart';
 import 'model/shipping_addresses.dart';
 import 'model/user_id_response.dart';
 import 'model/user.dart';
-
-export 'model/user.dart';
-export 'model/access_token_info.dart';
-export 'model/shipping_address.dart';
-export 'model/shipping_addresses.dart';
-export 'model/service_terms.dart';
-export 'model/user_id_response.dart';
 
 class UserApi {
   UserApi(this.dio);

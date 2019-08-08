@@ -2,8 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kakao_flutter_sdk/main.dart';
-import 'package:kakao_flutter_sdk/src/push/push_api.dart';
+import 'package:kakao_flutter_sdk/push.dart';
 import 'package:platform/platform.dart';
 
 import '../helper.dart';

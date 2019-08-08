@@ -4,10 +4,6 @@ import 'package:kakao_flutter_sdk/src/template/model/button.dart';
 import 'package:kakao_flutter_sdk/src/template/model/content.dart';
 import 'package:kakao_flutter_sdk/src/template/model/social.dart';
 
-export 'model/content.dart';
-export 'model/social.dart';
-export 'model/button.dart';
-
 part 'feed_template.g.dart';
 
 @JsonSerializable(

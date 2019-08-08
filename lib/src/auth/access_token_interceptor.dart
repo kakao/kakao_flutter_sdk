@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk/src/auth/access_token_repo.dart';
 import 'package:kakao_flutter_sdk/src/auth/auth_api.dart';
-import 'package:kakao_flutter_sdk/src/constants.dart';
+import 'package:kakao_flutter_sdk/src/common/constants.dart';
 
 class AccessTokenInterceptor extends Interceptor {
   AccessTokenInterceptor(this.dio, this.kauthApi);

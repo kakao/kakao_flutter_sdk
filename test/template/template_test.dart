@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kakao_flutter_sdk/src/talk/talk_api.dart';
+import 'package:kakao_flutter_sdk/template.dart';
 
 void main() {
   setUp(() {});

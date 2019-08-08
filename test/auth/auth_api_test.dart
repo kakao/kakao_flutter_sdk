@@ -3,11 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kakao_flutter_sdk/main.dart';
-import 'package:kakao_flutter_sdk/src/api_factory.dart';
-import 'package:kakao_flutter_sdk/src/auth/model/access_token_response.dart';
-import 'package:kakao_flutter_sdk/src/constants.dart';
-import 'package:kakao_flutter_sdk/src/common/kakao_auth_exception.dart';
+import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:platform/platform.dart';
 
 import '../helper.dart';

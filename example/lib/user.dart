@@ -1,9 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:kakao_flutter_sdk/main.dart';
+import 'package:kakao_flutter_sdk/user.dart';
 import 'package:kakao_flutter_sdk_example/user_bloc/bloc.dart';
 import 'package:kakao_flutter_sdk_example/user_bloc/user_bloc.dart';
 
@@ -38,11 +36,11 @@ class _UserState extends State<UserScreen> {
                         accountName: Text(_user.properties["nickname"]),
                         currentAccountPicture: CircleAvatar(
                             radius: 40,
-                            backgroundImage: _user.properties
-                                    .containsKey("profile_image")
-                                ? NetworkImage(
-                                    _user.properties["profile_image"])
-                                : FileImage(File("assets/images/cat1.png")))),
+                            backgroundImage:
+                                _user.properties.containsKey("profile_image")
+                                    ? NetworkImage(
+                                        _user.properties["profile_image"])
+                                    : AssetImage("assets/images/cat2.png"))),
                     _user != null ? Text(_user.id.toString()) : Container(),
                     TokenInfoBox(_tokenInfo),
                     RaisedButton(

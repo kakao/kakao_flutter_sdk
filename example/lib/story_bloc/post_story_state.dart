@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:kakao_flutter_sdk/main.dart';
+import 'package:kakao_flutter_sdk/story.dart';
 
 @immutable
 class PostStoryState extends Equatable {

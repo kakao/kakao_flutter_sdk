@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kakao_flutter_sdk/main.dart';
+import 'package:kakao_flutter_sdk/talk.dart';
 import 'package:kakao_flutter_sdk_example/talk_bloc/bloc.dart';
 
 class TalkScreen extends StatelessWidget {
@@ -56,8 +56,11 @@ class TalkScreen extends StatelessWidget {
                               child: Row(children: <Widget>[
                                 CircleAvatar(
                                     radius: 25,
-                                    backgroundImage: NetworkImage(
-                                        friend.profileThumbnailImage)),
+                                    backgroundImage: friend
+                                            .profileThumbnailImage.isNotEmpty
+                                        ? NetworkImage(
+                                            friend.profileThumbnailImage)
+                                        : AssetImage("assets/images/cat2.png")),
                                 Padding(
                                   padding: EdgeInsets.only(left: 10),
                                   child: Text(friend.profileNickname),
@@ -102,6 +105,10 @@ class TalkProfileBox extends StatelessWidget {
         accountName: Text(_profile.nickname),
         accountEmail: Text(_profile.countryISO),
         currentAccountPicture: CircleAvatar(
-            radius: 40, backgroundImage: NetworkImage(_profile.thumbnailUrl)));
+            radius: 40,
+            backgroundImage: _profile.thumbnailUrl != null &&
+                    _profile.thumbnailUrl.isNotEmpty
+                ? NetworkImage(_profile.thumbnailUrl)
+                : AssetImage("assets/images/cat2.png")));
   }
 }

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:kakao_flutter_sdk/src/kakao_context.dart';
+import 'package:kakao_flutter_sdk/src/common/kakao_context.dart';
 import 'package:kakao_flutter_sdk/src/link/link_api.dart';
 import 'package:kakao_flutter_sdk/src/link/model/link_response.dart';
 import 'package:kakao_flutter_sdk/src/template/default_template.dart';

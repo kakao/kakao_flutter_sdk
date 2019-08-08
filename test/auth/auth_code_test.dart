@@ -1,7 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kakao_flutter_sdk/src/auth/auth_code.dart';
-import 'package:kakao_flutter_sdk/src/common/kakao_auth_exception.dart';
+import 'package:kakao_flutter_sdk/auth.dart';
 
 void main() {
   var channel = MethodChannel("kakao_flutter_sdk");

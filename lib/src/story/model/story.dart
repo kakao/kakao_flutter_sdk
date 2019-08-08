@@ -3,10 +3,6 @@ import 'package:kakao_flutter_sdk/src/story/model/story_comment.dart';
 import 'package:kakao_flutter_sdk/src/story/model/story_image.dart';
 import 'package:kakao_flutter_sdk/src/story/model/story_like.dart';
 
-export 'package:kakao_flutter_sdk/src/story/model/story_image.dart';
-export 'package:kakao_flutter_sdk/src/story/model/story_like.dart';
-export 'package:kakao_flutter_sdk/src/story/model/story_comment.dart';
-
 part 'story.g.dart';
 
 @JsonSerializable(

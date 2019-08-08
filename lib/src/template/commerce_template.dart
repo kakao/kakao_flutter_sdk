@@ -4,8 +4,6 @@ import 'package:kakao_flutter_sdk/src/template/model/button.dart';
 import 'package:kakao_flutter_sdk/src/template/model/commerce.dart';
 import 'package:kakao_flutter_sdk/src/template/model/content.dart';
 
-export 'model/commerce.dart';
-
 part 'commerce_template.g.dart';
 
 @JsonSerializable(

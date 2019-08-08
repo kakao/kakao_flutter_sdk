@@ -2,11 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kakao_flutter_sdk/src/talk/model/friend.dart';
-import 'package:kakao_flutter_sdk/src/talk/model/friends_response.dart';
-import 'package:kakao_flutter_sdk/src/talk/model/plus_friends_response.dart';
-import 'package:kakao_flutter_sdk/src/talk/model/talk_profile.dart';
-import 'package:kakao_flutter_sdk/src/talk/talk_api.dart';
+import 'package:kakao_flutter_sdk/talk.dart';
 
 import '../helper.dart';
 import '../mock_adapter.dart';

@@ -2,15 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:kakao_flutter_sdk/main.dart';
+import 'package:kakao_flutter_sdk/src/common/api_factory.dart';
 import 'package:kakao_flutter_sdk/src/talk/model/friends_response.dart';
 import 'package:kakao_flutter_sdk/src/talk/model/plus_friends_response.dart';
 import 'package:kakao_flutter_sdk/src/talk/model/talk_profile.dart';
 import 'package:kakao_flutter_sdk/src/template/default_template.dart';
-
-export 'package:kakao_flutter_sdk/src/talk/model/talk_profile.dart';
-export 'package:kakao_flutter_sdk/src/talk/model/friends_response.dart';
-export 'package:kakao_flutter_sdk/src/template/default_template.dart';
 
 class TalkApi {
   TalkApi(this.dio);

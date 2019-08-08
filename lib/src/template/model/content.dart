@@ -1,8 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kakao_flutter_sdk/src/template/model/link.dart';
 
-export 'link.dart';
-
 part 'content.g.dart';
 
 @JsonSerializable(

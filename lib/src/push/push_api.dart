@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:kakao_flutter_sdk/main.dart';
+import 'package:kakao_flutter_sdk/auth.dart';
+import 'package:kakao_flutter_sdk/src/common/api_factory.dart';
 import 'package:kakao_flutter_sdk/src/push/model/push_token_info.dart';
 import 'package:platform/platform.dart';
-
-export 'model/push_token_info.dart';
 
 class PushApi {
   PushApi(this.dio, this.platform);

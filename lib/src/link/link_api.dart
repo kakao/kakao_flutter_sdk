@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:kakao_flutter_sdk/src/api_factory.dart';
+import 'package:kakao_flutter_sdk/src/common/api_factory.dart';
 import 'package:kakao_flutter_sdk/src/link/model/link_response.dart';
 import 'package:kakao_flutter_sdk/src/template/default_template.dart';
 

@@ -1,8 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kakao_flutter_sdk/src/user/model/terms.dart';
 
-export 'terms.dart';
-
 part 'service_terms.g.dart';
 
 @JsonSerializable(
