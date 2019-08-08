@@ -7,6 +7,9 @@ import 'package:kakao_flutter_sdk/src/auth/model/access_token_response.dart';
 import 'package:kakao_flutter_sdk/src/kakao_context.dart';
 import 'package:platform/platform.dart';
 
+export 'model/access_token_response.dart';
+export 'model/access_token.dart';
+
 class AuthApi {
   AuthApi(this.dio, [this.platform]);
 

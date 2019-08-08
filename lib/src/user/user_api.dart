@@ -10,6 +10,10 @@ import 'model/user.dart';
 
 export 'model/user.dart';
 export 'model/access_token_info.dart';
+export 'model/shipping_address.dart';
+export 'model/shipping_addresses.dart';
+export 'model/service_terms.dart';
+export 'model/user_id_response.dart';
 
 class UserApi {
   UserApi(this.dio);
