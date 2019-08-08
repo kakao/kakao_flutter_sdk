@@ -11,9 +11,7 @@ Future<String> launchWithBrowserTab(Uri url, [String redirectUri]) {
       message: 'Default browsers only supports URL of http or https scheme.',
     );
   }
-  var args = {"url": url.toString()};
-  if (redirectUri != null) {
-    args["redirect_uri"] = redirectUri;
-  }
+  var args = {"url": url.toString(), "redirect_uri": redirectUri};
+  args.removeWhere((k, v) => v == null);
   return _channel.invokeMethod("launchWithBrowserTab", args);
 }

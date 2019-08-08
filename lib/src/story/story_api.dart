@@ -19,14 +19,14 @@ class StoryApi {
 
   Future<bool> isStoryUser() async {
     return ApiFactory.handleApiError(() async {
-      Response response = await dio.get("/v1/api/story/isstoryuser");
+      final response = await dio.get("/v1/api/story/isstoryuser");
       return response.data["isStoryUser"];
     });
   }
 
   Future<StoryProfile> profile() async {
     return ApiFactory.handleApiError(() async {
-      Response response = await dio.get("/v1/api/story/profile",
+      final response = await dio.get("/v1/api/story/profile",
           queryParameters: {"secure_resource": "true"});
       return StoryProfile.fromJson(response.data);
     });
@@ -34,7 +34,7 @@ class StoryApi {
 
   Future<Story> myStory(String storyId) async {
     return ApiFactory.handleApiError(() async {
-      Response response = await dio
+      final response = await dio
           .get("/v1/api/story/mystory", queryParameters: {"id": storyId});
       return Story.fromJson(response.data);
     });
@@ -42,9 +42,9 @@ class StoryApi {
 
   Future<List<Story>> myStories([String lastId]) async {
     return ApiFactory.handleApiError(() async {
-      Response response = await dio.get("/v1/api/story/mystories",
+      final response = await dio.get("/v1/api/story/mystories",
           queryParameters: lastId == null ? {} : {"last_id": lastId});
-      var data = response.data;
+      final data = response.data;
       if (data is List) {
         return data.map((entry) => Story.fromJson(entry)).toList();
       }
@@ -143,7 +143,7 @@ class StoryApi {
 
   Future<LinkInfo> scrapLink(String url) async {
     return ApiFactory.handleApiError(() async {
-      Response response = await dio
+      final response = await dio
           .get("/v1/api/story/linkinfo", queryParameters: {"url": url});
       return LinkInfo.fromJson(response.data);
     });
@@ -154,7 +154,7 @@ class StoryApi {
       Map<String, UploadFileInfo> data = images.asMap().map((index, image) =>
           MapEntry("file_${index + 1}",
               UploadFileInfo(image, image.path.split("/").last)));
-      Response response = await dio.post("/v1/api/story/upload/multi",
+      final response = await dio.post("/v1/api/story/upload/multi",
           data: FormData.from(data));
       var urls = response.data;
       if (urls is List) return urls.map((url) => url as String).toList();

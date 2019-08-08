@@ -23,7 +23,7 @@ class KakaoAuthException extends KakaoException {
 enum AuthErrorCause {
   @JsonValue("invalid_request")
   INVALID_REQUEST,
-  @JsonValue("invalid_request")
+  @JsonValue("invalid_scope")
   INVALID_SCOPE,
   @JsonValue("invalid_grant")
   INVALID_GRANT,

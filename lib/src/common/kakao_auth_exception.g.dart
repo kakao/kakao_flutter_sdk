@@ -50,7 +50,7 @@ T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
 
 const _$AuthErrorCauseEnumMap = <AuthErrorCause, dynamic>{
   AuthErrorCause.INVALID_REQUEST: 'invalid_request',
-  AuthErrorCause.INVALID_SCOPE: 'invalid_request',
+  AuthErrorCause.INVALID_SCOPE: 'invalid_scope',
   AuthErrorCause.INVALID_GRANT: 'invalid_grant',
   AuthErrorCause.MISCONFIGURED: 'misconfigured',
   AuthErrorCause.UNAUTHORIZED: 'unauthorized',

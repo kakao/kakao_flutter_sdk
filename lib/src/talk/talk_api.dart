@@ -69,7 +69,12 @@ class TalkApi {
 
   Future<FriendsResponse> friends({int offset, int limit, String order}) async {
     return ApiFactory.handleApiError(() async {
-      var params = {"offset": offset, "limit": limit, "order": order};
+      var params = {
+        "offset": offset,
+        "limit": limit,
+        "order": order,
+        "secure_resource": true
+      };
       params.removeWhere((k, v) => v == null);
       Response response = await dio.get("/v1/friends", queryParameters: params);
       return FriendsResponse.fromJson(response.data);
