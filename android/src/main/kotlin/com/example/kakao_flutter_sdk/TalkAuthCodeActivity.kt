@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Window
 import kotlin.IllegalArgumentException
 
 class TalkAuthCodeActivity : Activity() {
@@ -29,6 +30,7 @@ class TalkAuthCodeActivity : Activity() {
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    requestWindowFeature(Window.FEATURE_NO_TITLE)
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_talk_auth_code)
 

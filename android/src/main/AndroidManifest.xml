@@ -3,7 +3,9 @@
           package="com.example.kakao_flutter_sdk">
 
     <application>
-        <activity android:name=".TalkAuthCodeActivity">
+        <activity android:name=".TalkAuthCodeActivity"
+                  android:launchMode="singleTask"
+                  android:theme="@style/TransparentCompat">
         </activity>
         <activity
                 android:name=".AuthCodeCustomTabsActivity"

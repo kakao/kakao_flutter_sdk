@@ -8,6 +8,7 @@
         <item name="android:windowAnimationStyle">@null</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowContentOverlay">@null</item>
         <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
     </style>
 </resources>
