@@ -1,6 +1,9 @@
+import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk/src/auth/default_browser.dart';
 import 'package:kakao_flutter_sdk/src/kakao_context.dart';
 import 'package:kakao_flutter_sdk/src/common/kakao_auth_exception.dart';
+
+const MethodChannel _channel = MethodChannel("kakao_flutter_sdk");
 
 class AuthCodeClient {
   static final AuthCodeClient instance = AuthCodeClient();
@@ -19,10 +22,24 @@ class AuthCodeClient {
     };
     params.removeWhere((k, v) => v == null);
     var url = Uri.https("kauth.kakao.com", "/oauth/authorize", params);
-    var redirectedUriString = await launchWithBrowserTab(url, finalRedirectUri);
-    var queryParams = Uri.parse(redirectedUriString).queryParameters;
+    return _parseCode(await launchWithBrowserTab(url, finalRedirectUri));
+  }
+
+  Future<String> requestWithTalk(
+      {String clientId, String redirectUri, List<String> scopes}) async {
+    return _parseCode(await _openKakaoTalk(clientId ?? KakaoContext.clientId,
+        redirectUri ?? "kakao${KakaoContext.clientId}://oauth"));
+  }
+
+  String _parseCode(String redirectedUri) {
+    var queryParams = Uri.parse(redirectedUri).queryParameters;
     var code = queryParams["code"];
     if (code != null) return code;
     throw KakaoAuthException.fromJson(queryParams);
+  }
+
+  Future<String> _openKakaoTalk(String clientId, String redirectUri) async {
+    return _channel.invokeMethod("authorizeWithTalk",
+        {"client_id": clientId, "redirect_uri": redirectUri});
   }
 }

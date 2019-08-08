@@ -1,10 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.example.kakao_flutter_sdk">
+
     <application>
+        <activity android:name=".TalkAuthCodeActivity">
+        </activity>
         <activity
                 android:name=".AuthCodeCustomTabsActivity"
-                android:theme="@style/TransparentCompat"
+                android:exported="true"
                 android:launchMode="singleTask"
-                android:exported="true"/>
+                android:theme="@style/TransparentCompat"/>
     </application>
+
 </manifest>

@@ -29,6 +29,18 @@ class KakaoFlutterSdkPlugin(private val registrar: Registrar) : MethodCallHandle
         redirectUriResult = result
         AuthCodeCustomTabsActivity.startWithUrl(registrar.activity(), uri)
       }
+      call.method == "authorizeWithTalk" -> {
+        try {
+          @Suppress("UNCHECKED_CAST") val args = call.arguments as Map<String, String>
+          val clientId = args["client_id"] ?: throw IllegalArgumentException()
+          val redirectUri = args["redirect_uri"] ?: throw IllegalArgumentException()
+          redirectUriResult = result
+          TalkAuthCodeActivity.start(registrar.activity(), clientId, redirectUri)
+        } catch (e: Exception) {
+          result.error(e.toString(), e.toString(), e)
+        }
+
+      }
       else -> result.notImplemented()
     }
   }

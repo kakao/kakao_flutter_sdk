@@ -21,15 +21,15 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
-      <key>CFBundleTypeRole</key>
-      <string>Editor</string>
-      <key>CFBundleURLName</key>
-      <string>kakao_rediect_uri</string>
-      <key>CFBundleURLSchemes</key>
-      <array>
-        <string>kakao030ba7c59137629e86e8721eb1a22fd6</string>
-      </array>
-    </dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>kakao_rediect_uri</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>kakaodd4e9cb75815cbdf7d87ed721a659baf</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
@@ -54,5 +54,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+  <key>LSApplicationQueriesSchemes</key>
+  <array>
+      <string>kakaodd4e9cb75815cbdf7d87ed721a659baf</string>
+      <string>kakaokompassauth</string>
+      <string>kakaolink</string>         
+  </array>
 </dict>
 </plist>

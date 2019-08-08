@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/main.dart';
 
@@ -25,7 +26,7 @@ class _LoginState extends State<LoginScreen> {
       AccessTokenRepo.instance.toCache(token);
       Navigator.of(context).pushReplacementNamed("/main");
     } catch (e) {
-      print("error on issuing access token: ${e.toString()}");
+      print("error on issuing access token: $e");
     }
   }
 
@@ -36,13 +37,31 @@ class _LoginState extends State<LoginScreen> {
         title: Text("Kakao Flutter SDK Login"),
       ),
       body: Center(
-        child: RaisedButton(child: Text("Login"), onPressed: _loginWithKakao),
-      ),
+          child: Column(
+        children: <Widget>[
+          RaisedButton(child: Text("Login"), onPressed: _loginWithKakao),
+          RaisedButton(
+              child: Text("Login with Talk"), onPressed: _loginWithTalk)
+        ],
+      )),
     );
   }
 
   _loginWithKakao() async {
-    var code = await AuthCodeClient().request();
-    _issueAccessToken(code);
+    try {
+      var code = await AuthCodeClient.instance.request();
+      await _issueAccessToken(code);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  _loginWithTalk() async {
+    try {
+      var code = await AuthCodeClient.instance.requestWithTalk();
+      await _issueAccessToken(code);
+    } catch (e) {
+      print(e);
+    }
   }
 }
