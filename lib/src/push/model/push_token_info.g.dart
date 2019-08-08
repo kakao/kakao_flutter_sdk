@@ -17,12 +17,20 @@ PushTokenInfo _$PushTokenInfoFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PushTokenInfoToJson(PushTokenInfo instance) =>
-    <String, dynamic>{
-      'user_id': instance.userId,
-      'device_id': instance.deviceId,
-      'push_type': instance.pushType,
-      'push_token': instance.pushToken,
-      'created_at': instance.createdAt,
-      'updated_at': instance.updatedAt,
-    };
+Map<String, dynamic> _$PushTokenInfoToJson(PushTokenInfo instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('user_id', instance.userId);
+  writeNotNull('device_id', instance.deviceId);
+  writeNotNull('push_type', instance.pushType);
+  writeNotNull('push_token', instance.pushToken);
+  writeNotNull('created_at', instance.createdAt);
+  writeNotNull('updated_at', instance.updatedAt);
+  return val;
+}

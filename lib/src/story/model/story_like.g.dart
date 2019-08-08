@@ -15,10 +15,19 @@ StoryLike _$StoryLikeFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$StoryLikeToJson(StoryLike instance) => <String, dynamic>{
-      'emoticon': _$EmoticonEnumMap[instance.emoticon],
-      'actor': instance.actor?.toJson(),
-    };
+Map<String, dynamic> _$StoryLikeToJson(StoryLike instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('emoticon', _$EmoticonEnumMap[instance.emoticon]);
+  writeNotNull('actor', instance.actor?.toJson());
+  return val;
+}
 
 T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
   if (source == null) {

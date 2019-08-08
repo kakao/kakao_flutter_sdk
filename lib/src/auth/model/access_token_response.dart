@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'access_token_response.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class AccessTokenResponse {
   AccessTokenResponse(this.accessToken, this.expiresIn, this.refreshToken,
       this.refreshTokenExpiresIn, this.scopes, this.tokenType);

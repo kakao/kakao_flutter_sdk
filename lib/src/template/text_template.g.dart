@@ -21,11 +21,19 @@ TextTemplate _$TextTemplateFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$TextTemplateToJson(TextTemplate instance) =>
-    <String, dynamic>{
-      'text': instance.text,
-      'link': instance.link?.toJson(),
-      'button_title': instance.buttonTitle,
-      'buttons': instance.buttons?.map((e) => e?.toJson())?.toList(),
-      'object_type': instance.objectType,
-    };
+Map<String, dynamic> _$TextTemplateToJson(TextTemplate instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('text', instance.text);
+  writeNotNull('link', instance.link?.toJson());
+  writeNotNull('button_title', instance.buttonTitle);
+  writeNotNull('buttons', instance.buttons?.map((e) => e?.toJson())?.toList());
+  writeNotNull('object_type', instance.objectType);
+  return val;
+}

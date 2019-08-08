@@ -8,7 +8,8 @@ export 'model/commerce.dart';
 
 part 'commerce_template.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable(
+    fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class CommerceTemplate extends DefaultTemplate {
   CommerceTemplate(this.content, this.commerce,
       {this.buttons, this.objectType = "commerce"});

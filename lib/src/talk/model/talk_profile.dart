@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'talk_profile.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false)
 class TalkProfile {
   TalkProfile(
       this.nickname, this.profileImageUrl, this.thumbnailUrl, this.countryISO);

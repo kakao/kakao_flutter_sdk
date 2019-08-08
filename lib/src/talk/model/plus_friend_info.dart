@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 part 'plus_friend_info.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class PlusFriendInfo {
   PlusFriendInfo(this.uuid, this.publicId, this.relation, this.updatedAt);
   @JsonKey(name: "plus_friend_uuid")

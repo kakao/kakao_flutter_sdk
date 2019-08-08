@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'push_token_info.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class PushTokenInfo {
   PushTokenInfo(this.userId, this.deviceId, this.pushType, this.pushToken,
       this.createdAt, this.updatedAt);

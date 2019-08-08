@@ -17,9 +17,17 @@ PlusFriendsResponse _$PlusFriendsResponseFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PlusFriendsResponseToJson(
-        PlusFriendsResponse instance) =>
-    <String, dynamic>{
-      'user_id': instance.userId,
-      'plus_friends': instance.plusFriends?.map((e) => e?.toJson())?.toList(),
-    };
+Map<String, dynamic> _$PlusFriendsResponseToJson(PlusFriendsResponse instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('user_id', instance.userId);
+  writeNotNull(
+      'plus_friends', instance.plusFriends?.map((e) => e?.toJson())?.toList());
+  return val;
+}

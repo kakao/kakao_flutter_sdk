@@ -3,7 +3,7 @@ import 'package:kakao_flutter_sdk/src/story/model/story_actor.dart';
 
 part 'story_like.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class StoryLike {
   StoryLike(this.emoticon, this.actor);
   final Emoticon emoticon;

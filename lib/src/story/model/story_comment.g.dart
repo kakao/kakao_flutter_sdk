@@ -15,8 +15,16 @@ StoryComment _$StoryCommentFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$StoryCommentToJson(StoryComment instance) =>
-    <String, dynamic>{
-      'text': instance.text,
-      'writer': instance.writer?.toJson(),
-    };
+Map<String, dynamic> _$StoryCommentToJson(StoryComment instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('text', instance.text);
+  writeNotNull('writer', instance.writer?.toJson());
+  return val;
+}

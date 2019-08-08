@@ -15,9 +15,18 @@ Commerce _$CommerceFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$CommerceToJson(Commerce instance) => <String, dynamic>{
-      'regular_price': instance.regularPrice,
-      'discount_price': instance.discountPrice,
-      'fixed_discount_price': instance.fixedDiscountPrice,
-      'discount_rate': instance.discountRate,
-    };
+Map<String, dynamic> _$CommerceToJson(Commerce instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('regular_price', instance.regularPrice);
+  writeNotNull('discount_price', instance.discountPrice);
+  writeNotNull('fixed_discount_price', instance.fixedDiscountPrice);
+  writeNotNull('discount_rate', instance.discountRate);
+  return val;
+}

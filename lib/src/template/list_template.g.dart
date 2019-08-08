@@ -24,11 +24,20 @@ ListTemplate _$ListTemplateFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$ListTemplateToJson(ListTemplate instance) =>
-    <String, dynamic>{
-      'header_title': instance.headerTitle,
-      'header_link': instance.headerLink?.toJson(),
-      'contents': instance.contents?.map((e) => e?.toJson())?.toList(),
-      'buttons': instance.buttons?.map((e) => e?.toJson())?.toList(),
-      'object_type': instance.objectType,
-    };
+Map<String, dynamic> _$ListTemplateToJson(ListTemplate instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('header_title', instance.headerTitle);
+  writeNotNull('header_link', instance.headerLink?.toJson());
+  writeNotNull(
+      'contents', instance.contents?.map((e) => e?.toJson())?.toList());
+  writeNotNull('buttons', instance.buttons?.map((e) => e?.toJson())?.toList());
+  writeNotNull('object_type', instance.objectType);
+  return val;
+}

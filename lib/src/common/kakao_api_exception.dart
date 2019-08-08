@@ -9,7 +9,6 @@ class KakaoApiException extends KakaoException {
       this.allowedScopes)
       : super(msg);
 
-  @JsonKey(defaultValue: ApiErrorCause.UNKNOWN)
   final ApiErrorCause code;
   final String msg;
   final String apiType;

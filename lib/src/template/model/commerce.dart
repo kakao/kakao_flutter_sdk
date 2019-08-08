@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'commerce.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class Commerce {
   Commerce(this.regularPrice,
       {this.discountPrice, this.fixedDiscountPrice, this.discountRate});

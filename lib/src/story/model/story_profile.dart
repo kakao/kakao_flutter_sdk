@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'story_profile.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false)
 class StoryProfile {
   StoryProfile(this.nickname, this.profileImageUrl, this.thumbnailUrl,
       this.permalink, this.birthday, this.birthdayType);

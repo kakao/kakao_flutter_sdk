@@ -17,13 +17,20 @@ AccessTokenResponse _$AccessTokenResponseFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$AccessTokenResponseToJson(
-        AccessTokenResponse instance) =>
-    <String, dynamic>{
-      'access_token': instance.accessToken,
-      'expires_in': instance.expiresIn,
-      'refresh_token': instance.refreshToken,
-      'refresh_token_expires_in': instance.refreshTokenExpiresIn,
-      'scope': instance.scopes,
-      'token_type': instance.tokenType,
-    };
+Map<String, dynamic> _$AccessTokenResponseToJson(AccessTokenResponse instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('access_token', instance.accessToken);
+  writeNotNull('expires_in', instance.expiresIn);
+  writeNotNull('refresh_token', instance.refreshToken);
+  writeNotNull('refresh_token_expires_in', instance.refreshTokenExpiresIn);
+  writeNotNull('scope', instance.scopes);
+  writeNotNull('token_type', instance.tokenType);
+  return val;
+}

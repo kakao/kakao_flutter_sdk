@@ -6,7 +6,8 @@ import 'package:kakao_flutter_sdk/src/template/model/social.dart';
 
 part 'location_template.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable(
+    fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class LocationTemplate extends DefaultTemplate {
   LocationTemplate(this.address, this.content,
       {this.addressTitle, this.social, this.buttons});

@@ -8,7 +8,6 @@ class KakaoAuthException extends KakaoException {
   KakaoAuthException(this.error, this.errorDescription)
       : super(errorDescription);
 
-  @JsonKey(defaultValue: AuthErrorCause.UNKNOWN)
   final AuthErrorCause error;
   final String errorDescription;
 

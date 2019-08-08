@@ -17,12 +17,20 @@ StoryProfile _$StoryProfileFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$StoryProfileToJson(StoryProfile instance) =>
-    <String, dynamic>{
-      'nickName': instance.nickname,
-      'profileImageURL': instance.profileImageUrl,
-      'thumbnailURL': instance.thumbnailUrl,
-      'permalink': instance.permalink,
-      'birthday': instance.birthday,
-      'birthdayType': instance.birthdayType,
-    };
+Map<String, dynamic> _$StoryProfileToJson(StoryProfile instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('nickName', instance.nickname);
+  writeNotNull('profileImageURL', instance.profileImageUrl);
+  writeNotNull('thumbnailURL', instance.thumbnailUrl);
+  writeNotNull('permalink', instance.permalink);
+  writeNotNull('birthday', instance.birthday);
+  writeNotNull('birthdayType', instance.birthdayType);
+  return val;
+}

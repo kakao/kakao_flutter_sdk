@@ -5,7 +5,8 @@ export 'plus_friend_info.dart';
 
 part 'plus_friends_response.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable(
+    fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class PlusFriendsResponse {
   PlusFriendsResponse(this.userId, this.plusFriends);
   int userId;

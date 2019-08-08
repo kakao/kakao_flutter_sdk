@@ -15,10 +15,18 @@ PlusFriendInfo _$PlusFriendInfoFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PlusFriendInfoToJson(PlusFriendInfo instance) =>
-    <String, dynamic>{
-      'plus_friend_uuid': instance.uuid,
-      'plus_friend_public_id': instance.publicId,
-      'relation': instance.relation,
-      'updated_at': instance.updatedAt,
-    };
+Map<String, dynamic> _$PlusFriendInfoToJson(PlusFriendInfo instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('plus_friend_uuid', instance.uuid);
+  writeNotNull('plus_friend_public_id', instance.publicId);
+  writeNotNull('relation', instance.relation);
+  writeNotNull('updated_at', instance.updatedAt);
+  return val;
+}

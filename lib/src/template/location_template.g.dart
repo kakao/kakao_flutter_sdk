@@ -23,11 +23,19 @@ LocationTemplate _$LocationTemplateFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$LocationTemplateToJson(LocationTemplate instance) =>
-    <String, dynamic>{
-      'address': instance.address,
-      'content': instance.content?.toJson(),
-      'address_title': instance.addressTitle,
-      'social': instance.social?.toJson(),
-      'buttons': instance.buttons?.map((e) => e?.toJson())?.toList(),
-    };
+Map<String, dynamic> _$LocationTemplateToJson(LocationTemplate instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('address', instance.address);
+  writeNotNull('content', instance.content?.toJson());
+  writeNotNull('address_title', instance.addressTitle);
+  writeNotNull('social', instance.social?.toJson());
+  writeNotNull('buttons', instance.buttons?.map((e) => e?.toJson())?.toList());
+  return val;
+}

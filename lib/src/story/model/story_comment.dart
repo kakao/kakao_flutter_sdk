@@ -3,7 +3,7 @@ import 'package:kakao_flutter_sdk/src/story/model/story_actor.dart';
 
 part 'story_comment.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class StoryComment {
   StoryComment(this.text, this.writer);
   final String text;

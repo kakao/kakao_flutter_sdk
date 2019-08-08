@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'link_response.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class LinkResponse {
   LinkResponse(this.templateId, this.templateArgs, this.templateMsg,
       this.warningMsg, this.argumentMsg);

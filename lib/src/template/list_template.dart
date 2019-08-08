@@ -6,7 +6,8 @@ import 'package:kakao_flutter_sdk/src/template/model/link.dart';
 
 part 'list_template.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable(
+    fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class ListTemplate extends DefaultTemplate {
   ListTemplate(this.headerTitle, this.headerLink,
       {this.contents, this.buttons, this.objectType = "list"});
