@@ -1,4 +1,4 @@
-package com.example.kakao_flutter_sdk
+package com.kakao.sdk.flutter
 
 /**
  * @author kevin.kang. Created on 2019-06-07..

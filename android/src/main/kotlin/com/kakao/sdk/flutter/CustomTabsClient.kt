@@ -1,4 +1,4 @@
-package com.example.kakao_flutter_sdk
+package com.kakao.sdk.flutter
 
 import android.content.ComponentName
 import android.content.Context

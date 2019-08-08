@@ -1,4 +1,4 @@
-group 'com.example.kakao_flutter_sdk'
+group 'com.kakao.sdk.flutter'
 version '1.0-SNAPSHOT'
 
 buildscript {

@@ -1,4 +1,4 @@
-package com.example.kakao_flutter_sdk
+package com.kakao.sdk.flutter
 
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
