@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'shipping_address.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class ShippingAddress {
   int id;
   String name;

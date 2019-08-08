@@ -29,26 +29,36 @@ Account _$AccountFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$AccountToJson(Account instance) => <String, dynamic>{
-      'is_email_verified': instance.isEmailVerified,
-      'is_email_valid': instance.isEmailValid,
-      'email_needs_agreement': instance.emailNeedsAgreement,
-      'email': instance.email,
-      'is_kakaotalk_user': instance.isKakaotalkUser,
-      'phone_number_needs_agreement': instance.phoneNumberNeedsAgreement,
-      'phone_number': instance.phoneNumber,
-      'age_range_needs_agreement': instance.ageRangeNeedsAgreement,
-      'age_range': _$AgeRangeEnumMap[instance.ageRange],
-      'birthday_needs_agreement': instance.birthdayNeedsAgreement,
-      'birthday': instance.birthday,
-      'birthyear_needs_agreement': instance.birthyearNeedsAgreement,
-      'birthyear': instance.birthyear,
-      'gender_needs_agreement': instance.genderNeedsAgreement,
-      'gender': _$GenderEnumMap[instance.gender],
-      'ci_needs_agreement': instance.ciNeedsAgreement,
-      'ci': instance.ci,
-      'ci_authenticated_at': instance.ciAuthenticatedAt,
-    };
+Map<String, dynamic> _$AccountToJson(Account instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('is_email_verified', instance.isEmailVerified);
+  writeNotNull('is_email_valid', instance.isEmailValid);
+  writeNotNull('email_needs_agreement', instance.emailNeedsAgreement);
+  writeNotNull('email', instance.email);
+  writeNotNull('is_kakaotalk_user', instance.isKakaotalkUser);
+  writeNotNull(
+      'phone_number_needs_agreement', instance.phoneNumberNeedsAgreement);
+  writeNotNull('phone_number', instance.phoneNumber);
+  writeNotNull('age_range_needs_agreement', instance.ageRangeNeedsAgreement);
+  writeNotNull('age_range', _$AgeRangeEnumMap[instance.ageRange]);
+  writeNotNull('birthday_needs_agreement', instance.birthdayNeedsAgreement);
+  writeNotNull('birthday', instance.birthday);
+  writeNotNull('birthyear_needs_agreement', instance.birthyearNeedsAgreement);
+  writeNotNull('birthyear', instance.birthyear);
+  writeNotNull('gender_needs_agreement', instance.genderNeedsAgreement);
+  writeNotNull('gender', _$GenderEnumMap[instance.gender]);
+  writeNotNull('ci_needs_agreement', instance.ciNeedsAgreement);
+  writeNotNull('ci', instance.ci);
+  writeNotNull('ci_authenticated_at', instance.ciAuthenticatedAt);
+  return val;
+}
 
 T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
   if (source == null) {

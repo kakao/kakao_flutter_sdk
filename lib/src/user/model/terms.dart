@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'terms.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class Terms {
   Terms(this.tag, this.agreedAt);
   String tag;

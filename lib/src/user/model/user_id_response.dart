@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'user_id_response.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false)
 class UserIdResponse {
   UserIdResponse(this.id);
   int id;

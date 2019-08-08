@@ -16,9 +16,17 @@ ServiceTerms _$ServiceTermsFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$ServiceTermsToJson(ServiceTerms instance) =>
-    <String, dynamic>{
-      'user_id': instance.userId,
-      'allowed_service_terms':
-          instance.allowedServiceTerms?.map((e) => e?.toJson())?.toList(),
-    };
+Map<String, dynamic> _$ServiceTermsToJson(ServiceTerms instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('user_id', instance.userId);
+  writeNotNull('allowed_service_terms',
+      instance.allowedServiceTerms?.map((e) => e?.toJson())?.toList());
+  return val;
+}

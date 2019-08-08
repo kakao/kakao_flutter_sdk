@@ -23,18 +23,26 @@ ShippingAddress _$ShippingAddressFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$ShippingAddressToJson(ShippingAddress instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'is_default': instance.isDefault,
-      'updated_at': instance.updatedAt,
-      'type': instance.type,
-      'base_address': instance.baseAddress,
-      'detail_address': instance.detailAddress,
-      'receiver_name': instance.receiverName,
-      'receiver_phone_number1': instance.receiverPhoneNumber1,
-      'receiver_phone_number2': instance.receiverPhoneNumber2,
-      'zone_number': instance.zoneNumber,
-      'zip_code': instance.zipCode,
-    };
+Map<String, dynamic> _$ShippingAddressToJson(ShippingAddress instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('id', instance.id);
+  writeNotNull('name', instance.name);
+  writeNotNull('is_default', instance.isDefault);
+  writeNotNull('updated_at', instance.updatedAt);
+  writeNotNull('type', instance.type);
+  writeNotNull('base_address', instance.baseAddress);
+  writeNotNull('detail_address', instance.detailAddress);
+  writeNotNull('receiver_name', instance.receiverName);
+  writeNotNull('receiver_phone_number1', instance.receiverPhoneNumber1);
+  writeNotNull('receiver_phone_number2', instance.receiverPhoneNumber2);
+  writeNotNull('zone_number', instance.zoneNumber);
+  writeNotNull('zip_code', instance.zipCode);
+  return val;
+}

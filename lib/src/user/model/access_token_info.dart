@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'access_token_info.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false)
 class AccessTokenInfo {
   AccessTokenInfo(this.appId, this.id, this.expiresInMillis);
 

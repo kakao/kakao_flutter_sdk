@@ -12,7 +12,15 @@ UserIdResponse _$UserIdResponseFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$UserIdResponseToJson(UserIdResponse instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-    };
+Map<String, dynamic> _$UserIdResponseToJson(UserIdResponse instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('id', instance.id);
+  return val;
+}

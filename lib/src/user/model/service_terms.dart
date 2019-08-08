@@ -5,7 +5,8 @@ export 'terms.dart';
 
 part 'service_terms.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable(
+    fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class ServiceTerms {
   ServiceTerms(this.userId, this.allowedServiceTerms);
 

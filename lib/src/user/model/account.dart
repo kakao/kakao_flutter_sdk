@@ -2,7 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'account.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable(
+    fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class Account {
   Account(
       this.isEmailVerified,

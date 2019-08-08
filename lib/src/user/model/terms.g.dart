@@ -13,7 +13,16 @@ Terms _$TermsFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$TermsToJson(Terms instance) => <String, dynamic>{
-      'tag': instance.tag,
-      'agreed_at': instance.agreedAt,
-    };
+Map<String, dynamic> _$TermsToJson(Terms instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('tag', instance.tag);
+  writeNotNull('agreed_at', instance.agreedAt);
+  return val;
+}
