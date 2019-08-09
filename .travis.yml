@@ -1,29 +1,33 @@
 matrix:
   include:
     # Job 1) Unit tests
-    - os: linux
-      sudo: false
-      jdk: openjdk8
-      addons:
-        apt:
-          # Flutter depends on /usr/lib/x86_64-linux-gnu/libstdc++.so.6 version GLIBCXX_3.4.18
-          sources:
-            - ubuntu-toolchain-r-test # if we don't specify this, the libstdc++6 we get is the wrong version
-          packages:
-            - libstdc++6
-            - fonts-droid-fallback
-      git:
-        submodules: false
-      before_install:
-        # Use sed to replace the SSH URL with the public URL, then initialize submodules. This gets rid of SSH permission denied error.
-        - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
-        - git submodule update --init --recursive
-      before_script:
-        - git clone https://github.com/flutter/flutter.git
-        - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
-        - flutter doctor -v
+    - stage: "Unit Tests"
       script:
         - flutter test test/
+    - stage: "Dartdoc"
+      script:
+        - dartdoc --exclude 'dart:async,dart:collection,dart:convert,dart:core,dart:developer,dart:io,dart:isolate,dart:math,dart:typed_data,dart:ui'
 cache:
   directories:
     - $HOME/.pub-cache
+os: linux
+sudo: false
+jdk: openjdk8
+addons:
+  apt:
+    # Flutter depends on /usr/lib/x86_64-linux-gnu/libstdc++.so.6 version GLIBCXX_3.4.18
+    sources:
+      - ubuntu-toolchain-r-test # if we don't specify this, the libstdc++6 we get is the wrong version
+    packages:
+      - libstdc++6
+      - fonts-droid-fallback
+git:
+  submodules: false
+before_install:
+  # Use sed to replace the SSH URL with the public URL, then initialize submodules. This gets rid of SSH permission denied error.
+  - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+  - git submodule update --init --recursive
+before_script:
+  - git clone https://github.com/flutter/flutter.git
+  - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
+  - flutter doctor -v
