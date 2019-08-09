@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'account.g.dart';
 
+/// Kakao account information.
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class Account {

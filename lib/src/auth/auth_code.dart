@@ -5,6 +5,9 @@ import 'package:kakao_flutter_sdk/src/common/kakao_context.dart';
 
 const MethodChannel _channel = MethodChannel("kakao_flutter_sdk");
 
+/// Provides OAuth authorization process.
+///
+/// Corresponds to Authorization Endpoint of [OAuth 2.0 spec](https://tools.ietf.org/html/rfc6749).
 class AuthCodeClient {
   static final AuthCodeClient instance = AuthCodeClient();
 

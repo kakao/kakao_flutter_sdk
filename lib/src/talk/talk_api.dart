@@ -9,15 +9,16 @@ import 'package:kakao_flutter_sdk/src/talk/model/talk_profile.dart';
 import 'package:kakao_flutter_sdk/src/template/default_template.dart';
 
 class TalkApi {
-  TalkApi(this.dio);
+  TalkApi(this._dio);
 
-  final Dio dio;
+  final Dio _dio;
 
   static final TalkApi instance = TalkApi(ApiFactory.authApi);
 
+  /// Fetches current user's KakaoTalk profile.
   Future<TalkProfile> profile() async {
     return ApiFactory.handleApiError(() async {
-      Response response = await dio.get("/v1/api/talk/profile",
+      Response response = await _dio.get("/v1/api/talk/profile",
           queryParameters: {"secure_resource": "true"});
       return TalkProfile.fromJson(response.data);
     });
@@ -49,13 +50,13 @@ class TalkApi {
   Future<void> _memo(String pathPart, Map<String, dynamic> params) async {
     params.removeWhere((k, v) => v == null);
     return ApiFactory.handleApiError(() async {
-      await dio.post("/v2/api/talk/memo/${pathPart}send", data: params);
+      await _dio.post("/v2/api/talk/memo/${pathPart}send", data: params);
     });
   }
 
   Future<PlusFriendsResponse> plusFriends([List<String> publicIds]) async {
     return ApiFactory.handleApiError(() async {
-      Response response = await dio.get("/v1/api/talk/plusfriends",
+      Response response = await _dio.get("/v1/api/talk/plusfriends",
           queryParameters: publicIds == null
               ? {}
               : {"plus_friend_public_ids": jsonEncode(publicIds)});
@@ -63,6 +64,13 @@ class TalkApi {
     });
   }
 
+  /// Fetches a list of current user's KakaoTalk friends.
+  ///
+  /// However, not all friends are returned by this API. They are filtered by the following criteria:
+  ///
+  /// 1. Connected to the application
+  /// 1. Agreed to use Friends API in /oauth/authorize.
+  ///
   Future<FriendsResponse> friends({int offset, int limit, String order}) async {
     return ApiFactory.handleApiError(() async {
       var params = {
@@ -72,7 +80,8 @@ class TalkApi {
         "secure_resource": true
       };
       params.removeWhere((k, v) => v == null);
-      Response response = await dio.get("/v1/friends", queryParameters: params);
+      Response response =
+          await _dio.get("/v1/friends", queryParameters: params);
       return FriendsResponse.fromJson(response.data);
     });
   }

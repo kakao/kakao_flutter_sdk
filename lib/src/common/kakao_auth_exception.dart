@@ -3,6 +3,7 @@ import 'package:kakao_flutter_sdk/src/common/kakao_error.dart';
 
 part 'kakao_auth_exception.g.dart';
 
+/// Exception thrown by Kakao OAuth server.
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class KakaoAuthException extends KakaoException {
   KakaoAuthException(this.error, this.errorDescription)
@@ -19,6 +20,7 @@ class KakaoAuthException extends KakaoException {
   String toString() => toJson().toString();
 }
 
+/// Specific error from Kakao OAuth.
 enum AuthErrorCause {
   @JsonValue("invalid_request")
   INVALID_REQUEST,

@@ -9,50 +9,63 @@ import 'model/user_id_response.dart';
 import 'model/user.dart';
 
 class UserApi {
-  UserApi(this.dio);
+  UserApi(this._dio);
 
-  final Dio dio;
+  final Dio _dio;
 
   static final UserApi instance = UserApi(ApiFactory.authApi);
 
+  /// Fetches current user's information.
   Future<User> me() async {
     return ApiFactory.handleApiError(() async {
-      Response response = await dio.get("/v2/user/me");
+      Response response = await _dio.get("/v2/user/me");
       return User.fromJson(response.data);
     });
   }
 
+  /// Invalidates current user's access token and refresh token.
   Future<UserIdResponse> logout() async {
     return ApiFactory.handleApiError(() async {
-      Response response = await dio.post("/v1/user/logout");
+      Response response = await _dio.post("/v1/user/logout");
       return UserIdResponse.fromJson(response.data);
     });
   }
 
+  /// Unlinks current user from the app.
   Future<UserIdResponse> unlink() async {
     return ApiFactory.handleApiError(() async {
-      Response response = await dio.post("/v1/user/unlink");
+      Response response = await _dio.post("/v1/user/unlink");
       return UserIdResponse.fromJson(response.data);
     });
   }
 
+  /// Fetches accurate access token information from Kakao API server.
+  ///
+  /// Token infomration on client side cannot be trusted since it could be expired at any time on server side.
+  ///
+  /// - User changes Kakao account password and invalidates tokens
+  /// - User unlinks from the application
+  ///
+  ///
   Future<AccessTokenInfo> accessTokenInfo() async {
     return ApiFactory.handleApiError(() async {
-      Response response = await dio.get("/v1/user/access_token_info");
+      Response response = await _dio.get("/v1/user/access_token_info");
       return AccessTokenInfo.fromJson(response.data);
     });
   }
 
+  /// Fetches current user's shipping addresses stored in Kakao account.
   Future<ShippingAddresses> shippingAddresses() async {
     return ApiFactory.handleApiError(() async {
-      Response response = await dio.get("/v1/user/shipping_addresses");
+      Response response = await _dio.get("/v1/user/shipping_addresses");
       return ShippingAddresses.fromJson(response.data);
     });
   }
 
+  /// Fetches a list of custom service terms that current user has agreed to.
   Future<ServiceTerms> serviceTerms() async {
     return ApiFactory.handleApiError(() async {
-      Response response = await dio.get("/v1/user/service/terms");
+      Response response = await _dio.get("/v1/user/service/terms");
       return ServiceTerms.fromJson(response.data);
     });
   }

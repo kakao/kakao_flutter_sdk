@@ -1,5 +1,7 @@
+/// Provides KakaoTalk API.
+library talk;
+
 export 'package:kakao_flutter_sdk/common.dart';
-export 'package:kakao_flutter_sdk/auth.dart';
 export 'package:kakao_flutter_sdk/template.dart';
 
 export 'package:kakao_flutter_sdk/src/talk/talk_api.dart';

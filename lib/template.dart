@@ -1,3 +1,6 @@
+/// Provides a set of pre-defined templates for KakaoTalk and KakaoLink API.
+library template;
+
 export 'package:kakao_flutter_sdk/src/template/commerce_template.dart';
 export 'package:kakao_flutter_sdk/src/template/default_template.dart';
 export 'package:kakao_flutter_sdk/src/template/feed_template.dart';

@@ -3,6 +3,7 @@ import 'package:kakao_flutter_sdk/src/common/kakao_error.dart';
 
 part 'kakao_api_exception.g.dart';
 
+/// Exception thrown by Kakao API server.
 @JsonSerializable(includeIfNull: false, fieldRename: FieldRename.snake)
 class KakaoApiException extends KakaoException {
   KakaoApiException(this.code, this.msg, this.apiType, this.requiredScopes,
@@ -23,6 +24,7 @@ class KakaoApiException extends KakaoException {
   String toString() => toJson().toString();
 }
 
+/// Specific error code from Kakao API.
 enum ApiErrorCause {
   @JsonValue(-1)
   INTERNAL_ERROR,

@@ -2,6 +2,7 @@ import 'package:kakao_flutter_sdk/src/auth/model/access_token_response.dart';
 import 'package:kakao_flutter_sdk/src/auth/model/access_token.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Stores access token and refresh token returned by [AuthApi].
 class AccessTokenRepo {
   static const atKey = "com.kakao.token.AccessToken";
   static const atExpiresAtKey = "com.kakao.token.AccessToken.ExpiresAt";
@@ -12,7 +13,8 @@ class AccessTokenRepo {
 
   static final AccessTokenRepo instance = AccessTokenRepo();
 
-  Future<void> clear() async {
+  /// Deletes all token information.
+  clear() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.remove(atKey);
     preferences.remove(atExpiresAtKey);

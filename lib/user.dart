@@ -1,5 +1,7 @@
+/// Provides User API.
+library user;
+
 export 'package:kakao_flutter_sdk/common.dart';
-export 'package:kakao_flutter_sdk/auth.dart';
 
 export 'package:kakao_flutter_sdk/src/user/user_api.dart';
 export 'package:kakao_flutter_sdk/src/user/model/access_token_info.dart';
