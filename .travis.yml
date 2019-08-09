@@ -12,6 +12,12 @@ matrix:
           packages:
             - libstdc++6
             - fonts-droid-fallback
+      git:
+        submodules: false
+      before_install:
+        # Use sed to replace the SSH URL with the public URL, then initialize submodules
+        - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+        - git submodule update --init --recursive
       before_script:
         - git clone https://github.com/flutter/flutter.git
         - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
