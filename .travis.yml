@@ -1,0 +1,32 @@
+matrix:
+  include:
+    # Job 1) Unit tests
+    - stage: "Unit Tests"
+      script:
+        - flutter test test/
+      if: (type = push AND branch IN (master, develop)) OR (type = pull_request)
+cache:
+  directories:
+    - $HOME/.pub-cache
+os: linux
+sudo: false
+jdk: openjdk8
+addons:
+  apt:
+    # Flutter depends on /usr/lib/x86_64-linux-gnu/libstdc++.so.6 version GLIBCXX_3.4.18
+    sources:
+      - ubuntu-toolchain-r-test # if we don't specify this, the libstdc++6 we get is the wrong version
+    packages:
+      - libstdc++6
+      - fonts-droid-fallback
+git:
+  submodules: false
+before_install:
+  # Use sed to replace the SSH URL with the public URL, then initialize submodules. This gets rid of SSH permission denied error.
+  - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+  - git submodule update --init --recursive
+before_script:
+  - git clone https://github.com/flutter/flutter.git
+  - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
+  - flutter doctor -v
+  - flutter pub get
