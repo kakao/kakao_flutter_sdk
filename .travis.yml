@@ -4,7 +4,7 @@ matrix:
     - stage: "Unit Tests"
       script:
         - flutter test test/
-      if: (type = push AND branch IN (master, develop)) OR (type = pull_request)
+      if: type = pull_request
 cache:
   directories:
     - $HOME/.pub-cache
