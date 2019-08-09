@@ -3,7 +3,7 @@ matrix:
     # Job 1) Unit tests
     - os: linux
       sudo: false
-      jdk: oraclejdk8
+      jdk: openjdk8
       addons:
         apt:
           # Flutter depends on /usr/lib/x86_64-linux-gnu/libstdc++.so.6 version GLIBCXX_3.4.18
