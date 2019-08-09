@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:kakao_flutter_sdk_example/talk_bloc/bloc.dart';
 import 'package:kakao_flutter_sdk_example/talk_bloc/friends_event.dart';
 import 'package:kakao_flutter_sdk/talk.dart';
+import 'package:kakao_flutter_sdk/auth.dart';
 
 class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
   final TalkApi _api;
