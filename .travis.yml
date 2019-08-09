@@ -31,3 +31,4 @@ before_script:
   - git clone https://github.com/flutter/flutter.git
   - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
   - flutter doctor -v
+  - flutter pub get
