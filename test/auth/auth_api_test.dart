@@ -142,7 +142,7 @@ void main() {
     } catch (e) {
       expect(e, isInstanceOf<KakaoAuthException>());
     }
-  });
-  // skip:
-  // "Json_serializable currently does not support deserializing unsupported enum values.");
+  },
+      skip:
+          "Json_serializable currently does not support deserializing unsupported enum values.");
 }
