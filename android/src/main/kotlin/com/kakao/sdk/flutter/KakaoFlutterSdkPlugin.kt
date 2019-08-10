@@ -19,7 +19,6 @@ class KakaoFlutterSdkPlugin(private val registrar: Registrar) : MethodCallHandle
 
   override fun onMethodCall(call: MethodCall, result: Result) {
     when {
-      call.method == "getPlatformVersion" -> result.success("Android ${android.os.Build.VERSION.RELEASE}")
       call.method == "getOrigin" -> result.success(Utility.getKeyHash(registrar.activeContext()))
       call.method == "getKaHeader" -> result.success(Utility.getKAHeader(registrar.activeContext()))
       call.method == "launchWithBrowserTab" -> {
@@ -32,14 +31,16 @@ class KakaoFlutterSdkPlugin(private val registrar: Registrar) : MethodCallHandle
       call.method == "authorizeWithTalk" -> {
         try {
           @Suppress("UNCHECKED_CAST") val args = call.arguments as Map<String, String>
-          val clientId = args["client_id"] ?: throw IllegalArgumentException()
-          val redirectUri = args["redirect_uri"] ?: throw IllegalArgumentException()
+          val clientId = args["client_id"] ?: throw IllegalArgumentException("Client id is required.")
+          val redirectUri = args["redirect_uri"] ?: throw IllegalArgumentException("Redirect uri is required.")
           redirectUriResult = result
           TalkAuthCodeActivity.start(registrar.activity(), clientId, redirectUri)
         } catch (e: Exception) {
-          result.error(e.toString(), e.toString(), e)
+          result.error(e.javaClass.simpleName, e.localizedMessage, e)
         }
-
+      }
+      call.method == "isKakaoTalkInstalled" -> {
+        result.success(Utility.isKakaoTalkInstalled(registrar.context()))
       }
       else -> result.notImplemented()
     }

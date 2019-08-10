@@ -15,3 +15,8 @@ Future<String> launchWithBrowserTab(Uri url, [String redirectUri]) {
   args.removeWhere((k, v) => v == null);
   return _channel.invokeMethod("launchWithBrowserTab", args);
 }
+
+/// determines whether KakaoTalk is installed on this device.
+Future<bool> isKakaoTalkInstalled() async {
+  return _channel.invokeMethod("isKakaoTalkInstalled");
+}

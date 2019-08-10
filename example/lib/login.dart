@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
+import 'package:kakao_flutter_sdk/common.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -13,12 +14,22 @@ class _LoginState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
+    _initKakaoTalkInstalled();
   }
 
   @override
   void dispose() {
     super.dispose();
   }
+
+  _initKakaoTalkInstalled() async {
+    final installed = await isKakaoTalkInstalled();
+    setState(() {
+      _isKakaoTalkInstalled = installed;
+    });
+  }
+
+  bool _isKakaoTalkInstalled = true;
 
   _issueAccessToken(String authCode) async {
     try {
@@ -32,6 +43,7 @@ class _LoginState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    isKakaoTalkInstalled();
     return Scaffold(
       appBar: AppBar(
         title: Text("Kakao Flutter SDK Login"),
@@ -41,7 +53,8 @@ class _LoginState extends State<LoginScreen> {
         children: <Widget>[
           RaisedButton(child: Text("Login"), onPressed: _loginWithKakao),
           RaisedButton(
-              child: Text("Login with Talk"), onPressed: _loginWithTalk)
+              child: Text("Login with Talk"),
+              onPressed: _isKakaoTalkInstalled ? _loginWithTalk : null),
         ],
       )),
     );

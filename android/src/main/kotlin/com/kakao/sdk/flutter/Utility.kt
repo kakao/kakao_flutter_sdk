@@ -2,9 +2,15 @@ package com.kakao.sdk.flutter
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
+import android.content.pm.LabeledIntent
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Bundle
+import android.os.Parcelable
 import android.provider.Settings
 import android.util.Base64
 import java.lang.IllegalStateException
@@ -61,11 +67,34 @@ object Utility {
     )
   }
 
+  fun talkLoginIntent(clientId: String? = null, redirectUri: String? = null, kaHeader: String? = null, extras: Bundle = Bundle()): Intent {
+    val intent = Intent().setAction("com.kakao.talk.intent.action.CAPRI_LOGGED_IN_ACTIVITY")
+        .addCategory(Intent.CATEGORY_DEFAULT)
+        .putExtra(Constants.EXTRA_APPLICATION_KEY, clientId)
+        .putExtra(Constants.EXTRA_REDIRECT_URI, redirectUri)
+        .putExtra(Constants.EXTRA_KA_HEADER, kaHeader)
+        .addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+    if (!extras.isEmpty) {
+      intent.putExtra(Constants.EXTRA_EXTRAPARAMS, extras)
+    }
+    return intent
+  }
+
   fun getMetadata(context: Context, key: String): String? {
     val ai = context.packageManager.getApplicationInfo(
         context.packageName, PackageManager.GET_META_DATA)
     return ai.metaData.getString(key)
   }
+
+  fun isKakaoTalkInstalled(context: Context): Boolean {
+    return isPackageInstalled(context, "com.kakao.talk") ||
+        isPackageInstalled(context, "com.kakao.onetalk")
+  }
+
+  private fun isPackageInstalled(context: Context, packageName: String): Boolean {
+    return context.packageManager.getLaunchIntentForPackage(packageName) != null
+  }
+
 
   @SuppressLint("HardwareIds")
   @Throws(NoSuchAlgorithmException::class)
@@ -81,4 +110,6 @@ object Utility {
       ("xxxx" + Build.PRODUCT + "a23456789012345bcdefg").toByteArray()
     }
   }
+
+
 }

@@ -26,12 +26,12 @@ object Constants {
   const val KEY_HEADERS = "key.extra.headers"
   const val KEY_EXCEPTION = "key.exception"
 
-  val EXTRA_APPLICATION_KEY = "com.kakao.sdk.talk.appKey"
-  val EXTRA_REDIRECT_URI = "com.kakao.sdk.talk.redirectUri"
-  val EXTRA_KA_HEADER = "com.kakao.sdk.talk.kaHeader"
-  val EXTRA_EXTRAPARAMS = "com.kakao.sdk.talk.extraparams"
+  const val EXTRA_APPLICATION_KEY = "com.kakao.sdk.talk.appKey"
+  const val EXTRA_REDIRECT_URI = "com.kakao.sdk.talk.redirectUri"
+  const val EXTRA_KA_HEADER = "com.kakao.sdk.talk.kaHeader"
+  const val EXTRA_EXTRAPARAMS = "com.kakao.sdk.talk.extraparams"
 
-  val EXTRA_REDIRECT_URL = "com.kakao.sdk.talk.redirectUrl"
-  val EXTRA_ERROR_DESCRIPTION = "com.kakao.sdk.talk.error.description"
-  val EXTRA_ERROR_TYPE = "com.kakao.sdk.talk.error.type"
+  const val EXTRA_REDIRECT_URL = "com.kakao.sdk.talk.redirectUrl"
+  const val EXTRA_ERROR_DESCRIPTION = "com.kakao.sdk.talk.error.description"
+  const val EXTRA_ERROR_TYPE = "com.kakao.sdk.talk.error.type"
 }

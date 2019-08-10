@@ -18,7 +18,8 @@ import androidx.browser.customtabs.CustomTabsServiceConnection
 object CustomTabsCommonClient {
   @Throws(UnsupportedOperationException::class)
   fun openWithDefault(context: Context, uri: Uri): ServiceConnection? {
-    val packageName = resolveCustomTabsPackage(context, uri) ?: throw UnsupportedOperationException()
+    val packageName = resolveCustomTabsPackage(context, uri)
+        ?: throw UnsupportedOperationException("No browser supports custom tabs protocol on this device.")
     Log.d("CustomTabsCommonClient", "Choosing $packageName as custom tabs browser")
     val connection = object : CustomTabsServiceConnection() {
       override fun onCustomTabsServiceConnected(name: ComponentName?, client: CustomTabsClient?) {
@@ -43,7 +44,7 @@ object CustomTabsCommonClient {
         .launchUrl(context, uri)
   }
 
-  fun resolveCustomTabsPackage(context: Context, uri: Uri): String? {
+  private fun resolveCustomTabsPackage(context: Context, uri: Uri): String? {
     var packageName: String? = null
     var chromePackage: String? = null
     // get ResolveInfo for default browser

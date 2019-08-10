@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.net.Uri
 import android.os.Bundle
+import java.lang.Exception
 
 /**
  * @author kevin.kang. Created on 2019-06-13..
@@ -16,7 +17,7 @@ class AuthCodeCustomTabsActivity : Activity() {
   private var customTabsOpened = false
 
   companion object {
-    val KEY_FULL_URI = "key_full_uri"
+    const val KEY_FULL_URI = "key_full_uri"
 
     fun startWithUrl(context: Context, uriString: String) {
       val uri = Uri.parse(uriString)
@@ -26,10 +27,11 @@ class AuthCodeCustomTabsActivity : Activity() {
           .putExtra(KEY_FULL_URI, uri))
     }
   }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    val extras = intent.extras ?: throw IllegalArgumentException()
-    fullUri = extras.getParcelable(KEY_FULL_URI) ?: throw IllegalArgumentException()
+    fullUri = intent.extras?.getParcelable(KEY_FULL_URI)
+        ?: throw IllegalArgumentException("No uri was passed to AuthCodeCustomTabsActivity. This might be a bug in Kakao Flutter SDK.")
   }
 
   override fun onResume() {
@@ -49,12 +51,19 @@ class AuthCodeCustomTabsActivity : Activity() {
     val redirectUri = KakaoFlutterSdkPlugin.redirectUri
     if (redirectUri != null && url?.startsWith(redirectUri) == true) {
       KakaoFlutterSdkPlugin.redirectUriResult.success(url.toString())
+    } else {
+      KakaoFlutterSdkPlugin.redirectUriResult.error("REDIRECT_URL_MISMATCH", "Expected: $redirectUri, Actual: $url", null)
     }
     this.finish()
   }
 
   fun openChromeCustomTab(uri: Uri) {
-    customTabsConnection = CustomTabsCommonClient.openWithDefault(this, uri)
+    try {
+      customTabsConnection = CustomTabsCommonClient.openWithDefault(this, uri)
+    } catch (e: Exception) {
+      KakaoFlutterSdkPlugin.redirectUriResult.error("EUNKNOWN", e.localizedMessage, null)
+      finish()
+    }
   }
 
   override fun onDestroy() {
