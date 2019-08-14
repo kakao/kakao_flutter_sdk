@@ -17,7 +17,7 @@ class UserFetchStarted extends UserEvent {
   String toString() => "UserFetchStarted";
 }
 
-class UserLoggedOut extends UserEvent {
+class UserLogOut extends UserEvent {
   @override
-  String toString() => "UserLoggedOut";
+  String toString() => runtimeType.toString();
 }

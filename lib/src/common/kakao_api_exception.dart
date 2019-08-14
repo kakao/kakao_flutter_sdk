@@ -6,6 +6,7 @@ part 'kakao_api_exception.g.dart';
 /// Exception thrown by Kakao API server.
 @JsonSerializable(includeIfNull: false, fieldRename: FieldRename.snake)
 class KakaoApiException extends KakaoException {
+  /// <nodoc>
   KakaoApiException(this.code, this.msg, this.apiType, this.requiredScopes,
       this.allowedScopes)
       : super(msg);
@@ -16,8 +17,11 @@ class KakaoApiException extends KakaoException {
   final List<String> requiredScopes;
   final List<String> allowedScopes;
 
+  /// <nodoc>
   factory KakaoApiException.fromJson(Map<String, dynamic> json) =>
       _$KakaoApiExceptionFromJson(json);
+
+  /// <nodoc>
   Map<String, dynamic> toJson() => _$KakaoApiExceptionToJson(this);
 
   @override

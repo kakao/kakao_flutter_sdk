@@ -8,8 +8,11 @@ part of 'link.dart';
 
 Link _$LinkFromJson(Map<String, dynamic> json) {
   return Link(
-    webUrl: json['web_url'] as String,
-    mobileWebUrl: json['mobile_web_url'] as String,
+    webUrl:
+        json['web_url'] == null ? null : Uri.parse(json['web_url'] as String),
+    mobileWebUrl: json['mobile_web_url'] == null
+        ? null
+        : Uri.parse(json['mobile_web_url'] as String),
     androidExecParams: json['android_params'] as String,
     iosExecParams: json['ios_params'] as String,
   );
@@ -24,8 +27,8 @@ Map<String, dynamic> _$LinkToJson(Link instance) {
     }
   }
 
-  writeNotNull('web_url', instance.webUrl);
-  writeNotNull('mobile_web_url', instance.mobileWebUrl);
+  writeNotNull('web_url', instance.webUrl?.toString());
+  writeNotNull('mobile_web_url', instance.mobileWebUrl?.toString());
   writeNotNull('android_params', instance.androidExecParams);
   writeNotNull('ios_params', instance.iosExecParams);
   return val;

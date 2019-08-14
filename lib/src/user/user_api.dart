@@ -8,11 +8,13 @@ import 'model/shipping_addresses.dart';
 import 'model/user_id_response.dart';
 import 'model/user.dart';
 
+/// Provides User API.
 class UserApi {
   UserApi(this._dio);
 
   final Dio _dio;
 
+  /// default instance SDK provides.
   static final UserApi instance = UserApi(ApiFactory.authApi);
 
   /// Fetches current user's information.
@@ -57,7 +59,7 @@ class UserApi {
   /// Fetches current user's shipping addresses stored in Kakao account.
   Future<ShippingAddresses> shippingAddresses() async {
     return ApiFactory.handleApiError(() async {
-      Response response = await _dio.get("/v1/user/shipping_addresses");
+      Response response = await _dio.get("/v1/user/shipping_address");
       return ShippingAddresses.fromJson(response.data);
     });
   }

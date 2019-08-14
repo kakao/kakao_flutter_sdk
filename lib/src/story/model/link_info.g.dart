@@ -8,8 +8,10 @@ part of 'link_info.dart';
 
 LinkInfo _$LinkInfoFromJson(Map<String, dynamic> json) {
   return LinkInfo(
-    json['url'] as String,
-    json['requested_url'] as String,
+    json['url'] == null ? null : Uri.parse(json['url'] as String),
+    json['requested_url'] == null
+        ? null
+        : Uri.parse(json['requested_url'] as String),
     json['host'] as String,
     json['title'] as String,
     (json['image'] as List)?.map((e) => e as String)?.toList(),
@@ -28,8 +30,8 @@ Map<String, dynamic> _$LinkInfoToJson(LinkInfo instance) {
     }
   }
 
-  writeNotNull('url', instance.url);
-  writeNotNull('requested_url', instance.requestedUrl);
+  writeNotNull('url', instance.url?.toString());
+  writeNotNull('requested_url', instance.requestedUrl?.toString());
   writeNotNull('host', instance.host);
   writeNotNull('title', instance.title);
   writeNotNull('image', instance.images);

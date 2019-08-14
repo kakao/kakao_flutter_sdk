@@ -9,7 +9,7 @@ part of 'content.dart';
 Content _$ContentFromJson(Map<String, dynamic> json) {
   return Content(
     json['title'] as String,
-    json['image_url'] as String,
+    json['image_url'] == null ? null : Uri.parse(json['image_url'] as String),
     json['link'] == null
         ? null
         : Link.fromJson(json['link'] as Map<String, dynamic>),
@@ -28,7 +28,7 @@ Map<String, dynamic> _$ContentToJson(Content instance) {
   }
 
   writeNotNull('title', instance.title);
-  writeNotNull('image_url', instance.imageUrl);
+  writeNotNull('image_url', instance.imageUrl?.toString());
   writeNotNull('link', instance.link?.toJson());
   writeNotNull('image_width', instance.imageWidth);
   writeNotNull('image_height', instance.imageHeight);

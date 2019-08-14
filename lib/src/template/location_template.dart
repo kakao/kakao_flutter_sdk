@@ -6,9 +6,11 @@ import 'package:kakao_flutter_sdk/src/template/model/social.dart';
 
 part 'location_template.g.dart';
 
+/// Default template for location type.
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class LocationTemplate extends DefaultTemplate {
+  /// <nodoc>
   LocationTemplate(this.address, this.content,
       {this.addressTitle, this.social, this.buttons});
 
@@ -20,7 +22,10 @@ class LocationTemplate extends DefaultTemplate {
 
   final String objectType = "location";
 
+  /// <nodoc>
   factory LocationTemplate.fromJson(Map<String, dynamic> json) =>
       _$LocationTemplateFromJson(json);
+
+  /// <nodoc>
   Map<String, dynamic> toJson() => _$LocationTemplateToJson(this);
 }

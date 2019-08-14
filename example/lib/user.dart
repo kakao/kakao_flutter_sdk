@@ -66,7 +66,7 @@ class _UserState extends State<UserScreen> {
   _logout() async {
     try {
       await UserApi.instance.logout();
-      AccessTokenRepo.instance.clear();
+      AccessTokenStore.instance.clear();
       Navigator.of(context).pushReplacementNamed("/login");
     } catch (e) {}
   }
@@ -74,7 +74,7 @@ class _UserState extends State<UserScreen> {
   _unlink() async {
     try {
       await UserApi.instance.unlink();
-      AccessTokenRepo.instance.clear();
+      AccessTokenStore.instance.clear();
       Navigator.of(context).pushReplacementNamed("/login");
     } catch (e) {}
   }

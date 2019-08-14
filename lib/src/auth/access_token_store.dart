@@ -2,16 +2,29 @@ import 'package:kakao_flutter_sdk/src/auth/model/access_token_response.dart';
 import 'package:kakao_flutter_sdk/src/auth/model/access_token.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Stores access token and refresh token returned by [AuthApi].
-class AccessTokenRepo {
+/// Stores access token and refresh token from [AuthApi].
+///
+/// This abstract class can be used to store token information in different locations than provided by the SDK.
+abstract class AccessTokenStore {
+  Future<AccessToken> toStore(AccessTokenResponse response);
+
+  Future<AccessToken> fromStore();
+
+  Future<void> clear();
+
+  static final AccessTokenStore instance = DefaultAccessTokenStore();
+}
+
+/// Default [AccessTokenStore] provided by Kakao Flutter SDK.
+///
+/// Currently uses SharedPreferences (on Android) and UserDefaults (on iOS).
+class DefaultAccessTokenStore implements AccessTokenStore {
   static const atKey = "com.kakao.token.AccessToken";
   static const atExpiresAtKey = "com.kakao.token.AccessToken.ExpiresAt";
   static const rtKey = "com.kakao.token.RefreshToken";
   static const rtExpiresAtKey = "com.kakao.token.RefreshToken.ExpiresAt";
   static const secureModeKey = "com.kakao.token.KakaoSecureMode";
   static const scopesKey = "com.kakao.token.Scopes";
-
-  static final AccessTokenRepo instance = AccessTokenRepo();
 
   /// Deletes all token information.
   clear() async {
@@ -24,7 +37,7 @@ class AccessTokenRepo {
     preferences.remove(scopesKey);
   }
 
-  Future<AccessToken> toCache(AccessTokenResponse response) async {
+  Future<AccessToken> toStore(AccessTokenResponse response) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString(atKey, response.accessToken);
     preferences.setInt(atExpiresAtKey,
@@ -39,10 +52,10 @@ class AccessTokenRepo {
     if (response.scopes != null) {
       preferences.setStringList(scopesKey, response.scopes.split(' '));
     }
-    return fromCache();
+    return fromStore();
   }
 
-  Future<AccessToken> fromCache() async {
+  Future<AccessToken> fromStore() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String accessToken = preferences.getString(atKey);
     int atExpiresAtMillis = preferences.getInt(atExpiresAtKey);

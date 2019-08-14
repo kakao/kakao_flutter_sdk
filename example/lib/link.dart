@@ -19,14 +19,17 @@ class LinkScreen extends StatelessWidget {
       var template = FeedTemplate(
           Content(
               "딸기 치즈 케익",
-              "http://mud-kage.kakao.co.kr/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png",
+              Uri.parse(
+                  "http://mud-kage.kakao.co.kr/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png"),
               Link(
-                  webUrl: "https://developers.kakao.com",
-                  mobileWebUrl: "https://developers.kakao.com")),
+                  webUrl: Uri.parse("https://developers.kakao.com"),
+                  mobileWebUrl: Uri.parse("https://developers.kakao.com"))),
           social: Social(likeCount: 286, commentCount: 45, sharedCount: 845),
           buttons: [
-            Button("웹으로 보기", Link(webUrl: "https://developers.kakao.com")),
-            Button("앱으로 보기", Link(webUrl: "https://developers.kakao.com")),
+            Button("웹으로 보기",
+                Link(webUrl: Uri.parse("https://developers.kakao.com"))),
+            Button("앱으로 보기",
+                Link(webUrl: Uri.parse("https://developers.kakao.com"))),
           ]);
       var uri = await LinkClient.instance.defaultTemplate(template);
       await launchWithBrowserTab(uri);

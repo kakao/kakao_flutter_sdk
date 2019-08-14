@@ -9,37 +9,44 @@ import 'package:kakao_flutter_sdk/src/story/model/link_info.dart';
 import 'package:kakao_flutter_sdk/src/story/model/story.dart';
 import 'package:kakao_flutter_sdk/src/story/model/story_profile.dart';
 
+/// Provides KakaoStory API.
 class StoryApi {
-  StoryApi(this.dio);
-  final Dio dio;
+  StoryApi(this._dio);
+  final Dio _dio;
+
+  /// Default instance SDK provides.
   static final StoryApi instance = StoryApi(ApiFactory.authApi);
 
+  /// Check whether current user is a KakaoStory user or not.
   Future<bool> isStoryUser() async {
     return ApiFactory.handleApiError(() async {
-      final response = await dio.get("/v1/api/story/isstoryuser");
+      final response = await _dio.get("/v1/api/story/isstoryuser");
       return response.data["isStoryUser"];
     });
   }
 
+  /// Fetches current user's KakaoStory profile.
   Future<StoryProfile> profile() async {
     return ApiFactory.handleApiError(() async {
-      final response = await dio.get("/v1/api/story/profile",
+      final response = await _dio.get("/v1/api/story/profile",
           queryParameters: {"secure_resource": "true"});
       return StoryProfile.fromJson(response.data);
     });
   }
 
+  /// Fetches an individual story with the given id.
   Future<Story> myStory(String storyId) async {
     return ApiFactory.handleApiError(() async {
-      final response = await dio
+      final response = await _dio
           .get("/v1/api/story/mystory", queryParameters: {"id": storyId});
       return Story.fromJson(response.data);
     });
   }
 
+  /// Fetches a list of stories where id is smaller the given lastId.
   Future<List<Story>> myStories([String lastId]) async {
     return ApiFactory.handleApiError(() async {
-      final response = await dio.get("/v1/api/story/mystories",
+      final response = await _dio.get("/v1/api/story/mystories",
           queryParameters: lastId == null ? {} : {"last_id": lastId});
       final data = response.data;
       if (data is List) {
@@ -49,6 +56,13 @@ class StoryApi {
     });
   }
 
+  /// Posts a story with a simple content text.
+  ///
+  /// @param enableShare Whether friends can share this story if [permission] is [StoryPermission.FRIEND]. (default is false) Always always true if [permission] is [StoryPermission.PUBLIC].
+  /// @param androidExecParams Query string to be passed to custom scheme in Android.
+  /// @param iosExecParams Query string to be passed to custom scheme in iOS.
+  /// @param androidMarketParms Query string to be passed to Google play market url.
+  /// @param iosMarketParams Query string to be passed to App Store url.
   Future<String> postNote(String content,
           {StoryPermission permission,
           bool enableShare,
@@ -65,6 +79,7 @@ class StoryApi {
           androidMarketParams: androidMarketParams,
           iosMarketParams: iosMarketParams);
 
+  /// Posts a story with a list of image urls returned by [StoryApi.scrapImages()].
   Future<String> postPhotos(List<String> images,
           {String content,
           StoryPermission permission,
@@ -82,6 +97,7 @@ class StoryApi {
           androidMarketParams: androidMarketParams,
           iosMarketParams: iosMarketParams);
 
+  /// Posts a story with a [LinkInfo] returned by [StoryApi.scrapLink()].
   Future<String> postLink(LinkInfo linkInfo,
           {String content,
           StoryPermission permission,
@@ -126,32 +142,38 @@ class StoryApi {
         "ios_market_param": iosMarketParams
       };
       data.removeWhere((k, v) => v == null);
-      var response = await dio.post("/v1/api/story/post/$postfix", data: data);
+      var response = await _dio.post("/v1/api/story/post/$postfix", data: data);
       return response.data["id"];
     });
   }
 
   Future<void> deleteStory(String storyId) async {
     return ApiFactory.handleApiError(() async {
-      await dio.delete("/v1/api/story/delete/mystory",
+      await _dio.delete("/v1/api/story/delete/mystory",
           queryParameters: {"id": storyId});
     });
   }
 
+  /// Gets a scraping result with the given url.
+  ///
+  /// Returned [LinkInfo] can be used by [StoryApi.postLink()].
   Future<LinkInfo> scrapLink(String url) async {
     return ApiFactory.handleApiError(() async {
-      final response = await dio
+      final response = await _dio
           .get("/v1/api/story/linkinfo", queryParameters: {"url": url});
       return LinkInfo.fromJson(response.data);
     });
   }
 
+  /// Uploads a list of images to storage server used by Kakao API.
+  ///
+  /// Returned list of image urls can be passed to [StoryApi.postPhotos()].
   Future<List<String>> scrapImages(List<File> images) async {
     return ApiFactory.handleApiError(() async {
       Map<String, UploadFileInfo> data = images.asMap().map((index, image) =>
           MapEntry("file_${index + 1}",
               UploadFileInfo(image, image.path.split("/").last)));
-      final response = await dio.post("/v1/api/story/upload/multi",
+      final response = await _dio.post("/v1/api/story/upload/multi",
           data: FormData.from(data));
       var urls = response.data;
       if (urls is List) return urls.map((url) => url as String).toList();

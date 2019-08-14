@@ -21,7 +21,7 @@ void main() {
     _adapter = MockAdapter();
     _dio.httpClientAdapter = _adapter;
     _dio.interceptors.add(ApiFactory.kaInterceptor);
-    _dio.options.baseUrl = OAUTH_HOST;
+    _dio.options.baseUrl = "https://$OAUTH_HOST";
     _authApi = AuthApi(_dio, LocalPlatform());
     channel.setMockMethodCallHandler((MethodCall methodCall) async {
       return "sample_origin";

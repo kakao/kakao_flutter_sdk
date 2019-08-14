@@ -4,14 +4,20 @@ import 'package:dio/dio.dart';
 import 'package:platform/platform.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 
+/// Factory for network clients, interceptors, and error transformers used by other libraries.
 class ApiFactory {
+  /// [Dio] instance for Kakao OAuth server.
   static final Dio kauthApi = _kauthApiInstance();
+
+  /// [Dio] instance for token-based Kakao API.
   static final Dio authApi = _authApiInstance();
+
+  /// [Dio] instance for appkey-based Kakao API.
   static final Dio appKeyApi = _appKeyApiInstance();
 
   static Dio _kauthApiInstance() {
     var dio = new Dio();
-    dio.options.baseUrl = OAUTH_HOST;
+    dio.options.baseUrl = "https://$OAUTH_HOST";
     dio.options.contentType =
         ContentType.parse("application/x-www-form-urlencoded");
     dio.interceptors.addAll([kaInterceptor]);
@@ -20,18 +26,17 @@ class ApiFactory {
 
   static Dio _authApiInstance() {
     var dio = new Dio();
-    dio.options.baseUrl = API_HOST;
+    dio.options.baseUrl = "https://$API_HOST";
     dio.options.contentType =
         ContentType.parse("application/x-www-form-urlencoded");
-    var tokenInterceptor =
-        AccessTokenInterceptor(dio, AuthApi(kauthApi, LocalPlatform()));
+    var tokenInterceptor = AccessTokenInterceptor(dio, AuthApi.instance);
     dio.interceptors.addAll([tokenInterceptor, kaInterceptor]);
     return dio;
   }
 
   static Dio _appKeyApiInstance() {
     var dio = new Dio();
-    dio.options.baseUrl = API_HOST;
+    dio.options.baseUrl = "https://$API_HOST";
     dio.options.contentType =
         ContentType.parse("application/x-www-form-urlencoded");
     dio.interceptors.addAll([appKeyInterceptor, kaInterceptor]);
@@ -47,9 +52,11 @@ class ApiFactory {
     }
   }
 
-  static Exception transformApiError(DioError e) {
+  /// transforms [DioError] to [KakaoException].
+  ///
+  static KakaoException transformApiError(DioError e) {
     if (e.response == null) return KakaoClientException(e.message);
-    if (e.request.baseUrl == OAUTH_HOST) {
+    if (e.request.baseUrl == "https://$OAUTH_HOST") {
       return KakaoAuthException.fromJson(e.response.data);
     }
     return KakaoApiException.fromJson(e.response.data);

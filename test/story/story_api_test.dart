@@ -32,9 +32,9 @@ void main() {
     var map = jsonDecode(body);
     var profile = await _api.profile();
     expect(profile.nickname, map["nickName"]);
-    expect(profile.profileImageUrl, map["profileImageURL"]);
-    expect(profile.thumbnailUrl, map["thumbnailURL"]);
-    expect(profile.permalink, map["permalink"]);
+    expect(profile.profileImageUrl.toString(), map["profileImageURL"]);
+    expect(profile.thumbnailUrl.toString(), map["thumbnailURL"]);
+    expect(profile.permalink.toString(), map["permalink"]);
     expect(profile.birthday, map["birthday"]);
     expect(profile.birthdayType, map["birthdayType"]);
   });
@@ -52,8 +52,10 @@ void main() {
 
     var story = await _api.myStory("AAAAAAA.CCCCCCCCCCC");
     var likes = story.likes;
+    expect(story.mediaType, StoryType.PHOTO);
     expect(likes[0].emoticon, Emoticon.COOL);
     expect(story.permission, StoryPermission.PUBLIC);
+    print(story.createdAt.minute);
   });
 
   group("/v1/api/story/delete/mystory", () {
@@ -84,8 +86,8 @@ void main() {
     };
     var info = await _api.scrapLink(url);
 
-    expect(info.url, map["url"]);
-    expect(info.requestedUrl, map["requested_url"]);
+    expect(info.url.toString(), map["url"]);
+    expect(info.requestedUrl.toString(), map["requested_url"]);
     expect(info.section, map["section"]);
     expect(info.title, map["title"]);
     expect(info.type, map["type"]);

@@ -16,7 +16,7 @@ import 'story.dart';
 import 'talk.dart';
 
 void main() {
-  KakaoContext.clientId = "dd4e9cb75815cbdf7d87ed721a659baf";
+  KakaoContext.clientId = "cd9b86b063c3037851a4671c1712c01b";
   BlocSupervisor.delegate = MyBlocDelegate();
   runApp(MultiBlocProvider(
     providers: [
@@ -39,7 +39,14 @@ void main() {
         builder: (context) => PostStoryBloc(),
       )
     ],
-    child: MyApp(),
+    child: BlocListener<UserBloc, UserState>(
+      listener: (context, state) {
+        if (state is UserLoggedOut) {
+          Navigator.of(context).pushReplacementNamed("/login");
+        }
+      },
+      child: MyApp(),
+    ),
   ));
 }
 
@@ -85,7 +92,7 @@ class SplashState extends State<SplashScreen> {
   }
 
   _checkAccessToken() async {
-    var token = await AccessTokenRepo.instance.fromCache();
+    var token = await AccessTokenStore.instance.fromStore();
     debugPrint(token.toString());
     if (token.refreshToken == null) {
       Navigator.of(context).pushReplacementNamed('/login');

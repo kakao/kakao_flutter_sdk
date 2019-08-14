@@ -9,10 +9,12 @@ part of 'story.dart';
 Story _$StoryFromJson(Map<String, dynamic> json) {
   return Story(
     json['id'] as String,
-    json['url'] as String,
+    json['url'] == null ? null : Uri.parse(json['url'] as String),
     json['content'] as String,
-    json['created_at'] as String,
-    json['media_type'] as String,
+    json['created_at'] == null
+        ? null
+        : DateTime.parse(json['created_at'] as String),
+    _$enumDecodeNullable(_$StoryTypeEnumMap, json['media_type']),
     json['comment_count'] as int,
     json['like_count'] as int,
     (json['media'] as List)
@@ -41,17 +43,17 @@ Map<String, dynamic> _$StoryToJson(Story instance) {
   }
 
   writeNotNull('id', instance.id);
-  writeNotNull('url', instance.url);
+  writeNotNull('url', instance.url?.toString());
   writeNotNull('content', instance.content);
-  writeNotNull('created_at', instance.createdAt);
-  writeNotNull('media_type', instance.mediaType);
+  writeNotNull('created_at', instance.createdAt?.toIso8601String());
+  writeNotNull('media_type', _$StoryTypeEnumMap[instance.mediaType]);
   writeNotNull('comment_count', instance.commentCount);
   writeNotNull('like_count', instance.likeCount);
   writeNotNull('media', instance.images?.map((e) => e?.toJson())?.toList());
+  writeNotNull('permission', _$StoryPermissionEnumMap[instance.permission]);
   writeNotNull('likes', instance.likes?.map((e) => e?.toJson())?.toList());
   writeNotNull(
       'comments', instance.comments?.map((e) => e?.toJson())?.toList());
-  writeNotNull('permission', _$StoryPermissionEnumMap[instance.permission]);
   return val;
 }
 
@@ -74,6 +76,12 @@ T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
   }
   return _$enumDecode<T>(enumValues, source);
 }
+
+const _$StoryTypeEnumMap = <StoryType, dynamic>{
+  StoryType.NOTE: 'NOTE',
+  StoryType.PHOTO: 'PHOTO',
+  StoryType.NOT_SUPPORTED: 'NOT_SUPPORTED'
+};
 
 const _$StoryPermissionEnumMap = <StoryPermission, dynamic>{
   StoryPermission.PUBLIC: 'PUBLIC',

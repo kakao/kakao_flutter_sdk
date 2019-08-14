@@ -57,9 +57,12 @@ class TalkScreen extends StatelessWidget {
                                 CircleAvatar(
                                     radius: 25,
                                     backgroundImage: friend
-                                            .profileThumbnailImage.isNotEmpty
-                                        ? NetworkImage(
-                                            friend.profileThumbnailImage)
+                                            .profileThumbnailImage
+                                            .toString()
+                                            .isNotEmpty
+                                        ? NetworkImage(friend
+                                            .profileThumbnailImage
+                                            .toString())
                                         : AssetImage("assets/images/cat2.png")),
                                 Padding(
                                   padding: EdgeInsets.only(left: 10),
@@ -107,8 +110,8 @@ class TalkProfileBox extends StatelessWidget {
         currentAccountPicture: CircleAvatar(
             radius: 40,
             backgroundImage: _profile.thumbnailUrl != null &&
-                    _profile.thumbnailUrl.isNotEmpty
-                ? NetworkImage(_profile.thumbnailUrl)
+                    _profile.thumbnailUrl.toString().isNotEmpty
+                ? NetworkImage(_profile.thumbnailUrl.toString())
                 : AssetImage("assets/images/cat2.png")));
   }
 }

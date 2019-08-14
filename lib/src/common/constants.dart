@@ -1,2 +1,2 @@
-const API_HOST = "https://kapi.kakao.com";
-const OAUTH_HOST = "https://kauth.kakao.com";
+const API_HOST = "sandbox-kapi.kakao.com";
+const OAUTH_HOST = "sandbox-kauth.kakao.com";

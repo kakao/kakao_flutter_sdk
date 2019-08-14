@@ -59,7 +59,7 @@ class StoryBox extends StatelessWidget {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Text(this.story.createdAt),
+                      Text(this.story.createdAt.toIso8601String()),
                     ],
                   ),
                   Text(this.story.content),

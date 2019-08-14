@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kakao_flutter_sdk/src/user/model/account.dart';
 import 'package:kakao_flutter_sdk/src/user/model/user.dart';
 import 'package:kakao_flutter_sdk/src/user/user_api.dart';
+import 'package:kakao_flutter_sdk/story.dart';
 
 import '../helper.dart';
 import '../mock_adapter.dart';
@@ -80,6 +81,9 @@ void main() {
       expect(it.name, element["name"]);
       expect(it.baseAddress, element["base_address"]);
       expect(it.detailAddress, element["detail_address"]);
+      print(it.updatedAt);
+      print(jsonEncode(it));
+      print(element);
     });
     res.toJson();
   });
@@ -98,7 +102,7 @@ void main() {
     terms.asMap().forEach((index, it) {
       var element = elements[index];
       expect(it.tag, element["tag"]);
-      expect(it.agreedAt, element["agreed_at"]);
+      expect(Util.dateTimeWithoutMillis(it.agreedAt), element["agreed_at"]);
     });
     res.toJson();
   });

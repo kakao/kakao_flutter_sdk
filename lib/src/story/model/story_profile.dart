@@ -4,20 +4,24 @@ part 'story_profile.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class StoryProfile {
+  /// <nodoc>
   StoryProfile(this.nickname, this.profileImageUrl, this.thumbnailUrl,
       this.permalink, this.birthday, this.birthdayType);
   @JsonKey(name: "nickName")
   String nickname;
   @JsonKey(name: "profileImageURL")
-  String profileImageUrl;
+  Uri profileImageUrl;
   @JsonKey(name: "thumbnailURL")
-  String thumbnailUrl;
-  String permalink;
+  Uri thumbnailUrl;
+  Uri permalink;
   String birthday;
   String birthdayType;
 
+  /// <nodoc>
   factory StoryProfile.fromJson(Map<String, dynamic> json) =>
       _$StoryProfileFromJson(json);
+
+  /// <nodoc>
   Map<String, dynamic> toJson() => _$StoryProfileToJson(this);
 
   @override

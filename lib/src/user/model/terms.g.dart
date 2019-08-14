@@ -9,7 +9,9 @@ part of 'terms.dart';
 Terms _$TermsFromJson(Map<String, dynamic> json) {
   return Terms(
     json['tag'] as String,
-    json['agreed_at'] as String,
+    json['agreed_at'] == null
+        ? null
+        : DateTime.parse(json['agreed_at'] as String),
   );
 }
 
@@ -23,6 +25,6 @@ Map<String, dynamic> _$TermsToJson(Terms instance) {
   }
 
   writeNotNull('tag', instance.tag);
-  writeNotNull('agreed_at', instance.agreedAt);
+  writeNotNull('agreed_at', instance.agreedAt?.toIso8601String());
   return val;
 }

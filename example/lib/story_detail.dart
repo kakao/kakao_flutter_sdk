@@ -88,7 +88,7 @@ class CommentsList extends StatelessWidget {
               Row(
                 children: <Widget>[
                   Image.network(
-                    comment.writer.profileThumbnailUrl,
+                    comment.writer.profileThumbnailUrl.toString(),
                     width: 40,
                     height: 40,
                   ),

@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kakao_flutter_sdk/src//auth/access_token_repo.dart';
+import 'package:kakao_flutter_sdk/src/auth/access_token_store.dart';
 import 'package:kakao_flutter_sdk/src/auth/model/access_token_response.dart';
 
 import '../helper.dart';
@@ -8,7 +8,7 @@ import '../helper.dart';
 void main() {
   var map;
   var response;
-  AccessTokenRepo repo;
+  DefaultAccessTokenStore store;
   setUp(() async {
     const MethodChannel('plugins.flutter.io/shared_preferences')
         .setMockMethodCallHandler((MethodCall methodCall) async {
@@ -19,14 +19,14 @@ void main() {
     });
     map = await loadJsonIntoMap('oauth/token_with_rt_and_scopes.json');
     response = AccessTokenResponse.fromJson(map);
-    repo = AccessTokenRepo();
+    store = DefaultAccessTokenStore();
   });
   tearDown(() {});
 
   test('toCache', () async {
     expect(response.accessToken, map["access_token"]);
     expect(response.refreshToken, map["refresh_token"]);
-    var token = await repo.toCache(response);
+    var token = await store.toStore(response);
     expect(token.accessToken, response.accessToken);
     expect(token.refreshToken, response.refreshToken);
     expect(token.scopes.join(" "), response.scopes); // null
@@ -34,9 +34,9 @@ void main() {
   });
 
   test("clear", () async {
-    await repo.toCache(response);
-    await repo.clear();
-    var token = await repo.fromCache();
+    await store.toStore(response);
+    await store.clear();
+    var token = await store.fromStore();
     expect(null, token.accessToken);
     expect(null, token.accessTokenExpiresAt);
     expect(null, token.refreshToken);

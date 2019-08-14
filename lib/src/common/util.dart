@@ -1,14 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:kakao_flutter_sdk/story.dart';
 
 const MethodChannel _channel = MethodChannel("kakao_flutter_sdk");
 
+/// Launches a given url with platform-specific default browser tab.
 Future<String> launchWithBrowserTab(Uri url, [String redirectUri]) {
   if (url.scheme != 'http' && url.scheme != 'https') {
-    throw PlatformException(
-      code: 'NOT_A_WEB_SCHEME',
-      message: 'Default browsers only supports URL of http or https scheme.',
+    throw KakaoClientException(
+      'Default browsers only supports URL of http or https scheme.',
     );
   }
   var args = {"url": url.toString(), "redirect_uri": redirectUri};
@@ -16,7 +17,20 @@ Future<String> launchWithBrowserTab(Uri url, [String redirectUri]) {
   return _channel.invokeMethod("launchWithBrowserTab", args);
 }
 
-/// determines whether KakaoTalk is installed on this device.
+/// Determines whether KakaoTalk is installed on this device.
 Future<bool> isKakaoTalkInstalled() async {
   return _channel.invokeMethod("isKakaoTalkInstalled");
+}
+
+/// Collection of utility methods, usually for converting data types.
+class Util {
+  static DateTime fromTimeStamp(int timestamp) =>
+      DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+
+  static int fromDateTime(DateTime dateTime) =>
+      dateTime.millisecondsSinceEpoch ~/ 1000;
+
+  static String dateTimeWithoutMillis(DateTime dateTime) => dateTime == null
+      ? null
+      : "${dateTime.toIso8601String().substring(0, dateTime.toIso8601String().length - 5)}Z";
 }

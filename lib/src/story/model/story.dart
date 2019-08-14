@@ -8,6 +8,7 @@ part 'story.g.dart';
 @JsonSerializable(
     fieldRename: FieldRename.snake, includeIfNull: false, explicitToJson: true)
 class Story {
+  /// <nodoc>
   Story(
       this.id,
       this.url,
@@ -21,26 +22,47 @@ class Story {
       this.comments,
       this.permission);
   final String id;
-  final String url;
+
+  // web url of this story.
+  final Uri url;
   final String content;
-  final String createdAt;
-  final String mediaType;
+  final DateTime createdAt;
+  final StoryType mediaType;
   final int commentCount;
   final int likeCount;
   @JsonKey(name: "media")
   final List<StoryImage> images;
-  final List<StoryLike> likes;
-  final List<StoryComment> comments;
+
   final StoryPermission permission;
 
+  /// Only present in [StoryApi.myStory()], always null in [StoryApi.myStories()].
+  final List<StoryLike> likes;
+
+  /// Only present in [StoryApi.myStory()], always null in [StoryApi.myStories()].
+  final List<StoryComment> comments;
+
+  /// <nodoc>
   factory Story.fromJson(Map<String, dynamic> json) => _$StoryFromJson(json);
+
+  /// <nodoc>
   Map<String, dynamic> toJson() => _$StoryToJson(this);
 
   @override
   String toString() => toJson().toString();
 }
 
-enum StoryPermission { PUBLIC, FRIEND, ONLY_ME }
+enum StoryType { NOTE, PHOTO, NOT_SUPPORTED }
+
+enum StoryPermission {
+  /// Visible to all.
+  PUBLIC,
+
+  /// Visible only to friends.
+  FRIEND,
+
+  /// Visible only to me.
+  ONLY_ME
+}
 
 String permissionToParams(StoryPermission permission) {
   return permission == StoryPermission.PUBLIC

@@ -11,7 +11,7 @@ ShippingAddress _$ShippingAddressFromJson(Map<String, dynamic> json) {
     json['id'] as int,
     json['name'] as String,
     json['is_default'] as bool,
-    json['updated_at'] as int,
+    Util.fromTimeStamp(json['updated_at'] as int),
     json['type'] as String,
     json['base_address'] as String,
     json['detail_address'] as String,
@@ -35,7 +35,7 @@ Map<String, dynamic> _$ShippingAddressToJson(ShippingAddress instance) {
   writeNotNull('id', instance.id);
   writeNotNull('name', instance.name);
   writeNotNull('is_default', instance.isDefault);
-  writeNotNull('updated_at', instance.updatedAt);
+  writeNotNull('updated_at', Util.fromDateTime(instance.updatedAt));
   writeNotNull('type', instance.type);
   writeNotNull('base_address', instance.baseAddress);
   writeNotNull('detail_address', instance.detailAddress);

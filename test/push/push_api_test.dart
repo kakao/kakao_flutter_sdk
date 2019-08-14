@@ -57,10 +57,12 @@ void main() {
       final token = tokens[0];
       final expected = array[0];
       expect(token.deviceId, expected["device_id"]);
-      expect(token.pushType, expected["push_type"]);
+      expect(token.pushType, PushType.GCM);
       expect(token.pushToken, expected["push_token"]);
-      expect(token.createdAt, expected["created_at"]);
-      expect(token.updatedAt, expected["updated_at"]);
+      expect(
+          Util.dateTimeWithoutMillis(token.createdAt), expected["created_at"]);
+      expect(
+          Util.dateTimeWithoutMillis(token.updatedAt), expected["updated_at"]);
       expect(token.toJson() != null, true);
     });
   });

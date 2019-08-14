@@ -13,8 +13,8 @@ FriendsResponse _$FriendsResponseFromJson(Map<String, dynamic> json) {
             e == null ? null : Friend.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     json['total_count'] as int,
-    json['before_url'] as String,
-    json['after_url'] as String,
+    json['before_url'] == null ? null : Uri.parse(json['before_url'] as String),
+    json['after_url'] == null ? null : Uri.parse(json['after_url'] as String),
   );
 }
 
@@ -29,7 +29,7 @@ Map<String, dynamic> _$FriendsResponseToJson(FriendsResponse instance) {
 
   writeNotNull('elements', instance.friends?.map((e) => e?.toJson())?.toList());
   writeNotNull('total_count', instance.totalCount);
-  writeNotNull('before_url', instance.beforeUrl);
-  writeNotNull('after_url', instance.afterUrl);
+  writeNotNull('before_url', instance.beforeUrl?.toString());
+  writeNotNull('after_url', instance.afterUrl?.toString());
   return val;
 }

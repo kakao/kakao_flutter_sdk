@@ -34,7 +34,7 @@ class _LoginState extends State<LoginScreen> {
   _issueAccessToken(String authCode) async {
     try {
       var token = await AuthApi.instance.issueAccessToken(authCode);
-      AccessTokenRepo.instance.toCache(token);
+      AccessTokenStore.instance.toStore(token);
       Navigator.of(context).pushReplacementNamed("/main");
     } catch (e) {
       print("error on issuing access token: $e");

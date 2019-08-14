@@ -1,13 +1,16 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:kakao_flutter_sdk/common.dart';
 
 part 'shipping_address.g.dart';
 
+/// Individual shipping address.
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class ShippingAddress {
   int id;
   String name;
   bool isDefault;
-  int updatedAt;
+  @JsonKey(fromJson: Util.fromTimeStamp, toJson: Util.fromDateTime)
+  DateTime updatedAt;
   String type;
   String baseAddress;
   String detailAddress;
@@ -17,6 +20,7 @@ class ShippingAddress {
   String zoneNumber;
   String zipCode;
 
+  /// <nodoc>
   ShippingAddress(
       this.id,
       this.name,
@@ -31,7 +35,10 @@ class ShippingAddress {
       this.zoneNumber,
       this.zipCode);
 
+  /// <nodoc>
   factory ShippingAddress.fromJson(Map<String, dynamic> json) =>
       _$ShippingAddressFromJson(json);
+
+  /// <nodoc>
   Map<String, dynamic> toJson() => _$ShippingAddressToJson(this);
 }

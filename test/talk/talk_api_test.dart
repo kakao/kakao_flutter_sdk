@@ -25,9 +25,9 @@ void main() {
     _adapter.setResponseString(body, 200);
 
     TalkProfile profile = await _api.profile();
-    expect(map["nickName"], profile.nickname);
-    expect(map["profileImageURL"], profile.profileImageUrl);
-    expect(map["thumbnailURL"], profile.thumbnailUrl);
+    expect(profile.nickname, map["nickName"]);
+    expect(profile.profileImageUrl.toString(), map["profileImageURL"]);
+    expect(profile.thumbnailUrl.toString(), map["thumbnailURL"]);
     expect(map["countryISO"], profile.countryISO);
     expect(true, profile.toJson() != null);
   });
@@ -35,7 +35,8 @@ void main() {
   bool compareFriend(Map<String, dynamic> element, Friend friend) {
     return friend.userId == element["id"] &&
         friend.profileNickname == element["profile_nickname"] &&
-        friend.profileThumbnailImage == element["profile_thumbnail_image"];
+        friend.profileThumbnailImage.toString() ==
+            element["profile_thumbnail_image"];
   }
 
   test('/v1/friends 200', () async {
@@ -45,8 +46,8 @@ void main() {
 
     FriendsResponse res = await _api.friends();
     expect(map["total_count"], res.totalCount);
-    expect(map["before_url"], res.beforeUrl);
-    expect(map["after_url"], res.afterUrl);
+    expect(res.beforeUrl.toString(), map["before_url"].toString());
+    expect(res.afterUrl.toString(), map["after_url"].toString());
 
     List<dynamic> elements = map["elements"];
     List<Friend> friends = res.friends;
@@ -85,8 +86,8 @@ void main() {
     group("/default", () {
       test("feed", () async {
         var template = FeedTemplate(
-            Content("title", "https://example.com/image.png",
-                Link(webUrl: "https://example.com")),
+            Content("title", Uri.parse("https://example.com/image.png"),
+                Link(webUrl: Uri.parse("https://example.com"))),
             social: Social(
                 likeCount: 1,
                 commentCount: 2,
@@ -105,8 +106,10 @@ void main() {
 
       test("commerce", () async {
         var template = CommerceTemplate(
-            Content("title", "https://developers.kakao.com/image.png",
-                Link(webUrl: "https://developers.kakao.com")),
+            Content(
+                "title",
+                Uri.parse("https://developers.kakao.com/image.png"),
+                Link(webUrl: Uri.parse("https://developers.kakao.com"))),
             Commerce(15000));
 
         _adapter.requestAssertions = (RequestOptions options) {
@@ -161,7 +164,8 @@ void main() {
         expect(friend.uuid, element["plus_friend_uuid"]);
         expect(friend.publicId, element["plus_friend_public_id"]);
         expect(friend.relation, element["relation"]);
-        expect(friend.updatedAt, element["updated_at"]);
+        expect(Util.dateTimeWithoutMillis(friend.updatedAt),
+            element["updated_at"]);
       });
       expect(true, res.toJson() != null);
     });

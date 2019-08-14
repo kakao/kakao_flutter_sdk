@@ -8,11 +8,13 @@ import 'package:kakao_flutter_sdk/src/talk/model/plus_friends_response.dart';
 import 'package:kakao_flutter_sdk/src/talk/model/talk_profile.dart';
 import 'package:kakao_flutter_sdk/src/template/default_template.dart';
 
+/// Provides KakaoTalk API.
 class TalkApi {
   TalkApi(this._dio);
 
   final Dio _dio;
 
+  /// Default instance SDK provides.
   static final TalkApi instance = TalkApi(ApiFactory.authApi);
 
   /// Fetches current user's KakaoTalk profile.

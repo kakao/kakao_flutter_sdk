@@ -2,10 +2,13 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'account.g.dart';
 
-/// Kakao account information.
+/// <nodoc>
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
+
+/// Kakao account information.
 class Account {
+  /// <nodoc>
   Account(
       this.isEmailVerified,
       this.isEmailValid,
@@ -49,16 +52,20 @@ class Account {
 
   bool ciNeedsAgreement;
   String ci;
-  String ciAuthenticatedAt;
+  DateTime ciAuthenticatedAt;
 
+  /// <nodoc>
   factory Account.fromJson(Map<String, dynamic> json) =>
       _$AccountFromJson(json);
+
+  /// <nodoc>
   Map<String, dynamic> toJson() => _$AccountToJson(this);
 
   @override
   String toString() => toJson().toString();
 }
 
+/// Age range in [Account].
 enum AgeRange {
   @JsonValue("15~19")
   TEEN,
@@ -80,6 +87,7 @@ enum AgeRange {
   NINTIES_AND_ABOVE
 }
 
+/// Gender in [Account].
 enum Gender {
   @JsonValue("female")
   FEMALE,

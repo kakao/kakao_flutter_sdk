@@ -8,8 +8,7 @@ part of 'kakao_api_exception.dart';
 
 KakaoApiException _$KakaoApiExceptionFromJson(Map<String, dynamic> json) {
   return KakaoApiException(
-    _$enumDecodeNullable(_$ApiErrorCauseEnumMap, json['code']) ??
-        ApiErrorCause.UNKNOWN,
+    _$enumDecodeNullable(_$ApiErrorCauseEnumMap, json['code']),
     json['msg'] as String,
     json['api_type'] as String,
     (json['required_scopes'] as List)?.map((e) => e as String)?.toList(),

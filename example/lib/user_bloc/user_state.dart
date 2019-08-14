@@ -12,6 +12,8 @@ class UserUninitialized extends UserState {
   String toString() => "UserUninitialized";
 }
 
+class UserLoggedOut extends UserState {}
+
 class UserFetched extends UserState {
   final User user;
 

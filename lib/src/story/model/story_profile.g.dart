@@ -9,9 +9,13 @@ part of 'story_profile.dart';
 StoryProfile _$StoryProfileFromJson(Map<String, dynamic> json) {
   return StoryProfile(
     json['nickName'] as String,
-    json['profileImageURL'] as String,
-    json['thumbnailURL'] as String,
-    json['permalink'] as String,
+    json['profileImageURL'] == null
+        ? null
+        : Uri.parse(json['profileImageURL'] as String),
+    json['thumbnailURL'] == null
+        ? null
+        : Uri.parse(json['thumbnailURL'] as String),
+    json['permalink'] == null ? null : Uri.parse(json['permalink'] as String),
     json['birthday'] as String,
     json['birthdayType'] as String,
   );
@@ -27,9 +31,9 @@ Map<String, dynamic> _$StoryProfileToJson(StoryProfile instance) {
   }
 
   writeNotNull('nickName', instance.nickname);
-  writeNotNull('profileImageURL', instance.profileImageUrl);
-  writeNotNull('thumbnailURL', instance.thumbnailUrl);
-  writeNotNull('permalink', instance.permalink);
+  writeNotNull('profileImageURL', instance.profileImageUrl?.toString());
+  writeNotNull('thumbnailURL', instance.thumbnailUrl?.toString());
+  writeNotNull('permalink', instance.permalink?.toString());
   writeNotNull('birthday', instance.birthday);
   writeNotNull('birthdayType', instance.birthdayType);
   return val;

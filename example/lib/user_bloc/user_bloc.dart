@@ -21,13 +21,19 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       try {
         final user = await _userApi.me();
         yield UserFetched(user);
-      } on KakaoException catch (e) {
+      } on KakaoApiException catch (e) {
+        if (e.code == ApiErrorCause.INVALID_TOKEN) {
+          yield UserLoggedOut();
+        } else {
+          yield UserFetchFailed(e);
+        }
+      } catch (e) {
         yield UserFetchFailed(e);
       }
       return;
     }
-    if (event is UserLoggedOut) {
-      yield UserUninitialized();
+    if (event is UserLogOut) {
+      yield UserLoggedOut();
       return;
     }
   }
