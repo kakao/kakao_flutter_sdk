@@ -122,7 +122,7 @@ void loginButtonClicked() async {
   try {
     String authCode = await AuthCodeClient.instance.request();
     AccessToken token = await AuthApi.instance.issueAccessToken(authCode);
-    AccessTokenRepo.instance.toCache(token);
+    AccessTokenStore.instance.toCache(token);
   } catch (e) {
     // some error happened during the course of user login... deal with it.
   }
@@ -132,11 +132,11 @@ void loginButtonClicked() async {
 > Currently, Kakao Flutter SDK does not plan to support Kakao login or KakaoLink via kakaoTalk.
 > The SDK tries to support as many platform and environment as possible and mobile-only
 
-After user's first login (access token persisted correctly), you can check the status of _AccessTokenRepo_ in order to skip this process.
+After user's first login (access token persisted correctly), you can check the status of _AccessTokenStore_ in order to skip this process.
 Below is the sample code of checking token status and redirecting to login screen if refresh token does not exist.
 
 ```dart
-String token = await AccessTokenRepo.instance.fromCache();
+String token = await AccessTokenStore.instance.fromCache();
 if (token.refreshToken == null) {
   Navigator.of(context).pushReplacementNamed('/login');
 } else {
