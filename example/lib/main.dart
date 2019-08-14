@@ -39,14 +39,7 @@ void main() {
         builder: (context) => PostStoryBloc(),
       )
     ],
-    child: BlocListener<UserBloc, UserState>(
-      listener: (context, state) {
-        if (state is UserLoggedOut) {
-          Navigator.of(context).pushReplacementNamed("/login");
-        }
-      },
-      child: MyApp(),
-    ),
+    child: MyApp(),
   ));
 }
 
@@ -129,49 +122,56 @@ class _MainScreenState extends State<MainScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_title),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(CupertinoIcons.add),
-            onPressed: () => {
-              Navigator.of(context).push(CupertinoPageRoute(
-                  fullscreenDialog: true,
-                  builder: (context) => AddStoryScreen()))
-            },
-          )
-        ],
-      ),
-      body: TabBarView(
-        controller: _controller,
-        children: [UserScreen(), TalkScreen(), StoryScreen(), LinkScreen()],
-      ),
-      bottomNavigationBar: TabBar(
-        controller: _controller,
-        labelColor: Colors.black,
-        tabs: [
-          Tab(
-            icon: Icon(Icons.ac_unit, color: Color.fromARGB(255, 0, 0, 0)),
-            // title: Text("User")
-            text: "User",
-          ),
-          Tab(
-            icon: Icon(Icons.ac_unit, color: Color.fromARGB(255, 0, 0, 0)),
-            text: "Talk",
-            // title: Text("Talk")
-          ),
-          Tab(
-            icon: Icon(Icons.ac_unit, color: Color.fromARGB(255, 0, 0, 0)),
-            text: "Story",
-            // title: Text("Story")
-          ),
-          Tab(
-            icon: Icon(Icons.ac_unit, color: Color.fromARGB(255, 0, 0, 0)),
-            text: "Link",
-          )
-        ],
-        onTap: setTabIndex,
+    return BlocListener<UserBloc, UserState>(
+      listener: (context, state) {
+        if (state is UserLoggedOut) {
+          Navigator.of(context).pushReplacementNamed("/login");
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(_title),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(CupertinoIcons.add),
+              onPressed: () => {
+                Navigator.of(context).push(CupertinoPageRoute(
+                    fullscreenDialog: true,
+                    builder: (context) => AddStoryScreen()))
+              },
+            )
+          ],
+        ),
+        body: TabBarView(
+          controller: _controller,
+          children: [UserScreen(), TalkScreen(), StoryScreen(), LinkScreen()],
+        ),
+        bottomNavigationBar: TabBar(
+          controller: _controller,
+          labelColor: Colors.black,
+          tabs: [
+            Tab(
+              icon: Icon(Icons.ac_unit, color: Color.fromARGB(255, 0, 0, 0)),
+              // title: Text("User")
+              text: "User",
+            ),
+            Tab(
+              icon: Icon(Icons.ac_unit, color: Color.fromARGB(255, 0, 0, 0)),
+              text: "Talk",
+              // title: Text("Talk")
+            ),
+            Tab(
+              icon: Icon(Icons.ac_unit, color: Color.fromARGB(255, 0, 0, 0)),
+              text: "Story",
+              // title: Text("Story")
+            ),
+            Tab(
+              icon: Icon(Icons.ac_unit, color: Color.fromARGB(255, 0, 0, 0)),
+              text: "Link",
+            )
+          ],
+          onTap: setTabIndex,
+        ),
       ),
     );
   }

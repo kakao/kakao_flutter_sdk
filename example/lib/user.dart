@@ -26,6 +26,7 @@ class _UserState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) => BlocBuilder<UserBloc, UserState>(
         builder: (context, state) {
+          final bloc = BlocProvider.of<UserBloc>(context);
           if (state is UserFetched) {
             final _user = state.user;
             return Container(
@@ -46,13 +47,13 @@ class _UserState extends State<UserScreen> {
                     TokenInfoBox(_tokenInfo),
                     RaisedButton(
                       child: Text("Logout"),
-                      onPressed: _logout,
+                      onPressed: () => bloc.dispatch(UserLogOut()),
                       color: Colors.orange,
                       textColor: Colors.white,
                     ),
                     RaisedButton(
                       child: Text("Unlink"),
-                      onPressed: _unlink,
+                      onPressed: () => bloc.dispatch(UserUnlink()),
                       color: Colors.red,
                       textColor: Colors.white,
                     ),
@@ -62,22 +63,6 @@ class _UserState extends State<UserScreen> {
           return Container();
         },
       );
-
-  _logout() async {
-    try {
-      await UserApi.instance.logout();
-      AccessTokenStore.instance.clear();
-      Navigator.of(context).pushReplacementNamed("/login");
-    } catch (e) {}
-  }
-
-  _unlink() async {
-    try {
-      await UserApi.instance.unlink();
-      AccessTokenStore.instance.clear();
-      Navigator.of(context).pushReplacementNamed("/login");
-    } catch (e) {}
-  }
 
   _getTokenInfo() async {
     try {

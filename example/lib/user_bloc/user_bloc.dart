@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'bloc.dart';
+import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/user.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
@@ -33,6 +34,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       return;
     }
     if (event is UserLogOut) {
+      await _userApi.logout();
+      await AccessTokenStore.instance.clear();
+      yield UserLoggedOut();
+      return;
+    }
+    if (event is UserUnlink) {
+      await _userApi.unlink();
+      await AccessTokenStore.instance.clear();
       yield UserLoggedOut();
       return;
     }

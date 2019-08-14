@@ -21,3 +21,5 @@ class UserLogOut extends UserEvent {
   @override
   String toString() => runtimeType.toString();
 }
+
+class UserUnlink extends UserEvent {}
