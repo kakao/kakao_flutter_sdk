@@ -29,10 +29,8 @@ class AccessTokenInterceptor extends Interceptor {
 
   @override
   onError(DioError err) async {
-    print("onError");
     _dio.interceptors.errorLock.lock();
     if (_isNotRetryable(err)) {
-      print("isNotRetryable");
       _dio.interceptors.errorLock.unlock();
       return err;
     }
@@ -53,8 +51,6 @@ class AccessTokenInterceptor extends Interceptor {
       print("retry ${options.path} after refreshing access token.");
       return _dio.request(options.path, options: options);
     } catch (e) {
-      print("here here???");
-      print(e.runtimeType);
       if (e is KakaoAuthException ||
           e is KakaoApiException && e.code == ApiErrorCause.INVALID_TOKEN) {
         await _tokenStore.clear();
