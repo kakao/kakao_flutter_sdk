@@ -1,0 +1,15 @@
+dartdoc:
+  linkTo:
+    remote: true
+  output: "docs"
+  exclude:
+    - "dart:ui"
+    - "dart:async"
+    - "dart:collection"
+    - "dart:convert"
+    - "dart:core"
+    - "dart:developer"
+    - "dart:math"
+    - "dart:typed_data"
+    - "dart:io"
+    - "dart:isolate"
