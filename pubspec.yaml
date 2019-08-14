@@ -14,6 +14,7 @@ dependencies:
   dio: ^2.1.0
   shared_preferences: ^0.5.3
   platform: ^2.2.0
+  meta: ^1.1.7
 dev_dependencies:
   flutter_test:
     sdk: flutter
