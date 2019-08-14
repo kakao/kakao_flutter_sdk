@@ -59,15 +59,15 @@
       <li class="section-title inherited">
         <a href="common/ApiFactory-class.html#instance-properties">Properties</a>
       </li>
-      <li class="inherited"><a href="common/ApiFactory/hashCode.html">hashCode</a></li>
-      <li class="inherited"><a href="common/ApiFactory/runtimeType.html">runtimeType</a></li>
+      <li class="inherited">hashCode</li>
+      <li class="inherited">runtimeType</li>
     
       <li class="section-title inherited"><a href="common/ApiFactory-class.html#instance-methods">Methods</a></li>
-      <li class="inherited"><a href="common/ApiFactory/noSuchMethod.html">noSuchMethod</a></li>
-      <li class="inherited"><a href="common/ApiFactory/toString.html">toString</a></li>
+      <li class="inherited">noSuchMethod</li>
+      <li class="inherited">toString</li>
     
       <li class="section-title inherited"><a href="common/ApiFactory-class.html#operators">Operators</a></li>
-      <li class="inherited"><a href="common/ApiFactory/operator_equals.html">operator ==</a></li>
+      <li class="inherited">operator ==</li>
     
       <li class="section-title"><a href="common/ApiFactory-class.html#static-properties">Static properties</a></li>
       <li><a href="common/ApiFactory/appKeyApi.html">appKeyApi</a></li>
@@ -87,17 +87,20 @@
       <div><h1><span class="kind-method">transformApiError</span> method</h1></div>
 
     <section class="multi-line-signature">
-      <span class="returntype">Exception</span>
+      <span class="returntype"><a href="common/KakaoException-class.html">KakaoException</a></span>
             <span class="name ">transformApiError</span>
-(<wbr><span class="parameter" id="transformApiError-param-e"><span class="type-annotation">DioError</span> <span class="parameter-name">e</span></span>)
+(<wbr><span class="parameter" id="transformApiError-param-e"><span class="type-annotation"><a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/DioError-class.html">DioError</a></span> <span class="parameter-name">e</span></span>)
       
+    </section>
+    <section class="desc markdown">
+      <p>transforms <a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/DioError-class.html">DioError</a> to <a href="common/KakaoException-class.html">KakaoException</a>.</p>
     </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">static Exception transformApiError(DioError e) {
+      <pre class="language-dart"><code class="language-dart">static KakaoException transformApiError(DioError e) {
   if (e.response == null) return KakaoClientException(e.message);
-  if (e.request.baseUrl == OAUTH_HOST) {
+  if (e.request.baseUrl == &quot;https:&#47;&#47;$OAUTH_HOST&quot;) {
     return KakaoAuthException.fromJson(e.response.data);
   }
   return KakaoApiException.fromJson(e.response.data);

@@ -56,23 +56,21 @@
       <li class="section-title"><a href="auth/AccessTokenInterceptor-class.html#constructors">Constructors</a></li>
       <li><a href="auth/AccessTokenInterceptor/AccessTokenInterceptor.html">AccessTokenInterceptor</a></li>
     
-      <li class="section-title">
+      <li class="section-title inherited">
         <a href="auth/AccessTokenInterceptor-class.html#instance-properties">Properties</a>
       </li>
-      <li><a href="auth/AccessTokenInterceptor/dio.html">dio</a></li>
-      <li><a href="auth/AccessTokenInterceptor/kauthApi.html">kauthApi</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/hashCode.html">hashCode</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/runtimeType.html">runtimeType</a></li>
+      <li class="inherited">hashCode</li>
+      <li class="inherited">runtimeType</li>
     
       <li class="section-title"><a href="auth/AccessTokenInterceptor-class.html#instance-methods">Methods</a></li>
       <li><a href="auth/AccessTokenInterceptor/onError.html">onError</a></li>
       <li><a href="auth/AccessTokenInterceptor/onRequest.html">onRequest</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/noSuchMethod.html">noSuchMethod</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/onResponse.html">onResponse</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/toString.html">toString</a></li>
+      <li class="inherited">noSuchMethod</li>
+      <li class="inherited"><a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/Interceptor/onResponse.html">onResponse</a></li>
+      <li class="inherited">toString</li>
     
       <li class="section-title inherited"><a href="auth/AccessTokenInterceptor-class.html#operators">Operators</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/operator_equals.html">operator ==</a></li>
+      <li class="inherited">operator ==</li>
     
     
     
@@ -90,36 +88,50 @@
       </div>
       <span class="returntype">FutureOr</span>
             <span class="name ">onError</span>
-(<wbr><span class="parameter" id="onError-param-err"><span class="type-annotation">DioError</span> <span class="parameter-name">err</span></span>)
-      
+(<wbr><span class="parameter" id="onError-param-err"><span class="type-annotation"><a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/DioError-class.html">DioError</a></span> <span class="parameter-name">err</span></span>)
+      <div class="features">override</div>
     </section>
     <section class="desc markdown">
       <p>The callback will be executed on error.</p>
 <p>If you want to resolve the request with some custom data，
-you can return a <code>Response</code> object or return <code>dio.resolve</code>.
-If you want to continue the request, return the <code>DioError</code> object.</p>
+you can return a <a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/Response-class.html">Response</a> object or return <code>dio.resolve</code>.
+If you want to continue the request, return the <a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/DioError-class.html">DioError</a> object.</p>
     </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">@override
 onError(DioError err) async {
-  if (err.request.baseUrl == OAUTH_HOST) return err;
-  if (err.response == null || err.response.statusCode != 401) {
+  _dio.interceptors.errorLock.lock();
+  if (_isNotRetryable(err)) {
+    _dio.interceptors.errorLock.unlock();
     return err;
   }
-  dio.interceptors.requestLock.lock();
-  var token = await AccessTokenRepo.instance.fromCache();
   try {
-    var tokenResponse = await kauthApi.refreshAccessToken(token.refreshToken);
-    await AccessTokenRepo.instance.toCache(tokenResponse);
+    _dio.interceptors.requestLock.lock();
     RequestOptions options = err.response.request;
-    return dio.request(options.path, options: options);
+    var token = await _tokenStore.fromStore();
+    if (err.request.headers[&quot;Authorization&quot;] !=
+        &quot;Bearer ${token.accessToken}&quot;) {
+      &#47;&#47; tokens were refreshed by another API request.
+      print(
+          &quot;just retry ${options.path} since access token was already refreshed by another request.&quot;);
+      return _dio.request(options.path, options: options);
+    }
+    var tokenResponse =
+        await _kauthApi.refreshAccessToken(token.refreshToken);
+    await _tokenStore.toStore(tokenResponse);
+    print(&quot;retry ${options.path} after refreshing access token.&quot;);
+    return _dio.request(options.path, options: options);
   } catch (e) {
-    await AccessTokenRepo.instance.clear();
+    if (e is KakaoAuthException ||
+        e is KakaoApiException &amp;&amp; e.code == ApiErrorCause.INVALID_TOKEN) {
+      await _tokenStore.clear();
+    }
     return err;
   } finally {
-    dio.interceptors.requestLock.unlock();
+    _dio.interceptors.requestLock.unlock();
+    _dio.interceptors.errorLock.unlock();
   }
 }</code></pre>
     </section>

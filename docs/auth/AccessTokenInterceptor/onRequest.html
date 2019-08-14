@@ -56,23 +56,21 @@
       <li class="section-title"><a href="auth/AccessTokenInterceptor-class.html#constructors">Constructors</a></li>
       <li><a href="auth/AccessTokenInterceptor/AccessTokenInterceptor.html">AccessTokenInterceptor</a></li>
     
-      <li class="section-title">
+      <li class="section-title inherited">
         <a href="auth/AccessTokenInterceptor-class.html#instance-properties">Properties</a>
       </li>
-      <li><a href="auth/AccessTokenInterceptor/dio.html">dio</a></li>
-      <li><a href="auth/AccessTokenInterceptor/kauthApi.html">kauthApi</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/hashCode.html">hashCode</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/runtimeType.html">runtimeType</a></li>
+      <li class="inherited">hashCode</li>
+      <li class="inherited">runtimeType</li>
     
       <li class="section-title"><a href="auth/AccessTokenInterceptor-class.html#instance-methods">Methods</a></li>
       <li><a href="auth/AccessTokenInterceptor/onError.html">onError</a></li>
       <li><a href="auth/AccessTokenInterceptor/onRequest.html">onRequest</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/noSuchMethod.html">noSuchMethod</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/onResponse.html">onResponse</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/toString.html">toString</a></li>
+      <li class="inherited">noSuchMethod</li>
+      <li class="inherited"><a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/Interceptor/onResponse.html">onResponse</a></li>
+      <li class="inherited">toString</li>
     
       <li class="section-title inherited"><a href="auth/AccessTokenInterceptor-class.html#operators">Operators</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/operator_equals.html">operator ==</a></li>
+      <li class="inherited">operator ==</li>
     
     
     
@@ -90,23 +88,23 @@
       </div>
       <span class="returntype">FutureOr</span>
             <span class="name ">onRequest</span>
-(<wbr><span class="parameter" id="onRequest-param-options"><span class="type-annotation">RequestOptions</span> <span class="parameter-name">options</span></span>)
-      
+(<wbr><span class="parameter" id="onRequest-param-options"><span class="type-annotation"><a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/RequestOptions-class.html">RequestOptions</a></span> <span class="parameter-name">options</span></span>)
+      <div class="features">override</div>
     </section>
     <section class="desc markdown">
       <p>The callback will be executed before the request is initiated.</p>
 <p>If you want to resolve the request with some custom data，
-you can return a <code>Response</code> object or return <code>dio.resolve</code>.
+you can return a <a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/Response-class.html">Response</a> object or return <code>dio.resolve</code>.
 If you want to reject the request with a error message,
-you can return a <code>DioError</code> object or return <code>dio.reject</code> .
-If you want to continue the request, return the <code>Options</code> object.</p>
+you can return a <a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/DioError-class.html">DioError</a> object or return <code>dio.reject</code> .
+If you want to continue the request, return the <a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/Options-class.html">Options</a> object.</p>
     </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">@override
 onRequest(RequestOptions options) async {
-  var token = await AccessTokenRepo.instance.fromCache();
+  var token = await _tokenStore.fromStore();
   options.headers[&quot;Authorization&quot;] = &quot;Bearer ${token.accessToken}&quot;;
   return options;
 }</code></pre>

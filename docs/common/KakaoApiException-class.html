@@ -54,6 +54,7 @@
       <li class="section-title"><a href="common/common-library.html#classes">Classes</a></li>
       <li><a href="common/ApiFactory-class.html">ApiFactory</a></li>
       <li><a href="common/KakaoContext-class.html">KakaoContext</a></li>
+      <li><a href="common/Util-class.html">Util</a></li>
     
     
       <li class="section-title"><a href="common/common-library.html#constants">Constants</a></li>
@@ -62,6 +63,7 @@
     
     
       <li class="section-title"><a href="common/common-library.html#functions">Functions</a></li>
+      <li><a href="common/isKakaoTalkInstalled.html">isKakaoTalkInstalled</a></li>
       <li><a href="common/launchWithBrowserTab.html">launchWithBrowserTab</a></li>
     
       <li class="section-title"><a href="common/common-library.html#enums">Enums</a></li>
@@ -98,30 +100,11 @@
 
         <dt>Annotations</dt>
         <dd><ul class="annotation-list clazz-relationships">
-          <li>@JsonSerializable(includeIfNull: false, fieldRename: FieldRename.snake)</li>
+          <li>@<a href="https://pub.dartlang.org/documentation/json_annotation/2.4.0/json_annotation/JsonSerializable-class.html">JsonSerializable</a>(includeIfNull: false, fieldRename: FieldRename.snake)</li>
         </ul></dd>
       </dl>
     </section>
 
-    <section class="summary offset-anchor" id="constructors">
-      <h2>Constructors</h2>
-
-      <dl class="constructor-summary-list">
-        <dt id="KakaoApiException" class="callable">
-          <span class="name"><a href="common/KakaoApiException/KakaoApiException.html">KakaoApiException</a></span><span class="signature">(<span class="parameter" id="-param-code"><span class="type-annotation"><a href="common/ApiErrorCause-class.html">ApiErrorCause</a></span> <span class="parameter-name">code</span>, </span> <span class="parameter" id="-param-msg"><span class="type-annotation">String</span> <span class="parameter-name">msg</span>, </span> <span class="parameter" id="-param-apiType"><span class="type-annotation">String</span> <span class="parameter-name">apiType</span>, </span> <span class="parameter" id="-param-requiredScopes"><span class="type-annotation">List<span class="signature">&lt;<wbr><span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">requiredScopes</span>, </span> <span class="parameter" id="-param-allowedScopes"><span class="type-annotation">List<span class="signature">&lt;<wbr><span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">allowedScopes</span></span>)</span>
-        </dt>
-        <dd>
-          
-        </dd>
-        <dt id="KakaoApiException.fromJson" class="callable">
-          <span class="name"><a href="common/KakaoApiException/KakaoApiException.fromJson.html">KakaoApiException.fromJson</a></span><span class="signature">(<span class="parameter" id="fromJson-param-json"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">json</span></span>)</span>
-        </dt>
-        <dd>
-          
-          <div class="constructor-modifier features">factory</div>
-        </dd>
-      </dl>
-    </section>
 
     <section class="summary offset-anchor" id="instance-properties">
       <h2>Properties</h2>
@@ -168,11 +151,11 @@
                   <div class="features">final</div>
 </dd>
         <dt id="hashCode" class="property inherited">
-          <span class="name"><a href="common/KakaoException/hashCode.html">hashCode</a></span>
+          <span class="name">hashCode</span>
           <span class="signature">&#8594; int</span>         
         </dt>
         <dd class="inherited">
-          The hash code for this object. <a href="common/KakaoException/hashCode.html">[...]</a>
+          The hash code for this object.
                   <div class="features">read-only, inherited</div>
 </dd>
         <dt id="message" class="property inherited">
@@ -184,7 +167,7 @@
                   <div class="features">final, inherited</div>
 </dd>
         <dt id="runtimeType" class="property inherited">
-          <span class="name"><a href="common/KakaoException/runtimeType.html">runtimeType</a></span>
+          <span class="name">runtimeType</span>
           <span class="signature">&#8594; Type</span>         
         </dt>
         <dd class="inherited">
@@ -197,15 +180,6 @@
     <section class="summary offset-anchor" id="instance-methods">
       <h2>Methods</h2>
       <dl class="callables">
-        <dt id="toJson" class="callable">
-          <span class="name"><a href="common/KakaoApiException/toJson.html">toJson</a></span><span class="signature">(<wbr>)
-            <span class="returntype parameter">&#8594; Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
-          </span>
-                  </dt>
-        <dd>
-          
-                  
-</dd>
         <dt id="toString" class="callable">
           <span class="name"><a href="common/KakaoApiException/toString.html">toString</a></span><span class="signature">(<wbr>)
             <span class="returntype parameter">&#8594; String</span>
@@ -216,12 +190,12 @@
                   
 </dd>
         <dt id="noSuchMethod" class="callable inherited">
-          <span class="name"><a href="common/KakaoException/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
+          <span class="name">noSuchMethod</span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
             <span class="returntype parameter">&#8594; dynamic</span>
           </span>
                   </dt>
         <dd class="inherited">
-          Invoked when a non-existent method or property is accessed. <a href="common/KakaoException/noSuchMethod.html">[...]</a>
+          Invoked when a non-existent method or property is accessed.
                   <div class="features">inherited</div>
 </dd>
       </dl>
@@ -231,12 +205,12 @@
       <h2>Operators</h2>
       <dl class="callables">
         <dt id="operator ==" class="callable inherited">
-          <span class="name"><a href="common/KakaoException/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span>)
+          <span class="name">operator ==</span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span>)
             <span class="returntype parameter">&#8594; bool</span>
           </span>
                   </dt>
         <dd class="inherited">
-          The equality operator. <a href="common/KakaoException/operator_equals.html">[...]</a>
+          The equality operator.
                   <div class="features">inherited</div>
 </dd>
       </dl>
@@ -249,9 +223,6 @@
 
   <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
     <ol>
-      <li class="section-title"><a href="common/KakaoApiException-class.html#constructors">Constructors</a></li>
-      <li><a href="common/KakaoApiException/KakaoApiException.html">KakaoApiException</a></li>
-      <li><a href="common/KakaoApiException/KakaoApiException.fromJson.html">fromJson</a></li>
     
       <li class="section-title">
         <a href="common/KakaoApiException-class.html#instance-properties">Properties</a>
@@ -261,17 +232,16 @@
       <li><a href="common/KakaoApiException/code.html">code</a></li>
       <li><a href="common/KakaoApiException/msg.html">msg</a></li>
       <li><a href="common/KakaoApiException/requiredScopes.html">requiredScopes</a></li>
-      <li class="inherited"><a href="common/KakaoException/hashCode.html">hashCode</a></li>
+      <li class="inherited">hashCode</li>
       <li class="inherited"><a href="common/KakaoException/message.html">message</a></li>
-      <li class="inherited"><a href="common/KakaoException/runtimeType.html">runtimeType</a></li>
+      <li class="inherited">runtimeType</li>
     
       <li class="section-title"><a href="common/KakaoApiException-class.html#instance-methods">Methods</a></li>
-      <li><a href="common/KakaoApiException/toJson.html">toJson</a></li>
       <li><a href="common/KakaoApiException/toString.html">toString</a></li>
-      <li class="inherited"><a href="common/KakaoException/noSuchMethod.html">noSuchMethod</a></li>
+      <li class="inherited">noSuchMethod</li>
     
       <li class="section-title inherited"><a href="common/KakaoApiException-class.html#operators">Operators</a></li>
-      <li class="inherited"><a href="common/KakaoException/operator_equals.html">operator ==</a></li>
+      <li class="inherited">operator ==</li>
     
     
     

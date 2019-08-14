@@ -76,6 +76,9 @@
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
       <div><h1><span class="kind-class">Link</span> class </h1></div>
 
+    <section class="desc markdown">
+      <p>Collection of links to open whe a specific area in KakaoTalk message is tapped.</p>
+    </section>
     
     <section>
       <dl class="dl-horizontal">
@@ -85,30 +88,11 @@
 
         <dt>Annotations</dt>
         <dd><ul class="annotation-list clazz-relationships">
-          <li>@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)</li>
+          <li>@<a href="https://pub.dartlang.org/documentation/json_annotation/2.4.0/json_annotation/JsonSerializable-class.html">JsonSerializable</a>(fieldRename: FieldRename.snake, includeIfNull: false)</li>
         </ul></dd>
       </dl>
     </section>
 
-    <section class="summary offset-anchor" id="constructors">
-      <h2>Constructors</h2>
-
-      <dl class="constructor-summary-list">
-        <dt id="Link" class="callable">
-          <span class="name"><a href="template/Link/Link.html">Link</a></span><span class="signature">({<span class="parameter" id="-param-webUrl"><span class="type-annotation">String</span> <span class="parameter-name">webUrl</span>, </span> <span class="parameter" id="-param-mobileWebUrl"><span class="type-annotation">String</span> <span class="parameter-name">mobileWebUrl</span>, </span> <span class="parameter" id="-param-androidExecParams"><span class="type-annotation">String</span> <span class="parameter-name">androidExecParams</span>, </span> <span class="parameter" id="-param-iosExecParams"><span class="type-annotation">String</span> <span class="parameter-name">iosExecParams</span></span> })</span>
-        </dt>
-        <dd>
-          
-        </dd>
-        <dt id="Link.fromJson" class="callable">
-          <span class="name"><a href="template/Link/Link.fromJson.html">Link.fromJson</a></span><span class="signature">(<span class="parameter" id="fromJson-param-json"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">json</span></span>)</span>
-        </dt>
-        <dd>
-          
-          <div class="constructor-modifier features">factory</div>
-        </dd>
-      </dl>
-    </section>
 
     <section class="summary offset-anchor" id="instance-properties">
       <h2>Properties</h2>
@@ -119,43 +103,43 @@
           <span class="signature">&#8594; String</span>         
         </dt>
         <dd>
-          
-                  <div class="features">@JsonKey(name: &#39;android_params&#39;), final</div>
+          query string to be passed to custom scheme in Android. <a href="template/Link/androidExecParams.html">[...]</a>
+                  <div class="features">@<a href="https://pub.dartlang.org/documentation/json_annotation/2.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;android_params&#39;), final</div>
 </dd>
         <dt id="iosExecParams" class="property">
           <span class="name"><a href="template/Link/iosExecParams.html">iosExecParams</a></span>
           <span class="signature">&#8594; String</span>         
         </dt>
         <dd>
-          
-                  <div class="features">@JsonKey(name: &#39;ios_params&#39;), final</div>
+          query string to be passed to custom scheme in iOS. <a href="template/Link/iosExecParams.html">[...]</a>
+                  <div class="features">@<a href="https://pub.dartlang.org/documentation/json_annotation/2.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;ios_params&#39;), final</div>
 </dd>
         <dt id="mobileWebUrl" class="property">
           <span class="name"><a href="template/Link/mobileWebUrl.html">mobileWebUrl</a></span>
-          <span class="signature">&#8594; String</span>         
+          <span class="signature">&#8594; Uri</span>         
         </dt>
         <dd>
-          
+          Url to open in mobile KakaoTalk in-app browser.
                   <div class="features">final</div>
 </dd>
         <dt id="webUrl" class="property">
           <span class="name"><a href="template/Link/webUrl.html">webUrl</a></span>
-          <span class="signature">&#8594; String</span>         
+          <span class="signature">&#8594; Uri</span>         
         </dt>
         <dd>
-          
+          Url to open in PC or MacOS KakaoTalk.
                   <div class="features">final</div>
 </dd>
         <dt id="hashCode" class="property inherited">
-          <span class="name"><a href="template/Link/hashCode.html">hashCode</a></span>
+          <span class="name">hashCode</span>
           <span class="signature">&#8594; int</span>         
         </dt>
         <dd class="inherited">
-          The hash code for this object. <a href="template/Link/hashCode.html">[...]</a>
+          The hash code for this object.
                   <div class="features">read-only, inherited</div>
 </dd>
         <dt id="runtimeType" class="property inherited">
-          <span class="name"><a href="template/Link/runtimeType.html">runtimeType</a></span>
+          <span class="name">runtimeType</span>
           <span class="signature">&#8594; Type</span>         
         </dt>
         <dd class="inherited">
@@ -168,26 +152,17 @@
     <section class="summary offset-anchor" id="instance-methods">
       <h2>Methods</h2>
       <dl class="callables">
-        <dt id="toJson" class="callable">
-          <span class="name"><a href="template/Link/toJson.html">toJson</a></span><span class="signature">(<wbr>)
-            <span class="returntype parameter">&#8594; Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
-          </span>
-                  </dt>
-        <dd>
-          
-                  
-</dd>
         <dt id="noSuchMethod" class="callable inherited">
-          <span class="name"><a href="template/Link/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
+          <span class="name">noSuchMethod</span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
             <span class="returntype parameter">&#8594; dynamic</span>
           </span>
                   </dt>
         <dd class="inherited">
-          Invoked when a non-existent method or property is accessed. <a href="template/Link/noSuchMethod.html">[...]</a>
+          Invoked when a non-existent method or property is accessed.
                   <div class="features">inherited</div>
 </dd>
         <dt id="toString" class="callable inherited">
-          <span class="name"><a href="template/Link/toString.html">toString</a></span><span class="signature">(<wbr>)
+          <span class="name">toString</span><span class="signature">(<wbr>)
             <span class="returntype parameter">&#8594; String</span>
           </span>
                   </dt>
@@ -202,12 +177,12 @@
       <h2>Operators</h2>
       <dl class="callables">
         <dt id="operator ==" class="callable inherited">
-          <span class="name"><a href="template/Link/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span>)
+          <span class="name">operator ==</span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span>)
             <span class="returntype parameter">&#8594; bool</span>
           </span>
                   </dt>
         <dd class="inherited">
-          The equality operator. <a href="template/Link/operator_equals.html">[...]</a>
+          The equality operator.
                   <div class="features">inherited</div>
 </dd>
       </dl>
@@ -220,9 +195,6 @@
 
   <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
     <ol>
-      <li class="section-title"><a href="template/Link-class.html#constructors">Constructors</a></li>
-      <li><a href="template/Link/Link.html">Link</a></li>
-      <li><a href="template/Link/Link.fromJson.html">fromJson</a></li>
     
       <li class="section-title">
         <a href="template/Link-class.html#instance-properties">Properties</a>
@@ -231,16 +203,15 @@
       <li><a href="template/Link/iosExecParams.html">iosExecParams</a></li>
       <li><a href="template/Link/mobileWebUrl.html">mobileWebUrl</a></li>
       <li><a href="template/Link/webUrl.html">webUrl</a></li>
-      <li class="inherited"><a href="template/Link/hashCode.html">hashCode</a></li>
-      <li class="inherited"><a href="template/Link/runtimeType.html">runtimeType</a></li>
+      <li class="inherited">hashCode</li>
+      <li class="inherited">runtimeType</li>
     
       <li class="section-title"><a href="template/Link-class.html#instance-methods">Methods</a></li>
-      <li><a href="template/Link/toJson.html">toJson</a></li>
-      <li class="inherited"><a href="template/Link/noSuchMethod.html">noSuchMethod</a></li>
-      <li class="inherited"><a href="template/Link/toString.html">toString</a></li>
+      <li class="inherited">noSuchMethod</li>
+      <li class="inherited">toString</li>
     
       <li class="section-title inherited"><a href="template/Link-class.html#operators">Operators</a></li>
-      <li class="inherited"><a href="template/Link/operator_equals.html">operator ==</a></li>
+      <li class="inherited">operator ==</li>
     
     
     

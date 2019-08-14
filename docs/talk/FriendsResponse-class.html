@@ -71,6 +71,7 @@
       <li><a href="talk/TalkApi-class.html">TalkApi</a></li>
       <li><a href="talk/TalkProfile-class.html">TalkProfile</a></li>
       <li><a href="template/TextTemplate-class.html">TextTemplate</a></li>
+      <li><a href="common/Util-class.html">Util</a></li>
     
     
       <li class="section-title"><a href="talk/talk-library.html#constants">Constants</a></li>
@@ -79,6 +80,7 @@
     
     
       <li class="section-title"><a href="talk/talk-library.html#functions">Functions</a></li>
+      <li><a href="common/isKakaoTalkInstalled.html">isKakaoTalkInstalled</a></li>
       <li><a href="common/launchWithBrowserTab.html">launchWithBrowserTab</a></li>
     
       <li class="section-title"><a href="talk/talk-library.html#enums">Enums</a></li>
@@ -97,6 +99,9 @@
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
       <div><h1><span class="kind-class">FriendsResponse</span> class </h1></div>
 
+    <section class="desc markdown">
+      <p>Response from <a href="talk/FriendsResponse/friends.html">TalkApi.friends()</a>.</p>
+    </section>
     
     <section>
       <dl class="dl-horizontal">
@@ -106,30 +111,11 @@
 
         <dt>Annotations</dt>
         <dd><ul class="annotation-list clazz-relationships">
-          <li>@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false, explicitToJson: true)</li>
+          <li>@<a href="https://pub.dartlang.org/documentation/json_annotation/2.4.0/json_annotation/JsonSerializable-class.html">JsonSerializable</a>(fieldRename: FieldRename.snake, includeIfNull: false, explicitToJson: true)</li>
         </ul></dd>
       </dl>
     </section>
 
-    <section class="summary offset-anchor" id="constructors">
-      <h2>Constructors</h2>
-
-      <dl class="constructor-summary-list">
-        <dt id="FriendsResponse" class="callable">
-          <span class="name"><a href="talk/FriendsResponse/FriendsResponse.html">FriendsResponse</a></span><span class="signature">(<span class="parameter" id="-param-friends"><span class="type-annotation">List<span class="signature">&lt;<wbr><span class="type-parameter"><a href="talk/Friend-class.html">Friend</a></span>&gt;</span></span> <span class="parameter-name">friends</span>, </span> <span class="parameter" id="-param-totalCount"><span class="type-annotation">int</span> <span class="parameter-name">totalCount</span>, </span> <span class="parameter" id="-param-beforeUrl"><span class="type-annotation">String</span> <span class="parameter-name">beforeUrl</span>, </span> <span class="parameter" id="-param-afterUrl"><span class="type-annotation">String</span> <span class="parameter-name">afterUrl</span></span>)</span>
-        </dt>
-        <dd>
-          
-        </dd>
-        <dt id="FriendsResponse.fromJson" class="callable">
-          <span class="name"><a href="talk/FriendsResponse/FriendsResponse.fromJson.html">FriendsResponse.fromJson</a></span><span class="signature">(<span class="parameter" id="fromJson-param-json"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">json</span></span>)</span>
-        </dt>
-        <dd>
-          
-          <div class="constructor-modifier features">factory</div>
-        </dd>
-      </dl>
-    </section>
 
     <section class="summary offset-anchor" id="instance-properties">
       <h2>Properties</h2>
@@ -137,7 +123,7 @@
       <dl class="properties">
         <dt id="afterUrl" class="property">
           <span class="name"><a href="talk/FriendsResponse/afterUrl.html">afterUrl</a></span>
-          <span class="signature">&#8594; String</span>         
+          <span class="signature">&#8594; Uri</span>         
         </dt>
         <dd>
           
@@ -145,7 +131,7 @@
 </dd>
         <dt id="beforeUrl" class="property">
           <span class="name"><a href="talk/FriendsResponse/beforeUrl.html">beforeUrl</a></span>
-          <span class="signature">&#8594; String</span>         
+          <span class="signature">&#8594; Uri</span>         
         </dt>
         <dd>
           
@@ -157,7 +143,7 @@
         </dt>
         <dd>
           
-                  <div class="features">@JsonKey(name: &#39;elements&#39;), final</div>
+                  <div class="features">@<a href="https://pub.dartlang.org/documentation/json_annotation/2.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;elements&#39;), final</div>
 </dd>
         <dt id="totalCount" class="property">
           <span class="name"><a href="talk/FriendsResponse/totalCount.html">totalCount</a></span>
@@ -168,15 +154,15 @@
                   <div class="features">final</div>
 </dd>
         <dt id="hashCode" class="property inherited">
-          <span class="name"><a href="talk/FriendsResponse/hashCode.html">hashCode</a></span>
+          <span class="name">hashCode</span>
           <span class="signature">&#8594; int</span>         
         </dt>
         <dd class="inherited">
-          The hash code for this object. <a href="talk/FriendsResponse/hashCode.html">[...]</a>
+          The hash code for this object.
                   <div class="features">read-only, inherited</div>
 </dd>
         <dt id="runtimeType" class="property inherited">
-          <span class="name"><a href="talk/FriendsResponse/runtimeType.html">runtimeType</a></span>
+          <span class="name">runtimeType</span>
           <span class="signature">&#8594; Type</span>         
         </dt>
         <dd class="inherited">
@@ -189,15 +175,6 @@
     <section class="summary offset-anchor" id="instance-methods">
       <h2>Methods</h2>
       <dl class="callables">
-        <dt id="toJson" class="callable">
-          <span class="name"><a href="talk/FriendsResponse/toJson.html">toJson</a></span><span class="signature">(<wbr>)
-            <span class="returntype parameter">&#8594; Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
-          </span>
-                  </dt>
-        <dd>
-          
-                  
-</dd>
         <dt id="toString" class="callable">
           <span class="name"><a href="talk/FriendsResponse/toString.html">toString</a></span><span class="signature">(<wbr>)
             <span class="returntype parameter">&#8594; String</span>
@@ -208,12 +185,12 @@
                   
 </dd>
         <dt id="noSuchMethod" class="callable inherited">
-          <span class="name"><a href="talk/FriendsResponse/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
+          <span class="name">noSuchMethod</span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
             <span class="returntype parameter">&#8594; dynamic</span>
           </span>
                   </dt>
         <dd class="inherited">
-          Invoked when a non-existent method or property is accessed. <a href="talk/FriendsResponse/noSuchMethod.html">[...]</a>
+          Invoked when a non-existent method or property is accessed.
                   <div class="features">inherited</div>
 </dd>
       </dl>
@@ -223,12 +200,12 @@
       <h2>Operators</h2>
       <dl class="callables">
         <dt id="operator ==" class="callable inherited">
-          <span class="name"><a href="talk/FriendsResponse/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span>)
+          <span class="name">operator ==</span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span>)
             <span class="returntype parameter">&#8594; bool</span>
           </span>
                   </dt>
         <dd class="inherited">
-          The equality operator. <a href="talk/FriendsResponse/operator_equals.html">[...]</a>
+          The equality operator.
                   <div class="features">inherited</div>
 </dd>
       </dl>
@@ -241,9 +218,6 @@
 
   <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
     <ol>
-      <li class="section-title"><a href="talk/FriendsResponse-class.html#constructors">Constructors</a></li>
-      <li><a href="talk/FriendsResponse/FriendsResponse.html">FriendsResponse</a></li>
-      <li><a href="talk/FriendsResponse/FriendsResponse.fromJson.html">fromJson</a></li>
     
       <li class="section-title">
         <a href="talk/FriendsResponse-class.html#instance-properties">Properties</a>
@@ -252,16 +226,15 @@
       <li><a href="talk/FriendsResponse/beforeUrl.html">beforeUrl</a></li>
       <li><a href="talk/FriendsResponse/friends.html">friends</a></li>
       <li><a href="talk/FriendsResponse/totalCount.html">totalCount</a></li>
-      <li class="inherited"><a href="talk/FriendsResponse/hashCode.html">hashCode</a></li>
-      <li class="inherited"><a href="talk/FriendsResponse/runtimeType.html">runtimeType</a></li>
+      <li class="inherited">hashCode</li>
+      <li class="inherited">runtimeType</li>
     
       <li class="section-title"><a href="talk/FriendsResponse-class.html#instance-methods">Methods</a></li>
-      <li><a href="talk/FriendsResponse/toJson.html">toJson</a></li>
       <li><a href="talk/FriendsResponse/toString.html">toString</a></li>
-      <li class="inherited"><a href="talk/FriendsResponse/noSuchMethod.html">noSuchMethod</a></li>
+      <li class="inherited">noSuchMethod</li>
     
       <li class="section-title inherited"><a href="talk/FriendsResponse-class.html#operators">Operators</a></li>
-      <li class="inherited"><a href="talk/FriendsResponse/operator_equals.html">operator ==</a></li>
+      <li class="inherited">operator ==</li>
     
     
     

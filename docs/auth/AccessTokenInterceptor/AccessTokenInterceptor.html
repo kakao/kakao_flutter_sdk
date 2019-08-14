@@ -56,23 +56,21 @@
       <li class="section-title"><a href="auth/AccessTokenInterceptor-class.html#constructors">Constructors</a></li>
       <li><a href="auth/AccessTokenInterceptor/AccessTokenInterceptor.html">AccessTokenInterceptor</a></li>
     
-      <li class="section-title">
+      <li class="section-title inherited">
         <a href="auth/AccessTokenInterceptor-class.html#instance-properties">Properties</a>
       </li>
-      <li><a href="auth/AccessTokenInterceptor/dio.html">dio</a></li>
-      <li><a href="auth/AccessTokenInterceptor/kauthApi.html">kauthApi</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/hashCode.html">hashCode</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/runtimeType.html">runtimeType</a></li>
+      <li class="inherited">hashCode</li>
+      <li class="inherited">runtimeType</li>
     
       <li class="section-title"><a href="auth/AccessTokenInterceptor-class.html#instance-methods">Methods</a></li>
       <li><a href="auth/AccessTokenInterceptor/onError.html">onError</a></li>
       <li><a href="auth/AccessTokenInterceptor/onRequest.html">onRequest</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/noSuchMethod.html">noSuchMethod</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/onResponse.html">onResponse</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/toString.html">toString</a></li>
+      <li class="inherited">noSuchMethod</li>
+      <li class="inherited"><a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/Interceptor/onResponse.html">onResponse</a></li>
+      <li class="inherited">toString</li>
     
       <li class="section-title inherited"><a href="auth/AccessTokenInterceptor-class.html#operators">Operators</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/operator_equals.html">operator ==</a></li>
+      <li class="inherited">operator ==</li>
     
     
     
@@ -84,13 +82,15 @@
 
     <section class="multi-line-signature">
       
-      <span class="name ">AccessTokenInterceptor</span>(<wbr><span class="parameter" id="-param-dio"><span class="type-annotation">Dio</span> <span class="parameter-name">dio</span>, </span> <span class="parameter" id="-param-kauthApi"><span class="type-annotation"><a href="auth/AuthApi-class.html">AuthApi</a></span> <span class="parameter-name">kauthApi</span></span>)
+      <span class="name ">AccessTokenInterceptor</span>(<wbr><span class="parameter" id="-param-_dio"><span class="type-annotation"><a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/Dio-class.html">Dio</a></span> <span class="parameter-name">_dio</span>, </span> <span class="parameter" id="-param-_kauthApi"><span class="type-annotation"><a href="auth/AuthApi-class.html">AuthApi</a></span> <span class="parameter-name">_kauthApi</span>, {</span> <span class="parameter" id="-param-tokenStore"><span class="type-annotation"><a href="auth/AccessTokenStore-class.html">AccessTokenStore</a></span> <span class="parameter-name">tokenStore</span></span> })
     </section>
 
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">AccessTokenInterceptor(this.dio, this.kauthApi);</code></pre>
+      <pre class="language-dart"><code class="language-dart">AccessTokenInterceptor(this._dio, this._kauthApi,
+    {AccessTokenStore tokenStore})
+    : this._tokenStore = tokenStore ?? AccessTokenStore.instance;</code></pre>
     </section>
 
   </div> <!-- /.main-content -->

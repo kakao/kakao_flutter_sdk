@@ -54,12 +54,14 @@
       <li class="section-title"><a href="auth/auth-library.html#classes">Classes</a></li>
       <li><a href="auth/AccessToken-class.html">AccessToken</a></li>
       <li><a href="auth/AccessTokenInterceptor-class.html">AccessTokenInterceptor</a></li>
-      <li><a href="auth/AccessTokenRepo-class.html">AccessTokenRepo</a></li>
       <li><a href="auth/AccessTokenResponse-class.html">AccessTokenResponse</a></li>
+      <li><a href="auth/AccessTokenStore-class.html">AccessTokenStore</a></li>
       <li><a href="common/ApiFactory-class.html">ApiFactory</a></li>
       <li><a href="auth/AuthApi-class.html">AuthApi</a></li>
       <li><a href="auth/AuthCodeClient-class.html">AuthCodeClient</a></li>
+      <li><a href="auth/DefaultAccessTokenStore-class.html">DefaultAccessTokenStore</a></li>
       <li><a href="common/KakaoContext-class.html">KakaoContext</a></li>
+      <li><a href="common/Util-class.html">Util</a></li>
     
     
       <li class="section-title"><a href="auth/auth-library.html#constants">Constants</a></li>
@@ -68,6 +70,7 @@
     
     
       <li class="section-title"><a href="auth/auth-library.html#functions">Functions</a></li>
+      <li><a href="common/isKakaoTalkInstalled.html">isKakaoTalkInstalled</a></li>
       <li><a href="common/launchWithBrowserTab.html">launchWithBrowserTab</a></li>
     
       <li class="section-title"><a href="auth/auth-library.html#enums">Enums</a></li>
@@ -86,14 +89,32 @@
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
       <div><h1><span class="kind-class">AccessTokenInterceptor</span> class </h1></div>
 
+    <section class="desc markdown">
+      <p>Access token interceptor for Kakao API requests.</p>
+<p>Mainly does two things:</p><ol><li>Adds Authorization header to every request. <code>Bearer ${access_token}</code></li><li>When access tokens are expired, retries API requests after refreshing access token.</li></ol>
+    </section>
     
+    <section>
+      <dl class="dl-horizontal">
+        <dt>Inheritance</dt>
+        <dd><ul class="gt-separated dark clazz-relationships">
+          <li>Object</li>
+          <li><a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/Interceptor-class.html">Interceptor</a></li>
+          <li>AccessTokenInterceptor</li>
+        </ul></dd>
+
+
+
+
+      </dl>
+    </section>
 
     <section class="summary offset-anchor" id="constructors">
       <h2>Constructors</h2>
 
       <dl class="constructor-summary-list">
         <dt id="AccessTokenInterceptor" class="callable">
-          <span class="name"><a href="auth/AccessTokenInterceptor/AccessTokenInterceptor.html">AccessTokenInterceptor</a></span><span class="signature">(<span class="parameter" id="-param-dio"><span class="type-annotation">Dio</span> <span class="parameter-name">dio</span>, </span> <span class="parameter" id="-param-kauthApi"><span class="type-annotation"><a href="auth/AuthApi-class.html">AuthApi</a></span> <span class="parameter-name">kauthApi</span></span>)</span>
+          <span class="name"><a href="auth/AccessTokenInterceptor/AccessTokenInterceptor.html">AccessTokenInterceptor</a></span><span class="signature">(<span class="parameter" id="-param-_dio"><span class="type-annotation"><a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/Dio-class.html">Dio</a></span> <span class="parameter-name">_dio</span>, </span> <span class="parameter" id="-param-_kauthApi"><span class="type-annotation"><a href="auth/AuthApi-class.html">AuthApi</a></span> <span class="parameter-name">_kauthApi</span>, {</span> <span class="parameter" id="-param-tokenStore"><span class="type-annotation"><a href="auth/AccessTokenStore-class.html">AccessTokenStore</a></span> <span class="parameter-name">tokenStore</span></span> })</span>
         </dt>
         <dd>
           
@@ -101,36 +122,20 @@
       </dl>
     </section>
 
-    <section class="summary offset-anchor" id="instance-properties">
+    <section class="summary offset-anchor inherited" id="instance-properties">
       <h2>Properties</h2>
 
       <dl class="properties">
-        <dt id="dio" class="property">
-          <span class="name"><a href="auth/AccessTokenInterceptor/dio.html">dio</a></span>
-          <span class="signature">&#8596; Dio</span>         
-        </dt>
-        <dd>
-          
-                  <div class="features">read / write</div>
-</dd>
-        <dt id="kauthApi" class="property">
-          <span class="name"><a href="auth/AccessTokenInterceptor/kauthApi.html">kauthApi</a></span>
-          <span class="signature">&#8596; <a href="auth/AuthApi-class.html">AuthApi</a></span>         
-        </dt>
-        <dd>
-          
-                  <div class="features">read / write</div>
-</dd>
         <dt id="hashCode" class="property inherited">
-          <span class="name"><a href="auth/AccessTokenInterceptor/hashCode.html">hashCode</a></span>
+          <span class="name">hashCode</span>
           <span class="signature">&#8594; int</span>         
         </dt>
         <dd class="inherited">
-          The hash code for this object. <a href="auth/AccessTokenInterceptor/hashCode.html">[...]</a>
+          The hash code for this object.
                   <div class="features">read-only, inherited</div>
 </dd>
         <dt id="runtimeType" class="property inherited">
-          <span class="name"><a href="auth/AccessTokenInterceptor/runtimeType.html">runtimeType</a></span>
+          <span class="name">runtimeType</span>
           <span class="signature">&#8594; Type</span>         
         </dt>
         <dd class="inherited">
@@ -144,43 +149,43 @@
       <h2>Methods</h2>
       <dl class="callables">
         <dt id="onError" class="callable">
-          <span class="name"><a href="auth/AccessTokenInterceptor/onError.html">onError</a></span><span class="signature">(<wbr><span class="parameter" id="onError-param-err"><span class="type-annotation">DioError</span> <span class="parameter-name">err</span></span>)
+          <span class="name"><a href="auth/AccessTokenInterceptor/onError.html">onError</a></span><span class="signature">(<wbr><span class="parameter" id="onError-param-err"><span class="type-annotation"><a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/DioError-class.html">DioError</a></span> <span class="parameter-name">err</span></span>)
             <span class="returntype parameter">&#8594; FutureOr</span>
           </span>
                   </dt>
         <dd>
           The callback will be executed on error. <a href="auth/AccessTokenInterceptor/onError.html">[...]</a>
-                  
+                  <div class="features">override</div>
 </dd>
         <dt id="onRequest" class="callable">
-          <span class="name"><a href="auth/AccessTokenInterceptor/onRequest.html">onRequest</a></span><span class="signature">(<wbr><span class="parameter" id="onRequest-param-options"><span class="type-annotation">RequestOptions</span> <span class="parameter-name">options</span></span>)
+          <span class="name"><a href="auth/AccessTokenInterceptor/onRequest.html">onRequest</a></span><span class="signature">(<wbr><span class="parameter" id="onRequest-param-options"><span class="type-annotation"><a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/RequestOptions-class.html">RequestOptions</a></span> <span class="parameter-name">options</span></span>)
             <span class="returntype parameter">&#8594; FutureOr</span>
           </span>
                   </dt>
         <dd>
           The callback will be executed before the request is initiated. <a href="auth/AccessTokenInterceptor/onRequest.html">[...]</a>
-                  
+                  <div class="features">override</div>
 </dd>
         <dt id="noSuchMethod" class="callable inherited">
-          <span class="name"><a href="auth/AccessTokenInterceptor/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
+          <span class="name">noSuchMethod</span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
             <span class="returntype parameter">&#8594; dynamic</span>
           </span>
                   </dt>
         <dd class="inherited">
-          Invoked when a non-existent method or property is accessed. <a href="auth/AccessTokenInterceptor/noSuchMethod.html">[...]</a>
+          Invoked when a non-existent method or property is accessed.
                   <div class="features">inherited</div>
 </dd>
         <dt id="onResponse" class="callable inherited">
-          <span class="name"><a href="auth/AccessTokenInterceptor/onResponse.html">onResponse</a></span><span class="signature">(<wbr><span class="parameter" id="onResponse-param-response"><span class="type-annotation">Response</span> <span class="parameter-name">response</span></span>)
+          <span class="name"><a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/Interceptor/onResponse.html">onResponse</a></span><span class="signature">(<wbr><span class="parameter" id="onResponse-param-response"><span class="type-annotation"><a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/Response-class.html">Response</a></span> <span class="parameter-name">response</span></span>)
             <span class="returntype parameter">&#8594; FutureOr</span>
           </span>
                   </dt>
         <dd class="inherited">
-          The callback will be executed on success. <a href="auth/AccessTokenInterceptor/onResponse.html">[...]</a>
+          The callback will be executed on success. <a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/Interceptor/onResponse.html">[...]</a>
                   <div class="features">inherited</div>
 </dd>
         <dt id="toString" class="callable inherited">
-          <span class="name"><a href="auth/AccessTokenInterceptor/toString.html">toString</a></span><span class="signature">(<wbr>)
+          <span class="name">toString</span><span class="signature">(<wbr>)
             <span class="returntype parameter">&#8594; String</span>
           </span>
                   </dt>
@@ -195,12 +200,12 @@
       <h2>Operators</h2>
       <dl class="callables">
         <dt id="operator ==" class="callable inherited">
-          <span class="name"><a href="auth/AccessTokenInterceptor/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span>)
+          <span class="name">operator ==</span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span>)
             <span class="returntype parameter">&#8594; bool</span>
           </span>
                   </dt>
         <dd class="inherited">
-          The equality operator. <a href="auth/AccessTokenInterceptor/operator_equals.html">[...]</a>
+          The equality operator.
                   <div class="features">inherited</div>
 </dd>
       </dl>
@@ -216,23 +221,21 @@
       <li class="section-title"><a href="auth/AccessTokenInterceptor-class.html#constructors">Constructors</a></li>
       <li><a href="auth/AccessTokenInterceptor/AccessTokenInterceptor.html">AccessTokenInterceptor</a></li>
     
-      <li class="section-title">
+      <li class="section-title inherited">
         <a href="auth/AccessTokenInterceptor-class.html#instance-properties">Properties</a>
       </li>
-      <li><a href="auth/AccessTokenInterceptor/dio.html">dio</a></li>
-      <li><a href="auth/AccessTokenInterceptor/kauthApi.html">kauthApi</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/hashCode.html">hashCode</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/runtimeType.html">runtimeType</a></li>
+      <li class="inherited">hashCode</li>
+      <li class="inherited">runtimeType</li>
     
       <li class="section-title"><a href="auth/AccessTokenInterceptor-class.html#instance-methods">Methods</a></li>
       <li><a href="auth/AccessTokenInterceptor/onError.html">onError</a></li>
       <li><a href="auth/AccessTokenInterceptor/onRequest.html">onRequest</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/noSuchMethod.html">noSuchMethod</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/onResponse.html">onResponse</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/toString.html">toString</a></li>
+      <li class="inherited">noSuchMethod</li>
+      <li class="inherited"><a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/Interceptor/onResponse.html">onResponse</a></li>
+      <li class="inherited">toString</li>
     
       <li class="section-title inherited"><a href="auth/AccessTokenInterceptor-class.html#operators">Operators</a></li>
-      <li class="inherited"><a href="auth/AccessTokenInterceptor/operator_equals.html">operator ==</a></li>
+      <li class="inherited">operator ==</li>
     
     
     

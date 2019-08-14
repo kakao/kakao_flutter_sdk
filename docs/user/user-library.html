@@ -76,7 +76,7 @@
           <span class="name "><a href="user/AccessTokenInfo-class.html">AccessTokenInfo</a></span>         
         </dt>
         <dd>
-          
+          Accurate access token information from <a href="user/UserApi/accessTokenInfo.html">UserApi.accessTokenInfo()</a>.
         </dd>
         <dt id="Account">
           <span class="name "><a href="user/Account-class.html">Account</a></span>         
@@ -88,7 +88,7 @@
           <span class="name "><a href="common/ApiFactory-class.html">ApiFactory</a></span>         
         </dt>
         <dd>
-          
+          Factory for network clients, interceptors, and error transformers used by other libraries.
         </dd>
         <dt id="KakaoContext">
           <span class="name "><a href="common/KakaoContext-class.html">KakaoContext</a></span>         
@@ -100,43 +100,49 @@
           <span class="name "><a href="user/ServiceTerms-class.html">ServiceTerms</a></span>         
         </dt>
         <dd>
-          
+          Response from <a href="user/UserApi/serviceTerms.html">UserApi.serviceTerms()</a>
         </dd>
         <dt id="ShippingAddress">
           <span class="name "><a href="user/ShippingAddress-class.html">ShippingAddress</a></span>         
         </dt>
         <dd>
-          
+          Individual shipping address.
         </dd>
         <dt id="ShippingAddresses">
           <span class="name "><a href="user/ShippingAddresses-class.html">ShippingAddresses</a></span>         
         </dt>
         <dd>
-          
+          Response from <a href="user/ShippingAddresses/shippingAddresses.html">UserApi.shippingAddresses()</a>.
         </dd>
         <dt id="Terms">
           <span class="name "><a href="user/Terms-class.html">Terms</a></span>         
         </dt>
         <dd>
-          
+          Individual terms.
         </dd>
         <dt id="User">
           <span class="name "><a href="user/User-class.html">User</a></span>         
         </dt>
         <dd>
-          
+          Response from <a href="user/UserApi/me.html">UserApi.me()</a>.
         </dd>
         <dt id="UserApi">
           <span class="name "><a href="user/UserApi-class.html">UserApi</a></span>         
         </dt>
         <dd>
-          
+          Provides User API.
         </dd>
         <dt id="UserIdResponse">
           <span class="name "><a href="user/UserIdResponse-class.html">UserIdResponse</a></span>         
         </dt>
         <dd>
           
+        </dd>
+        <dt id="Util">
+          <span class="name "><a href="common/Util-class.html">Util</a></span>         
+        </dt>
+        <dd>
+          Collection of utility methods, usually for converting data types.
         </dd>
       </dl>
     </section>
@@ -154,7 +160,7 @@
           
                   
   <div>
-            <span class="signature"><code>&#39;https:&#47;&#47;kapi.kakao.com&#39;</code></span>
+            <span class="signature"><code>&#39;sandbox-kapi.kakao.com&#39;</code></span>
           </div>
         </dd>
         <dt id="OAUTH_HOST" class="constant">
@@ -165,7 +171,7 @@
           
                   
   <div>
-            <span class="signature"><code>&#39;https:&#47;&#47;kauth.kakao.com&#39;</code></span>
+            <span class="signature"><code>&#39;sandbox-kauth.kakao.com&#39;</code></span>
           </div>
         </dd>
       </dl>
@@ -176,13 +182,22 @@
       <h2>Functions</h2>
 
       <dl class="callables">
+        <dt id="isKakaoTalkInstalled" class="callable">
+          <span class="name"><a href="common/isKakaoTalkInstalled.html">isKakaoTalkInstalled</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">bool</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Determines whether KakaoTalk is installed on this device.
+                  
+</dd>
         <dt id="launchWithBrowserTab" class="callable">
           <span class="name"><a href="common/launchWithBrowserTab.html">launchWithBrowserTab</a></span><span class="signature">(<wbr><span class="parameter" id="launchWithBrowserTab-param-url"><span class="type-annotation">Uri</span> <span class="parameter-name">url</span>, [</span> <span class="parameter" id="launchWithBrowserTab-param-redirectUri"><span class="type-annotation">String</span> <span class="parameter-name">redirectUri</span></span> ])
             <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">String</span>&gt;</span></span>
           </span>
                   </dt>
         <dd>
-          
+          Launches a given url with platform-specific default browser tab.
                   
 </dd>
       </dl>
@@ -196,7 +211,7 @@
           <span class="name "><a href="user/AgeRange-class.html">AgeRange</a></span>         
         </dt>
         <dd>
-          
+          Age range in <a href="user/Account-class.html">Account</a>.
         </dd>
         <dt id="ApiErrorCause">
           <span class="name "><a href="common/ApiErrorCause-class.html">ApiErrorCause</a></span>         
@@ -214,7 +229,7 @@
           <span class="name "><a href="user/Gender-class.html">Gender</a></span>         
         </dt>
         <dd>
-          
+          Gender in <a href="user/Account-class.html">Account</a>.
         </dd>
       </dl>
     </section>
@@ -268,6 +283,7 @@
       <li><a href="user/User-class.html">User</a></li>
       <li><a href="user/UserApi-class.html">UserApi</a></li>
       <li><a href="user/UserIdResponse-class.html">UserIdResponse</a></li>
+      <li><a href="common/Util-class.html">Util</a></li>
     
     
       <li class="section-title"><a href="user/user-library.html#constants">Constants</a></li>
@@ -276,6 +292,7 @@
     
     
       <li class="section-title"><a href="user/user-library.html#functions">Functions</a></li>
+      <li><a href="common/isKakaoTalkInstalled.html">isKakaoTalkInstalled</a></li>
       <li><a href="common/launchWithBrowserTab.html">launchWithBrowserTab</a></li>
     
       <li class="section-title"><a href="user/user-library.html#enums">Enums</a></li>

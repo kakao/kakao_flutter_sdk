@@ -76,7 +76,7 @@
           <span class="name "><a href="common/ApiFactory-class.html">ApiFactory</a></span>         
         </dt>
         <dd>
-          
+          Factory for network clients, interceptors, and error transformers used by other libraries.
         </dd>
         <dt id="KakaoContext">
           <span class="name "><a href="common/KakaoContext-class.html">KakaoContext</a></span>         
@@ -88,13 +88,19 @@
           <span class="name "><a href="push/PushApi-class.html">PushApi</a></span>         
         </dt>
         <dd>
-          
+          Provides Kakao Push API.
         </dd>
         <dt id="PushTokenInfo">
           <span class="name "><a href="push/PushTokenInfo-class.html">PushTokenInfo</a></span>         
         </dt>
         <dd>
-          
+          Push token this user has registered before.
+        </dd>
+        <dt id="Util">
+          <span class="name "><a href="common/Util-class.html">Util</a></span>         
+        </dt>
+        <dd>
+          Collection of utility methods, usually for converting data types.
         </dd>
       </dl>
     </section>
@@ -112,7 +118,7 @@
           
                   
   <div>
-            <span class="signature"><code>&#39;https:&#47;&#47;kapi.kakao.com&#39;</code></span>
+            <span class="signature"><code>&#39;sandbox-kapi.kakao.com&#39;</code></span>
           </div>
         </dd>
         <dt id="OAUTH_HOST" class="constant">
@@ -123,7 +129,7 @@
           
                   
   <div>
-            <span class="signature"><code>&#39;https:&#47;&#47;kauth.kakao.com&#39;</code></span>
+            <span class="signature"><code>&#39;sandbox-kauth.kakao.com&#39;</code></span>
           </div>
         </dd>
       </dl>
@@ -134,13 +140,22 @@
       <h2>Functions</h2>
 
       <dl class="callables">
+        <dt id="isKakaoTalkInstalled" class="callable">
+          <span class="name"><a href="common/isKakaoTalkInstalled.html">isKakaoTalkInstalled</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">bool</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Determines whether KakaoTalk is installed on this device.
+                  
+</dd>
         <dt id="launchWithBrowserTab" class="callable">
           <span class="name"><a href="common/launchWithBrowserTab.html">launchWithBrowserTab</a></span><span class="signature">(<wbr><span class="parameter" id="launchWithBrowserTab-param-url"><span class="type-annotation">Uri</span> <span class="parameter-name">url</span>, [</span> <span class="parameter" id="launchWithBrowserTab-param-redirectUri"><span class="type-annotation">String</span> <span class="parameter-name">redirectUri</span></span> ])
             <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">String</span>&gt;</span></span>
           </span>
                   </dt>
         <dd>
-          
+          Launches a given url with platform-specific default browser tab.
                   
 </dd>
       </dl>
@@ -161,6 +176,12 @@
         </dt>
         <dd>
           Specific error from Kakao OAuth.
+        </dd>
+        <dt id="PushType">
+          <span class="name "><a href="push/PushType-class.html">PushType</a></span>         
+        </dt>
+        <dd>
+          
         </dd>
       </dl>
     </section>
@@ -207,6 +228,7 @@
       <li><a href="common/KakaoContext-class.html">KakaoContext</a></li>
       <li><a href="push/PushApi-class.html">PushApi</a></li>
       <li><a href="push/PushTokenInfo-class.html">PushTokenInfo</a></li>
+      <li><a href="common/Util-class.html">Util</a></li>
     
     
       <li class="section-title"><a href="push/push-library.html#constants">Constants</a></li>
@@ -215,11 +237,13 @@
     
     
       <li class="section-title"><a href="push/push-library.html#functions">Functions</a></li>
+      <li><a href="common/isKakaoTalkInstalled.html">isKakaoTalkInstalled</a></li>
       <li><a href="common/launchWithBrowserTab.html">launchWithBrowserTab</a></li>
     
       <li class="section-title"><a href="push/push-library.html#enums">Enums</a></li>
       <li><a href="common/ApiErrorCause-class.html">ApiErrorCause</a></li>
       <li><a href="common/AuthErrorCause-class.html">AuthErrorCause</a></li>
+      <li><a href="push/PushType-class.html">PushType</a></li>
     
     
       <li class="section-title"><a href="push/push-library.html#exceptions">Exceptions</a></li>

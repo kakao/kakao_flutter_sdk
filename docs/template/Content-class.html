@@ -76,6 +76,9 @@
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
       <div><h1><span class="kind-class">Content</span> class </h1></div>
 
+    <section class="desc markdown">
+      <p>Represents content section of feed, location, and commerce type template.</p>
+    </section>
     
     <section>
       <dl class="dl-horizontal">
@@ -85,30 +88,11 @@
 
         <dt>Annotations</dt>
         <dd><ul class="annotation-list clazz-relationships">
-          <li>@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)</li>
+          <li>@<a href="https://pub.dartlang.org/documentation/json_annotation/2.4.0/json_annotation/JsonSerializable-class.html">JsonSerializable</a>(fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)</li>
         </ul></dd>
       </dl>
     </section>
 
-    <section class="summary offset-anchor" id="constructors">
-      <h2>Constructors</h2>
-
-      <dl class="constructor-summary-list">
-        <dt id="Content" class="callable">
-          <span class="name"><a href="template/Content/Content.html">Content</a></span><span class="signature">(<span class="parameter" id="-param-title"><span class="type-annotation">String</span> <span class="parameter-name">title</span>, </span> <span class="parameter" id="-param-imageUrl"><span class="type-annotation">String</span> <span class="parameter-name">imageUrl</span>, </span> <span class="parameter" id="-param-link"><span class="type-annotation"><a href="template/Link-class.html">Link</a></span> <span class="parameter-name">link</span>, {</span> <span class="parameter" id="-param-imageWidth"><span class="type-annotation">int</span> <span class="parameter-name">imageWidth</span>, </span> <span class="parameter" id="-param-imageHeight"><span class="type-annotation">int</span> <span class="parameter-name">imageHeight</span></span> })</span>
-        </dt>
-        <dd>
-          
-        </dd>
-        <dt id="Content.fromJson" class="callable">
-          <span class="name"><a href="template/Content/Content.fromJson.html">Content.fromJson</a></span><span class="signature">(<span class="parameter" id="fromJson-param-json"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">json</span></span>)</span>
-        </dt>
-        <dd>
-          
-          <div class="constructor-modifier features">factory</div>
-        </dd>
-      </dl>
-    </section>
 
     <section class="summary offset-anchor" id="instance-properties">
       <h2>Properties</h2>
@@ -124,7 +108,7 @@
 </dd>
         <dt id="imageUrl" class="property">
           <span class="name"><a href="template/Content/imageUrl.html">imageUrl</a></span>
-          <span class="signature">&#8594; String</span>         
+          <span class="signature">&#8594; Uri</span>         
         </dt>
         <dd>
           
@@ -155,15 +139,15 @@
                   <div class="features">final</div>
 </dd>
         <dt id="hashCode" class="property inherited">
-          <span class="name"><a href="template/Content/hashCode.html">hashCode</a></span>
+          <span class="name">hashCode</span>
           <span class="signature">&#8594; int</span>         
         </dt>
         <dd class="inherited">
-          The hash code for this object. <a href="template/Content/hashCode.html">[...]</a>
+          The hash code for this object.
                   <div class="features">read-only, inherited</div>
 </dd>
         <dt id="runtimeType" class="property inherited">
-          <span class="name"><a href="template/Content/runtimeType.html">runtimeType</a></span>
+          <span class="name">runtimeType</span>
           <span class="signature">&#8594; Type</span>         
         </dt>
         <dd class="inherited">
@@ -176,26 +160,17 @@
     <section class="summary offset-anchor" id="instance-methods">
       <h2>Methods</h2>
       <dl class="callables">
-        <dt id="toJson" class="callable">
-          <span class="name"><a href="template/Content/toJson.html">toJson</a></span><span class="signature">(<wbr>)
-            <span class="returntype parameter">&#8594; Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
-          </span>
-                  </dt>
-        <dd>
-          
-                  
-</dd>
         <dt id="noSuchMethod" class="callable inherited">
-          <span class="name"><a href="template/Content/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
+          <span class="name">noSuchMethod</span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
             <span class="returntype parameter">&#8594; dynamic</span>
           </span>
                   </dt>
         <dd class="inherited">
-          Invoked when a non-existent method or property is accessed. <a href="template/Content/noSuchMethod.html">[...]</a>
+          Invoked when a non-existent method or property is accessed.
                   <div class="features">inherited</div>
 </dd>
         <dt id="toString" class="callable inherited">
-          <span class="name"><a href="template/Content/toString.html">toString</a></span><span class="signature">(<wbr>)
+          <span class="name">toString</span><span class="signature">(<wbr>)
             <span class="returntype parameter">&#8594; String</span>
           </span>
                   </dt>
@@ -210,12 +185,12 @@
       <h2>Operators</h2>
       <dl class="callables">
         <dt id="operator ==" class="callable inherited">
-          <span class="name"><a href="template/Content/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span>)
+          <span class="name">operator ==</span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span>)
             <span class="returntype parameter">&#8594; bool</span>
           </span>
                   </dt>
         <dd class="inherited">
-          The equality operator. <a href="template/Content/operator_equals.html">[...]</a>
+          The equality operator.
                   <div class="features">inherited</div>
 </dd>
       </dl>
@@ -228,9 +203,6 @@
 
   <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
     <ol>
-      <li class="section-title"><a href="template/Content-class.html#constructors">Constructors</a></li>
-      <li><a href="template/Content/Content.html">Content</a></li>
-      <li><a href="template/Content/Content.fromJson.html">fromJson</a></li>
     
       <li class="section-title">
         <a href="template/Content-class.html#instance-properties">Properties</a>
@@ -240,16 +212,15 @@
       <li><a href="template/Content/imageWidth.html">imageWidth</a></li>
       <li><a href="template/Content/link.html">link</a></li>
       <li><a href="template/Content/title.html">title</a></li>
-      <li class="inherited"><a href="template/Content/hashCode.html">hashCode</a></li>
-      <li class="inherited"><a href="template/Content/runtimeType.html">runtimeType</a></li>
+      <li class="inherited">hashCode</li>
+      <li class="inherited">runtimeType</li>
     
       <li class="section-title"><a href="template/Content-class.html#instance-methods">Methods</a></li>
-      <li><a href="template/Content/toJson.html">toJson</a></li>
-      <li class="inherited"><a href="template/Content/noSuchMethod.html">noSuchMethod</a></li>
-      <li class="inherited"><a href="template/Content/toString.html">toString</a></li>
+      <li class="inherited">noSuchMethod</li>
+      <li class="inherited">toString</li>
     
       <li class="section-title inherited"><a href="template/Content-class.html#operators">Operators</a></li>
-      <li class="inherited"><a href="template/Content/operator_equals.html">operator ==</a></li>
+      <li class="inherited">operator ==</li>
     
     
     

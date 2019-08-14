@@ -59,17 +59,17 @@
       <li class="section-title inherited">
         <a href="auth/AuthCodeClient-class.html#instance-properties">Properties</a>
       </li>
-      <li class="inherited"><a href="auth/AuthCodeClient/hashCode.html">hashCode</a></li>
-      <li class="inherited"><a href="auth/AuthCodeClient/runtimeType.html">runtimeType</a></li>
+      <li class="inherited">hashCode</li>
+      <li class="inherited">runtimeType</li>
     
       <li class="section-title"><a href="auth/AuthCodeClient-class.html#instance-methods">Methods</a></li>
       <li><a href="auth/AuthCodeClient/request.html">request</a></li>
       <li><a href="auth/AuthCodeClient/requestWithTalk.html">requestWithTalk</a></li>
-      <li class="inherited"><a href="auth/AuthCodeClient/noSuchMethod.html">noSuchMethod</a></li>
-      <li class="inherited"><a href="auth/AuthCodeClient/toString.html">toString</a></li>
+      <li class="inherited">noSuchMethod</li>
+      <li class="inherited">toString</li>
     
       <li class="section-title inherited"><a href="auth/AuthCodeClient-class.html#operators">Operators</a></li>
-      <li class="inherited"><a href="auth/AuthCodeClient/operator_equals.html">operator ==</a></li>
+      <li class="inherited">operator ==</li>
     
       <li class="section-title"><a href="auth/AuthCodeClient-class.html#static-properties">Static properties</a></li>
       <li><a href="auth/AuthCodeClient/instance.html">instance</a></li>
@@ -87,6 +87,9 @@
 (<wbr>{<span class="parameter" id="request-param-clientId"><span class="type-annotation">String</span> <span class="parameter-name">clientId</span>, </span> <span class="parameter" id="request-param-redirectUri"><span class="type-annotation">String</span> <span class="parameter-name">redirectUri</span>, </span> <span class="parameter" id="request-param-scopes"><span class="type-annotation">List<span class="signature">&lt;<wbr><span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">scopes</span></span> })
       
     </section>
+    <section class="desc markdown">
+      <p>Requests authorization code via <code>Chrome Custom Tabs</code> (on Android) and <code>ASWebAuthenticationSession</code> (on iOS).</p>
+    </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
@@ -103,7 +106,7 @@
     &quot;scope&quot;: scopes == null ? null : scopes.join(&quot; &quot;)
   };
   params.removeWhere((k, v) =&gt; v == null);
-  var url = Uri.https(&quot;kauth.kakao.com&quot;, &quot;&#47;oauth&#47;authorize&quot;, params);
+  var url = Uri.https(OAUTH_HOST, &quot;&#47;oauth&#47;authorize&quot;, params);
   return _parseCode(await launchWithBrowserTab(url, finalRedirectUri));
 }</code></pre>
     </section>

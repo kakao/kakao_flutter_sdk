@@ -56,12 +56,11 @@
       <li class="section-title"><a href="story/StoryApi-class.html#constructors">Constructors</a></li>
       <li><a href="story/StoryApi/StoryApi.html">StoryApi</a></li>
     
-      <li class="section-title">
+      <li class="section-title inherited">
         <a href="story/StoryApi-class.html#instance-properties">Properties</a>
       </li>
-      <li><a href="story/StoryApi/dio.html">dio</a></li>
-      <li class="inherited"><a href="story/StoryApi/hashCode.html">hashCode</a></li>
-      <li class="inherited"><a href="story/StoryApi/runtimeType.html">runtimeType</a></li>
+      <li class="inherited">hashCode</li>
+      <li class="inherited">runtimeType</li>
     
       <li class="section-title"><a href="story/StoryApi-class.html#instance-methods">Methods</a></li>
       <li><a href="story/StoryApi/deleteStory.html">deleteStory</a></li>
@@ -74,11 +73,11 @@
       <li><a href="story/StoryApi/profile.html">profile</a></li>
       <li><a href="story/StoryApi/scrapImages.html">scrapImages</a></li>
       <li><a href="story/StoryApi/scrapLink.html">scrapLink</a></li>
-      <li class="inherited"><a href="story/StoryApi/noSuchMethod.html">noSuchMethod</a></li>
-      <li class="inherited"><a href="story/StoryApi/toString.html">toString</a></li>
+      <li class="inherited">noSuchMethod</li>
+      <li class="inherited">toString</li>
     
       <li class="section-title inherited"><a href="story/StoryApi-class.html#operators">Operators</a></li>
-      <li class="inherited"><a href="story/StoryApi/operator_equals.html">operator ==</a></li>
+      <li class="inherited">operator ==</li>
     
       <li class="section-title"><a href="story/StoryApi-class.html#static-properties">Static properties</a></li>
       <li><a href="story/StoryApi/instance.html">instance</a></li>
@@ -96,12 +95,15 @@
 (<wbr>)
       
     </section>
+    <section class="desc markdown">
+      <p>Fetches current user's KakaoStory profile.</p>
+    </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">Future&lt;StoryProfile&gt; profile() async {
   return ApiFactory.handleApiError(() async {
-    final response = await dio.get(&quot;&#47;v1&#47;api&#47;story&#47;profile&quot;,
+    final response = await _dio.get(&quot;&#47;v1&#47;api&#47;story&#47;profile&quot;,
         queryParameters: {&quot;secure_resource&quot;: &quot;true&quot;});
     return StoryProfile.fromJson(response.data);
   });

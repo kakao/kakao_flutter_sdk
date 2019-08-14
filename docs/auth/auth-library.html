@@ -66,6 +66,7 @@
 
     <section class="desc markdown">
       <p>Provides OAuth API.</p>
+<p>Mainly you can do two things with this library:</p><ol><li>Issue authorization code (via <a href="auth/AuthCodeClient-class.html">AuthCodeClient</a>)</li><li>Issue or refrresh access token. (via <a href="auth/AuthApi-class.html">AuthApi</a>)</li></ol>
     </section>
     
     <section class="summary offset-anchor" id="classes">
@@ -76,19 +77,13 @@
           <span class="name "><a href="auth/AccessToken-class.html">AccessToken</a></span>         
         </dt>
         <dd>
-          
+          Access token and refresh token information.
         </dd>
         <dt id="AccessTokenInterceptor">
           <span class="name "><a href="auth/AccessTokenInterceptor-class.html">AccessTokenInterceptor</a></span>         
         </dt>
         <dd>
-          
-        </dd>
-        <dt id="AccessTokenRepo">
-          <span class="name "><a href="auth/AccessTokenRepo-class.html">AccessTokenRepo</a></span>         
-        </dt>
-        <dd>
-          Stores access token and refresh token returned by <a href="auth/AuthApi-class.html">AuthApi</a>.
+          Access token interceptor for Kakao API requests. <a href="auth/AccessTokenInterceptor-class.html">[...]</a>
         </dd>
         <dt id="AccessTokenResponse">
           <span class="name "><a href="auth/AccessTokenResponse-class.html">AccessTokenResponse</a></span>         
@@ -96,11 +91,17 @@
         <dd>
           
         </dd>
+        <dt id="AccessTokenStore">
+          <span class="name "><a href="auth/AccessTokenStore-class.html">AccessTokenStore</a></span>         
+        </dt>
+        <dd>
+          Stores access token and refresh token from <a href="auth/AuthApi-class.html">AuthApi</a>. <a href="auth/AccessTokenStore-class.html">[...]</a>
+        </dd>
         <dt id="ApiFactory">
           <span class="name "><a href="common/ApiFactory-class.html">ApiFactory</a></span>         
         </dt>
         <dd>
-          
+          Factory for network clients, interceptors, and error transformers used by other libraries.
         </dd>
         <dt id="AuthApi">
           <span class="name "><a href="auth/AuthApi-class.html">AuthApi</a></span>         
@@ -114,11 +115,23 @@
         <dd>
           Provides OAuth authorization process. <a href="auth/AuthCodeClient-class.html">[...]</a>
         </dd>
+        <dt id="DefaultAccessTokenStore">
+          <span class="name "><a href="auth/DefaultAccessTokenStore-class.html">DefaultAccessTokenStore</a></span>         
+        </dt>
+        <dd>
+          Default <a href="auth/AccessTokenStore-class.html">AccessTokenStore</a> provided by Kakao Flutter SDK. <a href="auth/DefaultAccessTokenStore-class.html">[...]</a>
+        </dd>
         <dt id="KakaoContext">
           <span class="name "><a href="common/KakaoContext-class.html">KakaoContext</a></span>         
         </dt>
         <dd>
           Singleton context for Kakao Flutter SDK.
+        </dd>
+        <dt id="Util">
+          <span class="name "><a href="common/Util-class.html">Util</a></span>         
+        </dt>
+        <dd>
+          Collection of utility methods, usually for converting data types.
         </dd>
       </dl>
     </section>
@@ -136,7 +149,7 @@
           
                   
   <div>
-            <span class="signature"><code>&#39;https:&#47;&#47;kapi.kakao.com&#39;</code></span>
+            <span class="signature"><code>&#39;sandbox-kapi.kakao.com&#39;</code></span>
           </div>
         </dd>
         <dt id="OAUTH_HOST" class="constant">
@@ -147,7 +160,7 @@
           
                   
   <div>
-            <span class="signature"><code>&#39;https:&#47;&#47;kauth.kakao.com&#39;</code></span>
+            <span class="signature"><code>&#39;sandbox-kauth.kakao.com&#39;</code></span>
           </div>
         </dd>
       </dl>
@@ -158,13 +171,22 @@
       <h2>Functions</h2>
 
       <dl class="callables">
+        <dt id="isKakaoTalkInstalled" class="callable">
+          <span class="name"><a href="common/isKakaoTalkInstalled.html">isKakaoTalkInstalled</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">bool</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Determines whether KakaoTalk is installed on this device.
+                  
+</dd>
         <dt id="launchWithBrowserTab" class="callable">
           <span class="name"><a href="common/launchWithBrowserTab.html">launchWithBrowserTab</a></span><span class="signature">(<wbr><span class="parameter" id="launchWithBrowserTab-param-url"><span class="type-annotation">Uri</span> <span class="parameter-name">url</span>, [</span> <span class="parameter" id="launchWithBrowserTab-param-redirectUri"><span class="type-annotation">String</span> <span class="parameter-name">redirectUri</span></span> ])
             <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">String</span>&gt;</span></span>
           </span>
                   </dt>
         <dd>
-          
+          Launches a given url with platform-specific default browser tab.
                   
 </dd>
       </dl>
@@ -229,12 +251,14 @@
       <li class="section-title"><a href="auth/auth-library.html#classes">Classes</a></li>
       <li><a href="auth/AccessToken-class.html">AccessToken</a></li>
       <li><a href="auth/AccessTokenInterceptor-class.html">AccessTokenInterceptor</a></li>
-      <li><a href="auth/AccessTokenRepo-class.html">AccessTokenRepo</a></li>
       <li><a href="auth/AccessTokenResponse-class.html">AccessTokenResponse</a></li>
+      <li><a href="auth/AccessTokenStore-class.html">AccessTokenStore</a></li>
       <li><a href="common/ApiFactory-class.html">ApiFactory</a></li>
       <li><a href="auth/AuthApi-class.html">AuthApi</a></li>
       <li><a href="auth/AuthCodeClient-class.html">AuthCodeClient</a></li>
+      <li><a href="auth/DefaultAccessTokenStore-class.html">DefaultAccessTokenStore</a></li>
       <li><a href="common/KakaoContext-class.html">KakaoContext</a></li>
+      <li><a href="common/Util-class.html">Util</a></li>
     
     
       <li class="section-title"><a href="auth/auth-library.html#constants">Constants</a></li>
@@ -243,6 +267,7 @@
     
     
       <li class="section-title"><a href="auth/auth-library.html#functions">Functions</a></li>
+      <li><a href="common/isKakaoTalkInstalled.html">isKakaoTalkInstalled</a></li>
       <li><a href="common/launchWithBrowserTab.html">launchWithBrowserTab</a></li>
     
       <li class="section-title"><a href="auth/auth-library.html#enums">Enums</a></li>

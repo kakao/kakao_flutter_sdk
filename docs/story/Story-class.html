@@ -62,6 +62,7 @@
       <li><a href="story/StoryImage-class.html">StoryImage</a></li>
       <li><a href="story/StoryLike-class.html">StoryLike</a></li>
       <li><a href="story/StoryProfile-class.html">StoryProfile</a></li>
+      <li><a href="common/Util-class.html">Util</a></li>
     
     
       <li class="section-title"><a href="story/story-library.html#constants">Constants</a></li>
@@ -70,6 +71,7 @@
     
     
       <li class="section-title"><a href="story/story-library.html#functions">Functions</a></li>
+      <li><a href="common/isKakaoTalkInstalled.html">isKakaoTalkInstalled</a></li>
       <li><a href="common/launchWithBrowserTab.html">launchWithBrowserTab</a></li>
       <li><a href="story/permissionToParams.html">permissionToParams</a></li>
     
@@ -78,6 +80,7 @@
       <li><a href="common/AuthErrorCause-class.html">AuthErrorCause</a></li>
       <li><a href="story/Emoticon-class.html">Emoticon</a></li>
       <li><a href="story/StoryPermission-class.html">StoryPermission</a></li>
+      <li><a href="story/StoryType-class.html">StoryType</a></li>
     
     
       <li class="section-title"><a href="story/story-library.html#exceptions">Exceptions</a></li>
@@ -100,30 +103,11 @@
 
         <dt>Annotations</dt>
         <dd><ul class="annotation-list clazz-relationships">
-          <li>@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false, explicitToJson: true)</li>
+          <li>@<a href="https://pub.dartlang.org/documentation/json_annotation/2.4.0/json_annotation/JsonSerializable-class.html">JsonSerializable</a>(fieldRename: FieldRename.snake, includeIfNull: false, explicitToJson: true)</li>
         </ul></dd>
       </dl>
     </section>
 
-    <section class="summary offset-anchor" id="constructors">
-      <h2>Constructors</h2>
-
-      <dl class="constructor-summary-list">
-        <dt id="Story" class="callable">
-          <span class="name"><a href="story/Story/Story.html">Story</a></span><span class="signature">(<span class="parameter" id="-param-id"><span class="type-annotation">String</span> <span class="parameter-name">id</span>, </span> <span class="parameter" id="-param-url"><span class="type-annotation">String</span> <span class="parameter-name">url</span>, </span> <span class="parameter" id="-param-content"><span class="type-annotation">String</span> <span class="parameter-name">content</span>, </span> <span class="parameter" id="-param-createdAt"><span class="type-annotation">String</span> <span class="parameter-name">createdAt</span>, </span> <span class="parameter" id="-param-mediaType"><span class="type-annotation">String</span> <span class="parameter-name">mediaType</span>, </span> <span class="parameter" id="-param-commentCount"><span class="type-annotation">int</span> <span class="parameter-name">commentCount</span>, </span> <span class="parameter" id="-param-likeCount"><span class="type-annotation">int</span> <span class="parameter-name">likeCount</span>, </span> <span class="parameter" id="-param-images"><span class="type-annotation">List<span class="signature">&lt;<wbr><span class="type-parameter"><a href="story/StoryImage-class.html">StoryImage</a></span>&gt;</span></span> <span class="parameter-name">images</span>, </span> <span class="parameter" id="-param-likes"><span class="type-annotation">List<span class="signature">&lt;<wbr><span class="type-parameter"><a href="story/StoryLike-class.html">StoryLike</a></span>&gt;</span></span> <span class="parameter-name">likes</span>, </span> <span class="parameter" id="-param-comments"><span class="type-annotation">List<span class="signature">&lt;<wbr><span class="type-parameter"><a href="story/StoryComment-class.html">StoryComment</a></span>&gt;</span></span> <span class="parameter-name">comments</span>, </span> <span class="parameter" id="-param-permission"><span class="type-annotation"><a href="story/StoryPermission-class.html">StoryPermission</a></span> <span class="parameter-name">permission</span></span>)</span>
-        </dt>
-        <dd>
-          
-        </dd>
-        <dt id="Story.fromJson" class="callable">
-          <span class="name"><a href="story/Story/Story.fromJson.html">Story.fromJson</a></span><span class="signature">(<span class="parameter" id="fromJson-param-json"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">json</span></span>)</span>
-        </dt>
-        <dd>
-          
-          <div class="constructor-modifier features">factory</div>
-        </dd>
-      </dl>
-    </section>
 
     <section class="summary offset-anchor" id="instance-properties">
       <h2>Properties</h2>
@@ -142,7 +126,7 @@
           <span class="signature">&#8594; List<span class="signature">&lt;<wbr><span class="type-parameter"><a href="story/StoryComment-class.html">StoryComment</a></span>&gt;</span></span>         
         </dt>
         <dd>
-          
+          Only present in <a href="story/StoryApi/myStory.html">StoryApi.myStory()</a>, always null in <a href="story/StoryApi/myStories.html">StoryApi.myStories()</a>.
                   <div class="features">final</div>
 </dd>
         <dt id="content" class="property">
@@ -155,7 +139,7 @@
 </dd>
         <dt id="createdAt" class="property">
           <span class="name"><a href="story/Story/createdAt.html">createdAt</a></span>
-          <span class="signature">&#8594; String</span>         
+          <span class="signature">&#8594; DateTime</span>         
         </dt>
         <dd>
           
@@ -175,7 +159,7 @@
         </dt>
         <dd>
           
-                  <div class="features">@JsonKey(name: &#39;media&#39;), final</div>
+                  <div class="features">@<a href="https://pub.dartlang.org/documentation/json_annotation/2.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;media&#39;), final</div>
 </dd>
         <dt id="likeCount" class="property">
           <span class="name"><a href="story/Story/likeCount.html">likeCount</a></span>
@@ -190,12 +174,12 @@
           <span class="signature">&#8594; List<span class="signature">&lt;<wbr><span class="type-parameter"><a href="story/StoryLike-class.html">StoryLike</a></span>&gt;</span></span>         
         </dt>
         <dd>
-          
+          Only present in <a href="story/StoryApi/myStory.html">StoryApi.myStory()</a>, always null in <a href="story/StoryApi/myStories.html">StoryApi.myStories()</a>.
                   <div class="features">final</div>
 </dd>
         <dt id="mediaType" class="property">
           <span class="name"><a href="story/Story/mediaType.html">mediaType</a></span>
-          <span class="signature">&#8594; String</span>         
+          <span class="signature">&#8594; <a href="story/StoryType-class.html">StoryType</a></span>         
         </dt>
         <dd>
           
@@ -211,22 +195,22 @@
 </dd>
         <dt id="url" class="property">
           <span class="name"><a href="story/Story/url.html">url</a></span>
-          <span class="signature">&#8594; String</span>         
+          <span class="signature">&#8594; Uri</span>         
         </dt>
         <dd>
           
                   <div class="features">final</div>
 </dd>
         <dt id="hashCode" class="property inherited">
-          <span class="name"><a href="story/Story/hashCode.html">hashCode</a></span>
+          <span class="name">hashCode</span>
           <span class="signature">&#8594; int</span>         
         </dt>
         <dd class="inherited">
-          The hash code for this object. <a href="story/Story/hashCode.html">[...]</a>
+          The hash code for this object.
                   <div class="features">read-only, inherited</div>
 </dd>
         <dt id="runtimeType" class="property inherited">
-          <span class="name"><a href="story/Story/runtimeType.html">runtimeType</a></span>
+          <span class="name">runtimeType</span>
           <span class="signature">&#8594; Type</span>         
         </dt>
         <dd class="inherited">
@@ -239,15 +223,6 @@
     <section class="summary offset-anchor" id="instance-methods">
       <h2>Methods</h2>
       <dl class="callables">
-        <dt id="toJson" class="callable">
-          <span class="name"><a href="story/Story/toJson.html">toJson</a></span><span class="signature">(<wbr>)
-            <span class="returntype parameter">&#8594; Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
-          </span>
-                  </dt>
-        <dd>
-          
-                  
-</dd>
         <dt id="toString" class="callable">
           <span class="name"><a href="story/Story/toString.html">toString</a></span><span class="signature">(<wbr>)
             <span class="returntype parameter">&#8594; String</span>
@@ -258,12 +233,12 @@
                   
 </dd>
         <dt id="noSuchMethod" class="callable inherited">
-          <span class="name"><a href="story/Story/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
+          <span class="name">noSuchMethod</span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
             <span class="returntype parameter">&#8594; dynamic</span>
           </span>
                   </dt>
         <dd class="inherited">
-          Invoked when a non-existent method or property is accessed. <a href="story/Story/noSuchMethod.html">[...]</a>
+          Invoked when a non-existent method or property is accessed.
                   <div class="features">inherited</div>
 </dd>
       </dl>
@@ -273,12 +248,12 @@
       <h2>Operators</h2>
       <dl class="callables">
         <dt id="operator ==" class="callable inherited">
-          <span class="name"><a href="story/Story/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span>)
+          <span class="name">operator ==</span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span>)
             <span class="returntype parameter">&#8594; bool</span>
           </span>
                   </dt>
         <dd class="inherited">
-          The equality operator. <a href="story/Story/operator_equals.html">[...]</a>
+          The equality operator.
                   <div class="features">inherited</div>
 </dd>
       </dl>
@@ -291,9 +266,6 @@
 
   <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
     <ol>
-      <li class="section-title"><a href="story/Story-class.html#constructors">Constructors</a></li>
-      <li><a href="story/Story/Story.html">Story</a></li>
-      <li><a href="story/Story/Story.fromJson.html">fromJson</a></li>
     
       <li class="section-title">
         <a href="story/Story-class.html#instance-properties">Properties</a>
@@ -309,16 +281,15 @@
       <li><a href="story/Story/mediaType.html">mediaType</a></li>
       <li><a href="story/Story/permission.html">permission</a></li>
       <li><a href="story/Story/url.html">url</a></li>
-      <li class="inherited"><a href="story/Story/hashCode.html">hashCode</a></li>
-      <li class="inherited"><a href="story/Story/runtimeType.html">runtimeType</a></li>
+      <li class="inherited">hashCode</li>
+      <li class="inherited">runtimeType</li>
     
       <li class="section-title"><a href="story/Story-class.html#instance-methods">Methods</a></li>
-      <li><a href="story/Story/toJson.html">toJson</a></li>
       <li><a href="story/Story/toString.html">toString</a></li>
-      <li class="inherited"><a href="story/Story/noSuchMethod.html">noSuchMethod</a></li>
+      <li class="inherited">noSuchMethod</li>
     
       <li class="section-title inherited"><a href="story/Story-class.html#operators">Operators</a></li>
-      <li class="inherited"><a href="story/Story/operator_equals.html">operator ==</a></li>
+      <li class="inherited">operator ==</li>
     
     
     

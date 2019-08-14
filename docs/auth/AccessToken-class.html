@@ -54,12 +54,14 @@
       <li class="section-title"><a href="auth/auth-library.html#classes">Classes</a></li>
       <li><a href="auth/AccessToken-class.html">AccessToken</a></li>
       <li><a href="auth/AccessTokenInterceptor-class.html">AccessTokenInterceptor</a></li>
-      <li><a href="auth/AccessTokenRepo-class.html">AccessTokenRepo</a></li>
       <li><a href="auth/AccessTokenResponse-class.html">AccessTokenResponse</a></li>
+      <li><a href="auth/AccessTokenStore-class.html">AccessTokenStore</a></li>
       <li><a href="common/ApiFactory-class.html">ApiFactory</a></li>
       <li><a href="auth/AuthApi-class.html">AuthApi</a></li>
       <li><a href="auth/AuthCodeClient-class.html">AuthCodeClient</a></li>
+      <li><a href="auth/DefaultAccessTokenStore-class.html">DefaultAccessTokenStore</a></li>
       <li><a href="common/KakaoContext-class.html">KakaoContext</a></li>
+      <li><a href="common/Util-class.html">Util</a></li>
     
     
       <li class="section-title"><a href="auth/auth-library.html#constants">Constants</a></li>
@@ -68,6 +70,7 @@
     
     
       <li class="section-title"><a href="auth/auth-library.html#functions">Functions</a></li>
+      <li><a href="common/isKakaoTalkInstalled.html">isKakaoTalkInstalled</a></li>
       <li><a href="common/launchWithBrowserTab.html">launchWithBrowserTab</a></li>
     
       <li class="section-title"><a href="auth/auth-library.html#enums">Enums</a></li>
@@ -86,6 +89,9 @@
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
       <div><h1><span class="kind-class">AccessToken</span> class </h1></div>
 
+    <section class="desc markdown">
+      <p>Access token and refresh token information.</p>
+    </section>
     
 
     <section class="summary offset-anchor" id="constructors">
@@ -118,7 +124,7 @@
           <span class="signature">&#8596; DateTime</span>         
         </dt>
         <dd>
-          
+          Use this field with caution. Token might have expired on server side.
                   <div class="features">read / write</div>
 </dd>
         <dt id="refreshToken" class="property">
@@ -134,7 +140,7 @@
           <span class="signature">&#8596; DateTime</span>         
         </dt>
         <dd>
-          
+          Use this field with caution. Token might have expired on server side.
                   <div class="features">read / write</div>
 </dd>
         <dt id="scopes" class="property">
@@ -142,19 +148,19 @@
           <span class="signature">&#8596; List<span class="signature">&lt;<wbr><span class="type-parameter">String</span>&gt;</span></span>         
         </dt>
         <dd>
-          
+          List of scopes this user has agreed to when this token was issued.
                   <div class="features">read / write</div>
 </dd>
         <dt id="hashCode" class="property inherited">
-          <span class="name"><a href="auth/AccessToken/hashCode.html">hashCode</a></span>
+          <span class="name">hashCode</span>
           <span class="signature">&#8594; int</span>         
         </dt>
         <dd class="inherited">
-          The hash code for this object. <a href="auth/AccessToken/hashCode.html">[...]</a>
+          The hash code for this object.
                   <div class="features">read-only, inherited</div>
 </dd>
         <dt id="runtimeType" class="property inherited">
-          <span class="name"><a href="auth/AccessToken/runtimeType.html">runtimeType</a></span>
+          <span class="name">runtimeType</span>
           <span class="signature">&#8594; Type</span>         
         </dt>
         <dd class="inherited">
@@ -177,12 +183,12 @@
                   
 </dd>
         <dt id="noSuchMethod" class="callable inherited">
-          <span class="name"><a href="auth/AccessToken/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
+          <span class="name">noSuchMethod</span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
             <span class="returntype parameter">&#8594; dynamic</span>
           </span>
                   </dt>
         <dd class="inherited">
-          Invoked when a non-existent method or property is accessed. <a href="auth/AccessToken/noSuchMethod.html">[...]</a>
+          Invoked when a non-existent method or property is accessed.
                   <div class="features">inherited</div>
 </dd>
       </dl>
@@ -192,12 +198,12 @@
       <h2>Operators</h2>
       <dl class="callables">
         <dt id="operator ==" class="callable inherited">
-          <span class="name"><a href="auth/AccessToken/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span>)
+          <span class="name">operator ==</span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span>)
             <span class="returntype parameter">&#8594; bool</span>
           </span>
                   </dt>
         <dd class="inherited">
-          The equality operator. <a href="auth/AccessToken/operator_equals.html">[...]</a>
+          The equality operator.
                   <div class="features">inherited</div>
 </dd>
       </dl>
@@ -221,15 +227,15 @@
       <li><a href="auth/AccessToken/refreshToken.html">refreshToken</a></li>
       <li><a href="auth/AccessToken/refreshTokenExpiresAt.html">refreshTokenExpiresAt</a></li>
       <li><a href="auth/AccessToken/scopes.html">scopes</a></li>
-      <li class="inherited"><a href="auth/AccessToken/hashCode.html">hashCode</a></li>
-      <li class="inherited"><a href="auth/AccessToken/runtimeType.html">runtimeType</a></li>
+      <li class="inherited">hashCode</li>
+      <li class="inherited">runtimeType</li>
     
       <li class="section-title"><a href="auth/AccessToken-class.html#instance-methods">Methods</a></li>
       <li><a href="auth/AccessToken/toString.html">toString</a></li>
-      <li class="inherited"><a href="auth/AccessToken/noSuchMethod.html">noSuchMethod</a></li>
+      <li class="inherited">noSuchMethod</li>
     
       <li class="section-title inherited"><a href="auth/AccessToken-class.html#operators">Operators</a></li>
-      <li class="inherited"><a href="auth/AccessToken/operator_equals.html">operator ==</a></li>
+      <li class="inherited">operator ==</li>
     
     
     
