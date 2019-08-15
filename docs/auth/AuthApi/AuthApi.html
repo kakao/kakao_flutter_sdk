@@ -63,6 +63,7 @@
       <li class="inherited">runtimeType</li>
     
       <li class="section-title"><a href="auth/AuthApi-class.html#instance-methods">Methods</a></li>
+      <li><a href="auth/AuthApi/agt.html">agt</a></li>
       <li><a href="auth/AuthApi/issueAccessToken.html">issueAccessToken</a></li>
       <li><a href="auth/AuthApi/refreshAccessToken.html">refreshAccessToken</a></li>
       <li class="inherited">noSuchMethod</li>
@@ -83,13 +84,16 @@
 
     <section class="multi-line-signature">
       
-      <span class="name ">AuthApi</span>(<wbr><span class="parameter" id="-param-_dio"><span class="type-annotation"><a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/Dio-class.html">Dio</a></span> <span class="parameter-name">_dio</span>, [</span> <span class="parameter" id="-param-_platform"><span class="type-annotation">dynamic</span> <span class="parameter-name">_platform</span></span> ])
+      <span class="name ">AuthApi</span>(<wbr>{<span class="parameter" id="-param-dio"><span class="type-annotation"><a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/Dio-class.html">Dio</a></span> <span class="parameter-name">dio</span>, </span> <span class="parameter" id="-param-platform"><span class="type-annotation"><a href="https://pub.dartlang.org/documentation/platform/2.2.1/platform/Platform-class.html">Platform</a></span> <span class="parameter-name">platform</span>, </span> <span class="parameter" id="-param-tokenStore"><span class="type-annotation"><a href="auth/AccessTokenStore-class.html">AccessTokenStore</a></span> <span class="parameter-name">tokenStore</span></span> })
     </section>
 
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">AuthApi(this._dio, [this._platform]);</code></pre>
+      <pre class="language-dart"><code class="language-dart">AuthApi({Dio dio, Platform platform, AccessTokenStore tokenStore})
+    : _dio = dio ?? ApiFactory.kauthApi,
+      _platform = platform ?? LocalPlatform(),
+      _tokenStore = tokenStore ?? AccessTokenStore.instance;</code></pre>
     </section>
 
   </div> <!-- /.main-content -->

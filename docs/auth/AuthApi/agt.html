@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the secureModeKey constant from the DefaultAccessTokenStore class, for the Dart programming language.">
-  <title>secureModeKey constant - DefaultAccessTokenStore class - auth library - Dart API</title>
+  <meta name="description" content="API docs for the agt method from the AuthApi class, for the Dart programming language.">
+  <title>agt method - AuthApi class - auth library - Dart API</title>
   <!-- required because all the links are pseudo-absolute -->
   <base href="../..">
 
@@ -26,10 +26,10 @@
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="index.html">kakao_flutter_sdk</a></li>
     <li><a href="auth/auth-library.html">auth</a></li>
-    <li><a href="auth/DefaultAccessTokenStore-class.html">DefaultAccessTokenStore</a></li>
-    <li class="self-crumb">secureModeKey constant</li>
+    <li><a href="auth/AuthApi-class.html">AuthApi</a></li>
+    <li class="self-crumb">agt method</li>
   </ol>
-  <div class="self-name">secureModeKey</div>
+  <div class="self-name">agt</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -47,58 +47,62 @@
     <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
       <li><a href="index.html">kakao_flutter_sdk</a></li>
       <li><a href="auth/auth-library.html">auth</a></li>
-      <li><a href="auth/DefaultAccessTokenStore-class.html">DefaultAccessTokenStore</a></li>
-      <li class="self-crumb">secureModeKey constant</li>
+      <li><a href="auth/AuthApi-class.html">AuthApi</a></li>
+      <li class="self-crumb">agt method</li>
     </ol>
     
-    <h5>DefaultAccessTokenStore class</h5>
+    <h5>AuthApi class</h5>
     <ol>
-      <li class="section-title"><a href="auth/DefaultAccessTokenStore-class.html#constructors">Constructors</a></li>
-      <li><a href="auth/DefaultAccessTokenStore/DefaultAccessTokenStore.html">DefaultAccessTokenStore</a></li>
+      <li class="section-title"><a href="auth/AuthApi-class.html#constructors">Constructors</a></li>
+      <li><a href="auth/AuthApi/AuthApi.html">AuthApi</a></li>
     
       <li class="section-title inherited">
-        <a href="auth/DefaultAccessTokenStore-class.html#instance-properties">Properties</a>
+        <a href="auth/AuthApi-class.html#instance-properties">Properties</a>
       </li>
       <li class="inherited">hashCode</li>
       <li class="inherited">runtimeType</li>
     
-      <li class="section-title"><a href="auth/DefaultAccessTokenStore-class.html#instance-methods">Methods</a></li>
-      <li><a href="auth/DefaultAccessTokenStore/clear.html">clear</a></li>
-      <li><a href="auth/DefaultAccessTokenStore/fromStore.html">fromStore</a></li>
-      <li><a href="auth/DefaultAccessTokenStore/toStore.html">toStore</a></li>
+      <li class="section-title"><a href="auth/AuthApi-class.html#instance-methods">Methods</a></li>
+      <li><a href="auth/AuthApi/agt.html">agt</a></li>
+      <li><a href="auth/AuthApi/issueAccessToken.html">issueAccessToken</a></li>
+      <li><a href="auth/AuthApi/refreshAccessToken.html">refreshAccessToken</a></li>
       <li class="inherited">noSuchMethod</li>
       <li class="inherited">toString</li>
     
-      <li class="section-title inherited"><a href="auth/DefaultAccessTokenStore-class.html#operators">Operators</a></li>
+      <li class="section-title inherited"><a href="auth/AuthApi-class.html#operators">Operators</a></li>
       <li class="inherited">operator ==</li>
     
+      <li class="section-title"><a href="auth/AuthApi-class.html#static-properties">Static properties</a></li>
+      <li><a href="auth/AuthApi/instance.html">instance</a></li>
     
     
-      <li class="section-title"><a href="auth/DefaultAccessTokenStore-class.html#constants">Constants</a></li>
-      <li><a href="auth/DefaultAccessTokenStore/atExpiresAtKey-constant.html">atExpiresAtKey</a></li>
-      <li><a href="auth/DefaultAccessTokenStore/atKey-constant.html">atKey</a></li>
-      <li><a href="auth/DefaultAccessTokenStore/rtExpiresAtKey-constant.html">rtExpiresAtKey</a></li>
-      <li><a href="auth/DefaultAccessTokenStore/rtKey-constant.html">rtKey</a></li>
-      <li><a href="auth/DefaultAccessTokenStore/scopesKey-constant.html">scopesKey</a></li>
-      <li><a href="auth/DefaultAccessTokenStore/secureModeKey-constant.html">secureModeKey</a></li>
     </ol>
-  </div><!--/.sidebar-offcanvas-left-->
+  </div><!--/.sidebar-offcanvas-->
 
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
-      <div><h1><span class="kind-constant">secureModeKey</span> constant</h1></div>
+      <div><h1><span class="kind-method">agt</span> method</h1></div>
 
     <section class="multi-line-signature">
-        <span class="returntype">String</span>
-        const <span class="name ">secureModeKey</span>
-        =
-        <span class="constant-value">&quot;com.kakao.token.KakaoSecureMode&quot;</span>
+      <span class="returntype">Future<span class="signature">&lt;<wbr><span class="type-parameter">String</span>&gt;</span></span>
+            <span class="name ">agt</span>
+(<wbr>{<span class="parameter" id="agt-param-clientId"><span class="type-annotation">String</span> <span class="parameter-name">clientId</span>, </span> <span class="parameter" id="agt-param-accessToken"><span class="type-annotation">String</span> <span class="parameter-name">accessToken</span></span> })
+      
     </section>
-
-        <section class="summary source-code" id="source">
+    
+    <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">static const secureModeKey = &quot;com.kakao.token.KakaoSecureMode&quot;
+      <pre class="language-dart"><code class="language-dart">Future&lt;String&gt; agt({String clientId, String accessToken}) async {
+  final tokenInfo = await _tokenStore.fromStore();
+  final data = {
+    &quot;client_id&quot;: clientId ?? KakaoContext.clientId,
+    &quot;access_token&quot;: accessToken ?? tokenInfo.accessToken
+  };
 
-</code></pre>
+  return await ApiFactory.handleApiError(() async {
+    final response = await _dio.post(&quot;&#47;api&#47;agt&quot;, data: data);
+    return response.data[&quot;agt&quot;];
+  });
+}</code></pre>
     </section>
 
   </div> <!-- /.main-content -->

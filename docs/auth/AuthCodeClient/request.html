@@ -64,6 +64,7 @@
     
       <li class="section-title"><a href="auth/AuthCodeClient-class.html#instance-methods">Methods</a></li>
       <li><a href="auth/AuthCodeClient/request.html">request</a></li>
+      <li><a href="auth/AuthCodeClient/requestWithAgt.html">requestWithAgt</a></li>
       <li><a href="auth/AuthCodeClient/requestWithTalk.html">requestWithTalk</a></li>
       <li class="inherited">noSuchMethod</li>
       <li class="inherited">toString</li>
@@ -95,7 +96,7 @@
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">Future&lt;String&gt; request(
     {String clientId, String redirectUri, List&lt;String&gt; scopes}) async {
-  var finalRedirectUri =
+  final finalRedirectUri =
       redirectUri ?? &quot;kakao${KakaoContext.clientId}:&#47;&#47;oauth&quot;;
 
   final params = {
@@ -106,7 +107,7 @@
     &quot;scope&quot;: scopes == null ? null : scopes.join(&quot; &quot;)
   };
   params.removeWhere((k, v) =&gt; v == null);
-  var url = Uri.https(OAUTH_HOST, &quot;&#47;oauth&#47;authorize&quot;, params);
+  final url = Uri.https(OAUTH_HOST, &quot;&#47;oauth&#47;authorize&quot;, params);
   return _parseCode(await launchWithBrowserTab(url, finalRedirectUri));
 }</code></pre>
     </section>

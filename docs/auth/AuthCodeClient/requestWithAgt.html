@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the issueAccessToken method from the AuthApi class, for the Dart programming language.">
-  <title>issueAccessToken method - AuthApi class - auth library - Dart API</title>
+  <meta name="description" content="API docs for the requestWithAgt method from the AuthCodeClient class, for the Dart programming language.">
+  <title>requestWithAgt method - AuthCodeClient class - auth library - Dart API</title>
   <!-- required because all the links are pseudo-absolute -->
   <base href="../..">
 
@@ -26,10 +26,10 @@
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="index.html">kakao_flutter_sdk</a></li>
     <li><a href="auth/auth-library.html">auth</a></li>
-    <li><a href="auth/AuthApi-class.html">AuthApi</a></li>
-    <li class="self-crumb">issueAccessToken method</li>
+    <li><a href="auth/AuthCodeClient-class.html">AuthCodeClient</a></li>
+    <li class="self-crumb">requestWithAgt method</li>
   </ol>
-  <div class="self-name">issueAccessToken</div>
+  <div class="self-name">requestWithAgt</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -47,63 +47,65 @@
     <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
       <li><a href="index.html">kakao_flutter_sdk</a></li>
       <li><a href="auth/auth-library.html">auth</a></li>
-      <li><a href="auth/AuthApi-class.html">AuthApi</a></li>
-      <li class="self-crumb">issueAccessToken method</li>
+      <li><a href="auth/AuthCodeClient-class.html">AuthCodeClient</a></li>
+      <li class="self-crumb">requestWithAgt method</li>
     </ol>
     
-    <h5>AuthApi class</h5>
+    <h5>AuthCodeClient class</h5>
     <ol>
-      <li class="section-title"><a href="auth/AuthApi-class.html#constructors">Constructors</a></li>
-      <li><a href="auth/AuthApi/AuthApi.html">AuthApi</a></li>
+      <li class="section-title"><a href="auth/AuthCodeClient-class.html#constructors">Constructors</a></li>
+      <li><a href="auth/AuthCodeClient/AuthCodeClient.html">AuthCodeClient</a></li>
     
       <li class="section-title inherited">
-        <a href="auth/AuthApi-class.html#instance-properties">Properties</a>
+        <a href="auth/AuthCodeClient-class.html#instance-properties">Properties</a>
       </li>
       <li class="inherited">hashCode</li>
       <li class="inherited">runtimeType</li>
     
-      <li class="section-title"><a href="auth/AuthApi-class.html#instance-methods">Methods</a></li>
-      <li><a href="auth/AuthApi/agt.html">agt</a></li>
-      <li><a href="auth/AuthApi/issueAccessToken.html">issueAccessToken</a></li>
-      <li><a href="auth/AuthApi/refreshAccessToken.html">refreshAccessToken</a></li>
+      <li class="section-title"><a href="auth/AuthCodeClient-class.html#instance-methods">Methods</a></li>
+      <li><a href="auth/AuthCodeClient/request.html">request</a></li>
+      <li><a href="auth/AuthCodeClient/requestWithAgt.html">requestWithAgt</a></li>
+      <li><a href="auth/AuthCodeClient/requestWithTalk.html">requestWithTalk</a></li>
       <li class="inherited">noSuchMethod</li>
       <li class="inherited">toString</li>
     
-      <li class="section-title inherited"><a href="auth/AuthApi-class.html#operators">Operators</a></li>
+      <li class="section-title inherited"><a href="auth/AuthCodeClient-class.html#operators">Operators</a></li>
       <li class="inherited">operator ==</li>
     
-      <li class="section-title"><a href="auth/AuthApi-class.html#static-properties">Static properties</a></li>
-      <li><a href="auth/AuthApi/instance.html">instance</a></li>
+      <li class="section-title"><a href="auth/AuthCodeClient-class.html#static-properties">Static properties</a></li>
+      <li><a href="auth/AuthCodeClient/instance.html">instance</a></li>
     
     
     </ol>
   </div><!--/.sidebar-offcanvas-->
 
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
-      <div><h1><span class="kind-method">issueAccessToken</span> method</h1></div>
+      <div><h1><span class="kind-method">requestWithAgt</span> method</h1></div>
 
     <section class="multi-line-signature">
-      <span class="returntype">Future<span class="signature">&lt;<wbr><span class="type-parameter"><a href="auth/AccessTokenResponse-class.html">AccessTokenResponse</a></span>&gt;</span></span>
-            <span class="name ">issueAccessToken</span>
-(<wbr><span class="parameter" id="issueAccessToken-param-authCode"><span class="type-annotation">String</span> <span class="parameter-name">authCode</span>, {</span> <span class="parameter" id="issueAccessToken-param-redirectUri"><span class="type-annotation">String</span> <span class="parameter-name">redirectUri</span>, </span> <span class="parameter" id="issueAccessToken-param-clientId"><span class="type-annotation">String</span> <span class="parameter-name">clientId</span></span> })
+      <span class="returntype">Future<span class="signature">&lt;<wbr><span class="type-parameter">String</span>&gt;</span></span>
+            <span class="name ">requestWithAgt</span>
+(<wbr><span class="parameter" id="requestWithAgt-param-scopes"><span class="type-annotation">List<span class="signature">&lt;<wbr><span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">scopes</span>, {</span> <span class="parameter" id="requestWithAgt-param-clientId"><span class="type-annotation">String</span> <span class="parameter-name">clientId</span>, </span> <span class="parameter" id="requestWithAgt-param-redirectUri"><span class="type-annotation">String</span> <span class="parameter-name">redirectUri</span></span> })
       
-    </section>
-    <section class="desc markdown">
-      <p>Issues an access token from authCode acquired from <a href="auth/AuthCodeClient-class.html">AuthCodeClient</a>.</p>
     </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">Future&lt;AccessTokenResponse&gt; issueAccessToken(String authCode,
-    {String redirectUri, String clientId}) async {
-  final data = {
-    &quot;code&quot;: authCode,
-    &quot;grant_type&quot;: &quot;authorization_code&quot;,
+      <pre class="language-dart"><code class="language-dart">Future&lt;String&gt; requestWithAgt(List&lt;String&gt; scopes,
+    {String clientId, String redirectUri}) async {
+  final agt = await _kauthApi.agt();
+  final finalRedirectUri =
+      redirectUri ?? &quot;kakao${KakaoContext.clientId}:&#47;&#47;oauth&quot;;
+  final params = {
     &quot;client_id&quot;: clientId ?? KakaoContext.clientId,
-    &quot;redirect_uri&quot;: redirectUri ?? &quot;kakao${KakaoContext.clientId}:&#47;&#47;oauth&quot;,
-    ...await _platformData()
+    &quot;redirect_uri&quot;: finalRedirectUri,
+    &quot;response_type&quot;: &quot;code&quot;,
+    &quot;agt&quot;: agt,
+    &quot;scope&quot;: scopes == null ? null : scopes.join(&quot; &quot;)
   };
-  return await _issueAccessToken(data);
+  params.removeWhere((k, v) =&gt; v == null);
+  final url = Uri.https(OAUTH_HOST, &quot;&#47;oauth&#47;authorize&quot;, params);
+  return _parseCode(await launchWithBrowserTab(url, finalRedirectUri));
 }</code></pre>
     </section>
 

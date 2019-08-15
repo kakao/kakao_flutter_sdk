@@ -63,6 +63,7 @@
       <li class="inherited">runtimeType</li>
     
       <li class="section-title"><a href="auth/AuthApi-class.html#instance-methods">Methods</a></li>
+      <li><a href="auth/AuthApi/agt.html">agt</a></li>
       <li><a href="auth/AuthApi/issueAccessToken.html">issueAccessToken</a></li>
       <li><a href="auth/AuthApi/refreshAccessToken.html">refreshAccessToken</a></li>
       <li class="inherited">noSuchMethod</li>
@@ -96,7 +97,7 @@
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">Future&lt;AccessTokenResponse&gt; refreshAccessToken(String refreshToken,
     {String redirectUri, String clientId}) async {
-  var data = {
+  final data = {
     &quot;refresh_token&quot;: refreshToken,
     &quot;grant_type&quot;: &quot;refresh_token&quot;,
     &quot;client_id&quot;: clientId ?? KakaoContext.clientId,

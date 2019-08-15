@@ -99,7 +99,7 @@
 
       <dl class="constructor-summary-list">
         <dt id="AuthApi" class="callable">
-          <span class="name"><a href="auth/AuthApi/AuthApi.html">AuthApi</a></span><span class="signature">(<span class="parameter" id="-param-_dio"><span class="type-annotation"><a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/Dio-class.html">Dio</a></span> <span class="parameter-name">_dio</span>, [</span> <span class="parameter" id="-param-_platform"><span class="type-annotation">dynamic</span> <span class="parameter-name">_platform</span></span> ])</span>
+          <span class="name"><a href="auth/AuthApi/AuthApi.html">AuthApi</a></span><span class="signature">({<span class="parameter" id="-param-dio"><span class="type-annotation"><a href="https://pub.dartlang.org/documentation/dio/2.1.13/dio/Dio-class.html">Dio</a></span> <span class="parameter-name">dio</span>, </span> <span class="parameter" id="-param-platform"><span class="type-annotation"><a href="https://pub.dartlang.org/documentation/platform/2.2.1/platform/Platform-class.html">Platform</a></span> <span class="parameter-name">platform</span>, </span> <span class="parameter" id="-param-tokenStore"><span class="type-annotation"><a href="auth/AccessTokenStore-class.html">AccessTokenStore</a></span> <span class="parameter-name">tokenStore</span></span> })</span>
         </dt>
         <dd>
           
@@ -133,6 +133,15 @@
     <section class="summary offset-anchor" id="instance-methods">
       <h2>Methods</h2>
       <dl class="callables">
+        <dt id="agt" class="callable">
+          <span class="name"><a href="auth/AuthApi/agt.html">agt</a></span><span class="signature">(<wbr>{<span class="parameter" id="agt-param-clientId"><span class="type-annotation">String</span> <span class="parameter-name">clientId</span>, </span> <span class="parameter" id="agt-param-accessToken"><span class="type-annotation">String</span> <span class="parameter-name">accessToken</span></span> })
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">String</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          
+                  
+</dd>
         <dt id="issueAccessToken" class="callable">
           <span class="name"><a href="auth/AuthApi/issueAccessToken.html">issueAccessToken</a></span><span class="signature">(<wbr><span class="parameter" id="issueAccessToken-param-authCode"><span class="type-annotation">String</span> <span class="parameter-name">authCode</span>, {</span> <span class="parameter" id="issueAccessToken-param-redirectUri"><span class="type-annotation">String</span> <span class="parameter-name">redirectUri</span>, </span> <span class="parameter" id="issueAccessToken-param-clientId"><span class="type-annotation">String</span> <span class="parameter-name">clientId</span></span> })
             <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter"><a href="auth/AccessTokenResponse-class.html">AccessTokenResponse</a></span>&gt;</span></span>
@@ -196,7 +205,7 @@
           <span class="signature">&#8594; <a href="auth/AuthApi-class.html">AuthApi</a></span>         
         </dt>
         <dd>
-          
+          Default instance SDK provides.
                   <div class="features">final</div>
 </dd>
       </dl>
@@ -218,6 +227,7 @@
       <li class="inherited">runtimeType</li>
     
       <li class="section-title"><a href="auth/AuthApi-class.html#instance-methods">Methods</a></li>
+      <li><a href="auth/AuthApi/agt.html">agt</a></li>
       <li><a href="auth/AuthApi/issueAccessToken.html">issueAccessToken</a></li>
       <li><a href="auth/AuthApi/refreshAccessToken.html">refreshAccessToken</a></li>
       <li class="inherited">noSuchMethod</li>
