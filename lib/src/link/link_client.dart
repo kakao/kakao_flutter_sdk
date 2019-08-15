@@ -50,6 +50,6 @@ class LinkClient {
           : {"lcba": jsonEncode(serverCallbackArgs)})
     };
     return Uri.https(
-        "sharer.kakao.com", "talk/friends/picker/easylink", params);
+        KakaoContext.hosts.sharer, "talk/friends/picker/easylink", params);
   }
 }

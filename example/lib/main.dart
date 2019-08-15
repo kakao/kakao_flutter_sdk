@@ -16,7 +16,7 @@ import 'story.dart';
 import 'talk.dart';
 
 void main() {
-  KakaoContext.clientId = "cd9b86b063c3037851a4671c1712c01b";
+  KakaoContext.clientId = "dd4e9cb75815cbdf7d87ed721a659baf";
   BlocSupervisor.delegate = MyBlocDelegate();
   runApp(MultiBlocProvider(
     providers: [

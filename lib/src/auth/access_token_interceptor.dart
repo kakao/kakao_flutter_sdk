@@ -64,7 +64,7 @@ class AccessTokenInterceptor extends Interceptor {
 
   ///
   bool _isNotRetryable(DioError err) =>
-      err.request.baseUrl == "https://$OAUTH_HOST" ||
+      err.request.baseUrl == "https://${KakaoContext.hosts.kauth}" ||
       err.response == null ||
       err.response.statusCode != 401;
 }

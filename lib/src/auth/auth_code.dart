@@ -26,7 +26,7 @@ class AuthCodeClient {
       "scope": scopes == null ? null : scopes.join(" ")
     };
     params.removeWhere((k, v) => v == null);
-    final url = Uri.https(OAUTH_HOST, "/oauth/authorize", params);
+    final url = Uri.https(KakaoContext.hosts.kauth, "/oauth/authorize", params);
     return _parseCode(await launchWithBrowserTab(url, finalRedirectUri));
   }
 
@@ -53,7 +53,7 @@ class AuthCodeClient {
       "scope": scopes == null ? null : scopes.join(" ")
     };
     params.removeWhere((k, v) => v == null);
-    final url = Uri.https(OAUTH_HOST, "/oauth/authorize", params);
+    final url = Uri.https(KakaoContext.hosts.kauth, "/oauth/authorize", params);
     return _parseCode(await launchWithBrowserTab(url, finalRedirectUri));
   }
 

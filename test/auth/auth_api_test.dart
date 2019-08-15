@@ -21,8 +21,8 @@ void main() {
     _adapter = MockAdapter();
     _dio.httpClientAdapter = _adapter;
     _dio.interceptors.add(ApiFactory.kaInterceptor);
-    _dio.options.baseUrl = "https://$OAUTH_HOST";
-    _authApi = AuthApi(_dio, LocalPlatform());
+    _dio.options.baseUrl = "https://${KakaoContext.hosts.kauth}";
+    _authApi = AuthApi(dio: _dio);
     channel.setMockMethodCallHandler((MethodCall methodCall) async {
       return "sample_origin";
     });
@@ -54,11 +54,13 @@ void main() {
       expect(map, response.toJson());
     });
     test('on android', () async {
-      _authApi = AuthApi(_dio, FakePlatform(operatingSystem: "android"));
+      _authApi = AuthApi(
+          dio: _dio, platform: FakePlatform(operatingSystem: "android"));
     });
 
     test("on ios", () async {
-      _authApi = AuthApi(_dio, FakePlatform(operatingSystem: "ios"));
+      _authApi =
+          AuthApi(dio: _dio, platform: FakePlatform(operatingSystem: "ios"));
     });
   });
 
@@ -99,7 +101,8 @@ void main() {
     });
 
     test("on android", () async {
-      _authApi = AuthApi(_dio, FakePlatform(operatingSystem: "android"));
+      _authApi = AuthApi(
+          dio: _dio, platform: FakePlatform(operatingSystem: "android"));
       _adapter.requestAssertions = (RequestOptions options) {
         expect(options.method, "POST");
         expect(options.path, "/oauth/token");
@@ -113,7 +116,8 @@ void main() {
       };
     });
     test("on ios", () async {
-      _authApi = AuthApi(_dio, FakePlatform(operatingSystem: "ios"));
+      _authApi =
+          AuthApi(dio: _dio, platform: FakePlatform(operatingSystem: "ios"));
       _adapter.requestAssertions = (RequestOptions options) {
         expect(options.method, "POST");
         expect(options.path, "/oauth/token");

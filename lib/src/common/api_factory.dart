@@ -17,7 +17,7 @@ class ApiFactory {
 
   static Dio _kauthApiInstance() {
     var dio = new Dio();
-    dio.options.baseUrl = "https://$OAUTH_HOST";
+    dio.options.baseUrl = "https://${KakaoContext.hosts.kauth}";
     dio.options.contentType =
         ContentType.parse("application/x-www-form-urlencoded");
     dio.interceptors.addAll([kaInterceptor]);
@@ -26,7 +26,7 @@ class ApiFactory {
 
   static Dio _authApiInstance() {
     var dio = new Dio();
-    dio.options.baseUrl = "https://$API_HOST";
+    dio.options.baseUrl = "https://${KakaoContext.hosts.kapi}";
     dio.options.contentType =
         ContentType.parse("application/x-www-form-urlencoded");
     var tokenInterceptor = AccessTokenInterceptor(dio, AuthApi.instance);
@@ -36,7 +36,7 @@ class ApiFactory {
 
   static Dio _appKeyApiInstance() {
     var dio = new Dio();
-    dio.options.baseUrl = "https://$API_HOST";
+    dio.options.baseUrl = "https://${KakaoContext.hosts.kapi}";
     dio.options.contentType =
         ContentType.parse("application/x-www-form-urlencoded");
     dio.interceptors.addAll([appKeyInterceptor, kaInterceptor]);
@@ -56,7 +56,7 @@ class ApiFactory {
   ///
   static KakaoException transformApiError(DioError e) {
     if (e.response == null) return KakaoClientException(e.message);
-    if (e.request.baseUrl == "https://$OAUTH_HOST") {
+    if (e.request.baseUrl == "https://${KakaoContext.hosts.kauth}") {
       return KakaoAuthException.fromJson(e.response.data);
     }
     return KakaoApiException.fromJson(e.response.data);

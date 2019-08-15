@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'server_hosts.dart';
 
 /// Singleton context for Kakao Flutter SDK.
 class KakaoContext {
@@ -9,6 +10,8 @@ class KakaoContext {
 
   /// Native app key for this application from [Kakao Developers](https://developers.kakao.com).
   static String clientId;
+
+  static ServerHosts hosts = ServerHosts();
 
   /// Origin value in KA header.
   ///
