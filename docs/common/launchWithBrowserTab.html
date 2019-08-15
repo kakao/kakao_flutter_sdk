@@ -54,12 +54,11 @@
       <li class="section-title"><a href="common/common-library.html#classes">Classes</a></li>
       <li><a href="common/ApiFactory-class.html">ApiFactory</a></li>
       <li><a href="common/KakaoContext-class.html">KakaoContext</a></li>
+      <li><a href="common/SandboxServerHosts-class.html">SandboxServerHosts</a></li>
+      <li><a href="common/ServerHosts-class.html">ServerHosts</a></li>
       <li><a href="common/Util-class.html">Util</a></li>
     
     
-      <li class="section-title"><a href="common/common-library.html#constants">Constants</a></li>
-      <li><a href="common/API_HOST-constant.html">API_HOST</a></li>
-      <li><a href="common/OAUTH_HOST-constant.html">OAUTH_HOST</a></li>
     
     
       <li class="section-title"><a href="common/common-library.html#functions">Functions</a></li>
@@ -85,7 +84,7 @@
     <section class="multi-line-signature">
         <span class="returntype">Future<span class="signature">&lt;<wbr><span class="type-parameter">String</span>&gt;</span></span>
                 <span class="name ">launchWithBrowserTab</span>
-(<wbr><span class="parameter" id="launchWithBrowserTab-param-url"><span class="type-annotation">Uri</span> <span class="parameter-name">url</span>, [</span> <span class="parameter" id="launchWithBrowserTab-param-redirectUri"><span class="type-annotation">String</span> <span class="parameter-name">redirectUri</span></span> ])
+(<wbr><span class="parameter" id="launchWithBrowserTab-param-uri"><span class="type-annotation">Uri</span> <span class="parameter-name">uri</span>, {</span> <span class="parameter" id="launchWithBrowserTab-param-redirectUri"><span class="type-annotation">String</span> <span class="parameter-name">redirectUri</span></span> })
     </section>
     <section class="desc markdown">
       <p>Launches a given url with platform-specific default browser tab.</p>
@@ -93,13 +92,13 @@
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">Future&lt;String&gt; launchWithBrowserTab(Uri url, [String redirectUri]) {
-  if (url.scheme != &#39;http&#39; &amp;&amp; url.scheme != &#39;https&#39;) {
+      <pre class="language-dart"><code class="language-dart">Future&lt;String&gt; launchWithBrowserTab(Uri uri, {String redirectUri}) {
+  if (uri.scheme != &#39;http&#39; &amp;&amp; uri.scheme != &#39;https&#39;) {
     throw KakaoClientException(
       &#39;Default browsers only supports URL of http or https scheme.&#39;,
     );
   }
-  var args = {&quot;url&quot;: url.toString(), &quot;redirect_uri&quot;: redirectUri};
+  var args = {&quot;url&quot;: uri.toString(), &quot;redirect_uri&quot;: redirectUri};
   args.removeWhere((k, v) =&gt; v == null);
   return _channel.invokeMethod(&quot;launchWithBrowserTab&quot;, args);
 }</code></pre>

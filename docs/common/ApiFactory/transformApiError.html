@@ -100,7 +100,7 @@
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">static KakaoException transformApiError(DioError e) {
   if (e.response == null) return KakaoClientException(e.message);
-  if (e.request.baseUrl == &quot;https:&#47;&#47;$OAUTH_HOST&quot;) {
+  if (e.request.baseUrl == &quot;https:&#47;&#47;${KakaoContext.hosts.kauth}&quot;) {
     return KakaoAuthException.fromJson(e.response.data);
   }
   return KakaoApiException.fromJson(e.response.data);

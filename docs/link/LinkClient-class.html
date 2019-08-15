@@ -66,14 +66,13 @@
       <li><a href="link/LinkResponse-class.html">LinkResponse</a></li>
       <li><a href="template/ListTemplate-class.html">ListTemplate</a></li>
       <li><a href="template/LocationTemplate-class.html">LocationTemplate</a></li>
+      <li><a href="common/SandboxServerHosts-class.html">SandboxServerHosts</a></li>
+      <li><a href="common/ServerHosts-class.html">ServerHosts</a></li>
       <li><a href="template/Social-class.html">Social</a></li>
       <li><a href="template/TextTemplate-class.html">TextTemplate</a></li>
       <li><a href="common/Util-class.html">Util</a></li>
     
     
-      <li class="section-title"><a href="link/link-library.html#constants">Constants</a></li>
-      <li><a href="common/API_HOST-constant.html">API_HOST</a></li>
-      <li><a href="common/OAUTH_HOST-constant.html">OAUTH_HOST</a></li>
     
     
       <li class="section-title"><a href="link/link-library.html#functions">Functions</a></li>
@@ -103,7 +102,7 @@
 
       <dl class="constructor-summary-list">
         <dt id="LinkClient" class="callable">
-          <span class="name"><a href="link/LinkClient/LinkClient.html">LinkClient</a></span><span class="signature">(<span class="parameter" id="-param-api"><span class="type-annotation"><a href="link/LinkApi-class.html">LinkApi</a></span> <span class="parameter-name">api</span></span>)</span>
+          <span class="name"><a href="link/LinkClient/LinkClient.html">LinkClient</a></span><span class="signature">(<span class="parameter" id="-param-api"><span class="type-annotation"><a href="link/LinkApi-class.html">LinkApi</a></span> <span class="parameter-name">api</span>, {</span> <span class="parameter" id="-param-platform"><span class="type-annotation"><a href="https://pub.dartlang.org/documentation/platform/2.2.1/platform/Platform-class.html">Platform</a></span> <span class="parameter-name">platform</span></span> })</span>
         </dt>
         <dd>
           
@@ -145,8 +144,8 @@
     <section class="summary offset-anchor" id="instance-methods">
       <h2>Methods</h2>
       <dl class="callables">
-        <dt id="custom" class="callable">
-          <span class="name"><a href="link/LinkClient/custom.html">custom</a></span><span class="signature">(<wbr><span class="parameter" id="custom-param-templateId"><span class="type-annotation">int</span> <span class="parameter-name">templateId</span>, {</span> <span class="parameter" id="custom-param-templateArgs"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">templateArgs</span>, </span> <span class="parameter" id="custom-param-serverCallbackArgs"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">serverCallbackArgs</span></span> })
+        <dt id="customWithTalk" class="callable">
+          <span class="name"><a href="link/LinkClient/customWithTalk.html">customWithTalk</a></span><span class="signature">(<wbr><span class="parameter" id="customWithTalk-param-templateId"><span class="type-annotation">int</span> <span class="parameter-name">templateId</span>, {</span> <span class="parameter" id="customWithTalk-param-templateArgs"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">templateArgs</span>, </span> <span class="parameter" id="customWithTalk-param-serverCallbackArgs"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">serverCallbackArgs</span></span> })
             <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">Uri</span>&gt;</span></span>
           </span>
                   </dt>
@@ -154,8 +153,8 @@
           
                   
 </dd>
-        <dt id="defaultTemplate" class="callable">
-          <span class="name"><a href="link/LinkClient/defaultTemplate.html">defaultTemplate</a></span><span class="signature">(<wbr><span class="parameter" id="defaultTemplate-param-template"><span class="type-annotation"><a href="template/DefaultTemplate-class.html">DefaultTemplate</a></span> <span class="parameter-name">template</span>, {</span> <span class="parameter" id="defaultTemplate-param-serverCallbackArgs"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">serverCallbackArgs</span></span> })
+        <dt id="customWithWeb" class="callable">
+          <span class="name"><a href="link/LinkClient/customWithWeb.html">customWithWeb</a></span><span class="signature">(<wbr><span class="parameter" id="customWithWeb-param-templateId"><span class="type-annotation">int</span> <span class="parameter-name">templateId</span>, {</span> <span class="parameter" id="customWithWeb-param-templateArgs"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">templateArgs</span>, </span> <span class="parameter" id="customWithWeb-param-serverCallbackArgs"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">serverCallbackArgs</span></span> })
             <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">Uri</span>&gt;</span></span>
           </span>
                   </dt>
@@ -163,8 +162,8 @@
           
                   
 </dd>
-        <dt id="scrap" class="callable">
-          <span class="name"><a href="link/LinkClient/scrap.html">scrap</a></span><span class="signature">(<wbr><span class="parameter" id="scrap-param-url"><span class="type-annotation">String</span> <span class="parameter-name">url</span>, {</span> <span class="parameter" id="scrap-param-templateId"><span class="type-annotation">int</span> <span class="parameter-name">templateId</span>, </span> <span class="parameter" id="scrap-param-templateArgs"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">templateArgs</span>, </span> <span class="parameter" id="scrap-param-serverCallbackArgs"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">serverCallbackArgs</span></span> })
+        <dt id="defaultWithTalk" class="callable">
+          <span class="name"><a href="link/LinkClient/defaultWithTalk.html">defaultWithTalk</a></span><span class="signature">(<wbr><span class="parameter" id="defaultWithTalk-param-template"><span class="type-annotation"><a href="template/DefaultTemplate-class.html">DefaultTemplate</a></span> <span class="parameter-name">template</span>, {</span> <span class="parameter" id="defaultWithTalk-param-serverCallbackArgs"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">serverCallbackArgs</span></span> })
             <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">Uri</span>&gt;</span></span>
           </span>
                   </dt>
@@ -172,8 +171,53 @@
           
                   
 </dd>
-        <dt id="withResponse" class="callable">
-          <span class="name"><a href="link/LinkClient/withResponse.html">withResponse</a></span><span class="signature">(<wbr><span class="parameter" id="withResponse-param-response"><span class="type-annotation"><a href="link/LinkResponse-class.html">LinkResponse</a></span> <span class="parameter-name">response</span>, [</span> <span class="parameter" id="withResponse-param-serverCallbackArgs"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">serverCallbackArgs</span></span> ])
+        <dt id="defaultWithWeb" class="callable">
+          <span class="name"><a href="link/LinkClient/defaultWithWeb.html">defaultWithWeb</a></span><span class="signature">(<wbr><span class="parameter" id="defaultWithWeb-param-template"><span class="type-annotation"><a href="template/DefaultTemplate-class.html">DefaultTemplate</a></span> <span class="parameter-name">template</span>, {</span> <span class="parameter" id="defaultWithWeb-param-serverCallbackArgs"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">serverCallbackArgs</span></span> })
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">Uri</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          
+                  
+</dd>
+        <dt id="launchKakaoTalk" class="callable">
+          <span class="name"><a href="link/LinkClient/launchKakaoTalk.html">launchKakaoTalk</a></span><span class="signature">(<wbr><span class="parameter" id="launchKakaoTalk-param-uri"><span class="type-annotation">Uri</span> <span class="parameter-name">uri</span></span>)
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          
+                  
+</dd>
+        <dt id="scrapWithTalk" class="callable">
+          <span class="name"><a href="link/LinkClient/scrapWithTalk.html">scrapWithTalk</a></span><span class="signature">(<wbr><span class="parameter" id="scrapWithTalk-param-url"><span class="type-annotation">String</span> <span class="parameter-name">url</span>, {</span> <span class="parameter" id="scrapWithTalk-param-templateId"><span class="type-annotation">int</span> <span class="parameter-name">templateId</span>, </span> <span class="parameter" id="scrapWithTalk-param-templateArgs"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">templateArgs</span>, </span> <span class="parameter" id="scrapWithTalk-param-serverCallbackArgs"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">serverCallbackArgs</span></span> })
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">Uri</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          
+                  
+</dd>
+        <dt id="scrapWithWeb" class="callable">
+          <span class="name"><a href="link/LinkClient/scrapWithWeb.html">scrapWithWeb</a></span><span class="signature">(<wbr><span class="parameter" id="scrapWithWeb-param-url"><span class="type-annotation">String</span> <span class="parameter-name">url</span>, {</span> <span class="parameter" id="scrapWithWeb-param-templateId"><span class="type-annotation">int</span> <span class="parameter-name">templateId</span>, </span> <span class="parameter" id="scrapWithWeb-param-templateArgs"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">templateArgs</span>, </span> <span class="parameter" id="scrapWithWeb-param-serverCallbackArgs"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">serverCallbackArgs</span></span> })
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">Uri</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          
+                  
+</dd>
+        <dt id="sharerWithResponse" class="callable">
+          <span class="name"><a href="link/LinkClient/sharerWithResponse.html">sharerWithResponse</a></span><span class="signature">(<wbr><span class="parameter" id="sharerWithResponse-param-response"><span class="type-annotation"><a href="link/LinkResponse-class.html">LinkResponse</a></span> <span class="parameter-name">response</span>, {</span> <span class="parameter" id="sharerWithResponse-param-serverCallbackArgs"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">serverCallbackArgs</span></span> })
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">Uri</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          
+                  
+</dd>
+        <dt id="talkWithResponse" class="callable">
+          <span class="name"><a href="link/LinkClient/talkWithResponse.html">talkWithResponse</a></span><span class="signature">(<wbr><span class="parameter" id="talkWithResponse-param-response"><span class="type-annotation"><a href="link/LinkResponse-class.html">LinkResponse</a></span> <span class="parameter-name">response</span>, {</span> <span class="parameter" id="talkWithResponse-param-clientId"><span class="type-annotation">String</span> <span class="parameter-name">clientId</span>, </span> <span class="parameter" id="talkWithResponse-param-serverCallbackArgs"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">serverCallbackArgs</span></span> })
             <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">Uri</span>&gt;</span></span>
           </span>
                   </dt>
@@ -249,10 +293,15 @@
       <li class="inherited">runtimeType</li>
     
       <li class="section-title"><a href="link/LinkClient-class.html#instance-methods">Methods</a></li>
-      <li><a href="link/LinkClient/custom.html">custom</a></li>
-      <li><a href="link/LinkClient/defaultTemplate.html">defaultTemplate</a></li>
-      <li><a href="link/LinkClient/scrap.html">scrap</a></li>
-      <li><a href="link/LinkClient/withResponse.html">withResponse</a></li>
+      <li><a href="link/LinkClient/customWithTalk.html">customWithTalk</a></li>
+      <li><a href="link/LinkClient/customWithWeb.html">customWithWeb</a></li>
+      <li><a href="link/LinkClient/defaultWithTalk.html">defaultWithTalk</a></li>
+      <li><a href="link/LinkClient/defaultWithWeb.html">defaultWithWeb</a></li>
+      <li><a href="link/LinkClient/launchKakaoTalk.html">launchKakaoTalk</a></li>
+      <li><a href="link/LinkClient/scrapWithTalk.html">scrapWithTalk</a></li>
+      <li><a href="link/LinkClient/scrapWithWeb.html">scrapWithWeb</a></li>
+      <li><a href="link/LinkClient/sharerWithResponse.html">sharerWithResponse</a></li>
+      <li><a href="link/LinkClient/talkWithResponse.html">talkWithResponse</a></li>
       <li class="inherited">noSuchMethod</li>
       <li class="inherited">toString</li>
     

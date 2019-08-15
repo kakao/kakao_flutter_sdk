@@ -54,12 +54,11 @@
       <li class="section-title"><a href="common/common-library.html#classes">Classes</a></li>
       <li><a href="common/ApiFactory-class.html">ApiFactory</a></li>
       <li><a href="common/KakaoContext-class.html">KakaoContext</a></li>
+      <li><a href="common/SandboxServerHosts-class.html">SandboxServerHosts</a></li>
+      <li><a href="common/ServerHosts-class.html">ServerHosts</a></li>
       <li><a href="common/Util-class.html">Util</a></li>
     
     
-      <li class="section-title"><a href="common/common-library.html#constants">Constants</a></li>
-      <li><a href="common/API_HOST-constant.html">API_HOST</a></li>
-      <li><a href="common/OAUTH_HOST-constant.html">OAUTH_HOST</a></li>
     
     
       <li class="section-title"><a href="common/common-library.html#functions">Functions</a></li>
@@ -154,12 +153,28 @@
       <h2>Static Properties</h2>
 
       <dl class="properties">
+        <dt id="appVer" class="property">
+          <span class="name"><a href="common/KakaoContext/appVer.html">appVer</a></span>
+          <span class="signature">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">String</span>&gt;</span></span>         
+        </dt>
+        <dd>
+          
+                  <div class="features">read-only</div>
+</dd>
         <dt id="clientId" class="property">
           <span class="name"><a href="common/KakaoContext/clientId.html">clientId</a></span>
           <span class="signature">&#8596; String</span>         
         </dt>
         <dd>
           Native app key for this application from <a href="https://developers.kakao.com">Kakao Developers</a>.
+                  <div class="features">read / write</div>
+</dd>
+        <dt id="hosts" class="property">
+          <span class="name"><a href="common/KakaoContext/hosts.html">hosts</a></span>
+          <span class="signature">&#8596; <a href="common/ServerHosts-class.html">ServerHosts</a></span>         
+        </dt>
+        <dd>
+          
                   <div class="features">read / write</div>
 </dd>
         <dt id="kaHeader" class="property">
@@ -176,6 +191,22 @@
         </dt>
         <dd>
           Origin value in KA header. <a href="common/KakaoContext/origin.html">[...]</a>
+                  <div class="features">read-only</div>
+</dd>
+        <dt id="packageInfo" class="property">
+          <span class="name"><a href="common/KakaoContext/packageInfo.html">packageInfo</a></span>
+          <span class="signature">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dartlang.org/documentation/package_info/0.4.0+6/package_info/PackageInfo-class.html">PackageInfo</a></span>&gt;</span></span>         
+        </dt>
+        <dd>
+          
+                  <div class="features">read-only</div>
+</dd>
+        <dt id="packageName" class="property">
+          <span class="name"><a href="common/KakaoContext/packageName.html">packageName</a></span>
+          <span class="signature">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">String</span>&gt;</span></span>         
+        </dt>
+        <dd>
+          
                   <div class="features">read-only</div>
 </dd>
       </dl>
@@ -202,9 +233,13 @@
       <li class="inherited">operator ==</li>
     
       <li class="section-title"><a href="common/KakaoContext-class.html#static-properties">Static properties</a></li>
+      <li><a href="common/KakaoContext/appVer.html">appVer</a></li>
       <li><a href="common/KakaoContext/clientId.html">clientId</a></li>
+      <li><a href="common/KakaoContext/hosts.html">hosts</a></li>
       <li><a href="common/KakaoContext/kaHeader.html">kaHeader</a></li>
       <li><a href="common/KakaoContext/origin.html">origin</a></li>
+      <li><a href="common/KakaoContext/packageInfo.html">packageInfo</a></li>
+      <li><a href="common/KakaoContext/packageName.html">packageName</a></li>
     
     
     </ol>

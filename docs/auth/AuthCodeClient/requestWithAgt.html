@@ -104,8 +104,9 @@
     &quot;scope&quot;: scopes == null ? null : scopes.join(&quot; &quot;)
   };
   params.removeWhere((k, v) =&gt; v == null);
-  final url = Uri.https(OAUTH_HOST, &quot;&#47;oauth&#47;authorize&quot;, params);
-  return _parseCode(await launchWithBrowserTab(url, finalRedirectUri));
+  final url = Uri.https(KakaoContext.hosts.kauth, &quot;&#47;oauth&#47;authorize&quot;, params);
+  return _parseCode(
+      await launchWithBrowserTab(url, redirectUri: finalRedirectUri));
 }</code></pre>
     </section>
 

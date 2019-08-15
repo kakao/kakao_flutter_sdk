@@ -64,10 +64,15 @@
       <li class="inherited">runtimeType</li>
     
       <li class="section-title"><a href="link/LinkClient-class.html#instance-methods">Methods</a></li>
-      <li><a href="link/LinkClient/custom.html">custom</a></li>
-      <li><a href="link/LinkClient/defaultTemplate.html">defaultTemplate</a></li>
-      <li><a href="link/LinkClient/scrap.html">scrap</a></li>
-      <li><a href="link/LinkClient/withResponse.html">withResponse</a></li>
+      <li><a href="link/LinkClient/customWithTalk.html">customWithTalk</a></li>
+      <li><a href="link/LinkClient/customWithWeb.html">customWithWeb</a></li>
+      <li><a href="link/LinkClient/defaultWithTalk.html">defaultWithTalk</a></li>
+      <li><a href="link/LinkClient/defaultWithWeb.html">defaultWithWeb</a></li>
+      <li><a href="link/LinkClient/launchKakaoTalk.html">launchKakaoTalk</a></li>
+      <li><a href="link/LinkClient/scrapWithTalk.html">scrapWithTalk</a></li>
+      <li><a href="link/LinkClient/scrapWithWeb.html">scrapWithWeb</a></li>
+      <li><a href="link/LinkClient/sharerWithResponse.html">sharerWithResponse</a></li>
+      <li><a href="link/LinkClient/talkWithResponse.html">talkWithResponse</a></li>
       <li class="inherited">noSuchMethod</li>
       <li class="inherited">toString</li>
     
@@ -86,13 +91,14 @@
 
     <section class="multi-line-signature">
       
-      <span class="name ">LinkClient</span>(<wbr><span class="parameter" id="-param-api"><span class="type-annotation"><a href="link/LinkApi-class.html">LinkApi</a></span> <span class="parameter-name">api</span></span>)
+      <span class="name ">LinkClient</span>(<wbr><span class="parameter" id="-param-api"><span class="type-annotation"><a href="link/LinkApi-class.html">LinkApi</a></span> <span class="parameter-name">api</span>, {</span> <span class="parameter" id="-param-platform"><span class="type-annotation"><a href="https://pub.dartlang.org/documentation/platform/2.2.1/platform/Platform-class.html">Platform</a></span> <span class="parameter-name">platform</span></span> })
     </section>
 
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">LinkClient(this.api);</code></pre>
+      <pre class="language-dart"><code class="language-dart">LinkClient(this.api, {Platform platform})
+    : _platform = platform ?? LocalPlatform();</code></pre>
     </section>
 
   </div> <!-- /.main-content -->
