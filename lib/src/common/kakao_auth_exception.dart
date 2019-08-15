@@ -10,6 +10,7 @@ class KakaoAuthException extends KakaoException {
   KakaoAuthException(this.error, this.errorDescription)
       : super(errorDescription);
 
+  @JsonKey(unknownEnumValue: AuthErrorCause.UNKNOWN)
   final AuthErrorCause error;
   final String errorDescription;
 

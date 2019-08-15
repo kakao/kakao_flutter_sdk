@@ -10,7 +10,8 @@ PushTokenInfo _$PushTokenInfoFromJson(Map<String, dynamic> json) {
   return PushTokenInfo(
     json['user_id'] as String,
     json['device_id'] as String,
-    _$enumDecodeNullable(_$PushTypeEnumMap, json['push_type']),
+    _$enumDecodeNullable(_$PushTypeEnumMap, json['push_type'],
+        unknownValue: PushType.UNKNOWN),
     json['push_token'] as String,
     json['created_at'] == null
         ? null
@@ -39,27 +40,40 @@ Map<String, dynamic> _$PushTokenInfoToJson(PushTokenInfo instance) {
   return val;
 }
 
-T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
+T _$enumDecode<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
   if (source == null) {
     throw ArgumentError('A value must be provided. Supported values: '
         '${enumValues.values.join(', ')}');
   }
-  return enumValues.entries
-      .singleWhere((e) => e.value == source,
-          orElse: () => throw ArgumentError(
-              '`$source` is not one of the supported values: '
-              '${enumValues.values.join(', ')}'))
-      .key;
+
+  final value = enumValues.entries
+      .singleWhere((e) => e.value == source, orElse: () => null)
+      ?.key;
+
+  if (value == null && unknownValue == null) {
+    throw ArgumentError('`$source` is not one of the supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return value ?? unknownValue;
 }
 
-T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
+T _$enumDecodeNullable<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
   if (source == null) {
     return null;
   }
-  return _$enumDecode<T>(enumValues, source);
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
 }
 
-const _$PushTypeEnumMap = <PushType, dynamic>{
+const _$PushTypeEnumMap = {
   PushType.GCM: 'gcm',
-  PushType.APNS: 'apns'
+  PushType.APNS: 'apns',
+  PushType.UNKNOWN: 'UNKNOWN',
 };

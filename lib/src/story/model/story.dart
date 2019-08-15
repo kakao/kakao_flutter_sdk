@@ -27,12 +27,13 @@ class Story {
   final Uri url;
   final String content;
   final DateTime createdAt;
+  @JsonKey(unknownEnumValue: StoryType.NOT_SUPPORTED)
   final StoryType mediaType;
   final int commentCount;
   final int likeCount;
   @JsonKey(name: "media")
   final List<StoryImage> images;
-
+  @JsonKey(unknownEnumValue: StoryPermission.UNKNOWN)
   final StoryPermission permission;
 
   /// Only present in [StoryApi.myStory()], always null in [StoryApi.myStories()].
@@ -61,7 +62,8 @@ enum StoryPermission {
   FRIEND,
 
   /// Visible only to me.
-  ONLY_ME
+  ONLY_ME,
+  UNKNOWN
 }
 
 String permissionToParams(StoryPermission permission) {

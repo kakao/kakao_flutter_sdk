@@ -14,7 +14,8 @@ Story _$StoryFromJson(Map<String, dynamic> json) {
     json['created_at'] == null
         ? null
         : DateTime.parse(json['created_at'] as String),
-    _$enumDecodeNullable(_$StoryTypeEnumMap, json['media_type']),
+    _$enumDecodeNullable(_$StoryTypeEnumMap, json['media_type'],
+        unknownValue: StoryType.NOT_SUPPORTED),
     json['comment_count'] as int,
     json['like_count'] as int,
     (json['media'] as List)
@@ -29,7 +30,8 @@ Story _$StoryFromJson(Map<String, dynamic> json) {
         ?.map((e) =>
             e == null ? null : StoryComment.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    _$enumDecodeNullable(_$StoryPermissionEnumMap, json['permission']),
+    _$enumDecodeNullable(_$StoryPermissionEnumMap, json['permission'],
+        unknownValue: StoryPermission.UNKNOWN),
   );
 }
 
@@ -57,34 +59,47 @@ Map<String, dynamic> _$StoryToJson(Story instance) {
   return val;
 }
 
-T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
+T _$enumDecode<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
   if (source == null) {
     throw ArgumentError('A value must be provided. Supported values: '
         '${enumValues.values.join(', ')}');
   }
-  return enumValues.entries
-      .singleWhere((e) => e.value == source,
-          orElse: () => throw ArgumentError(
-              '`$source` is not one of the supported values: '
-              '${enumValues.values.join(', ')}'))
-      .key;
+
+  final value = enumValues.entries
+      .singleWhere((e) => e.value == source, orElse: () => null)
+      ?.key;
+
+  if (value == null && unknownValue == null) {
+    throw ArgumentError('`$source` is not one of the supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return value ?? unknownValue;
 }
 
-T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
+T _$enumDecodeNullable<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
   if (source == null) {
     return null;
   }
-  return _$enumDecode<T>(enumValues, source);
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
 }
 
-const _$StoryTypeEnumMap = <StoryType, dynamic>{
+const _$StoryTypeEnumMap = {
   StoryType.NOTE: 'NOTE',
   StoryType.PHOTO: 'PHOTO',
-  StoryType.NOT_SUPPORTED: 'NOT_SUPPORTED'
+  StoryType.NOT_SUPPORTED: 'NOT_SUPPORTED',
 };
 
-const _$StoryPermissionEnumMap = <StoryPermission, dynamic>{
+const _$StoryPermissionEnumMap = {
   StoryPermission.PUBLIC: 'PUBLIC',
   StoryPermission.FRIEND: 'FRIEND',
-  StoryPermission.ONLY_ME: 'ONLY_ME'
+  StoryPermission.ONLY_ME: 'ONLY_ME',
+  StoryPermission.UNKNOWN: 'UNKNOWN',
 };

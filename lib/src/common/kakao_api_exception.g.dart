@@ -8,7 +8,8 @@ part of 'kakao_api_exception.dart';
 
 KakaoApiException _$KakaoApiExceptionFromJson(Map<String, dynamic> json) {
   return KakaoApiException(
-    _$enumDecodeNullable(_$ApiErrorCauseEnumMap, json['code']),
+    _$enumDecodeNullable(_$ApiErrorCauseEnumMap, json['code'],
+        unknownValue: ApiErrorCause.UNKNOWN),
     json['msg'] as String,
     json['api_type'] as String,
     (json['required_scopes'] as List)?.map((e) => e as String)?.toList(),
@@ -33,27 +34,39 @@ Map<String, dynamic> _$KakaoApiExceptionToJson(KakaoApiException instance) {
   return val;
 }
 
-T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
+T _$enumDecode<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
   if (source == null) {
     throw ArgumentError('A value must be provided. Supported values: '
         '${enumValues.values.join(', ')}');
   }
-  return enumValues.entries
-      .singleWhere((e) => e.value == source,
-          orElse: () => throw ArgumentError(
-              '`$source` is not one of the supported values: '
-              '${enumValues.values.join(', ')}'))
-      .key;
+
+  final value = enumValues.entries
+      .singleWhere((e) => e.value == source, orElse: () => null)
+      ?.key;
+
+  if (value == null && unknownValue == null) {
+    throw ArgumentError('`$source` is not one of the supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return value ?? unknownValue;
 }
 
-T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
+T _$enumDecodeNullable<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
   if (source == null) {
     return null;
   }
-  return _$enumDecode<T>(enumValues, source);
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
 }
 
-const _$ApiErrorCauseEnumMap = <ApiErrorCause, dynamic>{
+const _$ApiErrorCauseEnumMap = {
   ApiErrorCause.INTERNAL_ERROR: -1,
   ApiErrorCause.ILLEGAL_PARAMS: -2,
   ApiErrorCause.UNSUPPORTED_API: -3,
@@ -83,5 +96,5 @@ const _$ApiErrorCauseEnumMap = <ApiErrorCause, dynamic>{
   ApiErrorCause.STORY_INVALID_SCRAP_URL: -604,
   ApiErrorCause.STROY_INVALID_POST_ID: -605,
   ApiErrorCause.STORY_MAX_UPLOAD_COUNT_EXCEEDED: -606,
-  ApiErrorCause.UNKNOWN: 'UNKNOWN'
+  ApiErrorCause.UNKNOWN: 'UNKNOWN',
 };

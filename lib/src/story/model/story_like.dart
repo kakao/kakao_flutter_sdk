@@ -7,6 +7,7 @@ part 'story_like.g.dart';
 class StoryLike {
   /// <nodoc>
   StoryLike(this.emoticon, this.actor);
+  @JsonKey(unknownEnumValue: Emoticon.UNKNOWN)
   final Emoticon emoticon;
   final StoryActor actor;
 
@@ -18,4 +19,4 @@ class StoryLike {
   Map<String, dynamic> toJson() => _$StoryLikeToJson(this);
 }
 
-enum Emoticon { LIKE, COOL, HAPPY, SAD, CHEER_UP }
+enum Emoticon { LIKE, COOL, HAPPY, SAD, CHEER_UP, UNKNOWN }

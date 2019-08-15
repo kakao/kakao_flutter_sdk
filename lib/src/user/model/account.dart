@@ -39,6 +39,7 @@ class Account {
   String phoneNumber;
 
   bool ageRangeNeedsAgreement;
+  @JsonKey(unknownEnumValue: AgeRange.UNKNOWN)
   AgeRange ageRange;
 
   bool birthdayNeedsAgreement;
@@ -48,6 +49,7 @@ class Account {
   String birthyear;
 
   bool genderNeedsAgreement;
+  @JsonKey(unknownEnumValue: Gender.OTHER)
   Gender gender;
 
   bool ciNeedsAgreement;
@@ -84,7 +86,8 @@ enum AgeRange {
   @JsonValue("80~89")
   EIGHTEES,
   @JsonValue("90~")
-  NINTIES_AND_ABOVE
+  NINTIES_AND_ABOVE,
+  UNKNOWN
 }
 
 /// Gender in [Account].

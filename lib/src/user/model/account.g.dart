@@ -16,13 +16,15 @@ Account _$AccountFromJson(Map<String, dynamic> json) {
     json['phone_number_needs_agreement'] as bool,
     json['phone_number'] as String,
     json['age_range_needs_agreement'] as bool,
-    _$enumDecodeNullable(_$AgeRangeEnumMap, json['age_range']),
+    _$enumDecodeNullable(_$AgeRangeEnumMap, json['age_range'],
+        unknownValue: AgeRange.UNKNOWN),
     json['birthday_needs_agreement'] as bool,
     json['birthday'] as String,
     json['birthyear_needs_agreement'] as bool,
     json['birthyear'] as String,
     json['gender_needs_agreement'] as bool,
-    _$enumDecodeNullable(_$GenderEnumMap, json['gender']),
+    _$enumDecodeNullable(_$GenderEnumMap, json['gender'],
+        unknownValue: Gender.OTHER),
     json['ci_needs_agreement'] as bool,
     json['ci'] as String,
     json['ci_authenticated_at'] == null
@@ -63,27 +65,39 @@ Map<String, dynamic> _$AccountToJson(Account instance) {
   return val;
 }
 
-T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
+T _$enumDecode<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
   if (source == null) {
     throw ArgumentError('A value must be provided. Supported values: '
         '${enumValues.values.join(', ')}');
   }
-  return enumValues.entries
-      .singleWhere((e) => e.value == source,
-          orElse: () => throw ArgumentError(
-              '`$source` is not one of the supported values: '
-              '${enumValues.values.join(', ')}'))
-      .key;
+
+  final value = enumValues.entries
+      .singleWhere((e) => e.value == source, orElse: () => null)
+      ?.key;
+
+  if (value == null && unknownValue == null) {
+    throw ArgumentError('`$source` is not one of the supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return value ?? unknownValue;
 }
 
-T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
+T _$enumDecodeNullable<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
   if (source == null) {
     return null;
   }
-  return _$enumDecode<T>(enumValues, source);
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
 }
 
-const _$AgeRangeEnumMap = <AgeRange, dynamic>{
+const _$AgeRangeEnumMap = {
   AgeRange.TEEN: '15~19',
   AgeRange.TWENTIES: '20~29',
   AgeRange.THIRTIES: '30~39',
@@ -92,11 +106,12 @@ const _$AgeRangeEnumMap = <AgeRange, dynamic>{
   AgeRange.SIXTIES: '60~69',
   AgeRange.SEVENTIES: '70~79',
   AgeRange.EIGHTEES: '80~89',
-  AgeRange.NINTIES_AND_ABOVE: '90~'
+  AgeRange.NINTIES_AND_ABOVE: '90~',
+  AgeRange.UNKNOWN: 'UNKNOWN',
 };
 
-const _$GenderEnumMap = <Gender, dynamic>{
+const _$GenderEnumMap = {
   Gender.FEMALE: 'female',
   Gender.MALE: 'male',
-  Gender.OTHER: 'other'
+  Gender.OTHER: 'other',
 };

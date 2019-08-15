@@ -11,6 +11,7 @@ class PushTokenInfo {
 
   final String userId;
   final String deviceId;
+  @JsonKey(unknownEnumValue: PushType.UNKNOWN)
   final PushType pushType;
   final String pushToken;
   final DateTime createdAt;
@@ -28,5 +29,6 @@ enum PushType {
   @JsonValue("gcm")
   GCM,
   @JsonValue("apns")
-  APNS
+  APNS,
+  UNKNOWN
 }
