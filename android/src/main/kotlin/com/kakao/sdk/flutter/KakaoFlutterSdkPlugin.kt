@@ -1,5 +1,7 @@
 package com.kakao.sdk.flutter
 
+import android.content.Intent
+import android.net.Uri
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -41,6 +43,18 @@ class KakaoFlutterSdkPlugin(private val registrar: Registrar) : MethodCallHandle
       }
       call.method == "isKakaoTalkInstalled" -> {
         result.success(Utility.isKakaoTalkInstalled(registrar.context()))
+      }
+      call.method == "launchKakaoTalk" -> {
+        if (!Utility.isKakaoTalkInstalled(registrar.context())) {
+          result.success(false)
+          return
+        }
+        @Suppress("UNCHECKED_CAST") val args = call.arguments as Map<String, String>
+        val uri = args["uri"] ?: throw IllegalArgumentException("KakaoTalk uri scheme is required.")
+        val intent = Intent(Intent.ACTION_SEND, Uri.parse(uri))
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        registrar.activity().startActivity(intent)
+        result.success(true)
       }
       else -> result.notImplemented()
     }

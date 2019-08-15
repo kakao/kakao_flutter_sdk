@@ -81,9 +81,6 @@ void main() {
       expect(it.name, element["name"]);
       expect(it.baseAddress, element["base_address"]);
       expect(it.detailAddress, element["detail_address"]);
-      print(it.updatedAt);
-      print(jsonEncode(it));
-      print(element);
     });
     res.toJson();
   });

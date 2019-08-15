@@ -55,7 +55,6 @@ void main() {
     expect(story.mediaType, StoryType.PHOTO);
     expect(likes[0].emoticon, Emoticon.COOL);
     expect(story.permission, StoryPermission.PUBLIC);
-    print(story.createdAt.minute);
   });
 
   group("/v1/api/story/delete/mystory", () {
@@ -107,7 +106,6 @@ void main() {
         expect(options.method, "POST");
         expect(options.path, "/v1/api/story/post/note");
         Map<String, dynamic> params = options.data;
-        print(params);
         expect(params.keys.length, 1);
       };
       var id = await _api.postNote(content);

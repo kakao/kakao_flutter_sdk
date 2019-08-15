@@ -107,7 +107,6 @@ void main() {
         expect(options.method, "POST");
         expect(options.path, "/oauth/token");
         Map<String, dynamic> params = options.data;
-        print(params);
         expect(params.length, 5);
         expect(params["refresh_token"], refreshToken);
         expect(params["redirect_uri"], redirectUri);

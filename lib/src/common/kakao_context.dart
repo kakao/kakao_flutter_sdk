@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:package_info/package_info.dart';
 import 'server_hosts.dart';
 
 /// Singleton context for Kakao Flutter SDK.
@@ -37,5 +38,17 @@ class KakaoContext {
   static Future<String> get kaHeader async {
     final String kaHeader = await _channel.invokeMethod("getKaHeader");
     return "flutter_sdk/0.1.0 $kaHeader";
+  }
+
+  static Future<PackageInfo> get packageInfo async =>
+      await PackageInfo.fromPlatform();
+  static Future<String> get appVer async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    return packageInfo.version;
+  }
+
+  static Future<String> get packageName async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    return packageInfo.packageName;
   }
 }

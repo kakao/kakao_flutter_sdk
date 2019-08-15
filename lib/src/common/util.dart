@@ -6,13 +6,13 @@ import 'package:kakao_flutter_sdk/story.dart';
 const MethodChannel _channel = MethodChannel("kakao_flutter_sdk");
 
 /// Launches a given url with platform-specific default browser tab.
-Future<String> launchWithBrowserTab(Uri url, [String redirectUri]) {
-  if (url.scheme != 'http' && url.scheme != 'https') {
+Future<String> launchWithBrowserTab(Uri uri, {String redirectUri}) {
+  if (uri.scheme != 'http' && uri.scheme != 'https') {
     throw KakaoClientException(
       'Default browsers only supports URL of http or https scheme.',
     );
   }
-  var args = {"url": url.toString(), "redirect_uri": redirectUri};
+  var args = {"url": uri.toString(), "redirect_uri": redirectUri};
   args.removeWhere((k, v) => v == null);
   return _channel.invokeMethod("launchWithBrowserTab", args);
 }

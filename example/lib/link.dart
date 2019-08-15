@@ -31,7 +31,7 @@ class LinkScreen extends StatelessWidget {
             Button("앱으로 보기",
                 Link(webUrl: Uri.parse("https://developers.kakao.com"))),
           ]);
-      var uri = await LinkClient.instance.defaultTemplate(template);
+      var uri = await LinkClient.instance.defaultWithWeb(template);
       await launchWithBrowserTab(uri);
     } catch (e) {
       print(e.toString());
@@ -41,7 +41,7 @@ class LinkScreen extends StatelessWidget {
   void onTapCustom() async {
     try {
       var uri = await LinkClient.instance
-          .custom(17125, templateArgs: {"key1": "value1"});
+          .customWithWeb(17125, templateArgs: {"key1": "value1"});
       await launchWithBrowserTab(uri);
     } catch (e) {
       print(e.toString());
@@ -50,7 +50,8 @@ class LinkScreen extends StatelessWidget {
 
   void onTapScrap() async {
     try {
-      var uri = await LinkClient.instance.scrap("https://developers.kakao.com");
+      var uri = await LinkClient.instance
+          .scrapWithWeb("https://developers.kakao.com");
       await launchWithBrowserTab(uri);
     } catch (e) {
       print(e.toString());

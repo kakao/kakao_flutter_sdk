@@ -38,11 +38,23 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin {
             return
         }
         result(UIApplication.shared.canOpenURL(talkUrl))
+    case "launchKakaoTalk":
+        let args = call.arguments as! Dictionary<String, String>
+        let uri = args["uri"]
+        launchKakaoTalk(uri: uri!, result: result)
     default:
       result(FlutterMethodNotImplemented)
     }
   }
 
+    private func launchKakaoTalk(uri: String, result: @escaping FlutterResult) {
+        let urlObject = URL(string: uri)!
+        if (UIApplication.shared.canOpenURL(urlObject)) {
+            UIApplication.shared.open(urlObject, options: [:]) { (openResult) in
+                result(openResult)
+            }
+        }
+    }
     
     private func authorizeWithTalk(clientId: String, redirectUri: String, result: @escaping FlutterResult) {
         self.result = result
