@@ -23,7 +23,7 @@ class KakaoFlutterSdkPlugin(private val registrar: Registrar) : MethodCallHandle
     when {
       call.method == "getOrigin" -> result.success(Utility.getKeyHash(registrar.activeContext()))
       call.method == "getKaHeader" -> result.success(Utility.getKAHeader(registrar.activeContext()))
-      call.method == "launchWithBrowserTab" -> {
+      call.method == "launchBrowserTab" -> {
         @Suppress("UNCHECKED_CAST") val args = call.arguments as Map<String, String?>
         val uri = args["url"] as String
         redirectUri = args["redirect_uri"]
