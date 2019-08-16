@@ -74,30 +74,30 @@ class LinkClient {
         "template_args": response.templateArgs,
         "link_ver": "4.0"
       }),
-      ...(serverCallbackArgs == null
-          ? {}
-          : {"lcba": jsonEncode(serverCallbackArgs)})
+      "lcba": serverCallbackArgs == null ? null : jsonEncode(serverCallbackArgs)
     };
+
+    params.removeWhere((k, v) => v == null);
     return Uri.https(
         KakaoContext.hosts.sharer, "talk/friends/picker/easylink", params);
   }
 
   Future<Uri> talkWithResponse(LinkResponse response,
       {String clientId, Map<String, String> serverCallbackArgs}) async {
-    final attachmentSize = _attachmentSize(response,
+    final attachmentSize = await _attachmentSize(response,
         clientId: clientId, serverCallbackArgs: serverCallbackArgs);
     if (attachmentSize > 10 * 1024) {
       throw KakaoClientException(
           "Exceeded message template v2 size limit (${attachmentSize / 1024}kb > 10kb).");
     }
-    final params = {
+    Map<String, String> params = {
       "linkver": "4.0",
       "appkey": clientId ?? KakaoContext.clientId,
       "appver": await KakaoContext.appVer,
-      "template_id": response.templateId,
-      "template_args": response.templateArgs,
-      "template_json": response.templateMsg,
-      "extras": _extras(serverCallbackArgs)
+      "template_id": response.templateId.toString(),
+      "template_args": jsonEncode(response.templateArgs),
+      "template_json": jsonEncode(response.templateMsg),
+      "extras": jsonEncode(await _extras(serverCallbackArgs))
     };
     return Uri(scheme: "kakaolink", host: "send", queryParameters: params);
   }
@@ -108,7 +108,7 @@ class LinkClient {
 
   Future<Map<String, String>> _extras(
       [Map<String, String> serverCallbackArgs]) async {
-    final extras = {
+    Map<String, String> extras = {
       "KA": await KakaoContext.kaHeader,
       "lcba":
           serverCallbackArgs == null ? null : jsonEncode(serverCallbackArgs),
@@ -123,8 +123,8 @@ class LinkClient {
     return extras;
   }
 
-  int _attachmentSize(LinkResponse response,
-      {String clientId, Map<String, String> serverCallbackArgs}) {
+  Future<int> _attachmentSize(LinkResponse response,
+      {String clientId, Map<String, String> serverCallbackArgs}) async {
     final templateMsg = response.templateMsg;
     final attachment = {
       "lv": "4.0",
@@ -134,7 +134,7 @@ class LinkClient {
       "C": templateMsg["C"],
       "template_id": response.templateId,
       "template_args": response.templateArgs,
-      "extras": jsonEncode(_extras(serverCallbackArgs))
+      "extras": jsonEncode(await _extras(serverCallbackArgs))
     };
     return utf8.encode(jsonEncode(attachment)).length;
   }
