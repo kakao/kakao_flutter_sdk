@@ -184,7 +184,7 @@ import 'package:kakao_flutter_sdk/main.dart';
 
 Uri uri = await LinkClient.instance
           .custom(16761, templateArgs: {"key1": "value1"});
-await launchWithBrowserTab(uri);
+await launchBrowserTab(uri);
 ```
 
 ## SDK Architecture

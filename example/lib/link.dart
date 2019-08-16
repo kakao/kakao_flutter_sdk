@@ -11,7 +11,6 @@ class LinkScreen extends StatelessWidget {
         ListTile(title: Text("Scrap"), onTap: onTapScrap)
       ],
     );
-    ;
   }
 
   void onTapDefault() async {
@@ -32,7 +31,7 @@ class LinkScreen extends StatelessWidget {
                 Link(webUrl: Uri.parse("https://developers.kakao.com"))),
           ]);
       var uri = await LinkClient.instance.defaultWithWeb(template);
-      await launchWithBrowserTab(uri);
+      await launchBrowserTab(uri);
     } catch (e) {
       print(e.toString());
     }
@@ -40,9 +39,16 @@ class LinkScreen extends StatelessWidget {
 
   void onTapCustom() async {
     try {
+      final talkInstalled = await isKakaoTalkInstalled();
+      if (talkInstalled) {
+        var uri = await LinkClient.instance
+            .customWithTalk(17125, templateArgs: {"key1": "value1"});
+        await LinkClient.instance.launchKakaoTalk(uri);
+        return;
+      }
       var uri = await LinkClient.instance
           .customWithWeb(17125, templateArgs: {"key1": "value1"});
-      await launchWithBrowserTab(uri);
+      await launchBrowserTab(uri);
     } catch (e) {
       print(e.toString());
     }
@@ -50,9 +56,16 @@ class LinkScreen extends StatelessWidget {
 
   void onTapScrap() async {
     try {
+      final talkInstalled = await isKakaoTalkInstalled();
+      if (talkInstalled) {
+        var uri = await LinkClient.instance
+            .scrapWithTalk("https://developers.kakao.com");
+        await LinkClient.instance.launchKakaoTalk(uri);
+        return;
+      }
       var uri = await LinkClient.instance
           .scrapWithWeb("https://developers.kakao.com");
-      await launchWithBrowserTab(uri);
+      await launchBrowserTab(uri);
     } catch (e) {
       print(e.toString());
     }

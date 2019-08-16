@@ -22,11 +22,11 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin {
       result(Utility.origin())
     case "getKaHeader":
       result(Utility.kaHeader())
-    case "launchWithBrowserTab":
+    case "launchBrowserTab":
         let args = call.arguments as! Dictionary<String, String>
         let url = args["url"]
         let redirectUri = args["redirect_uri"]
-        launchWithBrowserTab(url: url!, redirectUri: redirectUri, result: result)
+        launchBrowserTab(url: url!, redirectUri: redirectUri, result: result)
     case "authorizeWithTalk":
         let args = call.arguments as! Dictionary<String, String>
         let clientId = args["client_id"]
@@ -93,7 +93,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin {
         }
     }
     
-    private func launchWithBrowserTab(url: String, redirectUri: String?, result: @escaping FlutterResult) {
+    private func launchBrowserTab(url: String, redirectUri: String?, result: @escaping FlutterResult) {
         var keepMe: Any? = nil
         let completionHandler = { (url: URL?, err: Error?) in
             keepMe = nil

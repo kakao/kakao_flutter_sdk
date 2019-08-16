@@ -28,7 +28,7 @@ class AuthCodeClient {
     params.removeWhere((k, v) => v == null);
     final url = Uri.https(KakaoContext.hosts.kauth, "/oauth/authorize", params);
     return _parseCode(
-        await launchWithBrowserTab(url, redirectUri: finalRedirectUri));
+        await launchBrowserTab(url, redirectUri: finalRedirectUri));
   }
 
   /// Requests authorization code via KakaoTalk.
@@ -56,7 +56,7 @@ class AuthCodeClient {
     params.removeWhere((k, v) => v == null);
     final url = Uri.https(KakaoContext.hosts.kauth, "/oauth/authorize", params);
     return _parseCode(
-        await launchWithBrowserTab(url, redirectUri: finalRedirectUri));
+        await launchBrowserTab(url, redirectUri: finalRedirectUri));
   }
 
   String _parseCode(String redirectedUri) {
