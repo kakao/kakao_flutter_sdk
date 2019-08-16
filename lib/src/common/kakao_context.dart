@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
-import 'server_hosts.dart';
 
 /// Singleton context for Kakao Flutter SDK.
 class KakaoContext {
@@ -12,6 +11,24 @@ class KakaoContext {
   /// Native app key for this application from [Kakao Developers](https://developers.kakao.com).
   static String clientId;
 
+  static String sdkVersion = "0.1.0";
+
+  /// [ServerHosts] used by SDK.
+  ///
+  /// You can explicitly set this to your custom [ServerHosts]. One example can be
+  ///
+  /// ```
+  /// class SandboxHosts extends ServerHosts {
+  /// @override
+  /// String get kapi => "sandbox-${super.kapi}";
+  ///
+  /// @override
+  /// String get kauth => "sandbox-${super.kauth}";
+  ///
+  /// @override
+  ///  String get sharer => "sandbox-${super.sharer}";
+  /// }
+  /// ```
   static ServerHosts hosts = ServerHosts();
 
   /// Origin value in KA header.
@@ -37,7 +54,7 @@ class KakaoContext {
   /// ```
   static Future<String> get kaHeader async {
     final String kaHeader = await _channel.invokeMethod("getKaHeader");
-    return "flutter_sdk/0.1.0 $kaHeader";
+    return "flutter_sdk/$sdkVersion $kaHeader";
   }
 
   static Future<PackageInfo> get packageInfo async =>
@@ -51,4 +68,22 @@ class KakaoContext {
     final packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.packageName;
   }
+}
+
+/// List of hosts used by Kakao API.
+class ServerHosts {
+  final String kapi = "kapi.kakao.com";
+  final String kauth = "kauth.kakao.com";
+  final String sharer = "sharer.kakao.com";
+}
+
+class SandboxHosts extends ServerHosts {
+  @override
+  String get kapi => "sandbox-${super.kapi}";
+
+  @override
+  String get kauth => "sandbox-${super.kauth}";
+
+  @override
+  String get sharer => "sandbox-${super.sharer}";
 }
