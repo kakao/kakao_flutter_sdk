@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:platform/platform.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 
 /// Factory for network clients, interceptors, and error transformers used by other libraries.

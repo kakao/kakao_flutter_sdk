@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/src/auth/access_token_store.dart';
 import 'package:kakao_flutter_sdk/src/auth/auth_api.dart';
-import 'package:kakao_flutter_sdk/src/common/constants.dart';
 
 /// Access token interceptor for Kakao API requests.
 ///

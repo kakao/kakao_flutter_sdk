@@ -33,7 +33,9 @@ class _UserState extends State<UserScreen> {
                 child: Column(
                   children: [
                     UserAccountsDrawerHeader(
-                        accountEmail: Text(_user.kakaoAccount.email),
+                        accountEmail: _user.kakaoAccount.email == null
+                            ? null
+                            : Text(_user.kakaoAccount.email),
                         accountName: Text(_user.properties["nickname"]),
                         currentAccountPicture: CircleAvatar(
                             radius: 40,
@@ -72,20 +74,6 @@ class _UserState extends State<UserScreen> {
     } catch (e) {
       print(e.toString());
     }
-  }
-}
-
-class UserProfile extends StatelessWidget {
-  User _user;
-
-  @override
-  Widget build(BuildContext context) {
-    Map<String, String> properties = _user.properties;
-    return Column(
-      children: <Widget>[
-        _user != null ? Text(_user.id.toString()) : Container(),
-      ],
-    );
   }
 }
 
