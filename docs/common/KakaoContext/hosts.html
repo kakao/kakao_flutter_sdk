@@ -75,6 +75,7 @@
       <li><a href="common/KakaoContext/origin.html">origin</a></li>
       <li><a href="common/KakaoContext/packageInfo.html">packageInfo</a></li>
       <li><a href="common/KakaoContext/packageName.html">packageName</a></li>
+      <li><a href="common/KakaoContext/sdkVersion.html">sdkVersion</a></li>
     
     
     </ol>
@@ -87,6 +88,21 @@
           <span class="returntype"><a href="common/ServerHosts-class.html">ServerHosts</a></span>
           <span class="name ">hosts</span>
           <div class="features">read / write</div>
+        </section>
+        <section class="desc markdown">
+          <p><a href="common/ServerHosts-class.html">ServerHosts</a> used by SDK.</p>
+<p>You can explicitly set this to your custom <a href="common/ServerHosts-class.html">ServerHosts</a>. One example can be</p>
+<pre class="language-dart"><code>class SandboxHosts extends ServerHosts {
+@override
+String get kapi =&gt; "sandbox-${super.kapi}";
+
+@override
+String get kauth =&gt; "sandbox-${super.kauth}";
+
+@override
+ String get sharer =&gt; "sandbox-${super.sharer}";
+}
+</code></pre>
         </section>
                 <section class="summary source-code" id="source">
           <h2><span>Implementation</span></h2>
@@ -104,7 +120,7 @@
 
 <footer>
   <span class="no-break">
-    kakao_flutter_sdk 0.1.0+1
+    kakao_flutter_sdk 0.1.0
   </span>
 
   

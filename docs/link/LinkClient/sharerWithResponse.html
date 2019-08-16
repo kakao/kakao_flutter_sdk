@@ -109,10 +109,10 @@
       &quot;template_args&quot;: response.templateArgs,
       &quot;link_ver&quot;: &quot;4.0&quot;
     }),
-    ...(serverCallbackArgs == null
-        ? {}
-        : {&quot;lcba&quot;: jsonEncode(serverCallbackArgs)})
+    &quot;lcba&quot;: serverCallbackArgs == null ? null : jsonEncode(serverCallbackArgs)
   };
+
+  params.removeWhere((k, v) =&gt; v == null);
   return Uri.https(
       KakaoContext.hosts.sharer, &quot;talk&#47;friends&#47;picker&#47;easylink&quot;, params);
 }</code></pre>
@@ -127,7 +127,7 @@
 
 <footer>
   <span class="no-break">
-    kakao_flutter_sdk 0.1.0+1
+    kakao_flutter_sdk 0.1.0
   </span>
 
   

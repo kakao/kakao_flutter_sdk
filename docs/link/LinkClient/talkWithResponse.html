@@ -100,20 +100,20 @@
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">Future&lt;Uri&gt; talkWithResponse(LinkResponse response,
     {String clientId, Map&lt;String, String&gt; serverCallbackArgs}) async {
-  final attachmentSize = _attachmentSize(response,
+  final attachmentSize = await _attachmentSize(response,
       clientId: clientId, serverCallbackArgs: serverCallbackArgs);
   if (attachmentSize &gt; 10 * 1024) {
     throw KakaoClientException(
         &quot;Exceeded message template v2 size limit (${attachmentSize &#47; 1024}kb &gt; 10kb).&quot;);
   }
-  final params = {
+  Map&lt;String, String&gt; params = {
     &quot;linkver&quot;: &quot;4.0&quot;,
     &quot;appkey&quot;: clientId ?? KakaoContext.clientId,
     &quot;appver&quot;: await KakaoContext.appVer,
-    &quot;template_id&quot;: response.templateId,
-    &quot;template_args&quot;: response.templateArgs,
-    &quot;template_json&quot;: response.templateMsg,
-    &quot;extras&quot;: _extras(serverCallbackArgs)
+    &quot;template_id&quot;: response.templateId.toString(),
+    &quot;template_args&quot;: jsonEncode(response.templateArgs),
+    &quot;template_json&quot;: jsonEncode(response.templateMsg),
+    &quot;extras&quot;: jsonEncode(await _extras(serverCallbackArgs))
   };
   return Uri(scheme: &quot;kakaolink&quot;, host: &quot;send&quot;, queryParameters: params);
 }</code></pre>
@@ -128,7 +128,7 @@
 
 <footer>
   <span class="no-break">
-    kakao_flutter_sdk 0.1.0+1
+    kakao_flutter_sdk 0.1.0
   </span>
 
   

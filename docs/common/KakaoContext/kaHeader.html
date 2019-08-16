@@ -75,6 +75,7 @@
       <li><a href="common/KakaoContext/origin.html">origin</a></li>
       <li><a href="common/KakaoContext/packageInfo.html">packageInfo</a></li>
       <li><a href="common/KakaoContext/packageName.html">packageName</a></li>
+      <li><a href="common/KakaoContext/sdkVersion.html">sdkVersion</a></li>
     
     
     </ol>
@@ -106,7 +107,7 @@
           <h2><span>Implementation</span></h2>
           <pre class="language-dart"><code class="language-dart">static Future&lt;String&gt; get kaHeader async {
   final String kaHeader = await _channel.invokeMethod(&quot;getKaHeader&quot;);
-  return &quot;flutter_sdk&#47;0.1.0 $kaHeader&quot;;
+  return &quot;flutter_sdk&#47;$sdkVersion $kaHeader&quot;;
 }</code></pre>
         </section>
 </section>
@@ -120,7 +121,7 @@
 
 <footer>
   <span class="no-break">
-    kakao_flutter_sdk 0.1.0+1
+    kakao_flutter_sdk 0.1.0
   </span>
 
   
