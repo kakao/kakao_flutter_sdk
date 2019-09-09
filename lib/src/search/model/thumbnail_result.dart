@@ -11,4 +11,11 @@ class ThumbnailResult extends WebResult {
     this.thumbnail = thumbnail;
   }
   Uri thumbnail;
+
+  /// <nodoc>
+  factory ThumbnailResult.fromJson(Map<String, dynamic> json) =>
+      _$ThumbnailResultFromJson(json);
+
+  /// <nodoc>
+  Map<String, dynamic> toJson() => _$ThumbnailResultToJson(this);
 }

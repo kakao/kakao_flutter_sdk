@@ -16,7 +16,7 @@ class SearchApi {
 
   final Dio _dio;
 
-  static final instance = SearchApi(ApiFactory.appKeyApi);
+  static final instance = SearchApi(ApiFactory.dapi);
 
   Future<SearchEnvelope<WebResult>> web(String query,
       {Order sort, int page, int size}) async {

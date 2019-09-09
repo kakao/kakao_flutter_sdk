@@ -1,3 +1,9 @@
+## 0.2.0
+
+- SDK for Kakao Search API
+- SDK for Kakao Local API
+- Set secure_resource to true for /v2/user/me API.
+
 ## 0.1.2
 
 - Remove meta package from expliciit dependency.

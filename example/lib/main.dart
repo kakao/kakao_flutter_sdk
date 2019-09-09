@@ -7,6 +7,7 @@ import 'package:kakao_flutter_sdk_example/bloc_delegate.dart';
 import 'package:kakao_flutter_sdk_example/story_bloc/bloc.dart';
 import 'package:kakao_flutter_sdk_example/talk_bloc/bloc.dart';
 import 'package:kakao_flutter_sdk_example/user_bloc/bloc.dart';
+import 'package:kakao_flutter_sdk_example/search_bloc/bloc.dart';
 
 import 'add_story.dart';
 import 'link.dart';
@@ -14,30 +15,24 @@ import 'login.dart';
 import 'user.dart';
 import 'story.dart';
 import 'talk.dart';
+import 'search.dart';
 
 void main() {
   KakaoContext.clientId = "dd4e9cb75815cbdf7d87ed721a659baf";
   BlocSupervisor.delegate = MyBlocDelegate();
   runApp(MultiBlocProvider(
     providers: [
-      BlocProvider<UserBloc>(
-        builder: (context) => UserBloc(),
-      ),
-      BlocProvider<StoryBloc>(
-        builder: (context) => StoryBloc(),
-      ),
-      BlocProvider<TalkBloc>(
-        builder: (context) => TalkBloc(),
-      ),
-      BlocProvider<FriendsBloc>(
-        builder: (context) => FriendsBloc(),
-      ),
+      BlocProvider<UserBloc>(builder: (context) => UserBloc()),
+      BlocProvider<StoryBloc>(builder: (context) => StoryBloc()),
+      BlocProvider<TalkBloc>(builder: (context) => TalkBloc()),
+      BlocProvider<FriendsBloc>(builder: (context) => FriendsBloc()),
       BlocProvider<StoryDetailBloc>(
         builder: (context) => StoryDetailBloc(),
       ),
       BlocProvider<PostStoryBloc>(
         builder: (context) => PostStoryBloc(),
-      )
+      ),
+      BlocProvider<SearchBloc>(builder: (context) => SearchBloc())
     ],
     child: MyApp(),
   ));
@@ -113,11 +108,15 @@ class _MainScreenState extends State<MainScreen>
   TabController _controller;
 
   String _title = "User API";
+
+  List<Widget> _actions = [];
+
   @override
   void initState() {
     super.initState();
     BlocProvider.of<UserBloc>(context).dispatch(UserFetchStarted());
     _controller = TabController(length: 4, vsync: this);
+    _actions = _searchActions();
   }
 
   @override
@@ -131,16 +130,7 @@ class _MainScreenState extends State<MainScreen>
       child: Scaffold(
         appBar: AppBar(
           title: Text(_title),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(CupertinoIcons.add),
-              onPressed: () => {
-                Navigator.of(context).push(CupertinoPageRoute(
-                    fullscreenDialog: true,
-                    builder: (context) => AddStoryScreen()))
-              },
-            )
-          ],
+          actions: _actions,
         ),
         body: TabBarView(
           controller: _controller,
@@ -152,18 +142,15 @@ class _MainScreenState extends State<MainScreen>
           tabs: [
             Tab(
               icon: Icon(Icons.ac_unit, color: Color.fromARGB(255, 0, 0, 0)),
-              // title: Text("User")
               text: "User",
             ),
             Tab(
               icon: Icon(Icons.ac_unit, color: Color.fromARGB(255, 0, 0, 0)),
               text: "Talk",
-              // title: Text("Talk")
             ),
             Tab(
               icon: Icon(Icons.ac_unit, color: Color.fromARGB(255, 0, 0, 0)),
               text: "Story",
-              // title: Text("Story")
             ),
             Tab(
               icon: Icon(Icons.ac_unit, color: Color.fromARGB(255, 0, 0, 0)),
@@ -176,9 +163,34 @@ class _MainScreenState extends State<MainScreen>
     );
   }
 
+  List<Widget> _searchActions() {
+    return [
+      IconButton(
+          icon: Icon(Icons.search),
+          onPressed: () {
+            showSearch(
+                context: context,
+                delegate: DataSearch(BlocProvider.of<SearchBloc>(context)));
+          })
+    ];
+  }
+
+  List<Widget> _storyActions() {
+    return [
+      IconButton(
+        icon: Icon(CupertinoIcons.add),
+        onPressed: () => {
+          Navigator.of(context).push(CupertinoPageRoute(
+              fullscreenDialog: true, builder: (context) => AddStoryScreen()))
+        },
+      )
+    ];
+  }
+
   void setTabIndex(index) {
     String title;
 
+    List<Widget> actions = _searchActions();
     switch (index) {
       case 0:
         title = "User API";
@@ -192,6 +204,7 @@ class _MainScreenState extends State<MainScreen>
       case 2:
         title = "Story API";
         BlocProvider.of<StoryBloc>(context).dispatch(FetchStories());
+        actions = _storyActions();
         break;
       case 3:
         title = "KakaoLink";
@@ -202,6 +215,9 @@ class _MainScreenState extends State<MainScreen>
       tabIndex = index;
       _controller.index = tabIndex;
       _title = title;
+      if (actions != null) {
+        _actions = actions;
+      }
     });
   }
 }

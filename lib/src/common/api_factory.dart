@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
+import 'package:kakao_flutter_sdk/src/common/dapi_exception.dart';
 
 /// Factory for network clients, interceptors, and error transformers used by other libraries.
 class ApiFactory {
@@ -13,6 +14,8 @@ class ApiFactory {
 
   /// [Dio] instance for appkey-based Kakao API.
   static final Dio appKeyApi = _appKeyApiInstance();
+
+  static final Dio dapi = _dapiInstance();
 
   static Dio _kauthApiInstance() {
     var dio = new Dio();
@@ -42,6 +45,15 @@ class ApiFactory {
     return dio;
   }
 
+  static Dio _dapiInstance() {
+    var dio = new Dio();
+    dio.options.baseUrl = "https://${KakaoContext.hosts.dapi}";
+    dio.options.contentType =
+        ContentType.parse("application/x-www-form-urlencoded");
+    dio.interceptors.addAll([appKeyInterceptor, kaInterceptor]);
+    return dio;
+  }
+
   static Future<T> handleApiError<T>(
       Future<T> Function() requestFunction) async {
     try {
@@ -55,9 +67,16 @@ class ApiFactory {
   ///
   static KakaoException transformApiError(DioError e) {
     if (e.response == null) return KakaoClientException(e.message);
-    if (e.request.baseUrl == "https://${KakaoContext.hosts.kauth}") {
+    if (e.response.statusCode == 404) {
+      return KakaoClientException(e.message);
+    }
+    if (Uri.parse(e.request.baseUrl).host == KakaoContext.hosts.kauth) {
       return KakaoAuthException.fromJson(e.response.data);
     }
+    if (Uri.parse(e.request.baseUrl).host == KakaoContext.hosts.dapi) {
+      return DapiException.fromJson(e.response.data);
+    }
+
     return KakaoApiException.fromJson(e.response.data);
   }
 

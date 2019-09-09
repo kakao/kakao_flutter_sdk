@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/common.dart';
+import 'search_bloc/bloc.dart';
+import 'package:bloc/bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -47,6 +50,7 @@ class _LoginState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Kakao Flutter SDK Login"),
+        actions: [],
       ),
       body: Center(
           child: Column(

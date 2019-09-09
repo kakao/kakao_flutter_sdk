@@ -11,7 +11,7 @@ class KakaoContext {
   /// Native app key for this application from [Kakao Developers](https://developers.kakao.com).
   static String clientId;
 
-  static String sdkVersion = "0.1.2";
+  static String sdkVersion = "0.2.0";
 
   /// [ServerHosts] used by SDK.
   ///
@@ -73,17 +73,7 @@ class KakaoContext {
 /// List of hosts used by Kakao API.
 class ServerHosts {
   final String kapi = "kapi.kakao.com";
+  final String dapi = "dapi.kakao.com";
   final String kauth = "kauth.kakao.com";
   final String sharer = "sharer.kakao.com";
-}
-
-class SandboxHosts extends ServerHosts {
-  @override
-  String get kapi => "sandbox-${super.kapi}";
-
-  @override
-  String get kauth => "sandbox-${super.kauth}";
-
-  @override
-  String get sharer => "sandbox-${super.sharer}";
 }

@@ -3,6 +3,7 @@ import 'package:kakao_flutter_sdk/src/search/model/thumbnail_result.dart';
 
 part 'book.g.dart';
 
+/// Book searched with K
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class Book extends ThumbnailResult {
   Book(
@@ -24,8 +25,15 @@ class Book extends ThumbnailResult {
   List<String> authors;
   String publisher;
   List<String> translators;
+
+  /// regular price
   int price;
+
+  /// actual sale price
   int salePrice;
+
+  /// Sales status (such as normal, sold out, discontinued)
+  /// Use this only for display purpose, not as an enum.
   String status;
 
   /// <nodoc>

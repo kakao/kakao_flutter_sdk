@@ -17,7 +17,7 @@ class LocalApi {
   LocalApi(this._dio);
   final Dio _dio;
 
-  static final instance = LocalApi(ApiFactory.appKeyApi);
+  static final instance = LocalApi(ApiFactory.dapi);
 
   Future<LocalEnvelope<SearchMeta, TotalAddress>> address(String query,
       {int page, int size}) async {
