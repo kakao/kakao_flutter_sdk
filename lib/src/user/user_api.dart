@@ -20,7 +20,8 @@ class UserApi {
   /// Fetches current user's information.
   Future<User> me() async {
     return ApiFactory.handleApiError(() async {
-      Response response = await _dio.get("/v2/user/me");
+      Response response = await _dio
+          .get("/v2/user/me", queryParameters: {"secure_resource": true});
       return User.fromJson(response.data);
     });
   }

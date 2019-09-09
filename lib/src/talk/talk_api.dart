@@ -21,7 +21,7 @@ class TalkApi {
   Future<TalkProfile> profile() async {
     return ApiFactory.handleApiError(() async {
       Response response = await _dio.get("/v1/api/talk/profile",
-          queryParameters: {"secure_resource": "true"});
+          queryParameters: {"secure_resource": true});
       return TalkProfile.fromJson(response.data);
     });
   }
