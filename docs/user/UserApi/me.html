@@ -99,7 +99,8 @@
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">Future&lt;User&gt; me() async {
   return ApiFactory.handleApiError(() async {
-    Response response = await _dio.get(&quot;&#47;v2&#47;user&#47;me&quot;);
+    Response response = await _dio
+        .get(&quot;&#47;v2&#47;user&#47;me&quot;, queryParameters: {&quot;secure_resource&quot;: true});
     return User.fromJson(response.data);
   });
 }</code></pre>
@@ -114,7 +115,7 @@
 
 <footer>
   <span class="no-break">
-    kakao_flutter_sdk 0.1.0
+    kakao_flutter_sdk 0.1.2
   </span>
 
   

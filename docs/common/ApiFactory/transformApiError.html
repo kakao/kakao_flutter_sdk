@@ -73,6 +73,7 @@
       <li><a href="common/ApiFactory/appKeyApi.html">appKeyApi</a></li>
       <li><a href="common/ApiFactory/appKeyInterceptor.html">appKeyInterceptor</a></li>
       <li><a href="common/ApiFactory/authApi.html">authApi</a></li>
+      <li><a href="common/ApiFactory/dapi.html">dapi</a></li>
       <li><a href="common/ApiFactory/kaInterceptor.html">kaInterceptor</a></li>
       <li><a href="common/ApiFactory/kauthApi.html">kauthApi</a></li>
     
@@ -100,9 +101,16 @@
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">static KakaoException transformApiError(DioError e) {
   if (e.response == null) return KakaoClientException(e.message);
-  if (e.request.baseUrl == &quot;https:&#47;&#47;${KakaoContext.hosts.kauth}&quot;) {
+  if (e.response.statusCode == 404) {
+    return KakaoClientException(e.message);
+  }
+  if (Uri.parse(e.request.baseUrl).host == KakaoContext.hosts.kauth) {
     return KakaoAuthException.fromJson(e.response.data);
   }
+  if (Uri.parse(e.request.baseUrl).host == KakaoContext.hosts.dapi) {
+    return DapiException.fromJson(e.response.data);
+  }
+
   return KakaoApiException.fromJson(e.response.data);
 }</code></pre>
     </section>
@@ -116,7 +124,7 @@
 
 <footer>
   <span class="no-break">
-    kakao_flutter_sdk 0.1.0
+    kakao_flutter_sdk 0.1.2
   </span>
 
   

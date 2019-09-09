@@ -100,7 +100,7 @@
       <pre class="language-dart"><code class="language-dart">Future&lt;TalkProfile&gt; profile() async {
   return ApiFactory.handleApiError(() async {
     Response response = await _dio.get(&quot;&#47;v1&#47;api&#47;talk&#47;profile&quot;,
-        queryParameters: {&quot;secure_resource&quot;: &quot;true&quot;});
+        queryParameters: {&quot;secure_resource&quot;: true});
     return TalkProfile.fromJson(response.data);
   });
 }</code></pre>
@@ -115,7 +115,7 @@
 
 <footer>
   <span class="no-break">
-    kakao_flutter_sdk 0.1.0
+    kakao_flutter_sdk 0.1.2
   </span>
 
   

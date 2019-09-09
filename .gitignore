@@ -12,3 +12,4 @@ coverage/
 *.log
 
 .flutter-plugins
+docs/
