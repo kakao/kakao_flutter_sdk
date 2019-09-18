@@ -105,7 +105,8 @@ class AddStoryState extends State<AddStoryScreen> {
                                 state.images.contains("assets/images/cat1.png"),
                             onChanged: (selected) {
                               bloc.dispatch(SetImages(
-                                  "assets/images/cat1.png", selected));
+                                  fileFromAsset("assets/images/cat1.png"),
+                                  selected));
                             },
                           ),
                           Image.asset(
@@ -117,7 +118,8 @@ class AddStoryState extends State<AddStoryScreen> {
                                 state.images.contains("assets/images/cat2.png"),
                             onChanged: (selected) {
                               bloc.dispatch(SetImages(
-                                  "assets/images/cat2.png", selected));
+                                  fileFromAsset("assets/images/cat2.png"),
+                                  selected));
                             },
                           ),
                           Image.asset(

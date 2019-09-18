@@ -11,9 +11,9 @@ class MockAdapter extends HttpClientAdapter {
   }
 
   void setResponseString(String body, int statusCode) {
-    this._responseBody = ResponseBody.fromString(body, statusCode,
-        headers: DioHttpHeaders.fromMap(
-            {HttpHeaders.contentTypeHeader: ContentType.json}));
+    this._responseBody = ResponseBody.fromString(body, statusCode, headers: {
+      HttpHeaders.contentTypeHeader: [ContentType.json.mimeType]
+    });
   }
 
   @override
@@ -24,4 +24,7 @@ class MockAdapter extends HttpClientAdapter {
     }
     return _responseBody;
   }
+
+  @override
+  void close({bool force = false}) {}
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'bloc.dart';
 import 'package:kakao_flutter_sdk/story.dart';
@@ -15,9 +17,9 @@ class PostStoryBloc extends Bloc<PostStoryEvent, PostStoryState> {
     PostStoryEvent event,
   ) async* {
     if (event is SetImages) {
-      List<String> newImages = List<String>.from(currentState.images);
+      List<File> newImages = List<File>.from(currentState.images);
       if (event.selected) {
-        newImages.add(event.image);
+        newImages.add(await event.image);
       } else {
         newImages.remove(event.image);
       }
@@ -35,7 +37,8 @@ class PostStoryBloc extends Bloc<PostStoryEvent, PostStoryState> {
     if (event is PostStory) {
       try {
         if (currentState.images.isNotEmpty) {
-          await _storyApi.postPhotos(currentState.images,
+          final images = await _storyApi.scrapImages(currentState.images);
+          await _storyApi.postPhotos(images,
               content: currentState.content,
               permission: currentState.permission,
               enableShare: currentState.enableShare,

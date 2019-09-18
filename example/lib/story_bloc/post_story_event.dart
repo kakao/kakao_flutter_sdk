@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:kakao_flutter_sdk/story.dart';
@@ -16,7 +18,7 @@ class SetContent extends PostStoryEvent {
 }
 
 class SetImages extends PostStoryEvent {
-  final String image;
+  final Future<File> image;
   final bool selected;
   SetImages(this.image, this.selected) : super([image, selected]);
 

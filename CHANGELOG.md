@@ -1,3 +1,8 @@
+## 0.2.1
+
+- Stabilize agains flutter `1.9.1`.
+- Update `dio` package to `2.2.1` and fix compile errors due to interface changes.
+
 ## 0.2.0
 
 - SDK for Kakao Search API

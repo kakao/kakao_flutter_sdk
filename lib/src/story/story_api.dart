@@ -170,11 +170,14 @@ class StoryApi {
   /// Returned list of image urls can be passed to [StoryApi.postPhotos()].
   Future<List<String>> scrapImages(List<File> images) async {
     return ApiFactory.handleApiError(() async {
-      Map<String, UploadFileInfo> data = images.asMap().map((index, image) =>
-          MapEntry("file_${index + 1}",
-              UploadFileInfo(image, image.path.split("/").last)));
+      List<MultipartFile> files = await Future.wait(images.map((image) async =>
+          await MultipartFile.fromFile(image.path,
+              filename: image.path.split("/").last)));
+      Map<String, MultipartFile> data = files.asMap().map((index, file) {
+        return MapEntry("file_${index + 1}", file);
+      });
       final response = await _dio.post("/v1/api/story/upload/multi",
-          data: FormData.from(data));
+          data: FormData.fromMap(data));
       var urls = response.data;
       if (urls is List) return urls.map((url) => url as String).toList();
       throw KakaoClientException("Resposne should be an array.");

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:kakao_flutter_sdk/story.dart';
@@ -25,7 +27,7 @@ class PostStoryState extends Equatable {
         ]);
 
   final String content;
-  final List<String> images;
+  final List<File> images;
   final StoryPermission permission;
   final bool enableShare;
   final String androidExecParams;
@@ -45,7 +47,7 @@ class PostStoryState extends Equatable {
 
   PostStoryState assign(
           {String content,
-          List<String> images,
+          List<File> images,
           StoryPermission permission,
           bool enableShare,
           String androidExecParams,
