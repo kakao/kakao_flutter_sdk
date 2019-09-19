@@ -1,3 +1,7 @@
+## 0.2.2
+
+- Update `dio` package to `3.0.0` and fix compile errors due to interface changes. Changes that were merged in 2.2.1 were ported to 3.0.0, presumably to ensure version compatibility in ^2.2.x.
+
 ## 0.2.1
 
 - Stabilize agains flutter `1.9.1`.

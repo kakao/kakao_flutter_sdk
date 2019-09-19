@@ -84,7 +84,7 @@ packages:
       name: dio
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.1"
+    version: "3.0.0"
   equatable:
     dependency: "direct main"
     description:
@@ -164,7 +164,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.2.1"
+    version: "0.2.2"
   matcher:
     dependency: transitive
     description:
@@ -360,5 +360,5 @@ packages:
     source: hosted
     version: "0.3.13"
 sdks:
-  dart: ">=2.3.0 <3.0.0"
+  dart: ">2.4.0 <3.0.0"
   flutter: ">=1.5.0 <2.0.0"
