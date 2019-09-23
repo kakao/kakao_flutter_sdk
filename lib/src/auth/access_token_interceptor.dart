@@ -29,7 +29,7 @@ class AccessTokenInterceptor extends Interceptor {
   @override
   onError(DioError err) async {
     _dio.interceptors.errorLock.lock();
-    if (_isNotRetryable(err)) {
+    if (!isRetryable(err)) {
       _dio.interceptors.errorLock.unlock();
       return err;
     }
@@ -61,9 +61,9 @@ class AccessTokenInterceptor extends Interceptor {
     }
   }
 
-  ///
-  bool _isNotRetryable(DioError err) =>
-      err.request.baseUrl == "https://${KakaoContext.hosts.kauth}" ||
-      err.response == null ||
-      err.response.statusCode != 401;
+  /// This can be overridden
+  bool isRetryable(DioError err) =>
+      err.request.baseUrl == "https://${KakaoContext.hosts.kapi}" &&
+      err.response != null &&
+      err.response.statusCode == 401;
 }
