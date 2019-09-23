@@ -3,7 +3,7 @@ import UIKit
 import AuthenticationServices
 import SafariServices
 
-public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin {
+public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthenticationPresentationContextProviding {
     var result: FlutterResult? = nil
     var redirectUri: String? = nil
     var authorizeTalkCompletionHandler : ((URL?, FlutterError?) -> Void)?
@@ -119,6 +119,9 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin {
         let redirectUriObject: URL? = redirectUri == nil ? nil : URL(string: redirectUri!)
         if #available(iOS 12, *) {
             let session = ASWebAuthenticationSession(url: urlObject, callbackURLScheme: redirectUriObject?.scheme, completionHandler: completionHandler)
+            if #available(iOS 13.0, *) {
+                session.presentationContextProvider = self
+            }
             session.start()
             keepMe = session
         } else {
@@ -140,5 +143,10 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin {
         }
         self.authorizeTalkCompletionHandler?(nil, FlutterError(code: "REDIRECT_URL_MISMATCH", message: "Expected: \(finalRedirectUri), Actual: \(url.absoluteString)", details: nil))
         return true
+    }
+    
+    @available(iOS 12.0, *)
+    public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+        return UIApplication.shared.keyWindow ?? ASPresentationAnchor()
     }
 }
