@@ -1,3 +1,8 @@
+## 0.2.3
+
+- Provide `presentationContextProvider` to `ASWebAuthenticationSession` in login. (fix for iOS13.0)
+- Make `isRetryable` method of `AccessTokenInterceptor` public so that the interceptor can be used in a customized way. Third-party can override this method for their own API client if `Authorization` header matches the format `Bearer ${kakao_access_token}` for their API (which is a very uncommon need).
+
 ## 0.2.2
 
 - Update `dio` package to `3.0.0` and fix compile errors due to interface changes. Changes that were merged in 2.2.1 were ported to 3.0.0, presumably to ensure version compatibility in ^2.2.x.
