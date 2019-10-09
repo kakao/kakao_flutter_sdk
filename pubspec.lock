@@ -147,7 +147,7 @@ packages:
       name: dio
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.0"
+    version: "3.0.3"
   fixnum:
     dependency: transitive
     description:
@@ -241,7 +241,7 @@ packages:
       name: json_serializable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.2.2"
+    version: "3.2.3"
   kernel:
     dependency: transitive
     description:
