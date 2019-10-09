@@ -36,10 +36,11 @@ void main() {
     return friend.userId == element["id"] &&
         friend.profileNickname == element["profile_nickname"] &&
         friend.profileThumbnailImage.toString() ==
-            element["profile_thumbnail_image"];
+            element["profile_thumbnail_image"] &&
+        friend.favorite == element["favorite"];
   }
 
-  test('/v1/friends 200', () async {
+  test('/v1/api/talk/friends 200', () async {
     String body = await loadJson("talk/friends/friends.json");
     Map<String, dynamic> map = jsonDecode(body);
     _adapter.setResponseString(body, 200);
@@ -80,7 +81,7 @@ void main() {
         expect(params["template_id"], 1234);
         expect(params["template_args"], jsonEncode(args));
       };
-      await _api.customMemo(1234, args);
+      await _api.customMemo(1234, templateArgs: args);
     });
 
     group("/default", () {
@@ -146,6 +147,36 @@ void main() {
     });
   });
 
+  group("v1/api/talk/friends/message/send", () {
+    var map;
+    setUp(() async {});
+    test("custom without failure infos", () async {
+      final body = await loadJson("talk/message/success.json");
+      map = jsonDecode(body);
+      _adapter.setResponseString(body, 200);
+      final res = await _api.customMessage(["1234"], 1234);
+      final expectedUuids = map["successful_receiver_uuids"];
+      final uuids = res.successfulReceiverUuids;
+      uuids.asMap().forEach((idx, uuid) {
+        expect(expectedUuids[idx], uuid);
+      });
+    });
+
+    test("custom with failure infos", () async {
+      final body = await loadJson("talk/message/partial_success.json");
+      map = jsonDecode(body);
+      _adapter.setResponseString(body, 200);
+      final res = await _api.customMessage(["1234"], 1234);
+
+      final expectedInfos = map["failure_info"];
+      final infos = res.failureInfos;
+      infos.asMap().forEach((idx, info) {
+        expect(expectedInfos[idx]["code"], info.code);
+        expect(expectedInfos[idx]["msg"], info.msg);
+        expect(expectedInfos[idx]["receiver_uuids"], info.receiverUuids);
+      });
+    });
+  });
   group("/v1/api/talk/plusfriends", () {
     var map;
     PlusFriendsResponse res;
