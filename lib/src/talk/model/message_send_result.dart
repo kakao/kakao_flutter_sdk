@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk/src/talk/message_failure_info.dart';
+import 'package:kakao_flutter_sdk/src/talk/model/message_failure_info.dart';
 
 part 'message_send_result.g.dart';
 
