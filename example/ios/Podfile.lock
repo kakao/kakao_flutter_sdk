@@ -3,7 +3,7 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - kakao_flutter_sdk (0.2.3):
+  - kakao_flutter_sdk (0.3.0):
     - Flutter
   - package_info (0.0.1):
     - Flutter
@@ -64,7 +64,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  kakao_flutter_sdk: e36bec8d9c794200805aa886e6676f9d36ca302c
+  kakao_flutter_sdk: ab528f8f161596432145c09b79a91f61b3f33422
   package_info: 78cabb3c322943c55d39676f4a5bfc748c01d055
   path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
   screen: abd91ca7bf3426e1cc3646d27e9b2358d6bf07b0

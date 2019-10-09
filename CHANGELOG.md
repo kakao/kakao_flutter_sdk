@@ -1,3 +1,9 @@
+## 0.3.0
+
+- Release according to recent Kakao API udpate.
+- Add message send API to `TalkApi`. Also update `Friend` model to include `uuid` and `favorite` field.
+- Add live account profile data to `Account` and `groupUserToken` field to `User`.
+
 ## 0.2.3
 
 - Provide `presentationContextProvider` to `ASWebAuthenticationSession` in login. (fix for iOS13.0)
