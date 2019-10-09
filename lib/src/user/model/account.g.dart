@@ -8,6 +8,10 @@ part of 'account.dart';
 
 Account _$AccountFromJson(Map<String, dynamic> json) {
   return Account(
+    json['profile_needs_agreement'] as bool,
+    json['profile'] == null
+        ? null
+        : Profile.fromJson(json['profile'] as Map<String, dynamic>),
     json['is_email_verified'] as bool,
     json['is_email_valid'] as bool,
     json['email_needs_agreement'] as bool,
@@ -42,6 +46,8 @@ Map<String, dynamic> _$AccountToJson(Account instance) {
     }
   }
 
+  writeNotNull('profile_needs_agreement', instance.profileNeedsAgreement);
+  writeNotNull('profile', instance.profile?.toJson());
   writeNotNull('is_email_verified', instance.isEmailVerified);
   writeNotNull('is_email_valid', instance.isEmailValid);
   writeNotNull('email_needs_agreement', instance.emailNeedsAgreement);

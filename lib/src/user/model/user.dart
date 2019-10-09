@@ -8,7 +8,8 @@ part 'user.g.dart';
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class User {
   /// <nodoc>
-  User(this.hasSignedUp);
+  User(this.id, this.hasSignedUp, this.properties, this.kakaoAccount,
+      this.groupUserToken);
 
   /// app user id
   int id;
@@ -17,9 +18,10 @@ class User {
   bool hasSignedUp;
 
   /// custom properties this user has.
-  ///
   Map<String, String> properties;
   Account kakaoAccount;
+
+  String groupUserToken;
 
   /// <nodoc>
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

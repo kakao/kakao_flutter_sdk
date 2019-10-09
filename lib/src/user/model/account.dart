@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:kakao_flutter_sdk/src/user/model/profile.dart';
 
 part 'account.g.dart';
 
@@ -10,6 +11,8 @@ part 'account.g.dart';
 class Account {
   /// <nodoc>
   Account(
+      this.profileNeedsAgreement,
+      this.profile,
       this.isEmailVerified,
       this.isEmailValid,
       this.emailNeedsAgreement,
@@ -28,6 +31,10 @@ class Account {
       this.ciNeedsAgreement,
       this.ci,
       this.ciAuthenticatedAt);
+
+  bool profileNeedsAgreement;
+  Profile profile;
+
   bool isEmailVerified;
   bool isEmailValid;
   bool emailNeedsAgreement;

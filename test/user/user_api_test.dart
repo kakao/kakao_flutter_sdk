@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_test/flutter_test.dart' as prefix0;
 import 'package:kakao_flutter_sdk/src/user/model/account.dart';
 import 'package:kakao_flutter_sdk/src/user/model/user.dart';
 import 'package:kakao_flutter_sdk/src/user/user_api.dart';
@@ -44,6 +45,13 @@ void main() {
 
     expect(account.ageRange, AgeRange.TWENTIES);
     expect(account.gender, Gender.FEMALE);
+
+    final profileMap = accountMap["profile"];
+    final profile = account.profile;
+    expect(profileMap["nickname"], profile.nickname.toString());
+    expect(profileMap["thumbnail_image_url"],
+        profile.thumbnailImageUrl.toString());
+    expect(profileMap["profile_image_url"], profile.profileImageUrl.toString());
 
     expect(true, user.toJson() != null);
   });
