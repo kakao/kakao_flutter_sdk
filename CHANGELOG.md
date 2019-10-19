@@ -1,3 +1,8 @@
+## 0.3.1
+
+- Minor fixes
+- fix wrong json keys for `androidExecParams` and `iosExecParms` in `Link` class of `template` module.
+
 ## 0.3.0
 
 - Release according to recent Kakao API udpate.

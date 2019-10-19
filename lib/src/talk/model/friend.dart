@@ -6,7 +6,8 @@ part 'friend.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class Friend {
   /// <nodoc>
-  Friend(this.userId, this.uuid, this.profileNickname, this.profileThumbnailImage, this.favorite);
+  Friend(this.userId, this.uuid, this.profileNickname,
+      this.profileThumbnailImage, this.favorite);
 
   /// Friend's app user id, used in user mapping with third-party services.
   @JsonKey(name: "id")

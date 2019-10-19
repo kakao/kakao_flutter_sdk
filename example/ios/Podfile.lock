@@ -3,7 +3,7 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - kakao_flutter_sdk (0.3.0):
+  - kakao_flutter_sdk (0.3.1):
     - Flutter
   - package_info (0.0.1):
     - Flutter
@@ -36,7 +36,7 @@ DEPENDENCIES:
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - FMDB
 
 EXTERNAL SOURCES:
@@ -64,7 +64,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  kakao_flutter_sdk: ab528f8f161596432145c09b79a91f61b3f33422
+  kakao_flutter_sdk: 854e8a4db18283d4b56b668515357b9c35c210ac
   package_info: 78cabb3c322943c55d39676f4a5bfc748c01d055
   path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
   screen: abd91ca7bf3426e1cc3646d27e9b2358d6bf07b0
@@ -76,4 +76,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 14ad2ebdc4889b6dcf49ae71037510a7da3b01d6
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.8.3
