@@ -36,7 +36,7 @@ class Link {
   ///
   /// These query paramters can then be parsed to direct users to appropriate screen.
   ///
-  @JsonKey(name: "android_params")
+  @JsonKey(name: "android_execution_params")
   final String androidExecParams;
 
   /// query string to be passed to custom scheme in iOS.
@@ -57,7 +57,7 @@ class Link {
   ///
   /// These query paramters can then be parsed to direct users to appropriate screen.
   ///
-  @JsonKey(name: "ios_params")
+  @JsonKey(name: "ios_execution_params")
   final String iosExecParams;
 
   /// <nodoc>
