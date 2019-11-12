@@ -76,4 +76,5 @@ class ServerHosts {
   final String dapi = "dapi.kakao.com";
   final String kauth = "kauth.kakao.com";
   final String sharer = "sharer.kakao.com";
+  final String pf = "pf.kakao.com";
 }

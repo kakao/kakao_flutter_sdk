@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:kakao_flutter_sdk/common.dart';
 import 'package:kakao_flutter_sdk/src/common/api_factory.dart';
 import 'package:kakao_flutter_sdk/src/talk/model/friends_response.dart';
 import 'package:kakao_flutter_sdk/src/talk/model/message_send_result.dart';
@@ -126,6 +127,22 @@ class TalkApi {
     return _message("scrap/", params);
   }
 
+  Future<Uri> channelAddUrl(final String channelId) async {
+    return Uri(
+        scheme: "https",
+        host: KakaoContext.hosts.pf,
+        path: "/$channelId/friend",
+        queryParameters: await _channelBaseParams());
+  }
+
+  Future<Uri> channelChatUrl(final String channelId) async {
+    return Uri(
+        scheme: "https",
+        host: KakaoContext.hosts.pf,
+        path: "/$channelId/chat",
+        queryParameters: await _channelBaseParams());
+  }
+
   Future<MessageSendResult> _message(
       String pathPart, Map<String, dynamic> params) async {
     return ApiFactory.handleApiError(() async {
@@ -134,6 +151,14 @@ class TalkApi {
           .post("/v1/api/talk/friends/message/${pathPart}send", data: params);
       return MessageSendResult.fromJson(response.data);
     });
+  }
+
+  Future<Map<String, String>> _channelBaseParams() async {
+    return {
+      "app_key": KakaoContext.clientId,
+      "kakao_agent": await KakaoContext.kaHeader,
+      "api_ver": "1.0"
+    };
   }
 }
 
