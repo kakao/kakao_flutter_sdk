@@ -1,3 +1,7 @@
+## 0.3.2
+
+- Talk Channel SDK
+
 ## 0.3.1
 
 - Minor fixes

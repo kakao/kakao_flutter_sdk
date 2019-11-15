@@ -11,7 +11,7 @@ class KakaoContext {
   /// Native app key for this application from [Kakao Developers](https://developers.kakao.com).
   static String clientId;
 
-  static String sdkVersion = "0.3.1";
+  static String sdkVersion = "0.3.2";
 
   /// [ServerHosts] used by SDK.
   ///

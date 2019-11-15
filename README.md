@@ -25,7 +25,7 @@ In the near future when it is released on [pub.dev](https://pub.dev), below woul
 
 ```yaml
 dependencies:
-  kakao_flutter_sdk: ^0.3.1
+  kakao_flutter_sdk: ^0.3.2
 ```
 
 ### Transitive dependencies
