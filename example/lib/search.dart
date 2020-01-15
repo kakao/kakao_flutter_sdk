@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:kakao_flutter_sdk_example/search_bloc/search_state.dart';
 import 'search_bloc/bloc.dart';
 
@@ -70,8 +69,9 @@ class DataSearch extends SearchDelegate<String> {
                     itemBuilder: (context, index) {
                       return ListTile(
                         leading: Icon(Icons.web),
-                        title: HtmlWidget(state.results.documents[index].title,
-                            webView: false),
+                        title: Text(state.results.documents[index].title),
+                        //  HtmlWidget(state.results.documents[index].title,
+                        //     webView: false),
                       );
                     },
                     itemCount: state.results.documents.length,
@@ -103,8 +103,9 @@ class DataSearch extends SearchDelegate<String> {
                     itemBuilder: (context, index) {
                       return ListTile(
                         leading: Icon(Icons.pages),
-                        title: HtmlWidget(state.blogs.documents[index].title,
-                            webView: false),
+                        title: Text(state.blogs.documents[index].title),
+                        // HtmlWidget(state.blogs.documents[index].title,
+                        // webView: false),
                       );
                     },
                     itemCount: state.blogs.documents.length,
@@ -118,10 +119,11 @@ class DataSearch extends SearchDelegate<String> {
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        leading: Icon(Icons.book),
-                        title: HtmlWidget(state.books.documents[index].title,
-                            webView: false),
-                      );
+                          leading: Icon(Icons.book),
+                          title: Text(state.books.documents[index].title)
+                          // HtmlWidget(state.books.documents[index].title,
+                          //     webView: false),
+                          );
                     },
                     itemCount: state.books.documents.length,
                   )

@@ -1,79 +1,34 @@
 PODS:
   - Flutter (1.0.0)
-  - FMDB (2.7.5):
-    - FMDB/standard (= 2.7.5)
-  - FMDB/standard (2.7.5)
   - kakao_flutter_sdk (0.3.2):
     - Flutter
   - package_info (0.0.1):
     - Flutter
-  - path_provider (0.0.1):
-    - Flutter
-  - screen (0.0.1):
-    - Flutter
   - shared_preferences (0.0.1):
-    - Flutter
-  - sqflite (0.0.1):
-    - Flutter
-    - FMDB (~> 2.7.2)
-  - url_launcher (0.0.1):
-    - Flutter
-  - video_player (0.0.1):
-    - Flutter
-  - webview_flutter (0.0.1):
     - Flutter
 
 DEPENDENCIES:
-  - Flutter (from `.symlinks/flutter/ios`)
+  - Flutter (from `Flutter`)
   - kakao_flutter_sdk (from `.symlinks/plugins/kakao_flutter_sdk/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
-  - path_provider (from `.symlinks/plugins/path_provider/ios`)
-  - screen (from `.symlinks/plugins/screen/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
-  - sqflite (from `.symlinks/plugins/sqflite/ios`)
-  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
-  - video_player (from `.symlinks/plugins/video_player/ios`)
-  - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
-
-SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
-    - FMDB
 
 EXTERNAL SOURCES:
   Flutter:
-    :path: ".symlinks/flutter/ios"
+    :path: Flutter
   kakao_flutter_sdk:
     :path: ".symlinks/plugins/kakao_flutter_sdk/ios"
   package_info:
     :path: ".symlinks/plugins/package_info/ios"
-  path_provider:
-    :path: ".symlinks/plugins/path_provider/ios"
-  screen:
-    :path: ".symlinks/plugins/screen/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
-  sqflite:
-    :path: ".symlinks/plugins/sqflite/ios"
-  url_launcher:
-    :path: ".symlinks/plugins/url_launcher/ios"
-  video_player:
-    :path: ".symlinks/plugins/video_player/ios"
-  webview_flutter:
-    :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   kakao_flutter_sdk: c14f15011b2ae945d3fcf209bb737fd0b7b4f4ab
-  package_info: 78cabb3c322943c55d39676f4a5bfc748c01d055
-  path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
-  screen: abd91ca7bf3426e1cc3646d27e9b2358d6bf07b0
-  shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
-  sqflite: ff1d9da63c06588cc8d1faf7256d741f16989d5a
-  url_launcher: 0067ddb8f10d36786672aa0722a21717dba3a298
-  video_player: 3964090a33353060ed7f58aa6427c7b4b208ec21
-  webview_flutter: 1aa7604e6cdb451a9b7ed2c37d5454c0b440246b
+  package_info: 48b108e75b8802c2d5e126f208ef540561c98aef
+  shared_preferences: 430726339841afefe5142b9c1f50cb6bd7793e01
 
-PODFILE CHECKSUM: 14ad2ebdc4889b6dcf49ae71037510a7da3b01d6
+PODFILE CHECKSUM: 1b66dae606f75376c5f2135a8290850eeb09ae83
 
 COCOAPODS: 1.8.3

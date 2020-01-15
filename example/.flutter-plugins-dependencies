@@ -1,0 +1,1 @@
+{"_info":"// This is a generated file; do not edit or check into version control.","dependencyGraph":[{"name":"kakao_flutter_sdk","dependencies":["shared_preferences","package_info"]},{"name":"package_info","dependencies":[]},{"name":"shared_preferences","dependencies":[]}]}

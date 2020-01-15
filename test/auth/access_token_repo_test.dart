@@ -9,6 +9,8 @@ void main() {
   var map;
   var response;
   DefaultAccessTokenStore store;
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   setUp(() async {
     const MethodChannel('plugins.flutter.io/shared_preferences')
         .setMockMethodCallHandler((MethodCall methodCall) async {

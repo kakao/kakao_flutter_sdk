@@ -14,6 +14,8 @@ void main() {
   MockAdapter _adapter;
   AuthApi _authApi;
 
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   const MethodChannel channel = MethodChannel('kakao_flutter_sdk');
 
   setUp(() {

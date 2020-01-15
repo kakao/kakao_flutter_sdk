@@ -14,7 +14,7 @@ dependencies:
   dio: ^3.0.3
   shared_preferences: ^0.5.3
   platform: ^2.2.1
-  package_info: ^0.4.0
+  package_info: ^0.4.0+13
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -31,8 +31,15 @@ flutter:
   # be modified. They are used by the tooling to maintain consistency when
   # adding or updating assets for this project.
   plugin:
-    androidPackage: com.kakao.sdk.flutter
-    pluginClass: KakaoFlutterSdkPlugin
+    platforms:
+      android:
+        package: com.kakao.sdk.flutter
+        pluginClass: KakaoFlutterSdkPlugin
+      ios:
+        pluginClass: KakaoFlutterSdkPlugin
+      # web:
+      #   pluginClass: KakaoFlutterSdkPlugin
+      # fileName:
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg

@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   var channel = MethodChannel("kakao_flutter_sdk");
   setUp(() async {});
 
