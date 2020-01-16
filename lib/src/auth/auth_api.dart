@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:kakao_flutter_sdk/src/auth/access_token_store.dart';
 import 'package:kakao_flutter_sdk/src/auth/model/access_token_response.dart';
 import 'package:kakao_flutter_sdk/src/common/api_factory.dart';
@@ -28,8 +29,8 @@ class AuthApi {
     final data = {
       "code": authCode,
       "grant_type": "authorization_code",
-      "client_id": clientId ?? KakaoContext.clientId,
-      "redirect_uri": redirectUri ?? "kakao${KakaoContext.clientId}://oauth",
+      "client_id": clientId ?? KakaoContext.platformClientId,
+      "redirect_uri": redirectUri ?? await _platformRedirectUri(),
       ...await _platformData()
     };
     return await _issueAccessToken(data);
@@ -43,8 +44,8 @@ class AuthApi {
     final data = {
       "refresh_token": refreshToken,
       "grant_type": "refresh_token",
-      "client_id": clientId ?? KakaoContext.clientId,
-      "redirect_uri": redirectUri ?? "kakao:${KakaoContext.clientId}://oauth",
+      "client_id": clientId ?? KakaoContext.platformClientId,
+      "redirect_uri": redirectUri ?? await _platformRedirectUri(),
       ...await _platformData()
     };
     return await _issueAccessToken(data);
@@ -53,7 +54,7 @@ class AuthApi {
   Future<String> agt({String clientId, String accessToken}) async {
     final tokenInfo = await _tokenStore.fromStore();
     final data = {
-      "client_id": clientId ?? KakaoContext.clientId,
+      "client_id": clientId ?? KakaoContext.platformClientId,
       "access_token": accessToken ?? tokenInfo.accessToken
     };
 
@@ -72,8 +73,14 @@ class AuthApi {
 
   Future<Map<String, String>> _platformData() async {
     final origin = await KakaoContext.origin;
+    if (kIsWeb) return {"client_origin": origin};
     return _platform.isAndroid
         ? {"android_key_hash": origin}
         : _platform.isIOS ? {"ios_bundle_id": origin} : {};
+  }
+
+  Future<String> _platformRedirectUri() async {
+    if (kIsWeb) return await KakaoContext.origin;
+    return "kakao${KakaoContext.clientId}://oauth";
   }
 }

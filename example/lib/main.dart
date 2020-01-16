@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:bloc/bloc.dart';
@@ -18,7 +19,9 @@ import 'talk.dart';
 import 'search.dart';
 
 void main() {
-  KakaoContext.clientId = "dd4e9cb75815cbdf7d87ed721a659baf";
+  KakaoContext.clientId = "030ba7c59137629e86e8721eb1a22fd6";
+  KakaoContext.javascriptClientId = "fa2d8e9f47b88445000592c9a293bbe2";
+
   BlocSupervisor.delegate = MyBlocDelegate();
   runApp(MultiBlocProvider(
     providers: [
@@ -76,6 +79,9 @@ class SplashState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    if (kIsWeb) {
+      AuthCodeClient.instance.retrieveAuthCode();
+    }
     _checkAccessToken();
   }
 

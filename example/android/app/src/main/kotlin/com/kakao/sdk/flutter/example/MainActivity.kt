@@ -1,4 +1,4 @@
-package com.example.kakao_flutter_sdk_example
+package com.kakao.sdk.flutter.example
 
 import android.os.Bundle
 

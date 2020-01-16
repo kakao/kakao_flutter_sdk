@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
 
@@ -10,6 +11,7 @@ class KakaoContext {
 
   /// Native app key for this application from [Kakao Developers](https://developers.kakao.com).
   static String clientId;
+  static String javascriptClientId;
 
   static String sdkVersion = "0.3.2";
 
@@ -67,6 +69,13 @@ class KakaoContext {
   static Future<String> get packageName async {
     final packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.packageName;
+  }
+
+  static String get platformClientId {
+    if (kIsWeb) {
+      return KakaoContext.javascriptClientId;
+    }
+    return KakaoContext.clientId;
   }
 }
 
