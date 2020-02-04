@@ -1,6 +1,6 @@
 # kakao_flutter_sdk
 
-_This repository is currently being transfered to https://github.com/kakao, which hosts official repositories maintained by Kakao Corp._
+**This repository is currently being transfered to https://github.com/kakao, which hosts official repositories maintained by Kakao Corp.**
 
 Flutter SDK for Kakao API.
 Currently supports `Android` and `iOS` platform, and will support `web` platform (still in beta stage) in the _near future_.
