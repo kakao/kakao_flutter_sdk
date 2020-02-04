@@ -1,27 +1,33 @@
 # kakao_flutter_sdk
 
+_This repository is currently being transfered to https://github.com/kakao, which hosts official repositories maintained by Kakao Corp._
+
 Flutter SDK for Kakao API.
-Currently supports `Android` and `iOS` platform, and will support `web` platform (still in technival preview stage) when it becomes stable.
+Currently supports `Android` and `iOS` platform, and will support `web` platform (still in beta stage) in the _near future_.
+
+## Checklist for Flutter Web Support
+
+There are several steps necessary to enable web support for Kakao Flutter SDK.
+
+- [x] Distinguish KA header for javascript environment
+- [x] Authorize with `window.open()` (default method)
+- [ ] Provide a way to authorize with `location.href`
+- [ ] Allow CORS for Kakao API Server
+- [ ] Release with web support
+
+> `Login via KakaoTalk` will be currently unavailable for web since it requires access token polling and other more complex mechanisms.
 
 ## Getting Started
 
 Flutter is becoming more wide-spread as a cross-platform development tool since it provides natively-compiled applications for mobile, web, and desktop from a single codebase.
-Several requests have been made for Flutter support for Kakao API.
+Several requests have been made for Flutter support for Kakao API, and hence here it is.
 
-### Setting up the dependency
+Unlike [flutter_kakao_login](https://pub.dev/packages/flutter_kakao_login), which is also a great plugin, this plugin aims to re-write Kakao SDK mostly in Dart, and reduce platform-dependent code as much as possible.
 
-The first step is to include Kakao Flutter SDK into your project, in `pubspec.yaml`.
-**Currently, Kakao Flutter SDK is not publicly released on [pub.dev](https://pub.dev).**
-Therefore, you have to specify the dependency as below in your `pubspec.yaml`.
+### Dependencies
 
-```yaml
-dependency_overrides:
-  kakao_flutter_sdk:
-    git:
-      url: git@github.com:CoderSpinoza/kakao-flutter-sdk.git
-```
-
-In the near future when it is released on [pub.dev](https://pub.dev), below would suffice.
+The first step is to import Kakao Flutter SDK into your project, in `pubspec.yaml`.
+Specify Kakao SDK dependency as below in your `pubspec.yaml`.
 
 ```yaml
 dependencies:
@@ -32,26 +38,29 @@ dependencies:
 
 Kakao Flutter SDK has following transitive dependencies:
 
-1. [dio](https://pub.dev/packages/dio) (2.1.0)
-1. [json_serializable](https://pub.dev/packages/json_serializable) (2.4.0)
-1. [shared_preferences](https://pub.dev/packages/shared_preferences) (0.5.3+1)
-1. platform (2.2.0)
+1. [dio](https://pub.dev/packages/dio) (3.0.3)
+1. [json_annotation](https://pub.dev/packages/json_serializable) (3.0.0)
+1. [shared_preferences](https://pub.dev/packages/shared_preferences) (0.5.6)
+1. platform (2.2.1)
+1. package_info (0.4.0+13)
 
-Below dependencies were considered but was removed due to restrictions against our needs:
+Below dependencies were considered but were removed due to restrictions against our needs:
 
 1. url_launcher
 1. flutter_custom_tabs
 1. flutter_web_auth
 
-SDK calls `Chrome Custom Tabs` and `ASWebAuthenticationSession` natively via platform channel.
+> They all provide overly-simplified common interface between Android and iOS and is not suitable for OAuth 2.0 process involving default browsers.
+> SDK calls `Chrome Custom Tabs` and `ASWebAuthenticationSession` natively via platform channel for OAuth 2.0 Authentication.
 
-### Set up your Kakao App
+### Kakao Application Setup
 
 You have to create an application on [Kakao Developers](https://developers.kakao.com) and set up iOS and Android platforms.
 Follow the instructions below:
 
 1. [Getting Started on Android](https://developers.kakao.com/docs/android/getting-started)
 1. [Getting Started on iOS](https://developers.kakao.com/docs/ios/getting-started)
+1. [Getting Started on Web](https://developers.kakao.com/docs/js/getting-started)
 
 ## Implementation Guide
 
@@ -61,16 +70,17 @@ First, you have to initialize SDK at app startup in order to use it. It is as si
 
 ```dart
 KakaoContext.clientId = "${put your native app key here}"
+// KakaoContext.javascriptClientId = "${put your javascript key here}" // not yet supported
 ```
 
 ### Kakao Login
 
-First, users have to get access token in order to call Kakao API. Access tokens are issued according to OAuth 2.0 spec.
+First, users have to get access token in order to call Kakao API. Access tokens are issued according to [OAuth 2.0 spec](https://oauth.net/2).
 
-1. kakao account authentication
-1. user agreemnet (skip if not necessary)
-1. get authorization code (via redirect)
-1. issue access token (via POST API)
+1. Authenticate with Kakao Account
+1. User Agreemnet (skip if not necessary)
+1. Get Authorization Code (via redirect)
+1. Issue access token (via POST API)
 
 #### Getting Authorization Code
 
@@ -115,22 +125,26 @@ void loginButtonClicked() async {
 
 #### Getting Access Token
 
+Then, you have to issue access token for the user with authorization code acuiqred from the process above.
 Sample login code is pasted below:
 
 ```dart
 void loginButtonClicked() async {
   try {
-    String authCode = await AuthCodeClient.instance.request();
+    String authCode = await AuthCodeClient.instance.request(); // via browser
+    // String authCode = await AuthCodeClient.instance.requestWithTalk() // or with KakaoTalk
     AccessToken token = await AuthApi.instance.issueAccessToken(authCode);
-    AccessTokenStore.instance.toCache(token);
+    AccessTokenStore.instance.toCache(token); // Store access token in AccessTokenStore for future API requests.
   } catch (e) {
     // some error happened during the course of user login... deal with it.
   }
 }
 ```
 
-> Currently, Kakao Flutter SDK does not plan to support Kakao login or KakaoLink via kakaoTalk.
-> The SDK tries to support as many platform and environment as possible and mobile-only
+> ~~Currently, Kakao Flutter SDK does not plan to support Kakao login or KakaoLink via kakaoTalk.
+> The SDK tries to support as many platform and environment as possible and mobile-only.~~
+
+> Kakao Flutter SDK supports Kakao Login via KakaoTalk on Android and iOS now.
 
 After user's first login (access token persisted correctly), you can check the status of _AccessTokenStore_ in order to skip this process.
 Below is the sample code of checking token status and redirecting to login screen if refresh token does not exist.
@@ -172,7 +186,84 @@ try {
 }
 ```
 
+#### Dynamic User Agreement
+
+There are cases when users have to agree in order to call specific API endpoints or receive additional fields in an API.
+
+##### When 403 forbidden error is returned from API server
+
+```dart
+
+void requestFriends() async {
+  try {
+    FriendsResponse friends = await TalkApi.instance.friends();
+    // do anything you want with user instance
+  } on KakaoAuthException catch (e) {
+    if (e.code == ApiErrorCause.INVALID_TOKEN) { // access token has expired and cannot be refrsehd. access tokens are already cleared here
+      Navigator.of(context).pushReplacementNamed('/login'); // redirect to login page
+    } else if (e.code == ApiErrorCause.INVALID_SCOPE) {
+      // If code is ApiErrorCause.INVALID_SCOPE, error instance will contain missing required scopes.
+    }
+  } catch (e) {
+    // other api or client-side errors
+  }
+}
+
+void retryAfterUserAgrees(List<String> requiredScopes) async {
+    // Getting a new access token with current access token and required scopes.
+    String authCode = await AuthCodeClient.instance.requestWithAgt(e.requiredScopes);
+    AccessTokenResponse token = await AuthApiClient.instance.issueAccessToken(authCode);
+    AccessTokenStore.instance.toCache(token); // Store access token in AccessTokenStore for future API requests.
+    await requestFriends();
+}
+
+```
+
+##### Certain fields are missing
+
+This can happen when `/v2/user/me` API is called with `UserApi#me()` method.
+`UserApi#me()` never throws `ApiErrorCause.INVALID_SCOPE` error because it is dependent on many scopes, not only one scope.
+Therefore you have to construct a list of scopes yourself like below.
+
+```dart
+
+void requestMe() {
+  try {
+    User user = await UserApi.instance.me();
+    if (user.kakaoAccount.emailNeedsAgreement || user.kakaoAccount.genderNeedsAgreement) {
+      // email and gender can be retrieved after user agreement
+      // you can also check for other scopes.
+      await retryAfterUserAgrees(["account_email", "gender"]);
+      return;
+    }
+    // do anything you want with user instance
+  } on KakaoAuthException catch (e) {
+    if (e.code == ApiErrorCause.INVALID_TOKEN) { // access token has expired and cannot be refrsehd. access tokens are already cleared here
+      Navigator.of(context).pushReplacementNamed('/login'); // redirect to login page
+    }
+  } catch (e) {
+    // other api or client-side errors
+  }
+}
+
+void retryAfterUserAgrees(List<String> requiredScopes) async {
+    // Getting a new access token with current access token and required scopes.
+    String authCode = await AuthCodeClient.instance.requestWithAgt(e.requiredScopes);
+    AccessTokenResponse token = await AuthApiClient.instance.issueAccessToken(authCode);
+    AccessTokenStore.instance.toCache(token); // Store access token in AccessTokenStore for future API requests.
+    await requestMe();
+}
+```
+
 ### App key based API
+
+Below are set of APIs that can be called with app key after just initializing SDK.
+These APIs are relatively easy to use compared to token-based APIs.
+
+1. LinkApi
+1. LocalApi
+1. SearchApi
+1. PushApi
 
 #### KakaoLink
 
@@ -191,28 +282,16 @@ await launchBrowserTab(uri);
 
 ### Automatic token refreshing
 
-Tokens are automatically refreshed on relveant api errors.
-
-### Dynamic User Agreement
-
-There are
+Tokens are automatically refreshed on relveant api errors (ApiErrorCause.INVALID_TOKEN).
 
 ### Customization
 
+WIP
+
 ## Documentation
 
-Docs are generated by DartDoc and currently published under https://coderspinoza.github.io/kakao-flutter-sdk/.
-This documentation page is going to be maintained apart from the page that will be available on [pub.dev](https://pub.dev)
+Docs are generated by DartDoc.
 
 ## Development Guide
 
-```sh
-$ flutter analyze --no-pub --no-current-package lib
-$ flutter packages pub publish --dry-run
-```
-
-### Defining Response Models
-
-```sh
-$ flutter packages pub run build_runner build --delete-conflicting-outputs
-```
+Visit this [Development Guide](https://github.com/CoderSpinoza/kakao_flutter_sdk/wiki/Development-Guide) to contribute to this repository.
