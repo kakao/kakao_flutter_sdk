@@ -42,12 +42,12 @@ class LinkScreen extends StatelessWidget {
       final talkInstalled = await isKakaoTalkInstalled();
       if (talkInstalled) {
         var uri = await LinkClient.instance
-            .customWithTalk(17125, templateArgs: {"key1": "value1"});
+            .customWithTalk(16761, templateArgs: {"key1": "value1"});
         await LinkClient.instance.launchKakaoTalk(uri);
         return;
       }
       var uri = await LinkClient.instance
-          .customWithWeb(17125, templateArgs: {"key1": "value1"});
+          .customWithWeb(16761, templateArgs: {"key1": "value1"});
       await launchBrowserTab(uri);
     } catch (e) {
       print(e.toString());
