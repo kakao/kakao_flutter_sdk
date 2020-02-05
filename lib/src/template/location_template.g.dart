@@ -20,6 +20,7 @@ LocationTemplate _$LocationTemplateFromJson(Map<String, dynamic> json) {
         ?.map((e) =>
             e == null ? null : Button.fromJson(e as Map<String, dynamic>))
         ?.toList(),
+    objectType: json['object_type'] as String,
   );
 }
 
@@ -37,5 +38,6 @@ Map<String, dynamic> _$LocationTemplateToJson(LocationTemplate instance) {
   writeNotNull('address_title', instance.addressTitle);
   writeNotNull('social', instance.social?.toJson());
   writeNotNull('buttons', instance.buttons?.map((e) => e?.toJson())?.toList());
+  writeNotNull('object_type', instance.objectType);
   return val;
 }

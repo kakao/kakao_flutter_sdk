@@ -12,7 +12,10 @@ part 'location_template.g.dart';
 class LocationTemplate extends DefaultTemplate {
   /// <nodoc>
   LocationTemplate(this.address, this.content,
-      {this.addressTitle, this.social, this.buttons});
+      {this.addressTitle,
+      this.social,
+      this.buttons,
+      this.objectType = "location"});
 
   final String address;
   final Content content;
@@ -20,7 +23,7 @@ class LocationTemplate extends DefaultTemplate {
   final Social social;
   final List<Button> buttons;
 
-  final String objectType = "location";
+  final String objectType;
 
   /// <nodoc>
   factory LocationTemplate.fromJson(Map<String, dynamic> json) =>
