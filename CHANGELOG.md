@@ -1,3 +1,8 @@
+## 0.4.0
+
+- Fix bug in LocationTemplate json write logic
+- Prepare for flutter web support
+
 ## 0.3.2
 
 - Talk Channel SDK
