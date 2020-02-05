@@ -34,8 +34,6 @@ class AuthCodeClient {
     params.removeWhere((k, v) => v == null);
     final url = Uri.https(KakaoContext.hosts.kauth, "/oauth/authorize", params);
     final authCode = await launchBrowserTab(url, redirectUri: finalRedirectUri);
-    debugPrint("got auth code");
-    debugPrint(authCode);
     return _parseCode(authCode);
   }
 
@@ -71,9 +69,7 @@ class AuthCodeClient {
   }
 
   String _parseCode(String redirectedUri) {
-    debugPrint(redirectedUri);
     final queryParams = Uri.parse(redirectedUri).queryParameters;
-    debugPrint(queryParams.toString());
     final code = queryParams["code"];
     if (code != null) return code;
     throw KakaoAuthException.fromJson(queryParams);
