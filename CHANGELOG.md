@@ -1,3 +1,6 @@
+## 0.4.1
+- Fix `No Valid SDK` error on `pub.dev`, which lowers maintenance score.
+
 ## 0.4.0
 
 - Fix bug in LocationTemplate json write logic

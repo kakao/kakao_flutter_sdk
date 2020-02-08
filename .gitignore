@@ -13,3 +13,4 @@ coverage/
 
 .flutter-plugins
 doc/
+.vscode
