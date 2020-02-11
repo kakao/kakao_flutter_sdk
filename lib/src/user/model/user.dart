@@ -9,7 +9,7 @@ part 'user.g.dart';
 class User {
   /// <nodoc>
   User(this.id, this.hasSignedUp, this.properties, this.kakaoAccount,
-      this.groupUserToken);
+      this.groupUserToken, this.synchedAt, this.connectedAt);
 
   /// app user id
   int id;
@@ -22,6 +22,9 @@ class User {
   Account kakaoAccount;
 
   String groupUserToken;
+
+  DateTime synchedAt;
+  DateTime connectedAt;
 
   /// <nodoc>
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

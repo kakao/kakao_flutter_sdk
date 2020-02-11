@@ -17,6 +17,12 @@ User _$UserFromJson(Map<String, dynamic> json) {
         ? null
         : Account.fromJson(json['kakao_account'] as Map<String, dynamic>),
     json['group_user_token'] as String,
+    json['synched_at'] == null
+        ? null
+        : DateTime.parse(json['synched_at'] as String),
+    json['connected_at'] == null
+        ? null
+        : DateTime.parse(json['connected_at'] as String),
   );
 }
 
@@ -34,5 +40,7 @@ Map<String, dynamic> _$UserToJson(User instance) {
   writeNotNull('properties', instance.properties);
   writeNotNull('kakao_account', instance.kakaoAccount?.toJson());
   writeNotNull('group_user_token', instance.groupUserToken);
+  writeNotNull('synched_at', instance.synchedAt?.toIso8601String());
+  writeNotNull('connected_at', instance.connectedAt?.toIso8601String());
   return val;
 }
