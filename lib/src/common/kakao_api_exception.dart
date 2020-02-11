@@ -41,6 +41,8 @@ enum ApiErrorCause {
   BLOCKED_ACTION,
   @JsonValue(-5)
   ACCESS_DENIED,
+  @JsonValue(-9)
+  DEPRECATED_API,
   @JsonValue(-10)
   API_LIMIT_EXCEEDED,
   @JsonValue(-301)

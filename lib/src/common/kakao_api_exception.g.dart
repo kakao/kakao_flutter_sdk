@@ -72,6 +72,7 @@ const _$ApiErrorCauseEnumMap = {
   ApiErrorCause.UNSUPPORTED_API: -3,
   ApiErrorCause.BLOCKED_ACTION: -4,
   ApiErrorCause.ACCESS_DENIED: -5,
+  ApiErrorCause.DEPRECATED_API: -9,
   ApiErrorCause.API_LIMIT_EXCEEDED: -10,
   ApiErrorCause.APP_DOES_NOT_EXIST: -301,
   ApiErrorCause.INVALID_TOKEN: -401,
