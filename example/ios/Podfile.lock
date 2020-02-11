@@ -1,6 +1,6 @@
 PODS:
   - Flutter (1.0.0)
-  - kakao_flutter_sdk (0.4.1):
+  - kakao_flutter_sdk (0.4.2):
     - Flutter
   - package_info (0.0.1):
     - Flutter
@@ -35,7 +35,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  kakao_flutter_sdk: 489fc0b592d3210015b7aa7d8d80f64111711684
+  kakao_flutter_sdk: d9f909ec8b12a263ce2c1c7a7eb6f8de02e7c253
   package_info: 48b108e75b8802c2d5e126f208ef540561c98aef
   shared_preferences: 430726339841afefe5142b9c1f50cb6bd7793e01
   shared_preferences_macos: f3f29b71ccbb56bf40c9dd6396c9acf15e214087

@@ -1,4 +1,10 @@
+## 0.4.2
+
+- Add `synched_at` and `connected_at` to `User` class.
+- Add `DEPRECATED_API` enum to `ApiErrorCause` enum class.
+
 ## 0.4.1
+
 - Fix `No Valid SDK` error on `pub.dev`, which lowers maintenance score.
 
 ## 0.4.0
