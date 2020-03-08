@@ -1,0 +1,12 @@
+{
+  "msg": "insufficient scopes.",
+  "code": -402,
+  "api_type": "TALK_MEMO_DEFAULT_SEND",
+  "required_scopes": [
+    "talk_message"
+  ],
+  "allowed_scopes": [
+    "profile",
+    "account_email"
+  ]
+}

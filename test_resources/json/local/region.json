@@ -1,0 +1,29 @@
+{
+  "meta": {
+    "total_count": 2
+  },
+  "documents": [
+    {
+      "region_type": "B",
+      "address_name": "경기도 성남시 분당구 삼평동",
+      "region_1depth_name": "경기도",
+      "region_2depth_name": "성남시 분당구",
+      "region_3depth_name": "삼평동",
+      "region_4depth_name": "",
+      "code": "4113510900",
+      "x": 127.10459896729914,
+      "y": 37.40269721785548
+    },
+    {
+      "region_type": "H",
+      "address_name": "경기도 성남시 분당구 삼평동",
+      "region_1depth_name": "경기도",
+      "region_2depth_name": "성남시 분당구",
+      "region_3depth_name": "삼평동",
+      "region_4depth_name": "",
+      "code": "4113565500",
+      "x": 127.1163593869371,
+      "y": 37.40612091848614
+    }
+  ]
+}

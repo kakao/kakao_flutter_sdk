@@ -1,0 +1,39 @@
+[
+  {
+      "id": "AAAAAAA.BBBBBBBBBBB",
+      "url": "http://story-web.kakao.com/AAAAAAA/BBBBBBBBBBB",
+      "media_type": "NOT_SUPPORTED",
+      "created_at": "2014-06-13T07:58:26Z",
+      "comment_count": 3,
+      "like_count": 4,
+      "content": "better than expected!"
+  },
+  {
+      "id": "AAAAAAA.CCCCCCCCCCC",
+      "url": "http://story-web.kakao.com/AAAAAAA/CCCCCCCCCCC",
+      "media_type": "PHOTO",
+      "created_at": "2014-06-13T07:58:20Z",
+      "comment_count": 1,
+      "like_count": 1,
+      "content": "This cafe is really awesome!",
+      "media": [
+          {
+              "original":"http://xxx.kakao.com/.../img.png?width=150&height=150",
+              "xlarge":"http://xxx.kakao.com/.../img_xl.jpg?width=150&height=150",
+              "large":"http://xxx.kakao.com/.../img_l.jpg?width=150&height=150",
+              "medium":"http://xxx.kakao.com/.../img_m.jpg?width=150&height=150",
+              "small":"http://xxx.kakao.com/.../img_s.jpg?width=150&height=150"
+          }
+      ]
+  },
+  {
+      "id": "AAAAAAA.DDDDDDDDD",
+      "url": "http://story-web.kakao.com/AAAAAAA/DDDDDDDDD",
+      "media_type": "NOTE",
+      "created_at": "2014-06-13T07:58:17Z",
+      "comment_count": 0,
+      "like_count": 10,
+      "content": "A Rainbow - William Wordsworth\n\n..."
+  }
+]
+

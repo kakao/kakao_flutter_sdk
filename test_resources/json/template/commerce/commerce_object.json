@@ -1,0 +1,18 @@
+{
+  "object_type": "commerce",
+  "content": {
+    "title": "카카오톡 링크 4.0",
+    "image_url": "http://k.kakaocdn.net/dn/RY8ZN/btqgOGzITp3/uCM1x2xu7GNfr7NS9QvEs0/kakaolink40_original.png",
+    "link": {
+      "web_url": "https://developers.kakao.com",
+      "mobile_web_url": "https://developers.kakao.com"
+    }
+  },
+  "commerce": {
+    "regular_price": 208800,
+    "discount_price": 146160,
+    "discount_rate": 30
+  },
+  "button_title": "구매하기"
+}
+

@@ -1,0 +1,9 @@
+{
+  "nickName":"홍길동",
+  "profileImageURL":"http://xxx.kakao.com/.../aaa.jpeg",
+  "thumbnailURL":"http://xxx.kakao.com/.../bbb.jpeg",
+  "bgImageURL":"http://xxx.kakao.co.kr/.../ccc.jpg",
+  "permalink": "https://story.kakao.com/XXXXX",
+  "birthday":"1231",
+  "birthdayType":"SOLAR"
+}

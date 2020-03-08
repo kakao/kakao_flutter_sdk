@@ -1,0 +1,40 @@
+{
+  "elements": [
+    {
+      "uuid": "1-bV49r2x_HD-szg0uDU49ruuA",
+      "account_id": 1369,
+      "service_user_id": 90729596871432864,
+      "app_registered": false,
+      "relation": {
+        "talk": "friend",
+        "story": "N/A",
+        "talk_friend_status": 3
+      },
+      "profile_nickname": "gray",
+      "profile_thumbnail_image": "http://alpha-th-p.talk.kakao.co.kr/th/talkp/wkamVy1sfN/pOQANi5pAqyMcLlGTk9jW1/1ijegh_110x110_c.jpg",
+      "talk_os": "android",
+      "allowed_msg": false
+    },
+    {
+      "id": 1376016924426743837,
+      "uuid": "1-XV5dzv2PTM-cr9y-fV59Pk3emA",
+      "account_id": 200937,
+      "talk_user_id": 85376,
+      "service_user_id": 90853482654331184,
+      "app_registered": true,
+      "relation": {
+        "talk": "friend",
+        "story": "N/A",
+        "talk_friend_status": 3
+      },
+      "profile_nickname": "mj_alpha_g2",
+      "profile_thumbnail_image": "",
+      "talk_os": "android",
+      "allowed_msg": true
+    }
+  ],
+  "total_count": 8,
+  "before_url": null,
+  "after_url": "http://alpha-kapi.kakao.com/v1/internal/friends?limit=3&friend_type=talk&friend_filter=none&target_id_type=user_id&order=asc&offset=3&target_id=1376016924426709466",
+  "result_id": "zbnYtN-AuIy9jb_g0uDU49rusd-w3rvR"
+}
