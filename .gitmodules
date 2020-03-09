@@ -1,3 +1,0 @@
-[submodule "test_resources/json"]
-	path = test_resources/json
-	url = https://github.com/CoderSpinoza/kakao-api-response-examples.git
