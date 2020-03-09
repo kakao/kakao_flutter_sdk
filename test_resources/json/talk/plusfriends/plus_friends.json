@@ -1,0 +1,22 @@
+{
+  "user_id": 1376016924426879191,
+  "plus_friends": [
+    {
+      "plus_friend_uuid": "@이안알파플친3",
+      "plus_friend_public_id": "_frxjem",
+      "relation": "ADDED",
+      "updated_at": "2018-03-14T05:25:01Z"
+    },
+    {
+      "plus_friend_uuid": "@플러스친구",
+      "plus_friend_public_id": "_xnrxjem",
+      "relation": "ADDED",
+      "updated_at": "2018-02-20T05:27:07Z"
+    },
+    {
+      "plus_friend_uuid": "@알파플러스친구",
+      "plus_friend_public_id": "_Brxjem",
+      "relation": "NONE"
+    }
+  ]
+}

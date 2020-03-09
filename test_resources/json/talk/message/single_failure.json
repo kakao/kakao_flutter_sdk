@@ -1,0 +1,5 @@
+{
+  "msg": "daily message limit per sender has been exceeded.",
+  "code": -532,
+  "receiver_ids": ["10050"]
+}

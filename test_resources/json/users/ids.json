@@ -1,0 +1,7 @@
+{
+  "elements": [
+  1376016924426111111, 1376016924426222222, 1376016924426333333 ]
+  , "total_count": 9
+  , "before_url": "http://kapi.kakao.com/v1/user/ids?limit=3&order=desc&from_id=1376016924426111111&app_key=12345674ae6e12379d5921f4417b399e7"
+  , "after_url": "http://kapi.kakao.com/v1/user/ids?limit=3&order=asc&from_id=1376016924426333333&app_key=12345674ae6e12379d5921f4417b399e7"
+}

@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "is_end": false,
+    "pageable_count": 991,
+    "total_count": 103474
+  },
+  "documents": [
+    {
+      "title": "&#39;<b>카카오톡</b>&#39; 질문합니다 <b>카카오톡</b>이지워졋으요 설치해주세요",
+      "contents": "<b>카카오톡</b>이 지워졌다는것은 크게 두가지로 볼 수 있습니다. 1. 바탕화면에서 지워졌다. 이는 <b>카카오톡</b>이 설치되어 있지만 아이콘만 사라졌음을 알 수 있습니다. 이 경우...",
+      "a_url": "http://tip.daum.net/answer/93699202",
+      "q_url": "http://tip.daum.net/question/93688106",
+      "thumbnails": [],
+      "type": "A",
+      "datetime": "2017-03-31T08:35:44.000+09:00"
+    }
+  ]
+}

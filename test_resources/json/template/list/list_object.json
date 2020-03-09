@@ -1,0 +1,36 @@
+{
+  "object_type": "list",
+  "header_title": "카카오 디벨로퍼",
+  "header_link": {
+    "web_url": "https://developers.kakao.com",
+    "mobile_web_url": "https://developers.kakao.com"
+  },
+  "contents": [
+    {
+      "title": "API 소개",
+      "image_url": "http://k.kakaocdn.net/dn/RY8ZN/btqgOGzITp3/uCM1x2xu7GNfr7NS9QvEs0/kakaolink40_original.png",
+      "link": {
+        "web_url": "https://developers.kakao.com/features/platform",
+        "mobile_web_url": "https://developers.kakao.com/features/platform"
+      }
+    },
+    {
+      "title": "개발자 가이드",
+      "image_url": "http://k.kakaocdn.net/dn/RY8ZN/btqgOGzITp3/uCM1x2xu7GNfr7NS9QvEs0/kakaolink40_original.png",
+      "link": {
+        "web_url": "https://developers.kakao.com/docs",
+        "mobile_web_url": "https://developers.kakao.com/docs"
+      }
+    },
+    {
+      "title": "개발자 포럼",
+      "image_url": "http://k.kakaocdn.net/dn/RY8ZN/btqgOGzITp3/uCM1x2xu7GNfr7NS9QvEs0/kakaolink40_original.png",
+      "link": {
+        "web_url": "https://devtalk.kakao.com",
+        "mobile_web_url": "https://devtalk.kakao.com"
+      }
+    }
+  ],
+  "button_title": "웹에서 보기"
+}
+

@@ -1,0 +1,20 @@
+{
+  "object_type": "location",
+  "content": {
+    "title": "카카오톡 링크 4.0",
+    "description": "디폴트 템플릿 Location",
+    "image_url": "http://k.kakaocdn.net/dn/RY8ZN/btqgOGzITp3/uCM1x2xu7GNfr7NS9QvEs0/kakaolink40_original.png",
+    "link": {
+      "web_url": "https://developers.kakao.com",
+      "mobile_web_url": "https://developers.kakao.com"
+    }
+  },
+  "social": {
+    "like_count": 100,
+    "comment_count": 200
+  },
+  "button_title": "바로 확인",
+  "address": "경기 성남시 분당구 판교역로 235 에이치스퀘어 N동 7층",
+  "address_title":"카카오"
+}
+
