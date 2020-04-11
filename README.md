@@ -1,7 +1,5 @@
 # kakao_flutter_sdk
 
-**This repository is currently being transfered to https://github.com/kakao, which hosts official repositories maintained by Kakao Corp.**
-
 Flutter SDK for Kakao API.
 Currently supports `Android` and `iOS` platform, and will support `web` platform (still in beta stage) in the _near future_.
 
@@ -34,9 +32,9 @@ dependencies:
   kakao_flutter_sdk: ^0.4.2
 ```
 
-### Transitive dependencies
+### dependencies
 
-Kakao Flutter SDK has following transitive dependencies:
+Kakao Flutter SDK has following dependencies:
 
 1. [dio](https://pub.dev/packages/dio) (3.0.3)
 1. [json_annotation](https://pub.dev/packages/json_serializable) (3.0.0)
@@ -58,9 +56,9 @@ Below dependencies were considered but were removed due to restrictions against 
 You have to create an application on [Kakao Developers](https://developers.kakao.com) and set up iOS and Android platforms.
 Follow the instructions below:
 
-1. [Getting Started on Android](https://developers.kakao.com/docs/android/getting-started)
-1. [Getting Started on iOS](https://developers.kakao.com/docs/ios/getting-started)
-1. [Getting Started on Web](https://developers.kakao.com/docs/js/getting-started)
+1. [Getting Started on Android](https://developers.kakao.com/docs/latest/ko/kakaologin/android#before-you-begin)
+1. [Getting Started on iOS](https://developers.kakao.com/docs/latest/ko/kakaologin/ios#before-you-begin)
+1. [Getting Started on Web](https://developers.kakao.com/docs/latest/ko/kakaologin/js#before-you-begin)
 
 ## Implementation Guide
 
@@ -107,6 +105,55 @@ void loginButtonClicked() async {
 }
 ```
 
+**For Android**, Since default browser will redirect authorization code to your app via custom scheme, you are **required** to specify `com.kakao.sdk.flutter.AuthCodeCustomTabsActivity` in your `AndroidManifest.xml'.
+Replace your `native app key` from Kakao developers site in the placeholder for `data` tag in `intent-filter` tag.
+Otherwise, the login process will halt with no further UI response.
+
+
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="your.package.name">
+    <application
+      ...
+      >
+      ...
+        <activity android:name="com.kakao.sdk.flutter.AuthCodeCustomTabsActivity">
+          <intent-filter android:label="flutter_web_auth">
+              <action android:name="android.intent.action.VIEW" />
+              <category android:name="android.intent.category.DEFAULT" />
+              <category android:name="android.intent.category.BROWSABLE" />
+              <data android:scheme="kakao${your_native_app_key_here}" android:host="oauth"/>
+          </intent-filter>
+        </activity>
+        ...
+      </application>
+</manifest>
+```
+
+You can look for sample code [here](https://github.com/kakao/kakao_flutter_sdk/blob/master/example/android/app/src/main/AndroidManifest.xml).
+
+
+**For iOS**, you have to register schemes for all **browser redirect**, **KakaoTalk login**, and **kakaolink**.
+This can be done by registering `LSApplicationQueriesSchems` in your `info.plist` as below.
+
+```xml
+ <key>LSApplicationQueriesSchemes</key>
+  <array>
+      <!-- common -->
+      <string>kakao${native_app_key_here}</string>
+
+      <!-- KakaoTalk login -->
+      <string>kakaokompassauth</string>
+      <string>storykompassauth</string>
+
+      <!-- KakaoLink -->
+      <string>kakaolink</string>         
+      <string>kakaotalk-5.9.7</string>
+  </array>
+```
+
+For details, follow the instruction in the official [kakao SDK guide](https://developers.kakao.com/docs/latest/ko/getting-started/sdk-ios-v1#app-key).
+
 ##### Via KakaoTalk
 
 ```dart
@@ -123,6 +170,38 @@ void loginButtonClicked() async {
 }
 ```
 
+
+##### Via browser or KakaoTalk??
+
+It is up to you whether to use default browser or KakaoTalk for user login.
+
+- Default browser will prompt users with Kakao account login for the first time if they have no Kakao accoutn cookie in their default browser.
+However, it wil reuse browser cookie in subsequent login attempts so that user does not have to reenter their email and passwords.
+- If you use KakaoTalk, users will encouter error when KakaoTalk is not installed (which means you have to deal with the error and retry with browser or notify users to do so).
+
+
+Below example shows how you can divide user login logic depending on whether user has KakaoTalk installed or not.
+
+```dart
+import 'package:kakao_flutter_sdk/common.dart'; // import utility methods
+
+...
+  login() async {
+    try {
+      final installed = await isKakaoTalkInstalled();
+      final authCode = installed ? await AuthCodeClient.instance.requestWithTalk() : await AuthCodeClient.instance.request();
+    } on KakaoAuthException catch (e) {
+
+    } on kakaoClientException catch(e) {
+
+    }
+
+  }
+...
+
+```
+
+
 #### Getting Access Token
 
 Then, you have to issue access token for the user with authorization code acuiqred from the process above.
@@ -133,8 +212,8 @@ void loginButtonClicked() async {
   try {
     String authCode = await AuthCodeClient.instance.request(); // via browser
     // String authCode = await AuthCodeClient.instance.requestWithTalk() // or with KakaoTalk
-    AccessToken token = await AuthApi.instance.issueAccessToken(authCode);
-    AccessTokenStore.instance.toCache(token); // Store access token in AccessTokenStore for future API requests.
+    AccessTokenResponse token = await AuthApi.instance.issueAccessToken(authCode);
+    AccessTokenStore.instance.toStore(token); // Store access token in AccessTokenStore for future API requests.
   } catch (e) {
     // some error happened during the course of user login... deal with it.
   }
@@ -150,7 +229,7 @@ After user's first login (access token persisted correctly), you can check the s
 Below is the sample code of checking token status and redirecting to login screen if refresh token does not exist.
 
 ```dart
-String token = await AccessTokenStore.instance.fromCache();
+String token = await AccessTokenStore.instance.fromStore();
 if (token.refreshToken == null) {
   Navigator.of(context).pushReplacementNamed('/login');
 } else {
