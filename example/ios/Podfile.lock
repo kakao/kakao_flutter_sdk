@@ -36,11 +36,11 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   kakao_flutter_sdk: d9f909ec8b12a263ce2c1c7a7eb6f8de02e7c253
-  package_info: 48b108e75b8802c2d5e126f208ef540561c98aef
-  shared_preferences: 430726339841afefe5142b9c1f50cb6bd7793e01
+  package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
+  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   shared_preferences_macos: f3f29b71ccbb56bf40c9dd6396c9acf15e214087
   shared_preferences_web: 141cce0c3ed1a1c5bf2a0e44f52d31eeb66e5ea9
 
 PODFILE CHECKSUM: 73d69d282a87aa0aafabdecb47f632fc347a9aac
 
-COCOAPODS: 1.8.3
+COCOAPODS: 1.9.1

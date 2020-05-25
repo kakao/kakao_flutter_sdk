@@ -29,7 +29,8 @@ class AuthCodeClient {
       "redirect_uri": finalRedirectUri,
       "response_type": "code",
       "approval_type": "individual",
-      "scope": scopes == null ? null : scopes.join(" ")
+      "scope": scopes == null ? null : scopes.join(" "),
+      "ka": await KakaoContext.kaHeader
     };
     params.removeWhere((k, v) => v == null);
     final url = Uri.https(KakaoContext.hosts.kauth, "/oauth/authorize", params);
@@ -56,7 +57,8 @@ class AuthCodeClient {
       "redirect_uri": finalRedirectUri,
       "response_type": "code",
       "agt": agt,
-      "scope": scopes == null ? null : scopes.join(" ")
+      "scope": scopes == null ? null : scopes.join(" "),
+      "ka": await KakaoContext.kaHeader
     };
     params.removeWhere((k, v) => v == null);
     final url = Uri.https(KakaoContext.hosts.kauth, "/oauth/authorize", params);
