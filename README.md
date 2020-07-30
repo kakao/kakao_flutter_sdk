@@ -60,6 +60,14 @@ Follow the instructions below:
 1. [Getting Started on iOS](https://developers.kakao.com/docs/latest/ko/kakaologin/ios#before-you-begin)
 1. [Getting Started on Web](https://developers.kakao.com/docs/latest/ko/kakaologin/js#before-you-begin)
 
+Below are additional steps you have to take for Android and iOS platform.
+
+1. [키 해시(Key Hash) 등록](https://developers.kakao.com/docs/latest/ko/getting-started/sdk-android-v1#key-hash) to use Kakao API.
+1. [plist 설정](https://developers.kakao.com/docs/latest/ko/getting-started/sdk-ios-v1#plist)
+1. [URL Scheme 설정](https://developers.kakao.com/docs/latest/ko/getting-started/sdk-ios-v1#url-scheme)
+1. [화이트리스트 설정](https://developers.kakao.com/docs/latest/ko/getting-started/sdk-ios-v1#white-list)
+
+
 ## Implementation Guide
 
 ### Initializing SDK
