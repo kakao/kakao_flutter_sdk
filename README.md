@@ -273,7 +273,7 @@ There are cases when users have to agree in order to call specific API endpoints
 
 ```dart
 
-void requestFriends() async {
+Future<void> requestFriends() async {
   try {
     FriendsResponse friends = await TalkApi.instance.friends();
     // do anything you want with user instance
@@ -288,11 +288,11 @@ void requestFriends() async {
   }
 }
 
-void retryAfterUserAgrees(List<String> requiredScopes) async {
+Future<void> retryAfterUserAgrees(List<String> requiredScopes) async {
     // Getting a new access token with current access token and required scopes.
     String authCode = await AuthCodeClient.instance.requestWithAgt(e.requiredScopes);
     AccessTokenResponse token = await AuthApiClient.instance.issueAccessToken(authCode);
-    AccessTokenStore.instance.toCache(token); // Store access token in AccessTokenStore for future API requests.
+    AccessTokenStore.instance.toStore(token); // Store access token in AccessTokenStore for future API requests.
     await requestFriends();
 }
 
@@ -306,7 +306,7 @@ Therefore you have to construct a list of scopes yourself like below.
 
 ```dart
 
-void requestMe() {
+void requestMe() async {
   try {
     User user = await UserApi.instance.me();
     if (user.kakaoAccount.emailNeedsAgreement || user.kakaoAccount.genderNeedsAgreement) {
@@ -325,11 +325,11 @@ void requestMe() {
   }
 }
 
-void retryAfterUserAgrees(List<String> requiredScopes) async {
+Future<void> retryAfterUserAgrees(List<String> requiredScopes) async {
     // Getting a new access token with current access token and required scopes.
-    String authCode = await AuthCodeClient.instance.requestWithAgt(e.requiredScopes);
+    String authCode = await AuthCodeClient.instance.requestWithAgt(requiredScopes);
     AccessTokenResponse token = await AuthApiClient.instance.issueAccessToken(authCode);
-    AccessTokenStore.instance.toCache(token); // Store access token in AccessTokenStore for future API requests.
+    AccessTokenStore.instance.toStore(token); // Store access token in AccessTokenStore for future API requests.
     await requestMe();
 }
 ```
