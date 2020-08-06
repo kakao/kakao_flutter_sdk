@@ -1,3 +1,8 @@
+## 0.4.3
+
+- Update KA header according to changed Kakao API specification. This will allow users to change account while logging in.
+- Update library dependencies.
+
 ## 0.4.2
 
 - Add `synched_at` and `connected_at` to `User` class.

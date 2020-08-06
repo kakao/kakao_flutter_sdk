@@ -29,7 +29,7 @@ Specify Kakao SDK dependency as below in your `pubspec.yaml`.
 
 ```yaml
 dependencies:
-  kakao_flutter_sdk: ^0.4.2
+  kakao_flutter_sdk: ^0.4.3
 ```
 
 ### dependencies
@@ -299,7 +299,7 @@ Future<void> requestFriends() async {
 Future<void> retryAfterUserAgrees(List<String> requiredScopes) async {
     // Getting a new access token with current access token and required scopes.
     String authCode = await AuthCodeClient.instance.requestWithAgt(e.requiredScopes);
-    AccessTokenResponse token = await AuthApiClient.instance.issueAccessToken(authCode);
+    AccessTokenResponse token = await AuthApi.instance.issueAccessToken(authCode);
     AccessTokenStore.instance.toStore(token); // Store access token in AccessTokenStore for future API requests.
     await requestFriends();
 }
@@ -336,7 +336,7 @@ void requestMe() async {
 Future<void> retryAfterUserAgrees(List<String> requiredScopes) async {
     // Getting a new access token with current access token and required scopes.
     String authCode = await AuthCodeClient.instance.requestWithAgt(requiredScopes);
-    AccessTokenResponse token = await AuthApiClient.instance.issueAccessToken(authCode);
+    AccessTokenResponse token = await AuthApi.instance.issueAccessToken(authCode);
     AccessTokenStore.instance.toStore(token); // Store access token in AccessTokenStore for future API requests.
     await requestMe();
 }
