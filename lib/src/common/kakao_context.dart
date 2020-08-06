@@ -13,7 +13,7 @@ class KakaoContext {
   static String clientId;
   static String javascriptClientId;
 
-  static String sdkVersion = "0.4.2";
+  static String sdkVersion = "0.4.3";
 
   /// [ServerHosts] used by SDK.
   ///
@@ -47,16 +47,16 @@ class KakaoContext {
   ///
   /// ### Android example
   /// ```
-  /// flutter_sdk/0.1.0 os/android-28 lang/ko-KR origin/R0tsaOaVqq4/xTZAEihCkrXS+6M= device/SM-G973N android_pkg/com.kakao.sdk.KakaoSample app_ver/0.1.0
+  /// sdk/0.1.0 sdk_type/flutter os/android-28 lang/ko-KR origin/R0tsaOaVqq4/xTZAEihCkrXS+6M= device/SM-G973N android_pkg/com.kakao.sdk.KakaoSample app_ver/0.1.0
   /// ```
   ///
   /// ### iOS example
   /// ```
-  /// flutter_sdk/0.1.0 os/ios-12.4 lang/en res/414.0x896.0 device/iPhone origin/com.kakao.sdk.KakaoSample app_ver/0.1.0
+  /// sdk/0.1.0 sdk_type/flutter os/ios-12.4 lang/en res/414.0x896.0 device/iPhone origin/com.kakao.sdk.KakaoSample app_ver/0.1.0
   /// ```
   static Future<String> get kaHeader async {
     final String kaHeader = await _channel.invokeMethod("getKaHeader");
-    return "flutter_sdk/$sdkVersion $kaHeader";
+    return "sdk/$sdkVersion sdk_type/flutter $kaHeader";
   }
 
   static Future<PackageInfo> get packageInfo async =>
