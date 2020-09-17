@@ -15,6 +15,7 @@ class AuthCodeCustomTabsActivity : Activity() {
   private lateinit var fullUri: Uri
   private var customTabsConnection: ServiceConnection? = null
   private var customTabsOpened = false
+  private var isLoginSuccess = false
 
   companion object {
     const val KEY_FULL_URI = "key_full_uri"
@@ -50,6 +51,7 @@ class AuthCodeCustomTabsActivity : Activity() {
     val url = intent?.dataString
     val redirectUri = KakaoFlutterSdkPlugin.redirectUri
     if (redirectUri != null && url?.startsWith(redirectUri) == true) {
+      isLoginSuccess = true
       KakaoFlutterSdkPlugin.redirectUriResult.success(url.toString())
     } else {
       KakaoFlutterSdkPlugin.redirectUriResult.error("REDIRECT_URL_MISMATCH", "Expected: $redirectUri, Actual: $url", null)
@@ -68,6 +70,9 @@ class AuthCodeCustomTabsActivity : Activity() {
 
   override fun onDestroy() {
     super.onDestroy()
+    if (!isLoginSuccess) {
+      KakaoFlutterSdkPlugin.redirectUriResult.error("CANCELED", "User canceled login.", null)
+    }
     customTabsConnection?.let { unbindService(it) }
   }
 }
