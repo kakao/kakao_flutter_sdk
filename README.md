@@ -67,6 +67,18 @@ Below are additional steps you have to take for Android and iOS platform.
 1. [URL Scheme 설정](https://developers.kakao.com/docs/latest/ko/getting-started/sdk-ios-v1#url-scheme)
 1. [화이트리스트 설정](https://developers.kakao.com/docs/latest/ko/getting-started/sdk-ios-v1#white-list)
 
+Also, minimum iOS version for Kakao Flutter SDK is 11.
+Therefore, you have to specify 11 is your iOS application's `Podfile` like below:
+
+```
+platform :ios, '11.0'
+```
+
+Otherwise, you will encounter errors such as:
+
+```
+[!] CocoaPods could not find compatible versions for pod "kakao_flutter_sdk":
+```
 
 ## Implementation Guide
 
