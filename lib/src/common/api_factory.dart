@@ -74,6 +74,7 @@ class ApiFactory {
     return KakaoApiException.fromJson(e.response.data);
   }
 
+  /// DIO interceptor for App-key based API (Link, Local, Search, etc).
   static Interceptor appKeyInterceptor =
       InterceptorsWrapper(onRequest: (RequestOptions options) async {
     var appKey = KakaoContext.clientId;
@@ -81,6 +82,7 @@ class ApiFactory {
     return options;
   });
 
+  /// DIO interceptor for all Kakao API that requires KA header.
   static Interceptor kaInterceptor =
       InterceptorsWrapper(onRequest: (RequestOptions options) async {
     var kaHeader = await KakaoContext.kaHeader;

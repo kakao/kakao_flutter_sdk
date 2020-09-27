@@ -17,8 +17,10 @@ class LinkClient {
   LinkApi api;
   Platform _platform;
 
+  /// singleton instance of this class.
   static final LinkClient instance = LinkClient(LinkApi.instance);
 
+  /// Send KakaoLink messages with custom templates.
   Future<Uri> customWithWeb(int templateId,
       {Map<String, String> templateArgs,
       Map<String, String> serverCallbackArgs}) async {
@@ -41,6 +43,7 @@ class LinkClient {
     return sharerWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
+  /// Send KakaoLink messages with custom templates.
   Future<Uri> customWithTalk(int templateId,
       {Map<String, String> templateArgs,
       Map<String, String> serverCallbackArgs}) async {

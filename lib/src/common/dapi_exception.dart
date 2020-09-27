@@ -3,6 +3,7 @@ import 'package:kakao_flutter_sdk/common.dart';
 
 part 'dapi_exception.g.dart';
 
+/// API error from [LocalApi] and [SearchApi].
 @JsonSerializable(includeIfNull: false)
 class DapiException extends KakaoException {
   /// <nodoc>

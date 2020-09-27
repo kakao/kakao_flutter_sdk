@@ -51,6 +51,7 @@ class AuthApi {
     return await _issueAccessToken(data);
   }
 
+  /// Issues temporary agt (access token-generated token), which can be used to acquire auth code.
   Future<String> agt({String clientId, String accessToken}) async {
     final tokenInfo = await _tokenStore.fromStore();
     final data = {

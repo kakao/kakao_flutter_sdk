@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'search_meta.g.dart';
 
+/// Metadata for Search API
 @JsonSerializable(fieldRename: FieldRename.snake)
 class SearchMeta {
   /// total number of documents

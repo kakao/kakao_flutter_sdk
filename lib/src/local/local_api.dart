@@ -13,12 +13,17 @@ import 'package:kakao_flutter_sdk/src/local/model/region.dart';
 import 'package:kakao_flutter_sdk/src/local/model/total_address.dart';
 import 'package:kakao_flutter_sdk/src/search/model/search_meta.dart';
 
+/// Provides Kakao Local API
+///
+/// see https://developers.kakao.com/docs/latest/ko/local/dev-guide
 class LocalApi {
   LocalApi(this._dio);
   final Dio _dio;
 
+  /// singleton instance for this class
   static final instance = LocalApi(ApiFactory.dapi);
 
+  /// Provides coordinates and full address information (both 도로명 and 지번) with the given address.
   Future<LocalEnvelope<SearchMeta, TotalAddress>> address(String query,
       {int page, int size}) async {
     final params = {"query": query, "page": page, "size": size};
@@ -37,6 +42,7 @@ class LocalApi {
     return _localApi("/v2/local/geo/coord2regioncode.json", params);
   }
 
+  /// 
   Future<LocalEnvelope<CountMeta, TotalAddress>> coord2Address(
       double x, double y,
       {CoordType inputCoord}) async {

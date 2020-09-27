@@ -3,6 +3,7 @@ import 'package:kakao_flutter_sdk/src/local/generics_converter.dart';
 
 part 'local_envelope.g.dart';
 
+/// Response envelope for Local API
 @JsonSerializable()
 class LocalEnvelope<T, U> {
   @GenericsConverter()

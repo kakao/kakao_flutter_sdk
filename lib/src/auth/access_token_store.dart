@@ -6,12 +6,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 ///
 /// This abstract class can be used to store token information in different locations than provided by the SDK.
 abstract class AccessTokenStore {
+  // stores access token and other retrieved information from [AuthApi.issueAccessToken]
   Future<AccessToken> toStore(AccessTokenResponse response);
 
+  // retrieves access token and other information from the designated store.
   Future<AccessToken> fromStore();
 
+  // clears all data related to access token from the device.
   Future<void> clear();
 
+  // singleton instance of the default [AccessTokenStore] used by the SDK.
   static final AccessTokenStore instance = DefaultAccessTokenStore();
 }
 

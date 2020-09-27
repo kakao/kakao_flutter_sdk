@@ -6,11 +6,18 @@ import 'package:kakao_flutter_sdk/src/common/api_factory.dart';
 import 'package:kakao_flutter_sdk/src/link/model/link_response.dart';
 import 'package:kakao_flutter_sdk/src/template/default_template.dart';
 
+///
 class LinkApi {
   LinkApi(this.dio);
+
+  // DIO instance used by this class to make network requests.
   final Dio dio;
+
+  /// singleton instance of this class.
   static final LinkApi instance = LinkApi(ApiFactory.appKeyApi);
 
+  /// Send KakaoLink messages with custom templates.
+  /// This
   Future<LinkResponse> custom(int templateId,
       {Map<String, String> templateArgs}) async {
     return _validate("validate", {
@@ -19,10 +26,12 @@ class LinkApi {
     });
   }
 
+  /// Send KakaoLink messages with default templates.
   Future<LinkResponse> defaultTemplate(DefaultTemplate template) async {
     return _validate("default", {"template_object": jsonEncode(template)});
   }
 
+  /// Send kakaoLink messages with scrapped url.
   Future<LinkResponse> scrap(String url,
       {int templateId, Map<String, String> templateArgs}) async {
     var params = {

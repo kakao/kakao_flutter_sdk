@@ -1,4 +1,5 @@
 /// Exception thrown by Kakao Flutter SDK.
+/// Base class for all other exception that this SDK generates.
 class KakaoException implements Exception {
   KakaoException(this.message);
 

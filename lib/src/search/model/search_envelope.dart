@@ -4,6 +4,7 @@ import 'package:kakao_flutter_sdk/src/search/model/search_meta.dart';
 
 part 'search_envelope.g.dart';
 
+/// Response envelope for Search API
 @JsonSerializable()
 class SearchEnvelope<T> {
   SearchMeta meta;

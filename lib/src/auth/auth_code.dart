@@ -48,6 +48,9 @@ class AuthCodeClient {
         redirectUri ?? "kakao${_platformKey()}://oauth"));
   }
 
+  /// Requests authorization code with current access token.
+  ///
+  /// User should be logged in in order to call this method.
   Future<String> requestWithAgt(List<String> scopes,
       {String clientId, String redirectUri}) async {
     final agt = await _kauthApi.agt();
@@ -66,6 +69,7 @@ class AuthCodeClient {
         await launchBrowserTab(url, redirectUri: finalRedirectUri));
   }
 
+  /// Retreives auth code in web environment. (This method is web specific. Use after checking the platform)
   void retrieveAuthCode() {
     _channel.invokeMethod("retrieveAuthCode");
   }

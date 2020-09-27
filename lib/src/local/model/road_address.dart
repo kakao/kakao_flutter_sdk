@@ -3,20 +3,34 @@ import 'package:kakao_flutter_sdk/src/local/model/coord.dart';
 
 part 'road_address.g.dart';
 
+/// Represents road (or street name) address, which is the new standard in South Korea.
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class RoadAddress extends Coord {
+  /// full road address
   final String addressName;
+
+  /// 지역명1
   @JsonKey(name: "region_1depth_name")
   final String region1depthName;
+
+  /// 지역명2
   @JsonKey(name: "region_2depth_name")
   final String region2depthName;
+
+  /// 지역명3
   @JsonKey(name: "region_3depth_name")
   final String region3depthName;
+
   final String roadName;
+
+  /// whether this address is underground or not
   final String undergroundYn;
+
   final String mainBuildingNo;
   final String subBuildingNo;
   final String buildingName;
+
+  /// poastal code (5 digits)
   final String zoneNo;
 
   RoadAddress(

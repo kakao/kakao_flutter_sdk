@@ -29,16 +29,22 @@ class KakaoAuthException extends KakaoException {
 enum AuthErrorCause {
   @JsonValue("invalid_request")
   INVALID_REQUEST,
+
+  /// scope parameter contains invalid scope.
   @JsonValue("invalid_scope")
   INVALID_SCOPE,
   @JsonValue("invalid_grant")
   INVALID_GRANT,
+
+  /// app is misconfigured. check if redirect uri and android key hash settings are correct.
   @JsonValue("misconfigured")
   MISCONFIGURED,
   @JsonValue("unauthorized")
   UNAUTHORIZED,
   @JsonValue("access_denied")
   ACCESS_DENIED,
+
+  /// internal server error
   @JsonValue("server_error")
   SERVER_ERROR,
   UNKNOWN

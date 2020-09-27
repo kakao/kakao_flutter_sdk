@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'link_response.g.dart';
 
+/// Response from kakaoLink validation API.
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class LinkResponse {
   /// <nodoc>
@@ -10,6 +11,8 @@ class LinkResponse {
   int templateId;
   Map<String, dynamic> templateArgs;
   Map<String, dynamic> templateMsg;
+
+  // Warnings against template and arguments validation
   Map<String, dynamic> warningMsg;
   Map<String, dynamic> argumentMsg;
 

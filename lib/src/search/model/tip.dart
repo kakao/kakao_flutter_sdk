@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'tip.g.dart';
 
+/// Represents Daum tips
 @JsonSerializable(includeIfNull: false)
 class Tip {
   String title;
