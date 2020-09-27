@@ -40,6 +40,7 @@ class AuthCodeCustomTabsActivity : Activity() {
       openChromeCustomTab(fullUri)
       customTabsOpened = true
     } else {
+      KakaoFlutterSdkPlugin.redirectUriResult.error("CANCELED", "User canceled login.", null)
       finish()
     }
   }
