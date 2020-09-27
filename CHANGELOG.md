@@ -2,6 +2,7 @@
 
 - Update KA header according to changed Kakao API specification. This will allow users to change account while logging in.
 - Update library dependencies.
+- Update dev versions (flutter 1.20.0, iOS 14.0, Xcode 12) 
 
 ## 0.4.2
 
