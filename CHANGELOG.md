@@ -1,4 +1,4 @@
-## 0.4.3
+## 0.5.0
 
 - Update KA header according to changed Kakao API specification. This will allow users to change account while logging in.
 - Update library dependencies.
