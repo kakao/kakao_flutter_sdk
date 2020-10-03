@@ -1,3 +1,6 @@
+## 0.5.2
+- Reformat all code with `dartfmt -w .`.
+
 ## 0.5.1
 
 - Update `platform` version to 3.0.0-nullsafety.2 to get rid of build errors in flutter 1.22.0.
