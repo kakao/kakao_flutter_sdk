@@ -77,7 +77,9 @@ class AuthApi {
     if (kIsWeb) return {"client_origin": origin};
     return _platform.isAndroid
         ? {"android_key_hash": origin}
-        : _platform.isIOS ? {"ios_bundle_id": origin} : {};
+        : _platform.isIOS
+            ? {"ios_bundle_id": origin}
+            : {};
   }
 
   Future<String> _platformRedirectUri() async {

@@ -120,7 +120,9 @@ class LinkClient {
               "appPkg": await KakaoContext.packageName,
               "keyHash": await KakaoContext.origin
             }
-          : _platform.isIOS ? {"iosBundleId": await KakaoContext.origin} : {}),
+          : _platform.isIOS
+              ? {"iosBundleId": await KakaoContext.origin}
+              : {}),
     };
     extras.removeWhere((k, v) => v == null);
     return extras;
