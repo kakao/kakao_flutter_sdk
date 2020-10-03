@@ -1,3 +1,8 @@
+## 0.5.1
+
+- Update `platform` version to 3.0.0-nullsafety.2 to get rid of build errors in flutter 1.22.0.
+- Fix errors that drops pub score.
+
 ## 0.5.0
 
 - Update KA header according to changed Kakao API specification. This will allow users to change account while logging in.

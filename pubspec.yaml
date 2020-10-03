@@ -1,6 +1,6 @@
 name: kakao_flutter_sdk
 description: A flutter plugin for Kakao API, which supports Kakao login, KakaoLink, User API, KakaoTalk API, KakaoStory API, and Push API.
-version: 0.5.0
+version: 0.5.1
 homepage: https://github.com/CoderSpinoza/kakao_flutter_sdk
 environment:
   sdk: ">=2.2.2 <3.0.0"
