@@ -42,7 +42,7 @@ class LocalApi {
     return _localApi("/v2/local/geo/coord2regioncode.json", params);
   }
 
-  /// 
+  ///
   Future<LocalEnvelope<CountMeta, TotalAddress>> coord2Address(
       double x, double y,
       {CoordType inputCoord}) async {
