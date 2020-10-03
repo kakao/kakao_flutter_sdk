@@ -1,3 +1,7 @@
+## 0.6.0-beta.1
+
+- Update `platform` version to `3.0.0-nullsafety.2`.
+
 ## 0.5.1
 
 - Update `platform` version to 3.0.0-nullsafety.2 to get rid of build errors in flutter 1.22.0.
