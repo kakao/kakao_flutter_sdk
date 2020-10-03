@@ -249,7 +249,7 @@ After user's first login (access token persisted correctly), you can check the s
 Below is the sample code of checking token status and redirecting to login screen if refresh token does not exist.
 
 ```dart
-String token = await AccessTokenStore.instance.fromStore();
+AccessToken token = await AccessTokenStore.instance.fromStore();
 if (token.refreshToken == null) {
   Navigator.of(context).pushReplacementNamed('/login');
 } else {
