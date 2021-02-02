@@ -1,3 +1,9 @@
+## 0.5.4
+- Fix Android compile error.
+
+## 0.5.3
+- Fix Android compile error.
+
 ## 0.5.2
 - Reformat all code with `dartfmt -w .`.
 
