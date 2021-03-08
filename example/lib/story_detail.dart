@@ -15,7 +15,9 @@ class StoryDetailScreen extends StatelessWidget {
         builder: (context, state) {
           final story = state is StoryDetailFetched
               ? state.storyDetail
-              : state is StoryDetailFetchStarted ? state.simpleStory : null;
+              : state is StoryDetailFetchStarted
+                  ? state.simpleStory
+                  : null;
           if (state is StoryDetailFetchFailed) return Container();
           return BlocListener<StoryDetailBloc, StoryDetailState>(
               listener: (context, state) {

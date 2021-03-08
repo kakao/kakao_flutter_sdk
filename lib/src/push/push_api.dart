@@ -12,7 +12,7 @@ class PushApi {
   final Dio dio;
   final Platform platform;
 
-  // singleton instance of 
+  // singleton instance of
   static final instance = PushApi(ApiFactory.appKeyApi, LocalPlatform());
 
   Future<int> register(int uuid, String deviceId, String pushToken,

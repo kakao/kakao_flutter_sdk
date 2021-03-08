@@ -1,6 +1,14 @@
 ## 0.6.0-beta.1
 
 - Update `platform` version to `3.0.0-nullsafety.2`.
+## 0.5.4
+- Fix Android compile error.
+
+## 0.5.3
+- Fix Android compile error.
+
+## 0.5.2
+- Reformat all code with `dartfmt -w .`.
 
 ## 0.5.1
 

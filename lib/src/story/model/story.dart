@@ -71,5 +71,7 @@ String permissionToParams(StoryPermission permission) {
       ? "A"
       : permission == StoryPermission.FRIEND
           ? "F"
-          : permission == StoryPermission.ONLY_ME ? "M" : null;
+          : permission == StoryPermission.ONLY_ME
+              ? "M"
+              : null;
 }

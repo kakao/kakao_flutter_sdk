@@ -128,7 +128,9 @@ class StoryApi {
     return ApiFactory.handleApiError(() async {
       var postfix = images != null && images.isNotEmpty
           ? "photo"
-          : linkInfo != null ? "link" : "note";
+          : linkInfo != null
+              ? "link"
+              : "note";
       var data = {
         "content": content,
         "image_url_list":

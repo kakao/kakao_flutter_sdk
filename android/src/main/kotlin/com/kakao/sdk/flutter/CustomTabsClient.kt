@@ -22,7 +22,7 @@ object CustomTabsCommonClient {
         ?: throw UnsupportedOperationException("No browser supports custom tabs protocol on this device.")
     Log.d("CustomTabsCommonClient", "Choosing $packageName as custom tabs browser")
     val connection = object : CustomTabsServiceConnection() {
-      override fun onCustomTabsServiceConnected(name: ComponentName?, client: CustomTabsClient?) {
+      override fun onCustomTabsServiceConnected(name: ComponentName, client: CustomTabsClient) {
         val builder = CustomTabsIntent.Builder()
             .enableUrlBarHiding().setShowTitle(true)
         val customTabsIntent = builder.build()
@@ -58,8 +58,8 @@ object CustomTabsCommonClient {
         chromePackage = info.serviceInfo.packageName
       }
       // check if the browser being looped is the default browser
-      if (info.serviceInfo.packageName == resolveInfo.activityInfo.packageName) {
-        packageName = resolveInfo.activityInfo.packageName
+      if (info.serviceInfo.packageName == resolveInfo?.activityInfo?.packageName) {
+        packageName = resolveInfo?.activityInfo?.packageName
         break
       }
     }
