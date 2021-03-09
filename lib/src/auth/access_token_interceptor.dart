@@ -12,7 +12,7 @@ import 'package:kakao_flutter_sdk/src/auth/auth_api.dart';
 ///
 class AccessTokenInterceptor extends Interceptor {
   AccessTokenInterceptor(this._dio, this._kauthApi,
-      {AccessTokenStore tokenStore})
+      {AccessTokenStore? tokenStore})
       : this._tokenStore = tokenStore ?? AccessTokenStore.instance;
 
   Dio _dio;

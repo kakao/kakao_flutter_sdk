@@ -61,18 +61,18 @@ class DefaultAccessTokenStore implements AccessTokenStore {
 
   Future<AccessToken> fromStore() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String accessToken = preferences.getString(atKey);
-    int atExpiresAtMillis = preferences.getInt(atExpiresAtKey);
+    String? accessToken = preferences.getString(atKey);
+    int? atExpiresAtMillis = preferences.getInt(atExpiresAtKey);
 
-    DateTime accessTokenExpiresAt = atExpiresAtMillis != null
+    DateTime? accessTokenExpiresAt = atExpiresAtMillis != null
         ? DateTime.fromMillisecondsSinceEpoch(atExpiresAtMillis)
         : null;
-    String refreshToken = preferences.getString(rtKey);
-    int rtExpiresAtMillis = preferences.getInt(rtExpiresAtKey);
-    DateTime refreshTokenExpiresAt = rtExpiresAtMillis != null
+    String? refreshToken = preferences.getString(rtKey);
+    int? rtExpiresAtMillis = preferences.getInt(rtExpiresAtKey);
+    DateTime? refreshTokenExpiresAt = rtExpiresAtMillis != null
         ? DateTime.fromMillisecondsSinceEpoch(rtExpiresAtMillis)
         : null;
-    List<String> scopes = preferences.getStringList(scopesKey);
+    List<String>? scopes = preferences.getStringList(scopesKey);
 
     return AccessToken(accessToken, accessTokenExpiresAt, refreshToken,
         refreshTokenExpiresAt, scopes);

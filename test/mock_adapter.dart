@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 
 class MockAdapter extends HttpClientAdapter {
   ResponseBody _responseBody;
-  void Function(RequestOptions options) requestAssertions;
+  void Function(RequestOptions options)? requestAssertions;
 
   void setResponse(ResponseBody responseBody) {
     this._responseBody = responseBody;
