@@ -9,23 +9,22 @@ part of 'list_template.dart';
 ListTemplate _$ListTemplateFromJson(Map<String, dynamic> json) {
   return ListTemplate(
     json['header_title'] as String,
-    json['header_link'] == null
-        ? null
-        : Link.fromJson(json['header_link'] as Map<String, dynamic>),
-    contents: (json['contents'] as List)
-        ?.map((e) =>
-            e == null ? null : Content.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    buttons: (json['buttons'] as List)
-        ?.map((e) =>
-            e == null ? null : Button.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    Link.fromJson(json['header_link'] as Map<String, dynamic>),
+    contents: (json['contents'] as List<dynamic>?)
+        ?.map((e) => Content.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    buttons: (json['buttons'] as List<dynamic>?)
+        ?.map((e) => Button.fromJson(e as Map<String, dynamic>))
+        .toList(),
     objectType: json['object_type'] as String,
   );
 }
 
 Map<String, dynamic> _$ListTemplateToJson(ListTemplate instance) {
-  final val = <String, dynamic>{};
+  final val = <String, dynamic>{
+    'header_title': instance.headerTitle,
+    'header_link': instance.headerLink.toJson(),
+  };
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -33,11 +32,8 @@ Map<String, dynamic> _$ListTemplateToJson(ListTemplate instance) {
     }
   }
 
-  writeNotNull('header_title', instance.headerTitle);
-  writeNotNull('header_link', instance.headerLink?.toJson());
-  writeNotNull(
-      'contents', instance.contents?.map((e) => e?.toJson())?.toList());
-  writeNotNull('buttons', instance.buttons?.map((e) => e?.toJson())?.toList());
-  writeNotNull('object_type', instance.objectType);
+  writeNotNull('contents', instance.contents?.map((e) => e.toJson()).toList());
+  writeNotNull('buttons', instance.buttons?.map((e) => e.toJson()).toList());
+  val['object_type'] = instance.objectType;
   return val;
 }

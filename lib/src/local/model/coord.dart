@@ -22,13 +22,13 @@ class Coord {
 }
 
 /// <nodoc>
-double stringToDouble(dynamic v) {
+double? stringToDouble(dynamic v) {
   if (v == null) return null;
   if (v is double) return v;
   return double.tryParse(v);
 }
 
-int stringToInt(dynamic v) {
+int? stringToInt(dynamic v) {
   if (v == null) return null;
   if (v is int) return v;
   return int.tryParse(v);

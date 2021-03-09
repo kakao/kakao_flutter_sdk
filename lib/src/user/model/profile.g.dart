@@ -9,26 +9,13 @@ part of 'profile.dart';
 Profile _$ProfileFromJson(Map<String, dynamic> json) {
   return Profile(
     json['nickname'] as String,
-    json['thumbnail_image_url'] == null
-        ? null
-        : Uri.parse(json['thumbnail_image_url'] as String),
-    json['profile_image_url'] == null
-        ? null
-        : Uri.parse(json['profile_image_url'] as String),
+    Uri.parse(json['thumbnail_image_url'] as String),
+    Uri.parse(json['profile_image_url'] as String),
   );
 }
 
-Map<String, dynamic> _$ProfileToJson(Profile instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('nickname', instance.nickname);
-  writeNotNull('thumbnail_image_url', instance.thumbnailImageUrl?.toString());
-  writeNotNull('profile_image_url', instance.profileImageUrl?.toString());
-  return val;
-}
+Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
+      'nickname': instance.nickname,
+      'thumbnail_image_url': instance.thumbnailImageUrl.toString(),
+      'profile_image_url': instance.profileImageUrl.toString(),
+    };

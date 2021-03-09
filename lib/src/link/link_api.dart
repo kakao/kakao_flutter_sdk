@@ -19,7 +19,7 @@ class LinkApi {
   /// Send KakaoLink messages with custom templates.
   /// This
   Future<LinkResponse> custom(int templateId,
-      {Map<String, String> templateArgs}) async {
+      {Map<String, String>? templateArgs}) async {
     return _validate("validate", {
       "template_id": templateId,
       "template_args": templateArgs == null ? null : jsonEncode(templateArgs)
@@ -33,7 +33,7 @@ class LinkApi {
 
   /// Send kakaoLink messages with scrapped url.
   Future<LinkResponse> scrap(String url,
-      {int templateId, Map<String, String> templateArgs}) async {
+      {int? templateId, Map<String, String>? templateArgs}) async {
     var params = {
       "request_url": url,
       "template_id": templateId,

@@ -8,58 +8,41 @@ part of 'story_like.dart';
 
 StoryLike _$StoryLikeFromJson(Map<String, dynamic> json) {
   return StoryLike(
-    _$enumDecodeNullable(_$EmoticonEnumMap, json['emoticon'],
+    _$enumDecode(_$EmoticonEnumMap, json['emoticon'],
         unknownValue: Emoticon.UNKNOWN),
-    json['actor'] == null
-        ? null
-        : StoryActor.fromJson(json['actor'] as Map<String, dynamic>),
+    StoryActor.fromJson(json['actor'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$StoryLikeToJson(StoryLike instance) {
-  final val = <String, dynamic>{};
+Map<String, dynamic> _$StoryLikeToJson(StoryLike instance) => <String, dynamic>{
+      'emoticon': _$EmoticonEnumMap[instance.emoticon],
+      'actor': instance.actor.toJson(),
+    };
 
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('emoticon', _$EmoticonEnumMap[instance.emoticon]);
-  writeNotNull('actor', instance.actor?.toJson());
-  return val;
-}
-
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
-}
-
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
 }
 
 const _$EmoticonEnumMap = {

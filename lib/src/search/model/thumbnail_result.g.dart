@@ -10,27 +10,17 @@ ThumbnailResult _$ThumbnailResultFromJson(Map<String, dynamic> json) {
   return ThumbnailResult(
     json['title'] as String,
     json['contents'] as String,
-    json['url'] == null ? null : Uri.parse(json['url'] as String),
-    json['datetime'] == null
-        ? null
-        : DateTime.parse(json['datetime'] as String),
-    json['thumbnail'] == null ? null : Uri.parse(json['thumbnail'] as String),
+    Uri.parse(json['url'] as String),
+    DateTime.parse(json['datetime'] as String),
+    Uri.parse(json['thumbnail'] as String),
   );
 }
 
-Map<String, dynamic> _$ThumbnailResultToJson(ThumbnailResult instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('title', instance.title);
-  writeNotNull('contents', instance.contents);
-  writeNotNull('url', instance.url?.toString());
-  writeNotNull('datetime', instance.datetime?.toIso8601String());
-  writeNotNull('thumbnail', instance.thumbnail?.toString());
-  return val;
-}
+Map<String, dynamic> _$ThumbnailResultToJson(ThumbnailResult instance) =>
+    <String, dynamic>{
+      'title': instance.title,
+      'contents': instance.contents,
+      'url': instance.url.toString(),
+      'datetime': instance.datetime.toIso8601String(),
+      'thumbnail': instance.thumbnail.toString(),
+    };

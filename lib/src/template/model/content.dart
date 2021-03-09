@@ -13,8 +13,8 @@ class Content {
   final String title;
   final Uri imageUrl;
   final Link link;
-  final int imageWidth;
-  final int imageHeight;
+  final int? imageWidth;
+  final int? imageHeight;
 
   /// <nodoc>
   factory Content.fromJson(Map<String, dynamic> json) =>

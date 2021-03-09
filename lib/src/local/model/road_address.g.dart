@@ -23,26 +23,18 @@ RoadAddress _$RoadAddressFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$RoadAddressToJson(RoadAddress instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('x', instance.x);
-  writeNotNull('y', instance.y);
-  writeNotNull('address_name', instance.addressName);
-  writeNotNull('region_1depth_name', instance.region1depthName);
-  writeNotNull('region_2depth_name', instance.region2depthName);
-  writeNotNull('region_3depth_name', instance.region3depthName);
-  writeNotNull('road_name', instance.roadName);
-  writeNotNull('underground_yn', instance.undergroundYn);
-  writeNotNull('main_building_no', instance.mainBuildingNo);
-  writeNotNull('sub_building_no', instance.subBuildingNo);
-  writeNotNull('building_name', instance.buildingName);
-  writeNotNull('zone_no', instance.zoneNo);
-  return val;
-}
+Map<String, dynamic> _$RoadAddressToJson(RoadAddress instance) =>
+    <String, dynamic>{
+      'x': instance.x,
+      'y': instance.y,
+      'address_name': instance.addressName,
+      'region_1depth_name': instance.region1depthName,
+      'region_2depth_name': instance.region2depthName,
+      'region_3depth_name': instance.region3depthName,
+      'road_name': instance.roadName,
+      'underground_yn': instance.undergroundYn,
+      'main_building_no': instance.mainBuildingNo,
+      'sub_building_no': instance.subBuildingNo,
+      'building_name': instance.buildingName,
+      'zone_no': instance.zoneNo,
+    };

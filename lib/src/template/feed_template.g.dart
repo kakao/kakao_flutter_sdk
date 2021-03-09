@@ -8,22 +8,21 @@ part of 'feed_template.dart';
 
 FeedTemplate _$FeedTemplateFromJson(Map<String, dynamic> json) {
   return FeedTemplate(
-    json['content'] == null
-        ? null
-        : Content.fromJson(json['content'] as Map<String, dynamic>),
+    Content.fromJson(json['content'] as Map<String, dynamic>),
     social: json['social'] == null
         ? null
         : Social.fromJson(json['social'] as Map<String, dynamic>),
-    buttons: (json['buttons'] as List)
-        ?.map((e) =>
-            e == null ? null : Button.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    buttons: (json['buttons'] as List<dynamic>?)
+        ?.map((e) => Button.fromJson(e as Map<String, dynamic>))
+        .toList(),
     objectType: json['object_type'] as String,
   );
 }
 
 Map<String, dynamic> _$FeedTemplateToJson(FeedTemplate instance) {
-  final val = <String, dynamic>{};
+  final val = <String, dynamic>{
+    'content': instance.content.toJson(),
+  };
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -31,9 +30,8 @@ Map<String, dynamic> _$FeedTemplateToJson(FeedTemplate instance) {
     }
   }
 
-  writeNotNull('content', instance.content?.toJson());
   writeNotNull('social', instance.social?.toJson());
-  writeNotNull('buttons', instance.buttons?.map((e) => e?.toJson())?.toList());
-  writeNotNull('object_type', instance.objectType);
+  writeNotNull('buttons', instance.buttons?.map((e) => e.toJson()).toList());
+  val['object_type'] = instance.objectType;
   return val;
 }

@@ -12,15 +12,6 @@ CountMeta _$CountMetaFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$CountMetaToJson(CountMeta instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('total_count', instance.totalCount);
-  return val;
-}
+Map<String, dynamic> _$CountMetaToJson(CountMeta instance) => <String, dynamic>{
+      'total_count': instance.totalCount,
+    };

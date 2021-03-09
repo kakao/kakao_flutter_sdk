@@ -20,23 +20,14 @@ Region _$RegionFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$RegionToJson(Region instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('x', instance.x);
-  writeNotNull('y', instance.y);
-  writeNotNull('region_type', instance.regionType);
-  writeNotNull('address_name', instance.addressName);
-  writeNotNull('region_1depth_name', instance.region1depthName);
-  writeNotNull('region_2depth_name', instance.region2depthName);
-  writeNotNull('region_3depth_name', instance.region3depthName);
-  writeNotNull('region_4depth_name', instance.region4depthName);
-  writeNotNull('code', instance.code);
-  return val;
-}
+Map<String, dynamic> _$RegionToJson(Region instance) => <String, dynamic>{
+      'x': instance.x,
+      'y': instance.y,
+      'region_type': instance.regionType,
+      'address_name': instance.addressName,
+      'region_1depth_name': instance.region1depthName,
+      'region_2depth_name': instance.region2depthName,
+      'region_3depth_name': instance.region3depthName,
+      'region_4depth_name': instance.region4depthName,
+      'code': instance.code,
+    };

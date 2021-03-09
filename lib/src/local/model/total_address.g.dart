@@ -9,66 +9,48 @@ part of 'total_address.dart';
 TotalAddress _$TotalAddressFromJson(Map<String, dynamic> json) {
   return TotalAddress(
     json['address_name'] as String,
-    _$enumDecodeNullable(_$AddressTypeEnumMap, json['address_type']),
+    _$enumDecode(_$AddressTypeEnumMap, json['address_type']),
     stringToDouble(json['x']),
     stringToDouble(json['y']),
-    json['address'] == null
-        ? null
-        : Address.fromJson(json['address'] as Map<String, dynamic>),
-    json['road_address'] == null
-        ? null
-        : RoadAddress.fromJson(json['road_address'] as Map<String, dynamic>),
+    Address.fromJson(json['address'] as Map<String, dynamic>),
+    RoadAddress.fromJson(json['road_address'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$TotalAddressToJson(TotalAddress instance) {
-  final val = <String, dynamic>{};
+Map<String, dynamic> _$TotalAddressToJson(TotalAddress instance) =>
+    <String, dynamic>{
+      'x': instance.x,
+      'y': instance.y,
+      'address_name': instance.addressName,
+      'address_type': _$AddressTypeEnumMap[instance.addressType],
+      'address': instance.address,
+      'road_address': instance.roadAddress,
+    };
 
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('x', instance.x);
-  writeNotNull('y', instance.y);
-  writeNotNull('address_name', instance.addressName);
-  writeNotNull('address_type', _$AddressTypeEnumMap[instance.addressType]);
-  writeNotNull('address', instance.address);
-  writeNotNull('road_address', instance.roadAddress);
-  return val;
-}
-
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
-}
-
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
 }
 
 const _$AddressTypeEnumMap = {

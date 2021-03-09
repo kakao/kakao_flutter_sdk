@@ -16,19 +16,11 @@ LinkResponse _$LinkResponseFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$LinkResponseToJson(LinkResponse instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('template_id', instance.templateId);
-  writeNotNull('template_args', instance.templateArgs);
-  writeNotNull('template_msg', instance.templateMsg);
-  writeNotNull('warning_msg', instance.warningMsg);
-  writeNotNull('argument_msg', instance.argumentMsg);
-  return val;
-}
+Map<String, dynamic> _$LinkResponseToJson(LinkResponse instance) =>
+    <String, dynamic>{
+      'template_id': instance.templateId,
+      'template_args': instance.templateArgs,
+      'template_msg': instance.templateMsg,
+      'warning_msg': instance.warningMsg,
+      'argument_msg': instance.argumentMsg,
+    };

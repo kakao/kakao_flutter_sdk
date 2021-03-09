@@ -10,13 +10,13 @@ class Commerce {
       {this.discountPrice, this.fixedDiscountPrice, this.discountRate});
 
   final int regularPrice;
-  final int discountPrice;
+  final int? discountPrice;
 
   /// exclusive with [discountRate].
-  final int fixedDiscountPrice;
+  final int? fixedDiscountPrice;
 
   /// exclusive with [fixedDiscountPrice].
-  final int discountRate;
+  final int? discountRate;
 
   /// <nodoc>
   factory Commerce.fromJson(Map<String, dynamic> json) =>

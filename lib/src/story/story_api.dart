@@ -44,7 +44,7 @@ class StoryApi {
   }
 
   /// Fetches a list of stories where id is smaller the given lastId.
-  Future<List<Story>> myStories([String lastId]) async {
+  Future<List<Story>> myStories([String? lastId]) async {
     return ApiFactory.handleApiError(() async {
       final response = await _dio.get("/v1/api/story/mystories",
           queryParameters: lastId == null ? {} : {"last_id": lastId});
@@ -64,12 +64,12 @@ class StoryApi {
   /// @param androidMarketParms Query string to be passed to Google play market url.
   /// @param iosMarketParams Query string to be passed to App Store url.
   Future<String> postNote(String content,
-          {StoryPermission permission,
-          bool enableShare,
-          String androidExecParams,
-          String iosExecParams,
-          String androidMarketParams,
-          String iosMarketParams}) =>
+          {StoryPermission? permission,
+          bool? enableShare,
+          String? androidExecParams,
+          String? iosExecParams,
+          String? androidMarketParams,
+          String? iosMarketParams}) =>
       _post(
           content: content,
           permission: permission,
@@ -81,13 +81,13 @@ class StoryApi {
 
   /// Posts a story with a list of image urls returned by [StoryApi.scrapImages()].
   Future<String> postPhotos(List<String> images,
-          {String content,
-          StoryPermission permission,
-          bool enableShare,
-          String androidExecParams,
-          String iosExecParams,
-          String androidMarketParams,
-          String iosMarketParams}) =>
+          {String? content,
+          StoryPermission? permission,
+          bool? enableShare,
+          String? androidExecParams,
+          String? iosExecParams,
+          String? androidMarketParams,
+          String? iosMarketParams}) =>
       _post(
           images: images,
           permission: permission,
@@ -99,13 +99,13 @@ class StoryApi {
 
   /// Posts a story with a [LinkInfo] returned by [StoryApi.scrapLink()].
   Future<String> postLink(LinkInfo linkInfo,
-          {String content,
-          StoryPermission permission,
-          bool enableShare,
-          String androidExecParams,
-          String iosExecParams,
-          String androidMarketParams,
-          String iosMarketParams}) =>
+          {String? content,
+          StoryPermission? permission,
+          bool? enableShare,
+          String? androidExecParams,
+          String? iosExecParams,
+          String? androidMarketParams,
+          String? iosMarketParams}) =>
       _post(
           linkInfo: linkInfo,
           permission: permission,
@@ -116,15 +116,15 @@ class StoryApi {
           iosMarketParams: iosMarketParams);
 
   Future<String> _post(
-      {String content,
-      List<String> images,
-      LinkInfo linkInfo,
-      StoryPermission permission,
-      bool enableShare,
-      String androidExecParams,
-      String iosExecParams,
-      String androidMarketParams,
-      String iosMarketParams}) async {
+      {String? content,
+      List<String>? images,
+      LinkInfo? linkInfo,
+      StoryPermission? permission,
+      bool? enableShare,
+      String? androidExecParams,
+      String? iosExecParams,
+      String? androidMarketParams,
+      String? iosMarketParams}) async {
     return ApiFactory.handleApiError(() async {
       var postfix = images != null && images.isNotEmpty
           ? "photo"

@@ -31,7 +31,7 @@ class TalkApi {
   }
 
   Future<void> customMemo(int templateId,
-      {Map<String, String> templateArgs}) async {
+      {Map<String, String>? templateArgs}) async {
     final params = {
       "template_id": templateId,
       "template_args": templateArgs == null ? null : jsonEncode(templateArgs)
@@ -44,7 +44,7 @@ class TalkApi {
   }
 
   Future<void> scrapMemo(String url,
-      {int templateId, Map<String, String> templateArgs}) async {
+      {int? templateId, Map<String, String>? templateArgs}) async {
     final params = {
       "request_url": url,
       "template_id": templateId,
@@ -60,7 +60,7 @@ class TalkApi {
     });
   }
 
-  Future<PlusFriendsResponse> plusFriends([List<String> publicIds]) async {
+  Future<PlusFriendsResponse> plusFriends([List<String>? publicIds]) async {
     return ApiFactory.handleApiError(() async {
       Response response = await _dio.get("/v1/api/talk/plusfriends",
           queryParameters: publicIds == null
@@ -78,7 +78,10 @@ class TalkApi {
   /// 1. Agreed to use Friends API in /oauth/authorize.
   ///
   Future<FriendsResponse> friends(
-      {int offset, int limit, FriendOrder friendOrder, String order}) async {
+      {int? offset,
+      int? limit,
+      FriendOrder? friendOrder,
+      String? order}) async {
     return ApiFactory.handleApiError(() async {
       final params = {
         "offset": offset,
@@ -98,7 +101,7 @@ class TalkApi {
 
   Future<MessageSendResult> customMessage(
       List<String> receiverUuids, int templateId,
-      {Map<String, String> templateArgs}) async {
+      {Map<String, String>? templateArgs}) async {
     final params = {
       "receiver_uuids": jsonEncode(receiverUuids),
       "template_id": templateId,
@@ -117,7 +120,7 @@ class TalkApi {
   }
 
   Future<MessageSendResult> scrapMessage(List<String> receiverUuids, String url,
-      {int templateId, Map<String, String> templateArgs}) async {
+      {int? templateId, Map<String, String>? templateArgs}) async {
     final params = {
       "receiver_uuids": jsonEncode(receiverUuids),
       "request_url": url,

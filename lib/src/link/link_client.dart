@@ -12,7 +12,7 @@ import 'package:platform/platform.dart';
 const _channel = MethodChannel("kakao_flutter_sdk");
 
 class LinkClient {
-  LinkClient(this.api, {Platform platform})
+  LinkClient(this.api, {Platform? platform})
       : _platform = platform ?? LocalPlatform();
   LinkApi api;
   Platform _platform;
@@ -22,22 +22,22 @@ class LinkClient {
 
   /// Send KakaoLink messages with custom templates.
   Future<Uri> customWithWeb(int templateId,
-      {Map<String, String> templateArgs,
-      Map<String, String> serverCallbackArgs}) async {
+      {Map<String, String>? templateArgs,
+      Map<String, String>? serverCallbackArgs}) async {
     final response = await api.custom(templateId, templateArgs: templateArgs);
     return sharerWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
   Future<Uri> defaultWithWeb(DefaultTemplate template,
-      {Map<String, String> serverCallbackArgs}) async {
+      {Map<String, String>? serverCallbackArgs}) async {
     final response = await api.defaultTemplate(template);
     return sharerWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
   Future<Uri> scrapWithWeb(String url,
-      {int templateId,
-      Map<String, String> templateArgs,
-      Map<String, String> serverCallbackArgs}) async {
+      {int? templateId,
+      Map<String, String>? templateArgs,
+      Map<String, String>? serverCallbackArgs}) async {
     final response = await api.scrap(url,
         templateId: templateId, templateArgs: templateArgs);
     return sharerWithResponse(response, serverCallbackArgs: serverCallbackArgs);
@@ -45,29 +45,29 @@ class LinkClient {
 
   /// Send KakaoLink messages with custom templates.
   Future<Uri> customWithTalk(int templateId,
-      {Map<String, String> templateArgs,
-      Map<String, String> serverCallbackArgs}) async {
+      {Map<String, String>? templateArgs,
+      Map<String, String>? serverCallbackArgs}) async {
     final response = await api.custom(templateId, templateArgs: templateArgs);
     return talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
   Future<Uri> defaultWithTalk(DefaultTemplate template,
-      {Map<String, String> serverCallbackArgs}) async {
+      {Map<String, String>? serverCallbackArgs}) async {
     final response = await api.defaultTemplate(template);
     return talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
   Future<Uri> scrapWithTalk(String url,
-      {int templateId,
-      Map<String, String> templateArgs,
-      Map<String, String> serverCallbackArgs}) async {
+      {int? templateId,
+      Map<String, String>? templateArgs,
+      Map<String, String>? serverCallbackArgs}) async {
     final response = await api.scrap(url,
         templateId: templateId, templateArgs: templateArgs);
     return talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
   Future<Uri> sharerWithResponse(LinkResponse response,
-      {Map<String, String> serverCallbackArgs}) async {
+      {Map<String, String>? serverCallbackArgs}) async {
     final params = {
       "app_key": KakaoContext.clientId,
       "ka": await KakaoContext.kaHeader,
@@ -86,7 +86,7 @@ class LinkClient {
   }
 
   Future<Uri> talkWithResponse(LinkResponse response,
-      {String clientId, Map<String, String> serverCallbackArgs}) async {
+      {String? clientId, Map<String, String>? serverCallbackArgs}) async {
     final attachmentSize = await _attachmentSize(response,
         clientId: clientId, serverCallbackArgs: serverCallbackArgs);
     if (attachmentSize > 10 * 1024) {
@@ -109,9 +109,9 @@ class LinkClient {
     return _channel.invokeMethod("launchKakaoTalk", {"uri": uri.toString()});
   }
 
-  Future<Map<String, String>> _extras(
-      [Map<String, String> serverCallbackArgs]) async {
-    Map<String, String> extras = {
+  Future<Map<String, String?>> _extras(
+      [Map<String, String>? serverCallbackArgs]) async {
+    Map<String, String?> extras = {
       "KA": await KakaoContext.kaHeader,
       "lcba":
           serverCallbackArgs == null ? null : jsonEncode(serverCallbackArgs),
@@ -129,7 +129,7 @@ class LinkClient {
   }
 
   Future<int> _attachmentSize(LinkResponse response,
-      {String clientId, Map<String, String> serverCallbackArgs}) async {
+      {String? clientId, Map<String, String>? serverCallbackArgs}) async {
     final templateMsg = response.templateMsg;
     final attachment = {
       "lv": "4.0",

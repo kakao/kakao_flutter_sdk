@@ -5,17 +5,17 @@ class AccessToken {
   AccessToken(this.accessToken, this.accessTokenExpiresAt, this.refreshToken,
       this.refreshTokenExpiresAt, this.scopes);
 
-  String accessToken;
+  String? accessToken;
 
   /// Use this field with caution. Token might have expired on server side.
-  DateTime accessTokenExpiresAt;
-  String refreshToken;
+  DateTime? accessTokenExpiresAt;
+  String? refreshToken;
 
   /// Use this field with caution. Token might have expired on server side.
-  DateTime refreshTokenExpiresAt;
+  DateTime? refreshTokenExpiresAt;
 
   /// List of scopes this user has agreed to when this token was issued.
-  List<String> scopes;
+  List<String>? scopes;
 
   @override
   String toString() {

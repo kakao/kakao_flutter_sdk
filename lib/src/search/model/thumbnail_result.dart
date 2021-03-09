@@ -10,7 +10,7 @@ class ThumbnailResult extends WebResult {
       : super(title, contents, url, datetime) {
     this.thumbnail = thumbnail;
   }
-  Uri thumbnail;
+  late Uri thumbnail;
 
   /// <nodoc>
   factory ThumbnailResult.fromJson(Map<String, dynamic> json) =>

@@ -66,7 +66,7 @@ enum StoryPermission {
   UNKNOWN
 }
 
-String permissionToParams(StoryPermission permission) {
+String? permissionToParams(StoryPermission? permission) {
   return permission == StoryPermission.PUBLIC
       ? "A"
       : permission == StoryPermission.FRIEND
