@@ -15,8 +15,8 @@ Region _$RegionFromJson(Map<String, dynamic> json) {
     json['region_3depth_name'] as String,
     json['region_4depth_name'] as String,
     json['code'] as String,
-    stringToDouble(json['x']),
-    stringToDouble(json['y']),
+    stringToNullableDouble(json['x']),
+    stringToNullableDouble(json['y']),
   );
 }
 

@@ -8,24 +8,33 @@ part of 'total_address.dart';
 
 TotalAddress _$TotalAddressFromJson(Map<String, dynamic> json) {
   return TotalAddress(
-    json['address_name'] as String,
-    _$enumDecode(_$AddressTypeEnumMap, json['address_type']),
-    stringToDouble(json['x']),
-    stringToDouble(json['y']),
+    json['address_name'] as String?,
+    _$enumDecodeNullable(_$AddressTypeEnumMap, json['address_type']),
+    stringToNullableDouble(json['x']),
+    stringToNullableDouble(json['y']),
     Address.fromJson(json['address'] as Map<String, dynamic>),
     RoadAddress.fromJson(json['road_address'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$TotalAddressToJson(TotalAddress instance) =>
-    <String, dynamic>{
-      'x': instance.x,
-      'y': instance.y,
-      'address_name': instance.addressName,
-      'address_type': _$AddressTypeEnumMap[instance.addressType],
-      'address': instance.address,
-      'road_address': instance.roadAddress,
-    };
+Map<String, dynamic> _$TotalAddressToJson(TotalAddress instance) {
+  final val = <String, dynamic>{
+    'x': instance.x,
+    'y': instance.y,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('address_name', instance.addressName);
+  writeNotNull('address_type', _$AddressTypeEnumMap[instance.addressType]);
+  val['address'] = instance.address;
+  val['road_address'] = instance.roadAddress;
+  return val;
+}
 
 K _$enumDecode<K, V>(
   Map<K, V> enumValues,
@@ -51,6 +60,17 @@ K _$enumDecode<K, V>(
       return MapEntry(unknownValue, enumValues.values.first);
     },
   ).key;
+}
+
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
+  dynamic source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$AddressTypeEnumMap = {

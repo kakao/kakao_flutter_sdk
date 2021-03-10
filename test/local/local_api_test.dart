@@ -11,9 +11,9 @@ import '../helper.dart';
 import '../mock_adapter.dart';
 
 void main() {
-  MockAdapter _adapter;
-  LocalApi _api;
-  Dio _dio;
+  late MockAdapter _adapter;
+  late LocalApi _api;
+  late Dio _dio;
 
   setUp(() {
     _dio = Dio();
@@ -181,8 +181,8 @@ void main() {
       final regionInfo = meta.regionInfo;
       final expectedRegionInfo = expectedMeta["same_name"];
 
-      expect(regionInfo.keyword, expectedRegionInfo["keyword"]);
-      expect(regionInfo.selectedRegion, expectedRegionInfo["selected_region"]);
+      expect(regionInfo?.keyword, expectedRegionInfo["keyword"]);
+      expect(regionInfo?.selectedRegion, expectedRegionInfo["selected_region"]);
 
       response.documents.asMap().forEach((index, place) {
         final expected = map["documents"][index];

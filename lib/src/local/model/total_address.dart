@@ -8,8 +8,8 @@ part 'total_address.g.dart';
 /// Wrapper for land-lot based address and street name adress.
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class TotalAddress extends Coord {
-  final String addressName;
-  final AddressType addressType;
+  final String? addressName;
+  final AddressType? addressType;
 
   final Address address;
   final RoadAddress roadAddress;

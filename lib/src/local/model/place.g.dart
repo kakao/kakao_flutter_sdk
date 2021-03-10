@@ -19,8 +19,8 @@ Place _$PlaceFromJson(Map<String, dynamic> json) {
     json['road_address_name'] as String,
     Uri.parse(json['place_url'] as String),
     stringToInt(json['distance']),
-    stringToDouble(json['x']),
-    stringToDouble(json['y']),
+    stringToNullableDouble(json['x']),
+    stringToNullableDouble(json['y']),
   );
 }
 

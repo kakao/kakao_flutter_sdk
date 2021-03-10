@@ -40,28 +40,28 @@ class Account {
   bool emailNeedsAgreement;
   String email;
 
-  bool isKakaotalkUser;
+  bool? isKakaotalkUser;
 
-  bool phoneNumberNeedsAgreement;
-  String phoneNumber;
+  bool? phoneNumberNeedsAgreement;
+  String? phoneNumber;
 
-  bool ageRangeNeedsAgreement;
+  bool? ageRangeNeedsAgreement;
   @JsonKey(unknownEnumValue: AgeRange.UNKNOWN)
-  AgeRange ageRange;
+  AgeRange? ageRange;
 
-  bool birthdayNeedsAgreement;
-  String birthday;
+  bool? birthdayNeedsAgreement;
+  String? birthday;
 
-  bool birthyearNeedsAgreement;
-  String birthyear;
+  bool? birthyearNeedsAgreement;
+  String? birthyear;
 
-  bool genderNeedsAgreement;
+  bool? genderNeedsAgreement;
   @JsonKey(unknownEnumValue: Gender.OTHER)
-  Gender gender;
+  Gender? gender;
 
-  bool ciNeedsAgreement;
-  String ci;
-  DateTime ciAuthenticatedAt;
+  bool? ciNeedsAgreement;
+  String? ci;
+  DateTime? ciAuthenticatedAt;
 
   /// <nodoc>
   factory Account.fromJson(Map<String, dynamic> json) =>

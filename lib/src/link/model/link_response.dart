@@ -9,7 +9,7 @@ class LinkResponse {
   LinkResponse(this.templateId, this.templateArgs, this.templateMsg,
       this.warningMsg, this.argumentMsg);
   int templateId;
-  Map<String, dynamic> templateArgs;
+  Map<String, dynamic>? templateArgs;
   Map<String, dynamic> templateMsg;
 
   // Warnings against template and arguments validation

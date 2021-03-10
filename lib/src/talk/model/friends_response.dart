@@ -12,8 +12,8 @@ class FriendsResponse {
   @JsonKey(name: "elements")
   final List<Friend> friends;
   final int totalCount;
-  final Uri beforeUrl;
-  final Uri afterUrl;
+  final Uri? beforeUrl;
+  final Uri? afterUrl;
 
   /// <nodoc>
   factory FriendsResponse.fromJson(Map<String, dynamic> json) =>

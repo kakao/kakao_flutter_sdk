@@ -12,15 +12,24 @@ FriendsResponse _$FriendsResponseFromJson(Map<String, dynamic> json) {
         .map((e) => Friend.fromJson(e as Map<String, dynamic>))
         .toList(),
     json['total_count'] as int,
-    Uri.parse(json['before_url'] as String),
-    Uri.parse(json['after_url'] as String),
+    json['before_url'] == null ? null : Uri.parse(json['before_url'] as String),
+    json['after_url'] == null ? null : Uri.parse(json['after_url'] as String),
   );
 }
 
-Map<String, dynamic> _$FriendsResponseToJson(FriendsResponse instance) =>
-    <String, dynamic>{
-      'elements': instance.friends.map((e) => e.toJson()).toList(),
-      'total_count': instance.totalCount,
-      'before_url': instance.beforeUrl.toString(),
-      'after_url': instance.afterUrl.toString(),
-    };
+Map<String, dynamic> _$FriendsResponseToJson(FriendsResponse instance) {
+  final val = <String, dynamic>{
+    'elements': instance.friends.map((e) => e.toJson()).toList(),
+    'total_count': instance.totalCount,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('before_url', instance.beforeUrl?.toString());
+  writeNotNull('after_url', instance.afterUrl?.toString());
+  return val;
+}

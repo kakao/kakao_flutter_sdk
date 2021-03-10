@@ -8,7 +8,7 @@ import '../helper.dart';
 void main() {
   var map;
   var response;
-  DefaultAccessTokenStore store;
+  late DefaultAccessTokenStore store;
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUp(() async {
@@ -31,7 +31,7 @@ void main() {
     var token = await store.toStore(response);
     expect(token.accessToken, response.accessToken);
     expect(token.refreshToken, response.refreshToken);
-    expect(token.scopes.join(" "), response.scopes); // null
+    expect(token.scopes?.join(" "), response.scopes); // null
     expect(true, token.toString() != null);
   });
 

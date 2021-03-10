@@ -32,15 +32,16 @@ class Story {
   final int commentCount;
   final int likeCount;
   @JsonKey(name: "media")
-  final List<StoryImage> images;
+  final List<StoryImage>? images;
   @JsonKey(unknownEnumValue: StoryPermission.UNKNOWN)
-  final StoryPermission permission;
+  final StoryPermission?
+      permission; // TODO: unknownEnumValue should allow non-null type but it doesn't.
 
   /// Only present in [StoryApi.myStory()], always null in [StoryApi.myStories()].
-  final List<StoryLike> likes;
+  final List<StoryLike>? likes;
 
   /// Only present in [StoryApi.myStory()], always null in [StoryApi.myStories()].
-  final List<StoryComment> comments;
+  final List<StoryComment>? comments;
 
   /// <nodoc>
   factory Story.fromJson(Map<String, dynamic> json) => _$StoryFromJson(json);

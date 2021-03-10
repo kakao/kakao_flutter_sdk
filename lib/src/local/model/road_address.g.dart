@@ -18,8 +18,8 @@ RoadAddress _$RoadAddressFromJson(Map<String, dynamic> json) {
     json['sub_building_no'] as String,
     json['building_name'] as String,
     json['zone_no'] as String,
-    stringToDouble(json['x']),
-    stringToDouble(json['y']),
+    stringToNullableDouble(json['x']),
+    stringToNullableDouble(json['y']),
   );
 }
 

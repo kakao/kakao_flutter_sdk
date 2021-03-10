@@ -11,14 +11,25 @@ LocalSearchMeta _$LocalSearchMetaFromJson(Map<String, dynamic> json) {
     json['total_count'] as int,
     json['pageable_count'] as int,
     json['is_end'] as bool,
-    RegionInfo.fromJson(json['same_name'] as Map<String, dynamic>),
+    json['same_name'] == null
+        ? null
+        : RegionInfo.fromJson(json['same_name'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$LocalSearchMetaToJson(LocalSearchMeta instance) =>
-    <String, dynamic>{
-      'total_count': instance.totalCount,
-      'pageable_count': instance.pageableCount,
-      'is_end': instance.isEnd,
-      'same_name': instance.regionInfo,
-    };
+Map<String, dynamic> _$LocalSearchMetaToJson(LocalSearchMeta instance) {
+  final val = <String, dynamic>{
+    'total_count': instance.totalCount,
+    'pageable_count': instance.pageableCount,
+    'is_end': instance.isEnd,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('same_name', instance.regionInfo);
+  return val;
+}

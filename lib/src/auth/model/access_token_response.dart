@@ -16,10 +16,10 @@ class AccessTokenResponse {
   int expiresIn;
 
   // token used for getting new access token via [AuthApi]
-  String refreshToken;
+  String? refreshToken;
 
   // remaining time for the refresh token to expire in seconds
-  int refreshTokenExpiresIn;
+  int? refreshTokenExpiresIn;
 
   // list of scopes this user agreed to.
   // ex. "account_email story_publish"

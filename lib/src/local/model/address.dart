@@ -23,9 +23,9 @@ class Address extends Coord {
 
   /// 행정동 단위
   @JsonKey(name: "region_3depth_h_name")
-  final String region3depthHName;
-  final String hCode;
-  final String bCode;
+  final String? region3depthHName;
+  final String? hCode;
+  final String? bCode;
 
   /// whether this address is in mountain or not
   final String mountainYn;

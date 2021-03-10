@@ -8,9 +8,9 @@ import '../helper.dart';
 import '../mock_adapter.dart';
 
 void main() {
-  MockAdapter _adapter;
-  TalkApi _api;
-  Dio _dio;
+  late MockAdapter _adapter;
+  late TalkApi _api;
+  late Dio _dio;
 
   setUp(() {
     _dio = Dio();
@@ -170,7 +170,7 @@ void main() {
 
       final expectedInfos = map["failure_info"];
       final infos = res.failureInfos;
-      infos.asMap().forEach((idx, info) {
+      infos?.asMap().forEach((idx, info) {
         expect(expectedInfos[idx]["code"], info.code);
         expect(expectedInfos[idx]["msg"], info.msg);
         expect(expectedInfos[idx]["receiver_uuids"], info.receiverUuids);
@@ -179,7 +179,7 @@ void main() {
   });
   group("/v1/api/talk/plusfriends", () {
     var map;
-    PlusFriendsResponse res;
+    late PlusFriendsResponse res;
     setUp(() async {
       var body = await loadJson("talk/plusfriends/plus_friends.json");
       map = jsonDecode(body);

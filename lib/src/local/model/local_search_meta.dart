@@ -7,7 +7,7 @@ part 'local_search_meta.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class LocalSearchMeta extends SearchMeta {
   @JsonKey(name: "same_name")
-  RegionInfo regionInfo;
+  RegionInfo? regionInfo;
 
   LocalSearchMeta(
       int totalCount, int pageableCount, bool isEnd, this.regionInfo)

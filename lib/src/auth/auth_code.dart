@@ -82,9 +82,10 @@ class AuthCodeClient {
   }
 
   Future<String> _openKakaoTalk(String clientId, String redirectUri) async {
-    final authCode = await _channel.invokeMethod<String>("authorizeWithTalk",
+    final redirectUriWithParams = await _channel.invokeMethod<String>("authorizeWithTalk",
         {"client_id": clientId, "redirect_uri": redirectUri});
-        if (aut)
+        if (redirectUriWithParams != null) return redirectUriWithParams;
+        throw KakaoClientException("OAuth 2.0 redirect uri was null, which should not happen.");
   }
 
   String _platformKey() {

@@ -15,7 +15,7 @@ class User {
   int id;
 
   /// whether this user is connected to the service or not.
-  bool hasSignedUp;
+  bool? hasSignedUp;
 
   /// custom properties this user has.
   Map<String, String> properties;
