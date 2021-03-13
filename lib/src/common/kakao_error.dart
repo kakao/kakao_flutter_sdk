@@ -3,7 +3,7 @@
 class KakaoException implements Exception {
   KakaoException(this.message);
 
-  final String message;
+  final String? message;
 }
 
 /// Exception thrown on the client side.

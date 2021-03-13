@@ -8,8 +8,8 @@ part of 'coord.dart';
 
 Coord _$CoordFromJson(Map<String, dynamic> json) {
   return Coord(
-    stringToNullableDouble(json['x']),
-    stringToNullableDouble(json['y']),
+    stringToDouble(json['x']),
+    stringToDouble(json['y']),
   );
 }
 

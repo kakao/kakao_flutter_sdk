@@ -10,11 +10,17 @@ User _$UserFromJson(Map<String, dynamic> json) {
   return User(
     json['id'] as int,
     json['has_signed_up'] as bool?,
-    Map<String, String>.from(json['properties'] as Map),
+    (json['properties'] as Map<String, dynamic>?)?.map(
+      (k, e) => MapEntry(k, e as String),
+    ),
     Account.fromJson(json['kakao_account'] as Map<String, dynamic>),
-    json['group_user_token'] as String,
-    DateTime.parse(json['synched_at'] as String),
-    DateTime.parse(json['connected_at'] as String),
+    json['group_user_token'] as String?,
+    json['synched_at'] == null
+        ? null
+        : DateTime.parse(json['synched_at'] as String),
+    json['connected_at'] == null
+        ? null
+        : DateTime.parse(json['connected_at'] as String),
   );
 }
 
@@ -30,10 +36,10 @@ Map<String, dynamic> _$UserToJson(User instance) {
   }
 
   writeNotNull('has_signed_up', instance.hasSignedUp);
-  val['properties'] = instance.properties;
+  writeNotNull('properties', instance.properties);
   val['kakao_account'] = instance.kakaoAccount.toJson();
-  val['group_user_token'] = instance.groupUserToken;
-  val['synched_at'] = instance.synchedAt.toIso8601String();
-  val['connected_at'] = instance.connectedAt.toIso8601String();
+  writeNotNull('group_user_token', instance.groupUserToken);
+  writeNotNull('synched_at', instance.synchedAt?.toIso8601String());
+  writeNotNull('connected_at', instance.connectedAt?.toIso8601String());
   return val;
 }

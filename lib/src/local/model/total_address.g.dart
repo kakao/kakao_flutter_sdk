@@ -10,8 +10,8 @@ TotalAddress _$TotalAddressFromJson(Map<String, dynamic> json) {
   return TotalAddress(
     json['address_name'] as String?,
     _$enumDecodeNullable(_$AddressTypeEnumMap, json['address_type']),
-    stringToNullableDouble(json['x']),
-    stringToNullableDouble(json['y']),
+    stringToDouble(json['x']),
+    stringToDouble(json['y']),
     Address.fromJson(json['address'] as Map<String, dynamic>),
     RoadAddress.fromJson(json['road_address'] as Map<String, dynamic>),
   );

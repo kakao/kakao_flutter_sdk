@@ -17,6 +17,10 @@ void main() {
       if (methodCall.method == 'getAll') {
         return <String, dynamic>{}; // set initial values here if desired
       }
+      if (methodCall.method.startsWith("set") ||
+          methodCall.method == 'remove') {
+        return true;
+      }
       return null;
     });
     map = await loadJsonIntoMap('oauth/token_with_rt_and_scopes.json');

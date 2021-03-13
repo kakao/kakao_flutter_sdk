@@ -54,8 +54,10 @@ class DefaultAccessTokenStore implements AccessTokenStore {
       preferences.setInt(rtExpiresAtKey,
           DateTime.now().millisecondsSinceEpoch + refreshTokenExpiresIn * 1000);
     }
-    if (response.scopes != null) {
-      preferences.setStringList(scopesKey, response.scopes.split(' '));
+
+    final scopes = response.scopes;
+    if (scopes != null) {
+      preferences.setStringList(scopesKey, scopes.split(' '));
     }
     return fromStore();
   }

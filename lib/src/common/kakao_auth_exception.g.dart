@@ -10,15 +10,24 @@ KakaoAuthException _$KakaoAuthExceptionFromJson(Map<String, dynamic> json) {
   return KakaoAuthException(
     _$enumDecode(_$AuthErrorCauseEnumMap, json['error'],
         unknownValue: AuthErrorCause.UNKNOWN),
-    json['error_description'] as String,
+    json['error_description'] as String?,
   );
 }
 
-Map<String, dynamic> _$KakaoAuthExceptionToJson(KakaoAuthException instance) =>
-    <String, dynamic>{
-      'error': _$AuthErrorCauseEnumMap[instance.error],
-      'error_description': instance.errorDescription,
-    };
+Map<String, dynamic> _$KakaoAuthExceptionToJson(KakaoAuthException instance) {
+  final val = <String, dynamic>{
+    'error': _$AuthErrorCauseEnumMap[instance.error],
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('error_description', instance.errorDescription);
+  return val;
+}
 
 K _$enumDecode<K, V>(
   Map<K, V> enumValues,

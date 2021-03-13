@@ -24,7 +24,7 @@ class AccessTokenResponse {
   // list of scopes this user agreed to.
   // ex. "account_email story_publish"
   @JsonKey(name: "scope")
-  String scopes;
+  String? scopes;
 
   /// <nodoc>
   String tokenType;

@@ -12,7 +12,7 @@ AccessTokenResponse _$AccessTokenResponseFromJson(Map<String, dynamic> json) {
     json['expires_in'] as int,
     json['refresh_token'] as String?,
     json['refresh_token_expires_in'] as int?,
-    json['scope'] as String,
+    json['scope'] as String?,
     json['token_type'] as String,
   );
 }
@@ -31,7 +31,7 @@ Map<String, dynamic> _$AccessTokenResponseToJson(AccessTokenResponse instance) {
 
   writeNotNull('refresh_token', instance.refreshToken);
   writeNotNull('refresh_token_expires_in', instance.refreshTokenExpiresIn);
-  val['scope'] = instance.scopes;
+  writeNotNull('scope', instance.scopes);
   val['token_type'] = instance.tokenType;
   return val;
 }

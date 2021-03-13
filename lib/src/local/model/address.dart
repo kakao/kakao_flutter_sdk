@@ -1,11 +1,12 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kakao_flutter_sdk/src/local/model/coord.dart';
+import 'package:kakao_flutter_sdk/src/local/model/nullable_coord.dart';
 
 part 'address.g.dart';
 
 /// Represents land-lot based address, which is deprecated now.
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
-class Address extends Coord {
+class Address extends NullableCoord {
   /// full land-lot based address
   final String addressName;
 
@@ -49,8 +50,8 @@ class Address extends Coord {
       this.mainAddressNo,
       this.subAddressNo,
       this.zipCode,
-      double x,
-      double y)
+      double? x,
+      double? y)
       : super(x, y);
 
   /// <nodoc>

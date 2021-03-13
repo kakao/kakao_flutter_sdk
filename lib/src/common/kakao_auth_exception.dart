@@ -12,7 +12,7 @@ class KakaoAuthException extends KakaoException {
 
   @JsonKey(unknownEnumValue: AuthErrorCause.UNKNOWN)
   final AuthErrorCause error;
-  final String errorDescription;
+  final String? errorDescription;
 
   /// <nodoc>
   factory KakaoAuthException.fromJson(Map<String, dynamic> json) =>

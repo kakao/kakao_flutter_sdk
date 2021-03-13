@@ -25,14 +25,7 @@ Address _$AddressFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$AddressToJson(Address instance) {
-  final val = <String, dynamic>{
-    'x': instance.x,
-    'y': instance.y,
-    'address_name': instance.addressName,
-    'region_1depth_name': instance.region1depthName,
-    'region_2depth_name': instance.region2depthName,
-    'region_3depth_name': instance.region3depthName,
-  };
+  final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -40,6 +33,12 @@ Map<String, dynamic> _$AddressToJson(Address instance) {
     }
   }
 
+  writeNotNull('x', instance.x);
+  writeNotNull('y', instance.y);
+  val['address_name'] = instance.addressName;
+  val['region_1depth_name'] = instance.region1depthName;
+  val['region_2depth_name'] = instance.region2depthName;
+  val['region_3depth_name'] = instance.region3depthName;
   writeNotNull('region_3depth_h_name', instance.region3depthHName);
   writeNotNull('h_code', instance.hCode);
   writeNotNull('b_code', instance.bCode);
