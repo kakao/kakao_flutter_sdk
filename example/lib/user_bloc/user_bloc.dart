@@ -7,10 +7,9 @@ import 'package:kakao_flutter_sdk/user.dart';
 class UserBloc extends Bloc<UserEvent, UserState> {
   final UserApi _userApi;
 
-  UserBloc({UserApi userApi}) : _userApi = userApi ?? UserApi.instance;
-
-  @override
-  UserState get initialState => UserUninitialized();
+  UserBloc({UserApi userApi})
+      : _userApi = userApi ?? UserApi.instance,
+        super(UserUninitialized());
 
   @override
   Stream<UserState> mapEventToState(UserEvent event) async* {

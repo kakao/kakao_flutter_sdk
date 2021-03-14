@@ -82,7 +82,7 @@ class AddStoryState extends State<AddStoryScreen> {
                   actions: <Widget>[
                     IconButton(
                       icon: Icon(CupertinoIcons.check_mark),
-                      onPressed: () => {bloc.dispatch(PostStory())},
+                      onPressed: () => {bloc.add(PostStory())},
                     )
                   ],
                 ),
@@ -104,7 +104,7 @@ class AddStoryState extends State<AddStoryScreen> {
                             value:
                                 state.images.contains("assets/images/cat1.png"),
                             onChanged: (selected) {
-                              bloc.dispatch(SetImages(
+                              bloc.add(SetImages(
                                   fileFromAsset("assets/images/cat1.png"),
                                   selected));
                             },
@@ -117,7 +117,7 @@ class AddStoryState extends State<AddStoryScreen> {
                             value:
                                 state.images.contains("assets/images/cat2.png"),
                             onChanged: (selected) {
-                              bloc.dispatch(SetImages(
+                              bloc.add(SetImages(
                                   fileFromAsset("assets/images/cat2.png"),
                                   selected));
                             },
@@ -132,13 +132,13 @@ class AddStoryState extends State<AddStoryScreen> {
                         value: state.permission,
                         items: _items,
                         onChanged: (val) {
-                          bloc.dispatch(SetStoryPermission(val));
+                          bloc.add(SetStoryPermission(val));
                         },
                       ),
                       Switch(
                         value: state.enableShare,
                         onChanged: (val) {
-                          bloc.dispatch(SetEnableShare(val));
+                          bloc.add(SetEnableShare(val));
                         },
                       ),
                       TextFormField(
@@ -159,15 +159,15 @@ class AddStoryState extends State<AddStoryScreen> {
   }
 
   _onContentChanged() {
-    _bloc.dispatch(SetContent(_contentController.text));
+    _bloc.add(SetContent(_contentController.text));
   }
 
   _onAndroidParamsChanged() {
-    _bloc.dispatch(SetAndroidExecParams(_androidExecController.text));
+    _bloc.add(SetAndroidExecParams(_androidExecController.text));
   }
 
   _onIosParamsChanged() {
-    _bloc.dispatch(SetIosExecParams(_iosExecController.text));
+    _bloc.add(SetIosExecParams(_iosExecController.text));
   }
 
   _showErrorDialog(Exception e) {

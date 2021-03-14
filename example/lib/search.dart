@@ -27,7 +27,7 @@ class DataSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    bloc.dispatch(QueryEntered(query));
+    bloc.add(QueryEntered(query));
     return BlocListener<SearchBloc, SearchState>(
         listener: (context, state) {
           if (state is SearchErrored) {
