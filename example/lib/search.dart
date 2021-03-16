@@ -44,7 +44,7 @@ class DataSearch extends SearchDelegate<String> {
           }
         },
         child: BlocBuilder<SearchBloc, SearchState>(
-          bloc: bloc,
+          cubit: bloc,
           builder: (context, state) {
             if (state is SearchInitial || state is SearchErrored) {
               return Center(child: Text("Search with Kakao Search API!"));
