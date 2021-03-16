@@ -27,7 +27,7 @@ class StoryScreen extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) {
                     return StoryBox(_stories[index], () {
                       BlocProvider.of<StoryDetailBloc>(context)
-                          .dispatch(FetchStoryDetail(_stories[index]));
+                          .add(FetchStoryDetail(_stories[index]));
                     });
                   }));
         }

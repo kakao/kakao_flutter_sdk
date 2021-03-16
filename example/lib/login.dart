@@ -55,8 +55,8 @@ class _LoginState extends State<LoginScreen> {
       body: Center(
           child: Column(
         children: <Widget>[
-          RaisedButton(child: Text("Login"), onPressed: _loginWithKakao),
-          RaisedButton(
+          ElevatedButton(child: Text("Login"), onPressed: _loginWithKakao),
+          ElevatedButton(
               child: Text("Login with Talk"),
               onPressed: _isKakaoTalkInstalled ? _loginWithTalk : null),
         ],

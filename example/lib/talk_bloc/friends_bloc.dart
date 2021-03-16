@@ -42,7 +42,7 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
         final code = await _authCodeClient.requestWithAgt(event.scopes);
         final token = await _authApi.issueAccessToken(code);
         await AccessTokenStore.instance.toStore(token);
-        dispatch(FetchFriends());
+        add(FetchFriends());
       } catch (e) {
         yield FriendsPermissionRequired(event.scopes);
       }

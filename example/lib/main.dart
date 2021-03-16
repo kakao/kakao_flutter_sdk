@@ -25,17 +25,17 @@ void main() {
   BlocSupervisor.delegate = MyBlocDelegate();
   runApp(MultiBlocProvider(
     providers: [
-      BlocProvider<UserBloc>(builder: (context) => UserBloc()),
-      BlocProvider<StoryBloc>(builder: (context) => StoryBloc()),
-      BlocProvider<TalkBloc>(builder: (context) => TalkBloc()),
-      BlocProvider<FriendsBloc>(builder: (context) => FriendsBloc()),
+      BlocProvider<UserBloc>(create: (context) => UserBloc(),),
+      BlocProvider<StoryBloc>(create: (context) => StoryBloc()),
+      BlocProvider<TalkBloc>(create: (context) => TalkBloc()),
+      BlocProvider<FriendsBloc>(create: (context) => FriendsBloc()),
       BlocProvider<StoryDetailBloc>(
-        builder: (context) => StoryDetailBloc(),
+        create: (context) => StoryDetailBloc(),
       ),
       BlocProvider<PostStoryBloc>(
-        builder: (context) => PostStoryBloc(),
+        create: (context) => PostStoryBloc(),
       ),
-      BlocProvider<SearchBloc>(builder: (context) => SearchBloc())
+      BlocProvider<SearchBloc>(create: (context) => SearchBloc())
     ],
     child: MyApp(),
   ));
@@ -120,7 +120,7 @@ class _MainScreenState extends State<MainScreen>
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<UserBloc>(context).dispatch(UserFetchStarted());
+    BlocProvider.of<UserBloc>(context).add(UserFetchStarted());
     _controller = TabController(length: 4, vsync: this);
     _actions = _searchActions();
   }
@@ -200,16 +200,16 @@ class _MainScreenState extends State<MainScreen>
     switch (index) {
       case 0:
         title = "User API";
-        BlocProvider.of<UserBloc>(context).dispatch(UserFetchStarted());
+        BlocProvider.of<UserBloc>(context).add(UserFetchStarted());
         break;
       case 1:
         title = "Talk API";
-        BlocProvider.of<TalkBloc>(context).dispatch(FetchTalkProfile());
-        BlocProvider.of<FriendsBloc>(context).dispatch(FetchFriends());
+        BlocProvider.of<TalkBloc>(context).add(FetchTalkProfile());
+        BlocProvider.of<FriendsBloc>(context).add(FetchFriends());
         break;
       case 2:
         title = "Story API";
-        BlocProvider.of<StoryBloc>(context).dispatch(FetchStories());
+        BlocProvider.of<StoryBloc>(context).add(FetchStories());
         actions = _storyActions();
         break;
       case 3:
