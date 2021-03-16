@@ -22,7 +22,8 @@ void main() {
   KakaoContext.clientId = "3f75b9295ab7e8026a0696c32cf3a483";
   KakaoContext.javascriptClientId = "e3a54f253fdfdcad25f87ffdbb0d5909";
 
-  BlocSupervisor.delegate = MyBlocDelegate();
+
+  Bloc.observer = MyBlocObserver();
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider<UserBloc>(create: (context) => UserBloc(),),

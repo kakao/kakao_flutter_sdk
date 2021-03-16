@@ -7,7 +7,8 @@ class StoryDetailBloc extends Bloc<StoryDetailEvent, StoryDetailState> {
   final StoryApi _storyApi;
 
   StoryDetailBloc({StoryApi storyApi})
-      : _storyApi = storyApi ?? StoryApi.instance;
+      : _storyApi = storyApi ?? StoryApi.instance,
+        super(StoryDetailUninitialized());
 
   @override
   StoryDetailState get initialState => StoryDetailUninitialized();

@@ -6,8 +6,10 @@ import 'package:kakao_flutter_sdk/story.dart';
 
 class PostStoryBloc extends Bloc<PostStoryEvent, PostStoryState> {
   final StoryApi _storyApi;
+
   PostStoryBloc({StoryApi storyApi})
-      : _storyApi = storyApi ?? StoryApi.instance;
+      : _storyApi = storyApi ?? StoryApi.instance,
+        super(PostStoryState.init());
 
   @override
   PostStoryState get initialState => PostStoryState.init();
@@ -17,7 +19,6 @@ class PostStoryBloc extends Bloc<PostStoryEvent, PostStoryState> {
     PostStoryEvent event,
   ) async* {
     if (event is SetImages) {
-
       List<File> newImages = List<File>.from(state.images);
       if (event.selected) {
         newImages.add(await event.image);

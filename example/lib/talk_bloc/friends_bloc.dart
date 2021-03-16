@@ -12,7 +12,8 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
   FriendsBloc({TalkApi api, AuthCodeClient authCodeClient, AuthApi authApi})
       : _api = api ?? TalkApi.instance,
         _authCodeClient = authCodeClient ?? AuthCodeClient.instance,
-        _authApi = authApi ?? AuthApi.instance;
+        _authApi = authApi ?? AuthApi.instance,
+        super(FriendsUninitialized());
 
   @override
   FriendsState get initialState => FriendsUninitialized();

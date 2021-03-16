@@ -5,7 +5,9 @@ import 'package:kakao_flutter_sdk/story.dart';
 class StoryBloc extends Bloc<StoryEvent, StoryState> {
   final StoryApi _storyApi;
 
-  StoryBloc({StoryApi storyApi}) : _storyApi = storyApi ?? StoryApi.instance;
+  StoryBloc({StoryApi storyApi})
+      : _storyApi = storyApi ?? StoryApi.instance,
+        super(StoriesUninitialized());
 
   @override
   StoryState get initialState => StoriesUninitialized();
