@@ -1,3 +1,6 @@
+## 0.6.0-beta.2
+
+- null safety migration.
 ## 0.6.0-beta.1
 
 - Update `platform` version to `3.0.0-nullsafety.2`.
