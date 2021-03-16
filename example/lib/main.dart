@@ -19,8 +19,8 @@ import 'talk.dart';
 import 'search.dart';
 
 void main() {
-  KakaoContext.clientId = "030ba7c59137629e86e8721eb1a22fd6";
-  KakaoContext.javascriptClientId = "fa2d8e9f47b88445000592c9a293bbe2";
+  KakaoContext.clientId = "3f75b9295ab7e8026a0696c32cf3a483";
+  KakaoContext.javascriptClientId = "e3a54f253fdfdcad25f87ffdbb0d5909";
 
   BlocSupervisor.delegate = MyBlocDelegate();
   runApp(MultiBlocProvider(
