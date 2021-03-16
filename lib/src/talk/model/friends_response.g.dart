@@ -8,10 +8,9 @@ part of 'friends_response.dart';
 
 FriendsResponse _$FriendsResponseFromJson(Map<String, dynamic> json) {
   return FriendsResponse(
-    (json['elements'] as List)
-        ?.map((e) =>
-            e == null ? null : Friend.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    (json['elements'] as List<dynamic>)
+        .map((e) => Friend.fromJson(e as Map<String, dynamic>))
+        .toList(),
     json['total_count'] as int,
     json['before_url'] == null ? null : Uri.parse(json['before_url'] as String),
     json['after_url'] == null ? null : Uri.parse(json['after_url'] as String),
@@ -19,7 +18,10 @@ FriendsResponse _$FriendsResponseFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$FriendsResponseToJson(FriendsResponse instance) {
-  final val = <String, dynamic>{};
+  final val = <String, dynamic>{
+    'elements': instance.friends.map((e) => e.toJson()).toList(),
+    'total_count': instance.totalCount,
+  };
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -27,8 +29,6 @@ Map<String, dynamic> _$FriendsResponseToJson(FriendsResponse instance) {
     }
   }
 
-  writeNotNull('elements', instance.friends?.map((e) => e?.toJson())?.toList());
-  writeNotNull('total_count', instance.totalCount);
   writeNotNull('before_url', instance.beforeUrl?.toString());
   writeNotNull('after_url', instance.afterUrl?.toString());
   return val;

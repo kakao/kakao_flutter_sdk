@@ -15,16 +15,16 @@ class User {
   int id;
 
   /// whether this user is connected to the service or not.
-  bool hasSignedUp;
+  bool? hasSignedUp;
 
   /// custom properties this user has.
-  Map<String, String> properties;
+  Map<String, String>? properties;
   Account kakaoAccount;
 
-  String groupUserToken;
+  String? groupUserToken;
 
-  DateTime synchedAt;
-  DateTime connectedAt;
+  DateTime? synchedAt;
+  DateTime? connectedAt;
 
   /// <nodoc>
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

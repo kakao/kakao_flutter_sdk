@@ -19,7 +19,7 @@ class SearchApi {
   static final instance = SearchApi(ApiFactory.dapi);
 
   Future<SearchEnvelope<WebResult>> web(String query,
-      {Order sort, int page, int size}) async {
+      {Order? sort, int? page, int? size}) async {
     return ApiFactory.handleApiError(() async {
       final response = await _dio.get("/v2/search/web",
           queryParameters: _getParams(query, sort, page, size));
@@ -28,7 +28,7 @@ class SearchApi {
   }
 
   Future<SearchEnvelope<VClip>> vclip(String query,
-      {Order sort, int page, int size}) async {
+      {Order? sort, int? page, int? size}) async {
     return ApiFactory.handleApiError(() async {
       final response = await _dio.get("/v2/search/vclip",
           queryParameters: _getParams(query, sort, page, size));
@@ -37,7 +37,7 @@ class SearchApi {
   }
 
   Future<SearchEnvelope<ImageResult>> image(String query,
-      {Order sort, int page, int size}) async {
+      {Order? sort, int? page, int? size}) async {
     return ApiFactory.handleApiError(() async {
       final response = await _dio.get("/v2/search/image",
           queryParameters: _getParams(query, sort, page, size));
@@ -46,7 +46,7 @@ class SearchApi {
   }
 
   Future<SearchEnvelope<Blog>> blog(String query,
-      {Order sort, int page, int size}) async {
+      {Order? sort, int? page, int? size}) async {
     return ApiFactory.handleApiError(() async {
       final response = await _dio.get("/v2/search/blog",
           queryParameters: _getParams(query, sort, page, size));
@@ -55,7 +55,7 @@ class SearchApi {
   }
 
   Future<SearchEnvelope<Tip>> tip(String query,
-      {Order sort, int page, int size}) async {
+      {Order? sort, int? page, int? size}) async {
     return ApiFactory.handleApiError(() async {
       final response = await _dio.get("/v2/search/tip",
           queryParameters: _getParams(query, sort, page, size));
@@ -64,7 +64,7 @@ class SearchApi {
   }
 
   Future<SearchEnvelope<Book>> book(String query,
-      {Order sort, int page, int size, BookTarget target}) async {
+      {Order? sort, int? page, int? size, BookTarget? target}) async {
     return ApiFactory.handleApiError(() async {
       final response = await _dio.get("/v3/search/book", queryParameters: {
         ..._getParams(query, sort, page, size),
@@ -75,7 +75,7 @@ class SearchApi {
   }
 
   Future<SearchEnvelope<Cafe>> cafe(String query,
-      {Order sort, int page, int size}) async {
+      {Order? sort, int? page, int? size}) async {
     return ApiFactory.handleApiError(() async {
       final response = await _dio.get("/v2/search/cafe",
           queryParameters: _getParams(query, sort, page, size));
@@ -84,7 +84,7 @@ class SearchApi {
   }
 
   Map<String, dynamic> _getParams(
-      String query, Order sort, int page, int size) {
+      String? query, Order? sort, int? page, int? size) {
     final params = {
       "query": query,
       "sort": sort == null ? null : describeEnum(sort).toLowerCase(),

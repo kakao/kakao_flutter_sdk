@@ -46,33 +46,36 @@ class DefaultAccessTokenStore implements AccessTokenStore {
     preferences.setString(atKey, response.accessToken);
     preferences.setInt(atExpiresAtKey,
         DateTime.now().millisecondsSinceEpoch + response.expiresIn * 1000);
-    if (response.refreshToken != null) {
-      preferences.setString(rtKey, response.refreshToken);
-      preferences.setInt(
-          rtExpiresAtKey,
-          DateTime.now().millisecondsSinceEpoch +
-              response.refreshTokenExpiresIn * 1000);
+
+    final refreshToken = response.refreshToken;
+    final refreshTokenExpiresIn = response.refreshTokenExpiresIn;
+    if (refreshToken != null && refreshTokenExpiresIn != null) {
+      preferences.setString(rtKey, refreshToken);
+      preferences.setInt(rtExpiresAtKey,
+          DateTime.now().millisecondsSinceEpoch + refreshTokenExpiresIn * 1000);
     }
-    if (response.scopes != null) {
-      preferences.setStringList(scopesKey, response.scopes.split(' '));
+
+    final scopes = response.scopes;
+    if (scopes != null) {
+      preferences.setStringList(scopesKey, scopes.split(' '));
     }
     return fromStore();
   }
 
   Future<AccessToken> fromStore() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String accessToken = preferences.getString(atKey);
-    int atExpiresAtMillis = preferences.getInt(atExpiresAtKey);
+    String? accessToken = preferences.getString(atKey);
+    int? atExpiresAtMillis = preferences.getInt(atExpiresAtKey);
 
-    DateTime accessTokenExpiresAt = atExpiresAtMillis != null
+    DateTime? accessTokenExpiresAt = atExpiresAtMillis != null
         ? DateTime.fromMillisecondsSinceEpoch(atExpiresAtMillis)
         : null;
-    String refreshToken = preferences.getString(rtKey);
-    int rtExpiresAtMillis = preferences.getInt(rtExpiresAtKey);
-    DateTime refreshTokenExpiresAt = rtExpiresAtMillis != null
+    String? refreshToken = preferences.getString(rtKey);
+    int? rtExpiresAtMillis = preferences.getInt(rtExpiresAtKey);
+    DateTime? refreshTokenExpiresAt = rtExpiresAtMillis != null
         ? DateTime.fromMillisecondsSinceEpoch(rtExpiresAtMillis)
         : null;
-    List<String> scopes = preferences.getStringList(scopesKey);
+    List<String>? scopes = preferences.getStringList(scopesKey);
 
     return AccessToken(accessToken, accessTokenExpiresAt, refreshToken,
         refreshTokenExpiresAt, scopes);

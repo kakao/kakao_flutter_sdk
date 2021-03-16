@@ -9,28 +9,26 @@ part of 'account.dart';
 Account _$AccountFromJson(Map<String, dynamic> json) {
   return Account(
     json['profile_needs_agreement'] as bool,
-    json['profile'] == null
-        ? null
-        : Profile.fromJson(json['profile'] as Map<String, dynamic>),
+    Profile.fromJson(json['profile'] as Map<String, dynamic>),
     json['is_email_verified'] as bool,
     json['is_email_valid'] as bool,
     json['email_needs_agreement'] as bool,
     json['email'] as String,
-    json['is_kakaotalk_user'] as bool,
-    json['phone_number_needs_agreement'] as bool,
-    json['phone_number'] as String,
-    json['age_range_needs_agreement'] as bool,
+    json['is_kakaotalk_user'] as bool?,
+    json['phone_number_needs_agreement'] as bool?,
+    json['phone_number'] as String?,
+    json['age_range_needs_agreement'] as bool?,
     _$enumDecodeNullable(_$AgeRangeEnumMap, json['age_range'],
         unknownValue: AgeRange.UNKNOWN),
-    json['birthday_needs_agreement'] as bool,
-    json['birthday'] as String,
-    json['birthyear_needs_agreement'] as bool,
-    json['birthyear'] as String,
-    json['gender_needs_agreement'] as bool,
+    json['birthday_needs_agreement'] as bool?,
+    json['birthday'] as String?,
+    json['birthyear_needs_agreement'] as bool?,
+    json['birthyear'] as String?,
+    json['gender_needs_agreement'] as bool?,
     _$enumDecodeNullable(_$GenderEnumMap, json['gender'],
         unknownValue: Gender.OTHER),
-    json['ci_needs_agreement'] as bool,
-    json['ci'] as String,
+    json['ci_needs_agreement'] as bool?,
+    json['ci'] as String?,
     json['ci_authenticated_at'] == null
         ? null
         : DateTime.parse(json['ci_authenticated_at'] as String),
@@ -38,7 +36,14 @@ Account _$AccountFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$AccountToJson(Account instance) {
-  final val = <String, dynamic>{};
+  final val = <String, dynamic>{
+    'profile_needs_agreement': instance.profileNeedsAgreement,
+    'profile': instance.profile.toJson(),
+    'is_email_verified': instance.isEmailVerified,
+    'is_email_valid': instance.isEmailValid,
+    'email_needs_agreement': instance.emailNeedsAgreement,
+    'email': instance.email,
+  };
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -46,12 +51,6 @@ Map<String, dynamic> _$AccountToJson(Account instance) {
     }
   }
 
-  writeNotNull('profile_needs_agreement', instance.profileNeedsAgreement);
-  writeNotNull('profile', instance.profile?.toJson());
-  writeNotNull('is_email_verified', instance.isEmailVerified);
-  writeNotNull('is_email_valid', instance.isEmailValid);
-  writeNotNull('email_needs_agreement', instance.emailNeedsAgreement);
-  writeNotNull('email', instance.email);
   writeNotNull('is_kakaotalk_user', instance.isKakaotalkUser);
   writeNotNull(
       'phone_number_needs_agreement', instance.phoneNumberNeedsAgreement);
@@ -71,36 +70,41 @@ Map<String, dynamic> _$AccountToJson(Account instance) {
   return val;
 }
 
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
 }
 
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
   dynamic source, {
-  T unknownValue,
+  K? unknownValue,
 }) {
   if (source == null) {
     return null;
   }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$AgeRangeEnumMap = {

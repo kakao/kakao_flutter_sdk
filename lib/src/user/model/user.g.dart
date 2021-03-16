@@ -9,14 +9,12 @@ part of 'user.dart';
 User _$UserFromJson(Map<String, dynamic> json) {
   return User(
     json['id'] as int,
-    json['has_signed_up'] as bool,
-    (json['properties'] as Map<String, dynamic>)?.map(
+    json['has_signed_up'] as bool?,
+    (json['properties'] as Map<String, dynamic>?)?.map(
       (k, e) => MapEntry(k, e as String),
     ),
-    json['kakao_account'] == null
-        ? null
-        : Account.fromJson(json['kakao_account'] as Map<String, dynamic>),
-    json['group_user_token'] as String,
+    Account.fromJson(json['kakao_account'] as Map<String, dynamic>),
+    json['group_user_token'] as String?,
     json['synched_at'] == null
         ? null
         : DateTime.parse(json['synched_at'] as String),
@@ -27,7 +25,9 @@ User _$UserFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$UserToJson(User instance) {
-  final val = <String, dynamic>{};
+  final val = <String, dynamic>{
+    'id': instance.id,
+  };
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -35,10 +35,9 @@ Map<String, dynamic> _$UserToJson(User instance) {
     }
   }
 
-  writeNotNull('id', instance.id);
   writeNotNull('has_signed_up', instance.hasSignedUp);
   writeNotNull('properties', instance.properties);
-  writeNotNull('kakao_account', instance.kakaoAccount?.toJson());
+  val['kakao_account'] = instance.kakaoAccount.toJson();
   writeNotNull('group_user_token', instance.groupUserToken);
   writeNotNull('synched_at', instance.synchedAt?.toIso8601String());
   writeNotNull('connected_at', instance.connectedAt?.toIso8601String());

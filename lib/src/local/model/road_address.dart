@@ -1,11 +1,12 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kakao_flutter_sdk/src/local/model/coord.dart';
+import 'package:kakao_flutter_sdk/src/local/model/nullable_coord.dart';
 
 part 'road_address.g.dart';
 
 /// Represents road (or street name) address, which is the new standard in South Korea.
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
-class RoadAddress extends Coord {
+class RoadAddress extends NullableCoord {
   /// full road address
   final String addressName;
 
@@ -44,8 +45,8 @@ class RoadAddress extends Coord {
       this.subBuildingNo,
       this.buildingName,
       this.zoneNo,
-      double x,
-      double y)
+      double? x,
+      double? y)
       : super(x, y);
 
   /// <nodoc>

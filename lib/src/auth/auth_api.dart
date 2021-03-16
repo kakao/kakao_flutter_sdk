@@ -11,7 +11,7 @@ import 'package:platform/platform.dart';
 
 /// Provides Kakao OAuth API.
 class AuthApi {
-  AuthApi({Dio dio, Platform platform, AccessTokenStore tokenStore})
+  AuthApi({Dio? dio, Platform? platform, AccessTokenStore? tokenStore})
       : _dio = dio ?? ApiFactory.kauthApi,
         _platform = platform ?? LocalPlatform(),
         _tokenStore = tokenStore ?? AccessTokenStore.instance;
@@ -25,7 +25,7 @@ class AuthApi {
 
   /// Issues an access token from authCode acquired from [AuthCodeClient].
   Future<AccessTokenResponse> issueAccessToken(String authCode,
-      {String redirectUri, String clientId}) async {
+      {String? redirectUri, String? clientId}) async {
     final data = {
       "code": authCode,
       "grant_type": "authorization_code",
@@ -40,7 +40,7 @@ class AuthApi {
   ///
   /// Refresh tokens are usually retrieved from [AccessTokenStore].
   Future<AccessTokenResponse> refreshAccessToken(String refreshToken,
-      {String redirectUri, String clientId}) async {
+      {String? redirectUri, String? clientId}) async {
     final data = {
       "refresh_token": refreshToken,
       "grant_type": "refresh_token",
@@ -52,7 +52,7 @@ class AuthApi {
   }
 
   /// Issues temporary agt (access token-generated token), which can be used to acquire auth code.
-  Future<String> agt({String clientId, String accessToken}) async {
+  Future<String> agt({String? clientId, String? accessToken}) async {
     final tokenInfo = await _tokenStore.fromStore();
     final data = {
       "client_id": clientId ?? KakaoContext.platformClientId,

@@ -13,16 +13,8 @@ DapiException _$DapiExceptionFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$DapiExceptionToJson(DapiException instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('errorType', instance.errorType);
-  writeNotNull('message', instance.message);
-  return val;
-}
+Map<String, dynamic> _$DapiExceptionToJson(DapiException instance) =>
+    <String, dynamic>{
+      'errorType': instance.errorType,
+      'message': instance.message,
+    };

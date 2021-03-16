@@ -11,7 +11,7 @@ class Friend {
 
   /// Friend's app user id, used in user mapping with third-party services.
   @JsonKey(name: "id")
-  final int userId;
+  final int? userId;
 
   final String uuid;
 
@@ -21,7 +21,7 @@ class Friend {
   /// Friend's thumbnail, used to display to users.
   final Uri profileThumbnailImage;
 
-  final bool favorite;
+  final bool? favorite;
 
   /// <nodoc>
   factory Friend.fromJson(Map<String, dynamic> json) => _$FriendFromJson(json);

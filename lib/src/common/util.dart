@@ -6,7 +6,7 @@ import 'package:kakao_flutter_sdk/story.dart';
 const MethodChannel _channel = MethodChannel("kakao_flutter_sdk");
 
 /// Launches a given url with platform-specific default browser tab.
-Future<String> launchBrowserTab(Uri uri, {String redirectUri}) {
+Future<String> launchBrowserTab(Uri uri, {String? redirectUri}) async {
   if (uri.scheme != 'http' && uri.scheme != 'https') {
     throw KakaoClientException(
       'Default browsers only supports URL of http or https scheme.',
@@ -14,12 +14,19 @@ Future<String> launchBrowserTab(Uri uri, {String redirectUri}) {
   }
   var args = {"url": uri.toString(), "redirect_uri": redirectUri};
   args.removeWhere((k, v) => v == null);
-  return _channel.invokeMethod("launchBrowserTab", args);
+  final redirectUriWithParams =
+      await _channel.invokeMethod<String>("launchBrowserTab", args);
+
+  if (redirectUriWithParams != null) return redirectUriWithParams;
+  throw KakaoClientException(
+      "OAuth 2.0 redirect uri was null, which should not happen.");
 }
 
 /// Determines whether KakaoTalk is installed on this device.
 Future<bool> isKakaoTalkInstalled() async {
-  return _channel.invokeMethod("isKakaoTalkInstalled");
+  final isInstalled =
+      await _channel.invokeMethod<bool>("isKakaoTalkInstalled") ?? false;
+  return isInstalled;
 }
 
 /// Collection of utility methods, usually for converting data types.
@@ -30,7 +37,7 @@ class Util {
   static int fromDateTime(DateTime dateTime) =>
       dateTime.millisecondsSinceEpoch ~/ 1000;
 
-  static String dateTimeWithoutMillis(DateTime dateTime) => dateTime == null
+  static String? dateTimeWithoutMillis(DateTime? dateTime) => dateTime == null
       ? null
       : "${dateTime.toIso8601String().substring(0, dateTime.toIso8601String().length - 5)}Z";
 }

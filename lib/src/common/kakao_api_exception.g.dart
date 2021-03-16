@@ -8,62 +8,48 @@ part of 'kakao_api_exception.dart';
 
 KakaoApiException _$KakaoApiExceptionFromJson(Map<String, dynamic> json) {
   return KakaoApiException(
-    _$enumDecodeNullable(_$ApiErrorCauseEnumMap, json['code'],
+    _$enumDecode(_$ApiErrorCauseEnumMap, json['code'],
         unknownValue: ApiErrorCause.UNKNOWN),
     json['msg'] as String,
     json['api_type'] as String,
-    (json['required_scopes'] as List)?.map((e) => e as String)?.toList(),
-    (json['allowed_scopes'] as List)?.map((e) => e as String)?.toList(),
+    (json['required_scopes'] as List<dynamic>).map((e) => e as String).toList(),
+    (json['allowed_scopes'] as List<dynamic>).map((e) => e as String).toList(),
   );
 }
 
-Map<String, dynamic> _$KakaoApiExceptionToJson(KakaoApiException instance) {
-  final val = <String, dynamic>{};
+Map<String, dynamic> _$KakaoApiExceptionToJson(KakaoApiException instance) =>
+    <String, dynamic>{
+      'code': _$ApiErrorCauseEnumMap[instance.code],
+      'msg': instance.msg,
+      'api_type': instance.apiType,
+      'required_scopes': instance.requiredScopes,
+      'allowed_scopes': instance.allowedScopes,
+    };
 
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('code', _$ApiErrorCauseEnumMap[instance.code]);
-  writeNotNull('msg', instance.msg);
-  writeNotNull('api_type', instance.apiType);
-  writeNotNull('required_scopes', instance.requiredScopes);
-  writeNotNull('allowed_scopes', instance.allowedScopes);
-  return val;
-}
-
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
-}
-
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
 }
 
 const _$ApiErrorCauseEnumMap = {

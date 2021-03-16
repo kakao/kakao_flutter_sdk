@@ -8,7 +8,7 @@ part 'message_send_result.g.dart';
 class MessageSendResult {
   final List<String> successfulReceiverUuids;
   @JsonKey(name: "failure_info")
-  final List<MessageFailureInfo> failureInfos;
+  final List<MessageFailureInfo>? failureInfos;
 
   /// <nodoc>
   MessageSendResult(this.successfulReceiverUuids, this.failureInfos);

@@ -9,32 +9,20 @@ part of 'story_profile.dart';
 StoryProfile _$StoryProfileFromJson(Map<String, dynamic> json) {
   return StoryProfile(
     json['nickName'] as String,
-    json['profileImageURL'] == null
-        ? null
-        : Uri.parse(json['profileImageURL'] as String),
-    json['thumbnailURL'] == null
-        ? null
-        : Uri.parse(json['thumbnailURL'] as String),
-    json['permalink'] == null ? null : Uri.parse(json['permalink'] as String),
+    Uri.parse(json['profileImageURL'] as String),
+    Uri.parse(json['thumbnailURL'] as String),
+    Uri.parse(json['permalink'] as String),
     json['birthday'] as String,
     json['birthdayType'] as String,
   );
 }
 
-Map<String, dynamic> _$StoryProfileToJson(StoryProfile instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('nickName', instance.nickname);
-  writeNotNull('profileImageURL', instance.profileImageUrl?.toString());
-  writeNotNull('thumbnailURL', instance.thumbnailUrl?.toString());
-  writeNotNull('permalink', instance.permalink?.toString());
-  writeNotNull('birthday', instance.birthday);
-  writeNotNull('birthdayType', instance.birthdayType);
-  return val;
-}
+Map<String, dynamic> _$StoryProfileToJson(StoryProfile instance) =>
+    <String, dynamic>{
+      'nickName': instance.nickname,
+      'profileImageURL': instance.profileImageUrl.toString(),
+      'thumbnailURL': instance.thumbnailUrl.toString(),
+      'permalink': instance.permalink.toString(),
+      'birthday': instance.birthday,
+      'birthdayType': instance.birthdayType,
+    };

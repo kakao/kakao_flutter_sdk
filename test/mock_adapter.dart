@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 
 class MockAdapter extends HttpClientAdapter {
-  ResponseBody _responseBody;
-  void Function(RequestOptions options) requestAssertions;
+  late ResponseBody _responseBody;
+  void Function(RequestOptions options)? requestAssertions;
 
   void setResponse(ResponseBody responseBody) {
     this._responseBody = responseBody;
@@ -18,9 +18,9 @@ class MockAdapter extends HttpClientAdapter {
 
   @override
   Future<ResponseBody> fetch(RequestOptions options,
-      Stream<List<int>> requestStream, Future cancelFuture) async {
+      Stream<dynamic>? requestStream, Future<dynamic>? cancelFuture) async {
     if (requestAssertions != null) {
-      requestAssertions(options);
+      requestAssertions!(options); // TODO: Function null safety not working?
     }
     return _responseBody;
   }

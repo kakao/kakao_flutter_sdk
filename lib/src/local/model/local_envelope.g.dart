@@ -8,8 +8,10 @@ part of 'local_envelope.dart';
 
 LocalEnvelope<T, U> _$LocalEnvelopeFromJson<T, U>(Map<String, dynamic> json) {
   return LocalEnvelope<T, U>(
-    GenericsConverter<T>().fromJson(json['meta']),
-    (json['documents'] as List)?.map(GenericsConverter<U>().fromJson)?.toList(),
+    GenericsConverter<T>().fromJson(json['meta'] as Object),
+    (json['documents'] as List<dynamic>)
+        .map((e) => GenericsConverter<U>().fromJson(e as Object))
+        .toList(),
   );
 }
 
@@ -18,5 +20,5 @@ Map<String, dynamic> _$LocalEnvelopeToJson<T, U>(
     <String, dynamic>{
       'meta': GenericsConverter<T>().toJson(instance.meta),
       'documents':
-          instance.documents?.map(GenericsConverter<U>().toJson)?.toList(),
+          instance.documents.map(GenericsConverter<U>().toJson).toList(),
     };

@@ -8,9 +8,9 @@ import '../helper.dart';
 import '../mock_adapter.dart';
 
 void main() {
-  MockAdapter _adapter;
-  SearchApi _api;
-  Dio _dio;
+  late MockAdapter _adapter;
+  late SearchApi _api;
+  late Dio _dio;
 
   setUp(() {
     _dio = Dio();

@@ -10,8 +10,8 @@ class KakaoContext {
       const MethodChannel('kakao_flutter_sdk');
 
   /// Native app key for this application from [Kakao Developers](https://developers.kakao.com).
-  static String clientId;
-  static String javascriptClientId;
+  static late String clientId;
+  static late String javascriptClientId;
 
   static String sdkVersion = "0.6.0";
 

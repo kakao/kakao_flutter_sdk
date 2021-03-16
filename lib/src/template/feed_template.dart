@@ -15,10 +15,10 @@ class FeedTemplate extends DefaultTemplate {
       {this.social, this.buttons, this.objectType = "feed"});
 
   final Content content;
-  final Social social;
+  final Social? social;
 
   // Buttons . Currently supports maximum of 2 buttons.
-  final List<Button> buttons;
+  final List<Button>? buttons;
   final String objectType;
 
   /// <nodoc>

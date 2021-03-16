@@ -10,66 +10,48 @@ PushTokenInfo _$PushTokenInfoFromJson(Map<String, dynamic> json) {
   return PushTokenInfo(
     json['user_id'] as String,
     json['device_id'] as String,
-    _$enumDecodeNullable(_$PushTypeEnumMap, json['push_type'],
+    _$enumDecode(_$PushTypeEnumMap, json['push_type'],
         unknownValue: PushType.UNKNOWN),
     json['push_token'] as String,
-    json['created_at'] == null
-        ? null
-        : DateTime.parse(json['created_at'] as String),
-    json['updated_at'] == null
-        ? null
-        : DateTime.parse(json['updated_at'] as String),
+    DateTime.parse(json['created_at'] as String),
+    DateTime.parse(json['updated_at'] as String),
   );
 }
 
-Map<String, dynamic> _$PushTokenInfoToJson(PushTokenInfo instance) {
-  final val = <String, dynamic>{};
+Map<String, dynamic> _$PushTokenInfoToJson(PushTokenInfo instance) =>
+    <String, dynamic>{
+      'user_id': instance.userId,
+      'device_id': instance.deviceId,
+      'push_type': _$PushTypeEnumMap[instance.pushType],
+      'push_token': instance.pushToken,
+      'created_at': instance.createdAt.toIso8601String(),
+      'updated_at': instance.updatedAt.toIso8601String(),
+    };
 
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('user_id', instance.userId);
-  writeNotNull('device_id', instance.deviceId);
-  writeNotNull('push_type', _$PushTypeEnumMap[instance.pushType]);
-  writeNotNull('push_token', instance.pushToken);
-  writeNotNull('created_at', instance.createdAt?.toIso8601String());
-  writeNotNull('updated_at', instance.updatedAt?.toIso8601String());
-  return val;
-}
-
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
-}
-
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
 }
 
 const _$PushTypeEnumMap = {

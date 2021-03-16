@@ -6,10 +6,9 @@ import 'package:kakao_flutter_sdk/search.dart';
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final SearchApi _api;
 
-  SearchBloc({SearchApi api}) : _api = api ?? SearchApi.instance;
-
-  @override
-  SearchState get initialState => SearchInitial();
+  SearchBloc({SearchApi api})
+      : _api = api ?? SearchApi.instance,
+        super(SearchInitial());
 
   @override
   Stream<SearchState> mapEventToState(SearchEvent event) async* {

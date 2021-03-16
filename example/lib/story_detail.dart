@@ -59,7 +59,7 @@ void showDeleteDialog(BuildContext context, Story story) async {
                 child: Text("Confirm"),
                 onPressed: () {
                   BlocProvider.of<StoryDetailBloc>(context)
-                      .dispatch(DeleteStory(story));
+                      .add(DeleteStory(story));
                   // deleteStory(id);
                 },
               ),

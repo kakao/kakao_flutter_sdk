@@ -16,7 +16,7 @@ class CommerceTemplate extends DefaultTemplate {
 
   final Content content;
   final Commerce commerce;
-  final List<Button> buttons;
+  final List<Button>? buttons;
   final String objectType;
 
   /// <nodoc>

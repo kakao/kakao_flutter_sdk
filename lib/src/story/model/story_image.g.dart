@@ -16,19 +16,11 @@ StoryImage _$StoryImageFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$StoryImageToJson(StoryImage instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('xlarge', instance.xlarge);
-  writeNotNull('large', instance.large);
-  writeNotNull('medium', instance.medium);
-  writeNotNull('small', instance.small);
-  writeNotNull('original', instance.original);
-  return val;
-}
+Map<String, dynamic> _$StoryImageToJson(StoryImage instance) =>
+    <String, dynamic>{
+      'xlarge': instance.xlarge,
+      'large': instance.large,
+      'medium': instance.medium,
+      'small': instance.small,
+      'original': instance.original,
+    };

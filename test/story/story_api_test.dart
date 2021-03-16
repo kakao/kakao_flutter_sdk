@@ -9,9 +9,9 @@ import '../helper.dart';
 import '../mock_adapter.dart';
 
 void main() {
-  MockAdapter _adapter;
-  StoryApi _api;
-  Dio _dio;
+  late MockAdapter _adapter;
+  late StoryApi _api;
+  late Dio _dio;
   setUp(() {
     _dio = Dio();
     _adapter = MockAdapter();
@@ -53,7 +53,7 @@ void main() {
     var story = await _api.myStory("AAAAAAA.CCCCCCCCCCC");
     var likes = story.likes;
     expect(story.mediaType, StoryType.PHOTO);
-    expect(likes[0].emoticon, Emoticon.COOL);
+    expect(likes?[0].emoticon, Emoticon.COOL);
     expect(story.permission, StoryPermission.PUBLIC);
   });
 

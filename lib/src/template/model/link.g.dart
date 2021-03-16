@@ -13,8 +13,8 @@ Link _$LinkFromJson(Map<String, dynamic> json) {
     mobileWebUrl: json['mobile_web_url'] == null
         ? null
         : Uri.parse(json['mobile_web_url'] as String),
-    androidExecParams: json['android_execution_params'] as String,
-    iosExecParams: json['ios_execution_params'] as String,
+    androidExecParams: json['android_execution_params'] as String?,
+    iosExecParams: json['ios_execution_params'] as String?,
   );
 }
 

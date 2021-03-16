@@ -13,10 +13,10 @@ class Link {
       this.iosExecParams});
 
   /// Url to open in PC or MacOS KakaoTalk.
-  final Uri webUrl;
+  final Uri? webUrl;
 
   /// Url to open in mobile KakaoTalk in-app browser.
-  final Uri mobileWebUrl;
+  final Uri? mobileWebUrl;
 
   /// query string to be passed to custom scheme in Android.
   ///
@@ -37,7 +37,7 @@ class Link {
   /// These query paramters can then be parsed to direct users to appropriate screen.
   ///
   @JsonKey(name: "android_execution_params")
-  final String androidExecParams;
+  final String? androidExecParams;
 
   /// query string to be passed to custom scheme in iOS.
   ///
@@ -58,7 +58,7 @@ class Link {
   /// These query paramters can then be parsed to direct users to appropriate screen.
   ///
   @JsonKey(name: "ios_execution_params")
-  final String iosExecParams;
+  final String? iosExecParams;
 
   /// <nodoc>
   factory Link.fromJson(Map<String, dynamic> json) => _$LinkFromJson(json);

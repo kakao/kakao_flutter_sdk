@@ -10,15 +10,18 @@ AccessTokenResponse _$AccessTokenResponseFromJson(Map<String, dynamic> json) {
   return AccessTokenResponse(
     json['access_token'] as String,
     json['expires_in'] as int,
-    json['refresh_token'] as String,
-    json['refresh_token_expires_in'] as int,
-    json['scope'] as String,
+    json['refresh_token'] as String?,
+    json['refresh_token_expires_in'] as int?,
+    json['scope'] as String?,
     json['token_type'] as String,
   );
 }
 
 Map<String, dynamic> _$AccessTokenResponseToJson(AccessTokenResponse instance) {
-  final val = <String, dynamic>{};
+  final val = <String, dynamic>{
+    'access_token': instance.accessToken,
+    'expires_in': instance.expiresIn,
+  };
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -26,11 +29,9 @@ Map<String, dynamic> _$AccessTokenResponseToJson(AccessTokenResponse instance) {
     }
   }
 
-  writeNotNull('access_token', instance.accessToken);
-  writeNotNull('expires_in', instance.expiresIn);
   writeNotNull('refresh_token', instance.refreshToken);
   writeNotNull('refresh_token_expires_in', instance.refreshTokenExpiresIn);
   writeNotNull('scope', instance.scopes);
-  writeNotNull('token_type', instance.tokenType);
+  val['token_type'] = instance.tokenType;
   return val;
 }

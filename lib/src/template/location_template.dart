@@ -19,9 +19,9 @@ class LocationTemplate extends DefaultTemplate {
 
   final String address;
   final Content content;
-  final String addressTitle;
-  final Social social;
-  final List<Button> buttons;
+  final String? addressTitle;
+  final Social? social;
+  final List<Button>? buttons;
 
   final String objectType;
 

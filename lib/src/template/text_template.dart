@@ -15,8 +15,8 @@ class TextTemplate extends DefaultTemplate {
 
   final String text;
   final Link link;
-  final String buttonTitle;
-  final List<Button> buttons;
+  final String? buttonTitle;
+  final List<Button>? buttons;
 
   final String objectType;
 

@@ -12,7 +12,7 @@ import 'package:kakao_flutter_sdk/src/auth/auth_api.dart';
 ///
 class AccessTokenInterceptor extends Interceptor {
   AccessTokenInterceptor(this._dio, this._kauthApi,
-      {AccessTokenStore tokenStore})
+      {AccessTokenStore? tokenStore})
       : this._tokenStore = tokenStore ?? AccessTokenStore.instance;
 
   Dio _dio;
@@ -35,20 +35,24 @@ class AccessTokenInterceptor extends Interceptor {
     }
     try {
       _dio.interceptors.requestLock.lock();
-      RequestOptions options = err.response.request;
+      final options = err.response?.request;
+      final request = err.request;
       final token = await _tokenStore.fromStore();
-      if (err.request.headers["Authorization"] !=
-          "Bearer ${token.accessToken}") {
+      final refreshToken = token.refreshToken;
+      if (options == null || request == null || refreshToken == null) {
+        return err;
+      }
+
+      if (request.headers["Authorization"] != "Bearer ${token.accessToken}") {
         // tokens were refreshed by another API request.
         print(
             "just retry ${options.path} since access token was already refreshed by another request.");
-        return _dio.request(options.path, options: options);
+        return _dio.fetch(options);
       }
-      final tokenResponse =
-          await _kauthApi.refreshAccessToken(token.refreshToken);
+      final tokenResponse = await _kauthApi.refreshAccessToken(refreshToken);
       await _tokenStore.toStore(tokenResponse);
       print("retry ${options.path} after refreshing access token.");
-      return _dio.request(options.path, options: options);
+      return _dio.fetch(options);
     } catch (e) {
       if (e is KakaoAuthException ||
           e is KakaoApiException && e.code == ApiErrorCause.INVALID_TOKEN) {
@@ -63,7 +67,7 @@ class AccessTokenInterceptor extends Interceptor {
 
   /// This can be overridden
   bool isRetryable(DioError err) =>
-      err.request.baseUrl == "https://${KakaoContext.hosts.kapi}" &&
+      err.request?.baseUrl == "https://${KakaoContext.hosts.kapi}" &&
       err.response != null &&
-      err.response.statusCode == 401;
+      err.response?.statusCode == 401;
 }

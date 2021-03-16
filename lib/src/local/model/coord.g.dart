@@ -13,16 +13,7 @@ Coord _$CoordFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$CoordToJson(Coord instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('x', instance.x);
-  writeNotNull('y', instance.y);
-  return val;
-}
+Map<String, dynamic> _$CoordToJson(Coord instance) => <String, dynamic>{
+      'x': instance.x,
+      'y': instance.y,
+    };

@@ -10,7 +10,7 @@ class PlusFriendInfo {
   @JsonKey(name: "plus_friend_public_id")
   String publicId;
   String relation;
-  DateTime updatedAt;
+  DateTime? updatedAt;
 
   /// <nodoc>
   factory PlusFriendInfo.fromJson(Map<String, dynamic> json) =>

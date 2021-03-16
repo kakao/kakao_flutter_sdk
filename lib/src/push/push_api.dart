@@ -16,7 +16,7 @@ class PushApi {
   static final instance = PushApi(ApiFactory.appKeyApi, LocalPlatform());
 
   Future<int> register(int uuid, String deviceId, String pushToken,
-      {String pushType}) async {
+      {String? pushType}) async {
     return ApiFactory.handleApiError(() async {
       final finalPushType = pushType ?? _detectPushType(platform);
       final data = {
@@ -30,7 +30,7 @@ class PushApi {
     });
   }
 
-  Future<void> deregister(int uuid, String deviceId, {String pushType}) async {
+  Future<void> deregister(int uuid, String deviceId, {String? pushType}) async {
     return ApiFactory.handleApiError(() async {
       final finalPushType = pushType ?? _detectPushType(platform);
       final data = {

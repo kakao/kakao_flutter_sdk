@@ -12,11 +12,11 @@ class Social {
       this.sharedCount,
       this.viewCount,
       this.subscriberCount});
-  final int likeCount;
-  final int commentCount;
-  final int sharedCount;
-  final int viewCount;
-  final int subscriberCount;
+  final int? likeCount;
+  final int? commentCount;
+  final int? sharedCount;
+  final int? viewCount;
+  final int? subscriberCount;
 
   /// <nodoc>
   factory Social.fromJson(Map<String, dynamic> json) => _$SocialFromJson(json);

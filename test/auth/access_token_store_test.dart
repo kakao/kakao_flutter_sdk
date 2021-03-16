@@ -8,7 +8,7 @@ import '../helper.dart';
 void main() {
   var map;
   var response;
-  DefaultAccessTokenStore store;
+  late DefaultAccessTokenStore store;
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUp(() async {
@@ -16,6 +16,10 @@ void main() {
         .setMockMethodCallHandler((MethodCall methodCall) async {
       if (methodCall.method == 'getAll') {
         return <String, dynamic>{}; // set initial values here if desired
+      }
+      if (methodCall.method.startsWith("set") ||
+          methodCall.method == 'remove') {
+        return true;
       }
       return null;
     });
@@ -31,7 +35,7 @@ void main() {
     var token = await store.toStore(response);
     expect(token.accessToken, response.accessToken);
     expect(token.refreshToken, response.refreshToken);
-    expect(token.scopes.join(" "), response.scopes); // null
+    expect(token.scopes?.join(" "), response.scopes); // null
     expect(true, token.toString() != null);
   });
 

@@ -10,21 +10,13 @@ MessageFailureInfo _$MessageFailureInfoFromJson(Map<String, dynamic> json) {
   return MessageFailureInfo(
     json['code'] as int,
     json['msg'] as String,
-    (json['receiver_uuids'] as List)?.map((e) => e as String)?.toList(),
+    (json['receiver_uuids'] as List<dynamic>).map((e) => e as String).toList(),
   );
 }
 
-Map<String, dynamic> _$MessageFailureInfoToJson(MessageFailureInfo instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('code', instance.code);
-  writeNotNull('msg', instance.msg);
-  writeNotNull('receiver_uuids', instance.receiverUuids);
-  return val;
-}
+Map<String, dynamic> _$MessageFailureInfoToJson(MessageFailureInfo instance) =>
+    <String, dynamic>{
+      'code': instance.code,
+      'msg': instance.msg,
+      'receiver_uuids': instance.receiverUuids,
+    };

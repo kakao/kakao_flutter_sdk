@@ -16,8 +16,8 @@ class ListTemplate extends DefaultTemplate {
 
   final String headerTitle;
   final Link headerLink;
-  final List<Content> contents;
-  final List<Button> buttons;
+  final List<Content>? contents;
+  final List<Button>? buttons;
 
   final String objectType;
 

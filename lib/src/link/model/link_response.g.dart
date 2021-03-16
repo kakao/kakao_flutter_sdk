@@ -9,7 +9,7 @@ part of 'link_response.dart';
 LinkResponse _$LinkResponseFromJson(Map<String, dynamic> json) {
   return LinkResponse(
     json['template_id'] as int,
-    json['template_args'] as Map<String, dynamic>,
+    json['template_args'] as Map<String, dynamic>?,
     json['template_msg'] as Map<String, dynamic>,
     json['warning_msg'] as Map<String, dynamic>,
     json['argument_msg'] as Map<String, dynamic>,
@@ -17,7 +17,9 @@ LinkResponse _$LinkResponseFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$LinkResponseToJson(LinkResponse instance) {
-  final val = <String, dynamic>{};
+  final val = <String, dynamic>{
+    'template_id': instance.templateId,
+  };
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -25,10 +27,9 @@ Map<String, dynamic> _$LinkResponseToJson(LinkResponse instance) {
     }
   }
 
-  writeNotNull('template_id', instance.templateId);
   writeNotNull('template_args', instance.templateArgs);
-  writeNotNull('template_msg', instance.templateMsg);
-  writeNotNull('warning_msg', instance.warningMsg);
-  writeNotNull('argument_msg', instance.argumentMsg);
+  val['template_msg'] = instance.templateMsg;
+  val['warning_msg'] = instance.warningMsg;
+  val['argument_msg'] = instance.argumentMsg;
   return val;
 }

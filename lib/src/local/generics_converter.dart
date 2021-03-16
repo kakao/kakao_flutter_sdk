@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:kakao_flutter_sdk/link.dart';
 import 'package:kakao_flutter_sdk/src/local/model/coord.dart';
 import 'package:kakao_flutter_sdk/src/local/model/count_meta.dart';
 import 'package:kakao_flutter_sdk/src/local/model/local_search_meta.dart';
@@ -32,9 +33,9 @@ class GenericsConverter<T> implements JsonConverter<T, Object> {
     if (T == Region) {
       return Region.fromJson(json as Map<String, dynamic>) as T;
     }
-    return null;
+    throw new KakaoClientException("Not a valid generic type.");
   }
 
   @override
-  Object toJson(T object) => object;
+  Object toJson(T object) => object as Object;
 }

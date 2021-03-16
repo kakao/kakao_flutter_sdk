@@ -11,74 +11,58 @@ Place _$PlaceFromJson(Map<String, dynamic> json) {
     json['id'] as String,
     json['place_name'] as String,
     json['category_name'] as String,
-    _$enumDecodeNullable(_$CategoryGroupEnumMap, json['category_group_code'],
+    _$enumDecode(_$CategoryGroupEnumMap, json['category_group_code'],
         unknownValue: CategoryGroup.UNKNOWN),
     json['category_group_name'] as String,
     json['phone'] as String,
     json['address_name'] as String,
     json['road_address_name'] as String,
-    json['place_url'] == null ? null : Uri.parse(json['place_url'] as String),
+    Uri.parse(json['place_url'] as String),
     stringToInt(json['distance']),
     stringToDouble(json['x']),
     stringToDouble(json['y']),
   );
 }
 
-Map<String, dynamic> _$PlaceToJson(Place instance) {
-  final val = <String, dynamic>{};
+Map<String, dynamic> _$PlaceToJson(Place instance) => <String, dynamic>{
+      'x': instance.x,
+      'y': instance.y,
+      'id': instance.id,
+      'place_name': instance.placeName,
+      'category_name': instance.categoryName,
+      'category_group_code': _$CategoryGroupEnumMap[instance.categoryGroupCode],
+      'category_group_name': instance.categoryGroupName,
+      'phone': instance.phone,
+      'address_name': instance.addressName,
+      'road_address_name': instance.roadAddressName,
+      'place_url': instance.placeUrl.toString(),
+      'distance': instance.distance,
+    };
 
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('x', instance.x);
-  writeNotNull('y', instance.y);
-  writeNotNull('id', instance.id);
-  writeNotNull('place_name', instance.placeName);
-  writeNotNull('category_name', instance.categoryName);
-  writeNotNull('category_group_code',
-      _$CategoryGroupEnumMap[instance.categoryGroupCode]);
-  writeNotNull('category_group_name', instance.categoryGroupName);
-  writeNotNull('phone', instance.phone);
-  writeNotNull('address_name', instance.addressName);
-  writeNotNull('road_address_name', instance.roadAddressName);
-  writeNotNull('place_url', instance.placeUrl?.toString());
-  writeNotNull('distance', instance.distance);
-  return val;
-}
-
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
-}
-
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
 }
 
 const _$CategoryGroupEnumMap = {

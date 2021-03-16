@@ -8,11 +8,11 @@ part of 'social.dart';
 
 Social _$SocialFromJson(Map<String, dynamic> json) {
   return Social(
-    likeCount: json['like_count'] as int,
-    commentCount: json['comment_count'] as int,
-    sharedCount: json['shared_count'] as int,
-    viewCount: json['view_count'] as int,
-    subscriberCount: json['subscriber_count'] as int,
+    likeCount: json['like_count'] as int?,
+    commentCount: json['comment_count'] as int?,
+    sharedCount: json['shared_count'] as int?,
+    viewCount: json['view_count'] as int?,
+    subscriberCount: json['subscriber_count'] as int?,
   );
 }
 

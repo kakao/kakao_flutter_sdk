@@ -48,13 +48,13 @@ class _UserState extends State<UserScreen> {
                     TokenInfoBox(_tokenInfo),
                     RaisedButton(
                       child: Text("Logout"),
-                      onPressed: () => bloc.dispatch(UserLogOut()),
+                      onPressed: () => bloc.add(UserLogOut()),
                       color: Colors.orange,
                       textColor: Colors.white,
                     ),
                     RaisedButton(
                       child: Text("Unlink"),
-                      onPressed: () => bloc.dispatch(UserUnlink()),
+                      onPressed: () => bloc.add(UserUnlink()),
                       color: Colors.red,
                       textColor: Colors.white,
                     ),

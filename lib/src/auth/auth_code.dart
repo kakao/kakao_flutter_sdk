@@ -10,7 +10,7 @@ const MethodChannel _channel = MethodChannel("kakao_flutter_sdk");
 ///
 /// Corresponds to Authorization Endpoint of [OAuth 2.0 spec](https://tools.ietf.org/html/rfc6749).
 class AuthCodeClient {
-  AuthCodeClient({AuthApi authApi, Platform platform})
+  AuthCodeClient({AuthApi? authApi, Platform? platform})
       : _kauthApi = authApi ?? AuthApi.instance,
         _platform = platform ?? LocalPlatform();
 
@@ -21,7 +21,7 @@ class AuthCodeClient {
 
   /// Requests authorization code via `Chrome Custom Tabs` (on Android) and `ASWebAuthenticationSession` (on iOS).
   Future<String> request(
-      {String clientId, String redirectUri, List<String> scopes}) async {
+      {String? clientId, String? redirectUri, List<String>? scopes}) async {
     final finalRedirectUri = redirectUri ?? "kakao${_platformKey()}://oauth";
 
     final params = {
@@ -43,7 +43,7 @@ class AuthCodeClient {
   /// This will only work on devices where KakaoTalk is installed.
   /// You MUST check if KakaoTalk is installed before calling this method with [isKakaoTalkInstalled].
   Future<String> requestWithTalk(
-      {String clientId, String redirectUri, List<String> scopes}) async {
+      {String? clientId, String? redirectUri, List<String>? scopes}) async {
     return _parseCode(await _openKakaoTalk(clientId ?? _platformKey(),
         redirectUri ?? "kakao${_platformKey()}://oauth"));
   }
@@ -52,7 +52,7 @@ class AuthCodeClient {
   ///
   /// User should be logged in in order to call this method.
   Future<String> requestWithAgt(List<String> scopes,
-      {String clientId, String redirectUri}) async {
+      {String? clientId, String? redirectUri}) async {
     final agt = await _kauthApi.agt();
     final finalRedirectUri = redirectUri ?? "kakao${_platformKey()}://oauth";
     final params = {
@@ -82,8 +82,10 @@ class AuthCodeClient {
   }
 
   Future<String> _openKakaoTalk(String clientId, String redirectUri) async {
-    return _channel.invokeMethod("authorizeWithTalk",
+    final redirectUriWithParams = await _channel.invokeMethod<String>("authorizeWithTalk",
         {"client_id": clientId, "redirect_uri": redirectUri});
+        if (redirectUriWithParams != null) return redirectUriWithParams;
+        throw KakaoClientException("OAuth 2.0 redirect uri was null, which should not happen.");
   }
 
   String _platformKey() {

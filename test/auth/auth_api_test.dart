@@ -10,9 +10,9 @@ import '../helper.dart';
 import '../mock_adapter.dart';
 
 void main() {
-  Dio _dio;
-  MockAdapter _adapter;
-  AuthApi _authApi;
+  late Dio _dio;
+  late MockAdapter _adapter;
+  late AuthApi _authApi;
 
   TestWidgetsFlutterBinding.ensureInitialized();
 
