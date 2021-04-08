@@ -11,7 +11,7 @@ Friend _$FriendFromJson(Map<String, dynamic> json) {
     json['id'] as int?,
     json['uuid'] as String,
     json['profile_nickname'] as String,
-    Uri.parse(json['profile_thumbnail_image'] as String),
+    json['profile_thumbnail_image'] as String?,
     json['favorite'] as bool?,
   );
 }
@@ -25,10 +25,10 @@ Map<String, dynamic> _$FriendToJson(Friend instance) {
     }
   }
 
-  writeNotNull('id', instance.userId);
+  writeNotNull('id', instance.id);
   val['uuid'] = instance.uuid;
   val['profile_nickname'] = instance.profileNickname;
-  val['profile_thumbnail_image'] = instance.profileThumbnailImage.toString();
+  writeNotNull('profile_thumbnail_image', instance.profileThumbnailImage);
   writeNotNull('favorite', instance.favorite);
   return val;
 }

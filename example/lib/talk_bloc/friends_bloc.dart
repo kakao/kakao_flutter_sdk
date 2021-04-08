@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:kakao_flutter_sdk/auth.dart';
+import 'package:kakao_flutter_sdk/talk.dart';
 import 'package:kakao_flutter_sdk_example/talk_bloc/bloc.dart';
 import 'package:kakao_flutter_sdk_example/talk_bloc/friends_event.dart';
-import 'package:kakao_flutter_sdk/talk.dart';
-import 'package:kakao_flutter_sdk/auth.dart';
 
 class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
   final TalkApi _api;
@@ -23,7 +23,7 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
     if (event is FetchFriends) {
       try {
         final friends = await _api.friends();
-        yield FriendsFetched(friends.friends);
+        yield FriendsFetched(friends.elements);
       } on KakaoApiException catch (e) {
         if (e.code == ApiErrorCause.INVALID_SCOPE) {
           yield FriendsPermissionRequired(e.requiredScopes);

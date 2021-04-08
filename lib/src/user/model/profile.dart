@@ -5,8 +5,8 @@ part 'profile.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class Profile {
   final String nickname;
-  final Uri thumbnailImageUrl;
-  final Uri profileImageUrl;
+  final String thumbnailImageUrl;
+  final String profileImageUrl;
 
   /// <nodoc>
   Profile(this.nickname, this.thumbnailImageUrl, this.profileImageUrl);

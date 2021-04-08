@@ -33,7 +33,7 @@ void main() {
   });
 
   bool compareFriend(Map<String, dynamic> element, Friend friend) {
-    return friend.userId == element["id"] &&
+    return friend.id == element["id"] &&
         friend.profileNickname == element["profile_nickname"] &&
         friend.profileThumbnailImage.toString() ==
             element["profile_thumbnail_image"] &&
@@ -45,13 +45,13 @@ void main() {
     Map<String, dynamic> map = jsonDecode(body);
     _adapter.setResponseString(body, 200);
 
-    FriendsResponse res = await _api.friends();
+    Friends res = await _api.friends();
     expect(map["total_count"], res.totalCount);
     expect(res.beforeUrl.toString(), map["before_url"].toString());
     expect(res.afterUrl.toString(), map["after_url"].toString());
 
     List<dynamic> elements = map["elements"];
-    List<Friend> friends = res.friends;
+    List<Friend> friends = res.elements;
     friends.asMap().forEach(
         (idx, friend) => expect(true, compareFriend(elements[idx], friend)));
     expect(true, res.toJson() != null);
@@ -157,7 +157,7 @@ void main() {
       final res = await _api.customMessage(["1234"], 1234);
       final expectedUuids = map["successful_receiver_uuids"];
       final uuids = res.successfulReceiverUuids;
-      uuids.asMap().forEach((idx, uuid) {
+      uuids!.asMap().forEach((idx, uuid) {
         expect(expectedUuids[idx], uuid);
       });
     });
@@ -179,7 +179,7 @@ void main() {
   });
   group("/v1/api/talk/plusfriends", () {
     var map;
-    late PlusFriendsResponse res;
+    late ChannelRelations res;
     setUp(() async {
       var body = await loadJson("talk/plusfriends/plus_friends.json");
       map = jsonDecode(body);
@@ -189,11 +189,10 @@ void main() {
     tearDown(() async {
       expect(res.userId, map["user_id"]);
       var elements = map["plus_friends"];
-      var friends = res.plusFriends;
+      var friends = res.channels;
       friends.asMap().forEach((index, friend) {
         var element = elements[index];
         expect(friend.uuid, element["plus_friend_uuid"]);
-        expect(friend.publicId, element["plus_friend_public_id"]);
         expect(friend.relation, element["relation"]);
         expect(Util.dateTimeWithoutMillis(friend.updatedAt),
             element["updated_at"]);

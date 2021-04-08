@@ -1,23 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'plus_friends_response.dart';
+part of 'channel_relations.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-PlusFriendsResponse _$PlusFriendsResponseFromJson(Map<String, dynamic> json) {
-  return PlusFriendsResponse(
+ChannelRelations _$ChannelRelationsFromJson(Map<String, dynamic> json) {
+  return ChannelRelations(
     json['user_id'] as int,
     (json['plus_friends'] as List<dynamic>)
-        .map((e) => PlusFriendInfo.fromJson(e as Map<String, dynamic>))
+        .map((e) => ChannelRelation.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
 }
 
-Map<String, dynamic> _$PlusFriendsResponseToJson(
-        PlusFriendsResponse instance) =>
+Map<String, dynamic> _$ChannelRelationsToJson(ChannelRelations instance) =>
     <String, dynamic>{
       'user_id': instance.userId,
-      'plus_friends': instance.plusFriends.map((e) => e.toJson()).toList(),
+      'plus_friends': instance.channels.map((e) => e.toJson()).toList(),
     };

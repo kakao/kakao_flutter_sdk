@@ -4,16 +4,17 @@ part 'talk_profile.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class TalkProfile {
-  /// <nodoc>
-  TalkProfile(
-      this.nickname, this.profileImageUrl, this.thumbnailUrl, this.countryISO);
   @JsonKey(name: "nickName")
   String nickname;
   @JsonKey(name: "profileImageURL")
-  Uri profileImageUrl;
+  String profileImageUrl;
   @JsonKey(name: "thumbnailURL")
-  Uri thumbnailUrl;
+  String thumbnailUrl;
   String countryISO;
+
+  /// <nodoc>
+  TalkProfile(
+      this.nickname, this.profileImageUrl, this.thumbnailUrl, this.countryISO);
 
   /// <nodoc>
   factory TalkProfile.fromJson(Map<String, dynamic> json) =>

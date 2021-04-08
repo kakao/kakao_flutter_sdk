@@ -6,9 +6,9 @@ import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kakao_flutter_sdk/common.dart';
 import 'package:kakao_flutter_sdk/src/common/api_factory.dart';
-import 'package:kakao_flutter_sdk/src/talk/model/friends_response.dart';
+import 'package:kakao_flutter_sdk/src/talk/model/channel_relations.dart';
+import 'package:kakao_flutter_sdk/src/talk/model/friends.dart';
 import 'package:kakao_flutter_sdk/src/talk/model/message_send_result.dart';
-import 'package:kakao_flutter_sdk/src/talk/model/plus_friends_response.dart';
 import 'package:kakao_flutter_sdk/src/talk/model/talk_profile.dart';
 import 'package:kakao_flutter_sdk/src/template/default_template.dart';
 
@@ -60,13 +60,13 @@ class TalkApi {
     });
   }
 
-  Future<PlusFriendsResponse> plusFriends([List<String>? publicIds]) async {
+  Future<ChannelRelations> plusFriends([List<String>? publicIds]) async {
     return ApiFactory.handleApiError(() async {
       Response response = await _dio.get("/v1/api/talk/plusfriends",
           queryParameters: publicIds == null
               ? {}
               : {"plus_friend_public_ids": jsonEncode(publicIds)});
-      return PlusFriendsResponse.fromJson(response.data);
+      return ChannelRelations.fromJson(response.data);
     });
   }
 
@@ -77,7 +77,7 @@ class TalkApi {
   /// 1. Connected to the application
   /// 1. Agreed to use Friends API in /oauth/authorize.
   ///
-  Future<FriendsResponse> friends(
+  Future<Friends> friends(
       {int? offset,
       int? limit,
       FriendOrder? friendOrder,
@@ -95,7 +95,7 @@ class TalkApi {
       params.removeWhere((k, v) => v == null);
       final response =
           await _dio.get("/v1/api/talk/friends", queryParameters: params);
-      return FriendsResponse.fromJson(response.data);
+      return Friends.fromJson(response.data);
     });
   }
 

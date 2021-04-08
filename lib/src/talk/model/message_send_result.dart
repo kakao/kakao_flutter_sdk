@@ -6,7 +6,7 @@ part 'message_send_result.g.dart';
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class MessageSendResult {
-  final List<String> successfulReceiverUuids;
+  final List<String>? successfulReceiverUuids;
   @JsonKey(name: "failure_info")
   final List<MessageFailureInfo>? failureInfos;
 

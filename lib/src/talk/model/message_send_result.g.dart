@@ -8,8 +8,8 @@ part of 'message_send_result.dart';
 
 MessageSendResult _$MessageSendResultFromJson(Map<String, dynamic> json) {
   return MessageSendResult(
-    (json['successful_receiver_uuids'] as List<dynamic>)
-        .map((e) => e as String)
+    (json['successful_receiver_uuids'] as List<dynamic>?)
+        ?.map((e) => e as String)
         .toList(),
     (json['failure_info'] as List<dynamic>?)
         ?.map((e) => MessageFailureInfo.fromJson(e as Map<String, dynamic>))
@@ -18,9 +18,7 @@ MessageSendResult _$MessageSendResultFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$MessageSendResultToJson(MessageSendResult instance) {
-  final val = <String, dynamic>{
-    'successful_receiver_uuids': instance.successfulReceiverUuids,
-  };
+  final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -28,6 +26,7 @@ Map<String, dynamic> _$MessageSendResultToJson(MessageSendResult instance) {
     }
   }
 
+  writeNotNull('successful_receiver_uuids', instance.successfulReceiverUuids);
   writeNotNull(
       'failure_info', instance.failureInfos?.map((e) => e.toJson()).toList());
   return val;
