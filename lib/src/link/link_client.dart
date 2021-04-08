@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk/link.dart';
 import 'package:kakao_flutter_sdk/src/common/kakao_context.dart';
 import 'package:kakao_flutter_sdk/src/link/link_api.dart';
-import 'package:kakao_flutter_sdk/src/link/model/link_response.dart';
+import 'package:kakao_flutter_sdk/src/link/model/link_result.dart';
 import 'package:kakao_flutter_sdk/src/template/default_template.dart';
 import 'package:platform/platform.dart';
 
@@ -66,7 +66,7 @@ class LinkClient {
     return talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
-  Future<Uri> sharerWithResponse(LinkResponse response,
+  Future<Uri> sharerWithResponse(LinkResult response,
       {Map<String, String>? serverCallbackArgs}) async {
     final params = {
       "app_key": KakaoContext.clientId,
@@ -85,7 +85,7 @@ class LinkClient {
         KakaoContext.hosts.sharer, "talk/friends/picker/easylink", params);
   }
 
-  Future<Uri> talkWithResponse(LinkResponse response,
+  Future<Uri> talkWithResponse(LinkResult response,
       {String? clientId, Map<String, String>? serverCallbackArgs}) async {
     final attachmentSize = await _attachmentSize(response,
         clientId: clientId, serverCallbackArgs: serverCallbackArgs);
@@ -128,7 +128,7 @@ class LinkClient {
     return extras;
   }
 
-  Future<int> _attachmentSize(LinkResponse response,
+  Future<int> _attachmentSize(LinkResult response,
       {String? clientId, Map<String, String>? serverCallbackArgs}) async {
     final templateMsg = response.templateMsg;
     final attachment = {

@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk/src/common/api_factory.dart';
-import 'package:kakao_flutter_sdk/src/link/model/link_response.dart';
+import 'package:kakao_flutter_sdk/src/link/model/link_result.dart';
 import 'package:kakao_flutter_sdk/src/template/default_template.dart';
 
 ///
@@ -18,7 +18,7 @@ class LinkApi {
 
   /// Send KakaoLink messages with custom templates.
   /// This
-  Future<LinkResponse> custom(int templateId,
+  Future<LinkResult> custom(int templateId,
       {Map<String, String>? templateArgs}) async {
     return _validate("validate", {
       "template_id": templateId,
@@ -27,12 +27,12 @@ class LinkApi {
   }
 
   /// Send KakaoLink messages with default templates.
-  Future<LinkResponse> defaultTemplate(DefaultTemplate template) async {
+  Future<LinkResult> defaultTemplate(DefaultTemplate template) async {
     return _validate("default", {"template_object": jsonEncode(template)});
   }
 
   /// Send kakaoLink messages with scrapped url.
-  Future<LinkResponse> scrap(String url,
+  Future<LinkResult> scrap(String url,
       {int? templateId, Map<String, String>? templateArgs}) async {
     var params = {
       "request_url": url,
@@ -43,11 +43,11 @@ class LinkApi {
     return _validate("scrap", params);
   }
 
-  Future<LinkResponse> _validate(String postfix, Map<String, dynamic> data) {
+  Future<LinkResult> _validate(String postfix, Map<String, dynamic> data) {
     return ApiFactory.handleApiError(() async {
       Response res = await dio.get("/v2/api/kakaolink/talk/template/$postfix",
           queryParameters: {"link_ver": "4.0", ...data});
-      return LinkResponse.fromJson(res.data);
+      return LinkResult.fromJson(res.data);
     });
   }
 }

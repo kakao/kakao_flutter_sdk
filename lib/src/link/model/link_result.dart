@@ -1,12 +1,12 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'link_response.g.dart';
+part 'link_result.g.dart';
 
 /// Response from kakaoLink validation API.
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
-class LinkResponse {
+class LinkResult {
   /// <nodoc>
-  LinkResponse(this.templateId, this.templateArgs, this.templateMsg,
+  LinkResult(this.templateId, this.templateArgs, this.templateMsg,
       this.warningMsg, this.argumentMsg);
   int templateId;
   Map<String, dynamic>? templateArgs;
@@ -22,9 +22,9 @@ class LinkResponse {
   }
 
   /// <nodoc>
-  factory LinkResponse.fromJson(Map<String, dynamic> json) =>
-      _$LinkResponseFromJson(json);
+  factory LinkResult.fromJson(Map<String, dynamic> json) =>
+      _$LinkResultFromJson(json);
 
   /// <nodoc>
-  Map<String, dynamic> toJson() => _$LinkResponseToJson(this);
+  Map<String, dynamic> toJson() => _$LinkResultToJson(this);
 }
