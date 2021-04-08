@@ -1,10 +1,7 @@
 import 'dart:convert';
 
 /// Access token and refresh token information.
-class AccessToken {
-  AccessToken(this.accessToken, this.accessTokenExpiresAt, this.refreshToken,
-      this.refreshTokenExpiresAt, this.scopes);
-
+class OAuthToken {
   String? accessToken;
 
   /// Use this field with caution. Token might have expired on server side.
@@ -16,6 +13,9 @@ class AccessToken {
 
   /// List of scopes this user has agreed to when this token was issued.
   List<String>? scopes;
+
+  OAuthToken(this.accessToken, this.accessTokenExpiresAt, this.refreshToken,
+      this.refreshTokenExpiresAt, this.scopes);
 
   @override
   String toString() {

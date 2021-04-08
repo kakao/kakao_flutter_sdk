@@ -5,10 +5,6 @@ part 'access_token_response.g.dart';
 /// API response from https://kauth.kakao.com/oauth/token API
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class AccessTokenResponse {
-  /// <nodoc>
-  AccessTokenResponse(this.accessToken, this.expiresIn, this.refreshToken,
-      this.refreshTokenExpiresIn, this.scopes, this.tokenType);
-
   // access token
   String accessToken;
 
@@ -28,6 +24,10 @@ class AccessTokenResponse {
 
   /// <nodoc>
   String tokenType;
+
+  /// <nodoc>
+  AccessTokenResponse(this.accessToken, this.expiresIn, this.refreshToken,
+      this.refreshTokenExpiresIn, this.scopes, this.tokenType);
 
   /// <nodoc>
   factory AccessTokenResponse.fromJson(Map<String, dynamic> json) =>

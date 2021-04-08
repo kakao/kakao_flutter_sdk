@@ -1,5 +1,5 @@
 import 'package:kakao_flutter_sdk/src/auth/model/access_token_response.dart';
-import 'package:kakao_flutter_sdk/src/auth/model/access_token.dart';
+import 'package:kakao_flutter_sdk/src/auth/model/oauth_token.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Stores access token and refresh token from [AuthApi].
@@ -7,10 +7,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// This abstract class can be used to store token information in different locations than provided by the SDK.
 abstract class AccessTokenStore {
   // stores access token and other retrieved information from [AuthApi.issueAccessToken]
-  Future<AccessToken> toStore(AccessTokenResponse response);
+  Future<OAuthToken> toStore(AccessTokenResponse response);
 
   // retrieves access token and other information from the designated store.
-  Future<AccessToken> fromStore();
+  Future<OAuthToken> fromStore();
 
   // clears all data related to access token from the device.
   Future<void> clear();
@@ -41,7 +41,7 @@ class DefaultAccessTokenStore implements AccessTokenStore {
     preferences.remove(scopesKey);
   }
 
-  Future<AccessToken> toStore(AccessTokenResponse response) async {
+  Future<OAuthToken> toStore(AccessTokenResponse response) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString(atKey, response.accessToken);
     preferences.setInt(atExpiresAtKey,
@@ -62,7 +62,7 @@ class DefaultAccessTokenStore implements AccessTokenStore {
     return fromStore();
   }
 
-  Future<AccessToken> fromStore() async {
+  Future<OAuthToken> fromStore() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? accessToken = preferences.getString(atKey);
     int? atExpiresAtMillis = preferences.getInt(atExpiresAtKey);
@@ -77,7 +77,7 @@ class DefaultAccessTokenStore implements AccessTokenStore {
         : null;
     List<String>? scopes = preferences.getStringList(scopesKey);
 
-    return AccessToken(accessToken, accessTokenExpiresAt, refreshToken,
+    return OAuthToken(accessToken, accessTokenExpiresAt, refreshToken,
         refreshTokenExpiresAt, scopes);
   }
 }
