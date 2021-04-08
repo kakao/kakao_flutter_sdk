@@ -9,9 +9,10 @@ part of 'story_profile.dart';
 StoryProfile _$StoryProfileFromJson(Map<String, dynamic> json) {
   return StoryProfile(
     json['nickName'] as String,
-    Uri.parse(json['profileImageURL'] as String),
-    Uri.parse(json['thumbnailURL'] as String),
-    Uri.parse(json['permalink'] as String),
+    json['profileImageURL'] as String,
+    json['thumbnailURL'] as String,
+    json['bgImageURL'] as String,
+    json['permalink'] as String,
     json['birthday'] as String,
     json['birthdayType'] as String,
   );
@@ -20,9 +21,10 @@ StoryProfile _$StoryProfileFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$StoryProfileToJson(StoryProfile instance) =>
     <String, dynamic>{
       'nickName': instance.nickname,
-      'profileImageURL': instance.profileImageUrl.toString(),
-      'thumbnailURL': instance.thumbnailUrl.toString(),
-      'permalink': instance.permalink.toString(),
+      'profileImageURL': instance.profileImageUrl,
+      'thumbnailURL': instance.thumbnailUrl,
+      'bgImageURL': instance.bgImageUrl,
+      'permalink': instance.permalink,
       'birthday': instance.birthday,
       'birthdayType': instance.birthdayType,
     };

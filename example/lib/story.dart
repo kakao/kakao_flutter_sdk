@@ -66,10 +66,10 @@ class StoryBox extends StatelessWidget {
                 ],
               ),
             ),
-            this.story.images != null
+            this.story.media != null
                 ? SizedBox(
                     width: double.infinity,
-                    child: Image.network(this.story.images[0].large),
+                    child: Image.network(this.story.media[0].large),
                   )
                 : Container(),
             Padding(

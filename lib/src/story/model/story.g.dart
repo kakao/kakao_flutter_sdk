@@ -9,7 +9,7 @@ part of 'story.dart';
 Story _$StoryFromJson(Map<String, dynamic> json) {
   return Story(
     json['id'] as String,
-    Uri.parse(json['url'] as String),
+    json['url'] as String,
     json['content'] as String,
     DateTime.parse(json['created_at'] as String),
     _$enumDecode(_$StoryTypeEnumMap, json['media_type'],
@@ -33,7 +33,7 @@ Story _$StoryFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$StoryToJson(Story instance) {
   final val = <String, dynamic>{
     'id': instance.id,
-    'url': instance.url.toString(),
+    'url': instance.url,
     'content': instance.content,
     'created_at': instance.createdAt.toIso8601String(),
     'media_type': _$StoryTypeEnumMap[instance.mediaType],
@@ -47,7 +47,7 @@ Map<String, dynamic> _$StoryToJson(Story instance) {
     }
   }
 
-  writeNotNull('media', instance.images?.map((e) => e.toJson()).toList());
+  writeNotNull('media', instance.media?.map((e) => e.toJson()).toList());
   writeNotNull('permission', _$StoryPermissionEnumMap[instance.permission]);
   writeNotNull('likes', instance.likes?.map((e) => e.toJson()).toList());
   writeNotNull('comments', instance.comments?.map((e) => e.toJson()).toList());

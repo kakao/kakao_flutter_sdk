@@ -8,31 +8,17 @@ part 'story.g.dart';
 @JsonSerializable(
     fieldRename: FieldRename.snake, includeIfNull: false, explicitToJson: true)
 class Story {
-  /// <nodoc>
-  Story(
-      this.id,
-      this.url,
-      this.content,
-      this.createdAt,
-      this.mediaType,
-      this.commentCount,
-      this.likeCount,
-      this.images,
-      this.likes,
-      this.comments,
-      this.permission);
   final String id;
 
   // web url of this story.
-  final Uri url;
+  final String url;
   final String content;
   final DateTime createdAt;
   @JsonKey(unknownEnumValue: StoryType.NOT_SUPPORTED)
   final StoryType mediaType;
   final int commentCount;
   final int likeCount;
-  @JsonKey(name: "media")
-  final List<StoryImage>? images;
+  final List<StoryImage>? media;
   @JsonKey(unknownEnumValue: StoryPermission.UNKNOWN)
   final StoryPermission?
       permission; // TODO: unknownEnumValue should allow non-null type but it doesn't.
@@ -42,6 +28,20 @@ class Story {
 
   /// Only present in [StoryApi.myStory()], always null in [StoryApi.myStories()].
   final List<StoryComment>? comments;
+
+  /// <nodoc>
+  Story(
+      this.id,
+      this.url,
+      this.content,
+      this.createdAt,
+      this.mediaType,
+      this.commentCount,
+      this.likeCount,
+      this.media,
+      this.likes,
+      this.comments,
+      this.permission);
 
   /// <nodoc>
   factory Story.fromJson(Map<String, dynamic> json) => _$StoryFromJson(json);

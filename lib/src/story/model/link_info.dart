@@ -6,34 +6,34 @@ part 'link_info.g.dart';
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class LinkInfo {
-  /// <nodoc>
-  LinkInfo(this.url, this.requestedUrl, this.host, this.title, this.images,
-      this.description, this.section, this.type);
-
   /// Scraped url, possibly shortened.
-  final Uri url;
+  final String? url;
 
   /// Original url.
-  final Uri requestedUrl;
+  final String? requestedUrl;
 
   /// Host of the requested url.
-  final String host;
+  final String? host;
 
   /// Webpage title.
-  final String title;
+  final String? title;
 
   /// image urls of . Maximum of 3.
   @JsonKey(name: "image")
-  final List<String> images;
+  final List<String>? images;
 
   /// Webpage description.
-  final String description;
+  final String? description;
 
   /// Section information of the web page.
-  final String section;
+  final String? section;
 
   /// Content type of the web page, such as website, video, music, etc.
-  final String type;
+  final String? type;
+
+  /// <nodoc>
+  LinkInfo(this.url, this.requestedUrl, this.host, this.title, this.images,
+      this.description, this.section, this.type);
 
   /// <nodoc>
   factory LinkInfo.fromJson(Map<String, dynamic> json) =>

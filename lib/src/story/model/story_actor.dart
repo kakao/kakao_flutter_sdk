@@ -5,10 +5,11 @@ part 'story_actor.g.dart';
 /// Story
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class StoryActor {
+  final String displayName;
+  final String profileThumbnailUrl;
+
   /// <nodoc>
   StoryActor(this.displayName, this.profileThumbnailUrl);
-  final String displayName;
-  final Uri profileThumbnailUrl;
 
   /// <nodoc>
   factory StoryActor.fromJson(Map<String, dynamic> json) =>
