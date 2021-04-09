@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:kakao_flutter_sdk/src/auth/access_token_store.dart';
 import 'package:kakao_flutter_sdk/src/auth/model/access_token_response.dart';
 import 'package:kakao_flutter_sdk/src/common/api_factory.dart';
 import 'package:kakao_flutter_sdk/src/common/kakao_context.dart';
-
 import 'package:platform/platform.dart';
 
 /// Provides Kakao OAuth API.
@@ -22,6 +22,12 @@ class AuthApi {
 
   /// Default instance SDK provides.
   static final AuthApi instance = AuthApi();
+
+  /// Check OAuthToken is issued.
+  Future<bool> hasToken() async {
+    final token = await _tokenStore.fromStore();
+    return token.accessToken != null && token.refreshToken != null;
+  }
 
   /// Issues an access token from authCode acquired from [AuthCodeClient].
   Future<AccessTokenResponse> issueAccessToken(String authCode,
