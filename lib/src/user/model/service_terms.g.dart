@@ -8,16 +8,13 @@ part of 'service_terms.dart';
 
 ServiceTerms _$ServiceTermsFromJson(Map<String, dynamic> json) {
   return ServiceTerms(
-    json['user_id'] as int,
-    (json['allowed_service_terms'] as List<dynamic>)
-        .map((e) => Terms.fromJson(e as Map<String, dynamic>))
-        .toList(),
+    json['tag'] as String,
+    DateTime.parse(json['agreed_at'] as String),
   );
 }
 
 Map<String, dynamic> _$ServiceTermsToJson(ServiceTerms instance) =>
     <String, dynamic>{
-      'user_id': instance.userId,
-      'allowed_service_terms':
-          instance.allowedServiceTerms.map((e) => e.toJson()).toList(),
+      'tag': instance.tag,
+      'agreed_at': instance.agreedAt.toIso8601String(),
     };

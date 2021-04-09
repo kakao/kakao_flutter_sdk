@@ -7,18 +7,19 @@ part 'shipping_address.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class ShippingAddress {
   int id;
-  String name;
+  String? name;
+  @JsonKey(name: "default")
   bool isDefault;
   @JsonKey(fromJson: Util.fromTimeStamp, toJson: Util.fromDateTime)
   DateTime updatedAt;
   String type;
   String baseAddress;
   String detailAddress;
-  String receiverName;
-  String receiverPhoneNumber1;
-  String receiverPhoneNumber2;
-  String zoneNumber;
-  String zipCode;
+  String? receiverName;
+  String? receiverPhoneNumber1;
+  String? receiverPhoneNumber2;
+  String? zoneNumber;
+  String? zipCode;
 
   /// <nodoc>
   ShippingAddress(

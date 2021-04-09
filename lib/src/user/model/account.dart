@@ -9,51 +9,25 @@ part 'account.g.dart';
 
 /// Kakao account information.
 class Account {
-  /// <nodoc>
-  Account(
-      this.profileNeedsAgreement,
-      this.profile,
-      this.isEmailVerified,
-      this.isEmailValid,
-      this.emailNeedsAgreement,
-      this.email,
-      this.isKakaotalkUser,
-      this.phoneNumberNeedsAgreement,
-      this.phoneNumber,
-      this.ageRangeNeedsAgreement,
-      this.ageRange,
-      this.birthdayNeedsAgreement,
-      this.birthday,
-      this.birthyearNeedsAgreement,
-      this.birthyear,
-      this.genderNeedsAgreement,
-      this.gender,
-      this.ciNeedsAgreement,
-      this.ci,
-      this.ciAuthenticatedAt);
+  bool? profileNeedsAgreement;
+  Profile? profile;
 
-  bool profileNeedsAgreement;
-  Profile profile;
-
-  bool isEmailVerified;
-  bool isEmailValid;
-  bool emailNeedsAgreement;
-  String email;
-
-  bool? isKakaotalkUser;
-
-  bool? phoneNumberNeedsAgreement;
-  String? phoneNumber;
+  bool? emailNeedsAgreement;
+  bool? isEmailValid;
+  bool? isEmailVerified;
+  String? email;
 
   bool? ageRangeNeedsAgreement;
   @JsonKey(unknownEnumValue: AgeRange.UNKNOWN)
   AgeRange? ageRange;
 
-  bool? birthdayNeedsAgreement;
-  String? birthday;
-
   bool? birthyearNeedsAgreement;
   String? birthyear;
+
+  bool? birthdayNeedsAgreement;
+  String? birthday;
+  @JsonKey(unknownEnumValue: BirthdayType.UNKNOWN)
+  BirthdayType? birthdayType;
 
   bool? genderNeedsAgreement;
   @JsonKey(unknownEnumValue: Gender.OTHER)
@@ -62,6 +36,53 @@ class Account {
   bool? ciNeedsAgreement;
   String? ci;
   DateTime? ciAuthenticatedAt;
+
+  bool? legalNameNeedsAgreement;
+  String? legalName;
+
+  bool? legalBirthDateNeedsAgreement;
+  String? legalBirthDate;
+
+  bool? legalGenderNeedsAgreement;
+  @JsonKey(unknownEnumValue: Gender.OTHER)
+  Gender? legalGender;
+
+  bool? phoneNumberNeedsAgreement;
+  String? phoneNumber;
+
+  bool? isKoreanNeedsAgreement;
+  bool? isKorean;
+
+  /// <nodoc>
+  Account(
+      this.profileNeedsAgreement,
+      this.profile,
+      this.emailNeedsAgreement,
+      this.isEmailVerified,
+      this.isEmailValid,
+      this.email,
+      this.ageRangeNeedsAgreement,
+      this.ageRange,
+      this.birthyearNeedsAgreement,
+      this.birthyear,
+      this.birthdayNeedsAgreement,
+      this.birthday,
+      this.birthdayType,
+      this.genderNeedsAgreement,
+      this.gender,
+      this.ciNeedsAgreement,
+      this.ci,
+      this.ciAuthenticatedAt,
+      this.legalNameNeedsAgreement,
+      this.legalName,
+      this.legalBirthDateNeedsAgreement,
+      this.legalBirthDate,
+      this.legalGenderNeedsAgreement,
+      this.legalGender,
+      this.phoneNumberNeedsAgreement,
+      this.phoneNumber,
+      this.isKoreanNeedsAgreement,
+      this.isKorean);
 
   /// <nodoc>
   factory Account.fromJson(Map<String, dynamic> json) =>
@@ -106,3 +127,6 @@ enum Gender {
   @JsonValue("other")
   OTHER
 }
+
+/// Birthday Type in [Account].
+enum BirthdayType { SOLAR, LUNAR, UNKNOWN }

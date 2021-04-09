@@ -1,5 +1,5 @@
 {
   "id":123456789,
-  "expiresInMillis":239036,
-  "appId":1234
+  "expires_in": 7199,
+  "app_id":1234
 }

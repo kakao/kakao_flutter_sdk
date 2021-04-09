@@ -1,12 +1,13 @@
 import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk/src/common/api_factory.dart';
 
 import 'model/access_token_info.dart';
-import 'model/service_terms.dart';
 import 'model/shipping_addresses.dart';
-import 'model/user_id_response.dart';
 import 'model/user.dart';
+import 'model/user_id_response.dart';
+import 'model/user_service_terms.dart';
 
 /// Provides User API.
 class UserApi {
@@ -66,10 +67,10 @@ class UserApi {
   }
 
   /// Fetches a list of custom service terms that current user has agreed to.
-  Future<ServiceTerms> serviceTerms() async {
+  Future<UserServiceTerms> serviceTerms() async {
     return ApiFactory.handleApiError(() async {
       Response response = await _dio.get("/v1/user/service/terms");
-      return ServiceTerms.fromJson(response.data);
+      return UserServiceTerms.fromJson(response.data);
     });
   }
 }

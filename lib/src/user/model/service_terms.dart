@@ -1,17 +1,15 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk/src/user/model/terms.dart';
 
 part 'service_terms.g.dart';
 
-/// Response from [UserApi.serviceTerms()]
-@JsonSerializable(
-    fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
+/// Individual terms.
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class ServiceTerms {
-  /// <nodoc>
-  ServiceTerms(this.userId, this.allowedServiceTerms);
+  String tag;
+  DateTime agreedAt;
 
-  int userId;
-  List<Terms> allowedServiceTerms;
+  /// <nodoc>
+  ServiceTerms(this.tag, this.agreedAt);
 
   /// <nodoc>
   factory ServiceTerms.fromJson(Map<String, dynamic> json) =>

@@ -8,12 +8,12 @@ part 'shipping_addresses.g.dart';
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class ShippingAddresses {
   int userId;
-  bool shippingAddressesNeedsAgreement;
-  List<ShippingAddress> shippingAddresses;
+  @JsonKey(name: "shipping_addresses_needs_agreement")
+  bool needsAgreement;
+  List<ShippingAddress>? shippingAddresses;
 
   /// <nodoc>
-  ShippingAddresses(this.userId, this.shippingAddressesNeedsAgreement,
-      this.shippingAddresses);
+  ShippingAddresses(this.userId, this.needsAgreement, this.shippingAddresses);
 
   /// <nodoc>
   factory ShippingAddresses.fromJson(Map<String, dynamic> json) =>

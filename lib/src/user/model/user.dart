@@ -7,24 +7,24 @@ part 'user.g.dart';
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class User {
-  /// <nodoc>
-  User(this.id, this.hasSignedUp, this.properties, this.kakaoAccount,
-      this.groupUserToken, this.synchedAt, this.connectedAt);
-
   /// app user id
   int id;
+
+  /// custom properties this user has.
+  Map<String, String>? properties;
+  Account? kakaoAccount;
+
+  String? groupUserToken;
+
+  DateTime? connectedAt;
+  DateTime? synchedAt;
 
   /// whether this user is connected to the service or not.
   bool? hasSignedUp;
 
-  /// custom properties this user has.
-  Map<String, String>? properties;
-  Account kakaoAccount;
-
-  String? groupUserToken;
-
-  DateTime? synchedAt;
-  DateTime? connectedAt;
+  /// <nodoc>
+  User(this.id, this.hasSignedUp, this.properties, this.kakaoAccount,
+      this.groupUserToken, this.synchedAt, this.connectedAt);
 
   /// <nodoc>
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

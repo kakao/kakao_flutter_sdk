@@ -13,8 +13,8 @@ void main() {
     var normal = await loadJson("users/token_info.json");
     Map<String, dynamic> map = jsonDecode(normal);
     var tokenInfo = AccessTokenInfo.fromJson(map);
-    expect(tokenInfo.appId, map["appId"]);
+    // expect(tokenInfo.appId, map["appId"]);
     expect(tokenInfo.id, map["id"]);
-    expect(tokenInfo.expiresInMillis, map["expiresInMillis"]);
+    expect(tokenInfo.expiresIn, map["expires_in"]);
   });
 }

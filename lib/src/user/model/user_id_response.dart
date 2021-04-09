@@ -4,11 +4,11 @@ part 'user_id_response.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class UserIdResponse {
-  /// <nodoc>
-  UserIdResponse(this.id);
-
   /// current user's app user id
   int id;
+
+  /// <nodoc>
+  UserIdResponse(this.id);
 
   /// <nodoc>
   factory UserIdResponse.fromJson(Map<String, dynamic> json) =>
