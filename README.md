@@ -36,11 +36,11 @@ dependencies:
 
 Kakao Flutter SDK has following dependencies:
 
-1. [dio](https://pub.dev/packages/dio) (3.0.9)
-1. [json_annotation](https://pub.dev/packages/json_serializable) (3.3.0)
-1. [shared_preferences](https://pub.dev/packages/shared_preferences) (0.5.7)
-1. platform (2.2.1)
-1. package_info (0.4.0+18)
+1. [dio](https://pub.dev/packages/dio) (4.0.0)
+1. [json_annotation](https://pub.dev/packages/json_serializable) (4.0.1)
+1. [shared_preferences](https://pub.dev/packages/shared_preferences) (2.0.5)
+1. platform (3.0.0)
+1. package_info (2.0.0)
 
 Below dependencies were considered but were removed due to restrictions against our needs:
 
