@@ -7,9 +7,9 @@ class TalkProfile {
   @JsonKey(name: "nickName")
   String nickname;
   @JsonKey(name: "profileImageURL")
-  String profileImageUrl;
+  String? profileImageUrl;
   @JsonKey(name: "thumbnailURL")
-  String thumbnailUrl;
+  String? thumbnailUrl;
   String countryISO;
 
   /// <nodoc>
