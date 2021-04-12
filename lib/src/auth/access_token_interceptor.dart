@@ -20,45 +20,51 @@ class AccessTokenInterceptor extends Interceptor {
   AccessTokenStore _tokenStore;
 
   @override
-  onRequest(RequestOptions options) async {
+  void onRequest(
+      RequestOptions options, RequestInterceptorHandler handler) async {
     final token = await _tokenStore.fromStore();
     options.headers["Authorization"] = "Bearer ${token.accessToken}";
-    return options;
+    handler.next(options);
   }
 
   @override
-  onError(DioError err) async {
+  void onError(DioError err, ErrorInterceptorHandler handler) async {
     _dio.interceptors.errorLock.lock();
     if (!isRetryable(err)) {
       _dio.interceptors.errorLock.unlock();
-      return err;
+      handler.next(err);
+      return;
     }
     try {
       _dio.interceptors.requestLock.lock();
-      final options = err.response?.request;
-      final request = err.request;
+      final options = err.response?.requestOptions;
+      final request = err.requestOptions;
       final token = await _tokenStore.fromStore();
       final refreshToken = token.refreshToken;
-      if (options == null || request == null || refreshToken == null) {
-        return err;
+      if (options == null || refreshToken == null) {
+        handler.next(err);
+        return;
       }
 
       if (request.headers["Authorization"] != "Bearer ${token.accessToken}") {
         // tokens were refreshed by another API request.
         print(
             "just retry ${options.path} since access token was already refreshed by another request.");
-        return _dio.fetch(options);
+        await _dio.fetch(options);
+        return;
       }
       final tokenResponse = await _kauthApi.refreshAccessToken(refreshToken);
       await _tokenStore.toStore(tokenResponse);
       print("retry ${options.path} after refreshing access token.");
-      return _dio.fetch(options);
+      await _dio.fetch(options);
+      return;
     } catch (e) {
       if (e is KakaoAuthException ||
           e is KakaoApiException && e.code == ApiErrorCause.INVALID_TOKEN) {
         await _tokenStore.clear();
       }
-      return err;
+      handler.next(err);
+      return;
     } finally {
       _dio.interceptors.requestLock.unlock();
       _dio.interceptors.errorLock.unlock();
@@ -67,7 +73,7 @@ class AccessTokenInterceptor extends Interceptor {
 
   /// This can be overridden
   bool isRetryable(DioError err) =>
-      err.request?.baseUrl == "https://${KakaoContext.hosts.kapi}" &&
+      err.requestOptions.baseUrl == "https://${KakaoContext.hosts.kapi}" &&
       err.response != null &&
       err.response?.statusCode == 401;
 }

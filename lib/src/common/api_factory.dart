@@ -61,10 +61,9 @@ class ApiFactory {
   ///
   static KakaoException transformApiError(DioError e) {
     var response = e.response;
-    var request = e.request;
+    var request = e.requestOptions;
 
-    if (response == null || request == null)
-      return KakaoClientException(e.message);
+    if (response == null) return KakaoClientException(e.message);
     if (response.statusCode == 404) {
       return KakaoClientException(e.message);
     }
@@ -79,18 +78,18 @@ class ApiFactory {
   }
 
   /// DIO interceptor for App-key based API (Link, Local, Search, etc).
-  static Interceptor appKeyInterceptor =
-      InterceptorsWrapper(onRequest: (RequestOptions options) async {
+  static Interceptor appKeyInterceptor = InterceptorsWrapper(onRequest:
+      (RequestOptions options, RequestInterceptorHandler handler) async {
     var appKey = KakaoContext.clientId;
     options.headers["Authorization"] = "KakaoAK $appKey";
-    return options;
+    handler.next(options);
   });
 
   /// DIO interceptor for all Kakao API that requires KA header.
-  static Interceptor kaInterceptor =
-      InterceptorsWrapper(onRequest: (RequestOptions options) async {
+  static Interceptor kaInterceptor = InterceptorsWrapper(onRequest:
+      (RequestOptions options, RequestInterceptorHandler handler) async {
     var kaHeader = await KakaoContext.kaHeader;
     options.headers["KA"] = kaHeader;
-    return options;
+    handler.next(options);
   });
 }
