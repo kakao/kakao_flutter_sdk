@@ -1,4 +1,4 @@
-## 0.6.0
+## 0.6.1
 
 - Migrate to `Flutter 2.0 null-safety`
 - Update `dio` version to `4.0.0`
