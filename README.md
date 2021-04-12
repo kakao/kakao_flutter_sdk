@@ -96,7 +96,7 @@ KakaoContext.clientId = "${put your native app key here}"
 First, users have to get access token in order to call Kakao API. Access tokens are issued according to [OAuth 2.0 spec](https://oauth.net/2).
 
 1. Authenticate with Kakao Account
-1. User Agreemnet (skip if not necessary)
+1. User Agreement (skip if not necessary)
 1. Get Authorization Code (via redirect)
 1. Issue access token (via POST API)
 
@@ -195,9 +195,9 @@ void loginButtonClicked() async {
 
 It is up to you whether to use default browser or KakaoTalk for user login.
 
-- Default browser will prompt users with Kakao account login for the first time if they have no Kakao accoutn cookie in their default browser.
+- Default browser will prompt users with Kakao account login for the first time if they have no Kakao account cookie in their default browser.
 However, it wil reuse browser cookie in subsequent login attempts so that user does not have to reenter their email and passwords.
-- If you use KakaoTalk, users will encouter error when KakaoTalk is not installed (which means you have to deal with the error and retry with browser or notify users to do so).
+- If you use KakaoTalk, users will encounter error when KakaoTalk is not installed (which means you have to deal with the error and retry with browser or notify users to do so).
 
 
 Below example shows how you can divide user login logic depending on whether user has KakaoTalk installed or not.
@@ -381,7 +381,7 @@ await launchBrowserTab(uri);
 
 ### Automatic token refreshing
 
-Tokens are automatically refreshed on relveant api errors (ApiErrorCause.INVALID_TOKEN).
+Tokens are automatically refreshed on relevant api errors (ApiErrorCause.INVALID_TOKEN).
 
 ## Development Guide
 

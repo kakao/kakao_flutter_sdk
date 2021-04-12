@@ -1,4 +1,5 @@
 ## 0.6.0
+
 - Migrate to `Flutter 2.0 null-safety`
 - Update `dio` version to `4.0.0`
 - Update `json_annotation` version to `4.0.1`
@@ -11,16 +12,21 @@
 ## 0.6.0-beta.2
 
 - null safety migration.
+
 ## 0.6.0-beta.1
 
 - Update `platform` version to `3.0.0-nullsafety.2`.
+
 ## 0.5.4
+
 - Fix Android compile error.
 
 ## 0.5.3
+
 - Fix Android compile error.
 
 ## 0.5.2
+
 - Reformat all code with `dartfmt -w .`.
 
 ## 0.5.1
@@ -59,7 +65,7 @@
 
 ## 0.3.0
 
-- Release according to recent Kakao API udpate.
+- Release according to recent Kakao API update.
 - Add message send API to `TalkApi`. Also update `Friend` model to include `uuid` and `favorite` field.
 - Add live account profile data to `Account` and `groupUserToken` field to `User`.
 
@@ -74,7 +80,7 @@
 
 ## 0.2.1
 
-- Stabilize agains flutter `1.9.1`.
+- Stabilize against flutter `1.9.1`.
 - Update `dio` package to `2.2.1` and fix compile errors due to interface changes.
 
 ## 0.2.0
@@ -85,7 +91,7 @@
 
 ## 0.1.2
 
-- Remove meta package from expliciit dependency.
+- Remove meta package from explicit dependency.
 
 ## 0.1.1
 
