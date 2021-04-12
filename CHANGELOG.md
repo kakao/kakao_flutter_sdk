@@ -1,3 +1,13 @@
+## 0.6.0
+- Migrate to `Flutter 2.0 null-safety`
+- Update `dio` version to `4.0.0`
+- Update `json_annotation` version to `4.0.1`
+- Update `shared_preferences` version to `2.0.5`
+- Update `platform` version to `3.0.0`
+- Update `package_info` version to `2.0.0`
+- Rename model classes and fields based on `Kakao Developers's Android/iOS v2 SDK`
+- Add `hasToken` method of `AuthApi` public
+
 ## 0.6.0-beta.2
 
 - null safety migration.
