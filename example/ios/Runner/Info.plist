@@ -27,7 +27,7 @@
 			<string>kakao_rediect_uri</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>kakaodd4e9cb75815cbdf7d87ed721a659baf</string>
+				<string>kakao030ba7c59137629e86e8721eb1a22fd6</string>
 			</array>
 		</dict>
 	</array>
@@ -56,7 +56,7 @@
 	<false/>
   <key>LSApplicationQueriesSchemes</key>
   <array>
-      <string>kakaodd4e9cb75815cbdf7d87ed721a659baf</string>
+      <string>kakao030ba7c59137629e86e8721eb1a22fd6</string>
       <string>kakaokompassauth</string>
       <string>kakaolink</string>         
   </array>
