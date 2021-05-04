@@ -5,16 +5,16 @@ part 'story_profile.g.dart';
 @JsonSerializable(includeIfNull: false)
 class StoryProfile {
   @JsonKey(name: "nickName")
-  String nickname;
+  String? nickname;
   @JsonKey(name: "profileImageURL")
-  String profileImageUrl;
+  String? profileImageUrl;
   @JsonKey(name: "thumbnailURL")
-  String thumbnailUrl;
+  String? thumbnailUrl;
   @JsonKey(name: "bgImageURL")
-  String bgImageUrl;
-  String permalink;
-  String birthday;
-  String birthdayType;
+  String? bgImageUrl;
+  String? permalink;
+  String? birthday;
+  String? birthdayType;
 
   /// <nodoc>
   StoryProfile(this.nickname, this.profileImageUrl, this.thumbnailUrl,

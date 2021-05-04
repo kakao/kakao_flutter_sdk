@@ -7,7 +7,7 @@ part 'friends.g.dart';
 @JsonSerializable(
     fieldRename: FieldRename.snake, includeIfNull: false, explicitToJson: true)
 class Friends {
-  final List<Friend> elements;
+  final List<Friend>? elements;
   final int totalCount;
 
   /// Number of friends enrolled in favorites

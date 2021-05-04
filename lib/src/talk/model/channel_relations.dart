@@ -6,7 +6,7 @@ part 'channel_relations.g.dart';
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class ChannelRelations {
-  int userId;
+  int? userId;
   @JsonKey(name: "plus_friends")
   List<ChannelRelation> channels;
 

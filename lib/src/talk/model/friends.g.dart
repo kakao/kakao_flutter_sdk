@@ -20,7 +20,6 @@ Friends _$FriendsFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$FriendsToJson(Friends instance) {
   final val = <String, dynamic>{
-    'elements': instance.elements.map((e) => e.toJson()).toList(),
     'total_count': instance.totalCount,
   };
 
@@ -30,6 +29,13 @@ Map<String, dynamic> _$FriendsToJson(Friends instance) {
     }
   }
 
+  void writeNotNullList(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value.map((e) => e.toJson()).toList();
+    }
+  }
+
+  writeNotNullList('elements', instance.elements);
   writeNotNull('favorite_count', instance.favoriteCount);
   writeNotNull('before_url', instance.beforeUrl);
   writeNotNull('after_url', instance.afterUrl);
