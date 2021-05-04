@@ -18,4 +18,5 @@ Map<String, dynamic> _$AppServiceTermsToJson(AppServiceTerms instance) =>
     <String, dynamic>{
       'tag': instance.tag,
       'created_at': instance.createdAt.toIso8601String(),
+      'updated_at': instance.updatedAt.toIso8601String(),
     };

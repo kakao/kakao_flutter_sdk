@@ -8,8 +8,8 @@ part of 'friends.dart';
 
 Friends _$FriendsFromJson(Map<String, dynamic> json) {
   return Friends(
-    (json['elements'] as List<dynamic>)
-        .map((e) => Friend.fromJson(e as Map<String, dynamic>))
+    (json['elements'] as List<dynamic>?)
+        ?.map((e) => Friend.fromJson(e as Map<String, dynamic>))
         .toList(),
     json['total_count'] as int,
     json['favorite_count'] as int?,
@@ -19,9 +19,7 @@ Friends _$FriendsFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$FriendsToJson(Friends instance) {
-  final val = <String, dynamic>{
-    'total_count': instance.totalCount,
-  };
+  final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -29,13 +27,8 @@ Map<String, dynamic> _$FriendsToJson(Friends instance) {
     }
   }
 
-  void writeNotNullList(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value.map((e) => e.toJson()).toList();
-    }
-  }
-
-  writeNotNullList('elements', instance.elements);
+  writeNotNull('elements', instance.elements?.map((e) => e.toJson()).toList());
+  val['total_count'] = instance.totalCount;
   writeNotNull('favorite_count', instance.favoriteCount);
   writeNotNull('before_url', instance.beforeUrl);
   writeNotNull('after_url', instance.afterUrl);

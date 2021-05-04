@@ -12,7 +12,9 @@ UserServiceTerms _$UserServiceTermsFromJson(Map<String, dynamic> json) {
     (json['allowed_service_terms'] as List<dynamic>?)
         ?.map((e) => ServiceTerms.fromJson(e as Map<String, dynamic>))
         .toList(),
-  );
+  )..appServiceTerms = (json['app_service_terms'] as List<dynamic>?)
+      ?.map((e) => AppServiceTerms.fromJson(e as Map<String, dynamic>))
+      .toList();
 }
 
 Map<String, dynamic> _$UserServiceTermsToJson(UserServiceTerms instance) {
@@ -28,5 +30,7 @@ Map<String, dynamic> _$UserServiceTermsToJson(UserServiceTerms instance) {
 
   writeNotNull('allowed_service_terms',
       instance.allowedServiceTerms?.map((e) => e.toJson()).toList());
+  writeNotNull('app_service_terms',
+      instance.appServiceTerms?.map((e) => e.toJson()).toList());
   return val;
 }

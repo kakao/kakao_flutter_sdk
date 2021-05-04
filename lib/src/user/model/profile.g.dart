@@ -17,7 +17,7 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$ProfileToJson(Profile instance) {
   final val = <String, dynamic>{
-    'nickname': instance.nickname == null ? "" : instance.nickname,
+    'nickname': instance.nickname,
   };
 
   void writeNotNull(String key, dynamic value) {
