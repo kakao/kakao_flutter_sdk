@@ -26,8 +26,8 @@ void main() {
 
     TalkProfile profile = await _api.profile();
     expect(profile.nickname, map["nickName"]);
-    expect(profile.profileImageUrl.toString(), map["profileImageUrl"]);
-    expect(profile.thumbnailUrl.toString(), map["thumbnailUrl"]);
+    expect(profile.profileImageUrl.toString(), map["profileImageURL"]);
+    expect(profile.thumbnailUrl.toString(), map["thumbnailURL"]);
     expect(map["countryISO"], profile.countryISO);
     expect(true, profile.toJson() != null);
   });

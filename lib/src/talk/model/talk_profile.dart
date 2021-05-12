@@ -6,9 +6,9 @@ part 'talk_profile.g.dart';
 class TalkProfile {
   @JsonKey(name: "nickName")
   String? nickname;
-  @JsonKey(name: "profileImageUrl")
+  @JsonKey(name: "profileImageURL")
   String? profileImageUrl;
-  @JsonKey(name: "thumbnailUrl")
+  @JsonKey(name: "thumbnailURL")
   String? thumbnailUrl;
   String? countryISO;
 
