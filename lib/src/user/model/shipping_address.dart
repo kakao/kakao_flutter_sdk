@@ -8,7 +8,6 @@ part 'shipping_address.g.dart';
 class ShippingAddress {
   int id;
   String? name;
-  @JsonKey(name: "default")
   bool isDefault;
   @JsonKey(fromJson: Util.fromTimeStamp, toJson: Util.fromDateTime)
   DateTime updatedAt;

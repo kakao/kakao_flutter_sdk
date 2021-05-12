@@ -10,7 +10,7 @@ class Friend {
   final String uuid;
 
   /// Friend's nickname, used to display to users.
-  final String profileNickname;
+  final String? profileNickname;
 
   /// Friend's thumbnail, used to display to users.
   final String? profileThumbnailImage;

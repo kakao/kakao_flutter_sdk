@@ -6,7 +6,7 @@ part 'story_actor.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class StoryActor {
   final String displayName;
-  final String profileThumbnailUrl;
+  final String? profileThumbnailUrl;
 
   /// <nodoc>
   StoryActor(this.displayName, this.profileThumbnailUrl);

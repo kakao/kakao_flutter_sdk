@@ -7,6 +7,7 @@ import android.content.ServiceConnection
 import android.net.Uri
 import android.os.Bundle
 import java.lang.Exception
+import androidx.browser.customtabs.CustomTabsIntent
 
 /**
  * @author kevin.kang. Created on 2019-06-13..
@@ -62,8 +63,15 @@ class AuthCodeCustomTabsActivity : Activity() {
     try {
       customTabsConnection = CustomTabsCommonClient.openWithDefault(this, uri)
     } catch (e: Exception) {
-      KakaoFlutterSdkPlugin.redirectUriResult.error("EUNKNOWN", e.localizedMessage, null)
-      finish()
+
+      try {
+        CustomTabsIntent.Builder().enableUrlBarHiding().setShowTitle(true).build()
+              .launchUrl(this, uri)
+
+      } catch (e: Exception) {
+        KakaoFlutterSdkPlugin.redirectUriResult.error("EUNKNOWN", e.localizedMessage, null)
+        finish()
+      }
     }
   }
 

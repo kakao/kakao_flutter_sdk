@@ -9,12 +9,21 @@ part of 'story_actor.dart';
 StoryActor _$StoryActorFromJson(Map<String, dynamic> json) {
   return StoryActor(
     json['display_name'] as String,
-    json['profile_thumbnail_url'] as String,
+    json['profile_thumbnail_url'] as String?,
   );
 }
 
-Map<String, dynamic> _$StoryActorToJson(StoryActor instance) =>
-    <String, dynamic>{
-      'display_name': instance.displayName,
-      'profile_thumbnail_url': instance.profileThumbnailUrl,
-    };
+Map<String, dynamic> _$StoryActorToJson(StoryActor instance) {
+  final val = <String, dynamic>{
+    'display_name': instance.displayName,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('profile_thumbnail_url', instance.profileThumbnailUrl);
+  return val;
+}

@@ -5,12 +5,12 @@ part 'talk_profile.g.dart';
 @JsonSerializable(includeIfNull: false)
 class TalkProfile {
   @JsonKey(name: "nickName")
-  String nickname;
-  @JsonKey(name: "profileImageURL")
+  String? nickname;
+  @JsonKey(name: "profileImageUrl")
   String? profileImageUrl;
-  @JsonKey(name: "thumbnailURL")
+  @JsonKey(name: "thumbnailUrl")
   String? thumbnailUrl;
-  String countryISO;
+  String? countryISO;
 
   /// <nodoc>
   TalkProfile(

@@ -6,11 +6,11 @@ part 'story_image.g.dart';
 class StoryImage {
   /// <nodoc>
   StoryImage(this.xlarge, this.large, this.medium, this.small, this.original);
-  final String xlarge;
-  final String large;
-  final String medium;
-  final String small;
-  final String original;
+  final String? xlarge;
+  final String? large;
+  final String? medium;
+  final String? small;
+  final String? original;
 
   /// <nodoc>
   factory StoryImage.fromJson(Map<String, dynamic> json) =>

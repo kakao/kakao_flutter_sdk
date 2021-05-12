@@ -26,8 +26,8 @@ void main() {
 
     TalkProfile profile = await _api.profile();
     expect(profile.nickname, map["nickName"]);
-    expect(profile.profileImageUrl.toString(), map["profileImageURL"]);
-    expect(profile.thumbnailUrl.toString(), map["thumbnailURL"]);
+    expect(profile.profileImageUrl.toString(), map["profileImageUrl"]);
+    expect(profile.thumbnailUrl.toString(), map["thumbnailUrl"]);
     expect(map["countryISO"], profile.countryISO);
     expect(true, profile.toJson() != null);
   });
@@ -51,7 +51,7 @@ void main() {
     expect(res.afterUrl.toString(), map["after_url"].toString());
 
     List<dynamic> elements = map["elements"];
-    List<Friend> friends = res.elements;
+    List<Friend> friends = res.elements!;
     friends.asMap().forEach(
         (idx, friend) => expect(true, compareFriend(elements[idx], friend)));
     expect(true, res.toJson() != null);
