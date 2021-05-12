@@ -9,8 +9,8 @@ part of 'talk_profile.dart';
 TalkProfile _$TalkProfileFromJson(Map<String, dynamic> json) {
   return TalkProfile(
     json['nickName'] as String?,
-    json['profileImageUrl'] as String?,
-    json['thumbnailUrl'] as String?,
+    json['profileImageURL'] as String?,
+    json['thumbnailURL'] as String?,
     json['countryISO'] as String?,
   );
 }
@@ -25,8 +25,8 @@ Map<String, dynamic> _$TalkProfileToJson(TalkProfile instance) {
   }
 
   writeNotNull('nickName', instance.nickname);
-  writeNotNull('profileImageUrl', instance.profileImageUrl);
-  writeNotNull('thumbnailUrl', instance.thumbnailUrl);
+  writeNotNull('profileImageURL', instance.profileImageUrl);
+  writeNotNull('thumbnailURL', instance.thumbnailUrl);
   writeNotNull('countryISO', instance.countryISO);
   return val;
 }
