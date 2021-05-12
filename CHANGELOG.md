@@ -1,3 +1,7 @@
+## 0.6.3
+
+- Fix key of TalkProfile
+
 ## 0.6.2
 
 - Fix to login with a browser other than Chrome
