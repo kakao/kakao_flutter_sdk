@@ -1,3 +1,8 @@
+## 0.6.2
+
+- Fix to login with a browser other than Chrome
+- Update Model Nullability
+
 ## 0.6.1
 
 - Migrate to `Flutter 2.0 null-safety`
