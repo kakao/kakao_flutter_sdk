@@ -177,7 +177,7 @@ void main() {
       });
     });
   });
-  group("/v1/api/talk/plusfriends", () {
+  group("/v1/api/talk/channels", () {
     var map;
     late ChannelRelations res;
     setUp(() async {
@@ -188,11 +188,11 @@ void main() {
 
     tearDown(() async {
       expect(res.userId, map["user_id"]);
-      var elements = map["plus_friends"];
+      var elements = map["channels"];
       var friends = res.channels;
       friends.asMap().forEach((index, friend) {
         var element = elements[index];
-        expect(friend.uuid, element["plus_friend_uuid"]);
+        expect(friend.uuid, element["channel_uuid"]);
         expect(friend.relation, element["relation"]);
         expect(Util.dateTimeWithoutMillis(friend.updatedAt),
             element["updated_at"]);
@@ -208,7 +208,7 @@ void main() {
       var publicId = "_frxjem";
       _adapter.requestAssertions = (RequestOptions options) {
         var params = options.queryParameters;
-        expect(params["plus_friend_public_ids"], jsonEncode([publicId]));
+        expect(params["channel_public_ids"], jsonEncode([publicId]));
       };
       res = await _api.plusFriends([publicId]);
     });

@@ -8,8 +8,8 @@ part of 'channel_relation.dart';
 
 ChannelRelation _$ChannelRelationFromJson(Map<String, dynamic> json) {
   return ChannelRelation(
-    json['plus_friend_uuid'] as String,
-    json['plus_friend_public_id'] as String,
+    json['channel_uuid'] as String,
+    json['channel_public_id'] as String,
     json['relation'] as String,
     json['updated_at'] == null
         ? null
@@ -19,8 +19,8 @@ ChannelRelation _$ChannelRelationFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$ChannelRelationToJson(ChannelRelation instance) {
   final val = <String, dynamic>{
-    'plus_friend_uuid': instance.uuid,
-    'plus_friend_public_id': instance.publicId,
+    'channel_uuid': instance.uuid,
+    'channel_public_id': instance.publicId,
     'relation': instance.relation,
   };
 

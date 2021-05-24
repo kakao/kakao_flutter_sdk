@@ -62,10 +62,10 @@ class TalkApi {
 
   Future<ChannelRelations> plusFriends([List<String>? publicIds]) async {
     return ApiFactory.handleApiError(() async {
-      Response response = await _dio.get("/v1/api/talk/plusfriends",
+      Response response = await _dio.get("/v1/api/talk/channels",
           queryParameters: publicIds == null
               ? {}
-              : {"plus_friend_public_ids": jsonEncode(publicIds)});
+              : {"channel_public_ids": jsonEncode(publicIds)});
       return ChannelRelations.fromJson(response.data);
     });
   }

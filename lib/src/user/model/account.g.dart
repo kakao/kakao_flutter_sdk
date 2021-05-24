@@ -44,7 +44,11 @@ Account _$AccountFromJson(Map<String, dynamic> json) {
     json['phone_number'] as String?,
     json['is_korean_needs_agreement'] as bool?,
     json['is_korean'] as bool?,
-  );
+  )
+    ..profileNicknameNeedsAgreement =
+        json['profile_nickname_needs_agreement'] as bool?
+    ..profileImageNeedsAgreement =
+        json['profile_image_needs_agreement'] as bool?;
 }
 
 Map<String, dynamic> _$AccountToJson(Account instance) {
@@ -57,6 +61,10 @@ Map<String, dynamic> _$AccountToJson(Account instance) {
   }
 
   writeNotNull('profile_needs_agreement', instance.profileNeedsAgreement);
+  writeNotNull('profile_nickname_needs_agreement',
+      instance.profileNicknameNeedsAgreement);
+  writeNotNull(
+      'profile_image_needs_agreement', instance.profileImageNeedsAgreement);
   writeNotNull('profile', instance.profile?.toJson());
   writeNotNull('email_needs_agreement', instance.emailNeedsAgreement);
   writeNotNull('is_email_valid', instance.isEmailValid);

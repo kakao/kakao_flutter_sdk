@@ -7,7 +7,6 @@ part 'channel_relations.g.dart';
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class ChannelRelations {
   int? userId;
-  @JsonKey(name: "plus_friends")
   List<ChannelRelation> channels;
 
   /// <nodoc>

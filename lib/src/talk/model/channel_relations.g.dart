@@ -9,7 +9,7 @@ part of 'channel_relations.dart';
 ChannelRelations _$ChannelRelationsFromJson(Map<String, dynamic> json) {
   return ChannelRelations(
     json['user_id'] as int?,
-    (json['plus_friends'] as List<dynamic>)
+    (json['channels'] as List<dynamic>)
         .map((e) => ChannelRelation.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
@@ -25,6 +25,6 @@ Map<String, dynamic> _$ChannelRelationsToJson(ChannelRelations instance) {
   }
 
   writeNotNull('user_id', instance.userId);
-  val['plus_friends'] = instance.channels.map((e) => e.toJson()).toList();
+  val['channels'] = instance.channels.map((e) => e.toJson()).toList();
   return val;
 }
