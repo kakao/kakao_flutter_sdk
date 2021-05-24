@@ -10,6 +10,8 @@ part 'account.g.dart';
 /// Kakao account information.
 class Account {
   bool? profileNeedsAgreement;
+  bool? profileNicknameNeedsAgreement;
+  bool? profileImageNeedsAgreement;
   Profile? profile;
 
   bool? emailNeedsAgreement;
