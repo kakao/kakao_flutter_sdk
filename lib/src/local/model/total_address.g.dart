@@ -13,7 +13,9 @@ TotalAddress _$TotalAddressFromJson(Map<String, dynamic> json) {
     stringToDouble(json['x']),
     stringToDouble(json['y']),
     Address.fromJson(json['address'] as Map<String, dynamic>),
-    RoadAddress.fromJson(json['road_address'] as Map<String, dynamic>),
+    json['road_address'] == null
+        ? null
+        : RoadAddress.fromJson(json['road_address'] as Map<String, dynamic>),
   );
 }
 
@@ -32,7 +34,7 @@ Map<String, dynamic> _$TotalAddressToJson(TotalAddress instance) {
   writeNotNull('address_name', instance.addressName);
   writeNotNull('address_type', _$AddressTypeEnumMap[instance.addressType]);
   val['address'] = instance.address;
-  val['road_address'] = instance.roadAddress;
+  writeNotNull('road_address', instance.roadAddress);
   return val;
 }
 

@@ -12,7 +12,7 @@ class TotalAddress extends Coord {
   final AddressType? addressType;
 
   final Address address;
-  final RoadAddress roadAddress;
+  final RoadAddress? roadAddress;
 
   TotalAddress(this.addressName, this.addressType, double x, double y,
       this.address, this.roadAddress)
