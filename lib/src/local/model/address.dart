@@ -35,9 +35,6 @@ class Address extends NullableCoord {
   final String mainAddressNo;
   final String subAddressNo;
 
-  /// deprecated
-  final String zipCode;
-
   Address(
       this.addressName,
       this.region1depthName,
@@ -49,7 +46,6 @@ class Address extends NullableCoord {
       this.mountainYn,
       this.mainAddressNo,
       this.subAddressNo,
-      this.zipCode,
       double? x,
       double? y)
       : super(x, y);

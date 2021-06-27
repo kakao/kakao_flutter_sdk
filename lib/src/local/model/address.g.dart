@@ -18,7 +18,6 @@ Address _$AddressFromJson(Map<String, dynamic> json) {
     json['mountain_yn'] as String,
     json['main_address_no'] as String,
     json['sub_address_no'] as String,
-    json['zip_code'] as String,
     stringToNullableDouble(json['x']),
     stringToNullableDouble(json['y']),
   );
@@ -45,6 +44,5 @@ Map<String, dynamic> _$AddressToJson(Address instance) {
   val['mountain_yn'] = instance.mountainYn;
   val['main_address_no'] = instance.mainAddressNo;
   val['sub_address_no'] = instance.subAddressNo;
-  val['zip_code'] = instance.zipCode;
   return val;
 }
