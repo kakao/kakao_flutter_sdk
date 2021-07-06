@@ -36,6 +36,14 @@ class UserApi {
     await AccessTokenStore.instance.toStore(token);
   }
 
+  /// Displays a consent screen requesting consent for personal information and access rights consent items that the user has not yet agreed to,
+  /// and issues an updated OAuthToken with the consent items when the user agrees.
+  Future<void> loginWithNewScopes(List<String> scopes) async {
+    final authCode = await AuthCodeClient.instance.requestWithAgt(scopes);
+    final token = await AuthApi.instance.issueAccessToken(authCode);
+    await AccessTokenStore.instance.toStore(token);
+  }
+
   /// Fetches current user's information.
   Future<User> me() async {
     return ApiFactory.handleApiError(() async {
