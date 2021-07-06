@@ -29,7 +29,7 @@ Specify Kakao SDK dependency as below in your `pubspec.yaml`.
 
 ```yaml
 dependencies:
-  kakao_flutter_sdk: ^0.6.3
+  kakao_flutter_sdk: ^0.6.4
 ```
 
 ### dependencies

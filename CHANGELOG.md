@@ -1,3 +1,10 @@
+## 0.6.4
+
+- Add fields `profileNicknameNeedsAgreement` and `profileImageNeedsAgreement` in `Account`
+- Modify string value (url, key) regarding channel api
+- Modify field type in `Address`
+- Make `loginWithKakaoTalk()` and `loginWithKakaoAccount()` in `UserApi`
+
 ## 0.6.3
 
 - Fix key of TalkProfile

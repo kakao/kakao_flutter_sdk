@@ -3,7 +3,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'kakao_flutter_sdk'
-  s.version          = '0.6.3'
+  s.version          = '0.6.4'
   s.summary          = 'Flutter SDK for Kakao API'
   s.description      = <<-DESC
 A new flutter plugin project.
