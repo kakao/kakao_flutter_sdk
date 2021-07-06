@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
@@ -96,6 +97,19 @@ class UserApi {
     return ApiFactory.handleApiError(() async {
       Response response = await _dio.get("/v1/user/service/terms");
       return UserServiceTerms.fromJson(response.data);
+    });
+  }
+
+  /// Save or modify user's additional information provided in User class.
+  ///
+  /// Check the savable key name in Kakao Developers > Kakao Login > User Properties menu.
+  /// The nickname, profile_image, and thumbnail_image values ​​that are saved by default when connecting the app can be overwritten,
+  /// and information can be saved with the key name by adding a new column.
+  Future<void> updateProfile(Map<String, String> properties) {
+    return ApiFactory.handleApiError(() async {
+      Response response = await _dio.post('/v1/user/update_profile',
+          data: {'properties': jsonEncode(properties)});
+      print(response);
     });
   }
 }
