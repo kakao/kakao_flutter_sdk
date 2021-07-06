@@ -82,10 +82,12 @@ class AuthCodeClient {
   }
 
   Future<String> _openKakaoTalk(String clientId, String redirectUri) async {
-    final redirectUriWithParams = await _channel.invokeMethod<String>("authorizeWithTalk",
+    final redirectUriWithParams = await _channel.invokeMethod<String>(
+        "authorizeWithTalk",
         {"client_id": clientId, "redirect_uri": redirectUri});
-        if (redirectUriWithParams != null) return redirectUriWithParams;
-        throw KakaoClientException("OAuth 2.0 redirect uri was null, which should not happen.");
+    if (redirectUriWithParams != null) return redirectUriWithParams;
+    throw KakaoClientException(
+        "OAuth 2.0 redirect uri was null, which should not happen.");
   }
 
   String _platformKey() {
@@ -98,9 +100,9 @@ class AuthCodeClient {
     return KakaoContext.javascriptClientId;
   }
 
-  // String _platformRedirectUri() {
-  //   if (kIsWeb) {
-  //     return "${html.win}"
-  //   }
-  // }
+// String _platformRedirectUri() {
+//   if (kIsWeb) {
+//     return "${html.win}"
+//   }
+// }
 }
