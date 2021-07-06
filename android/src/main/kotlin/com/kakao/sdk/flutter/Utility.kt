@@ -13,10 +13,10 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.provider.Settings
 import android.util.Base64
+import android.util.*
 import java.lang.IllegalStateException
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
-import java.util.*
 
 /**
  * @author kevin.kang. Created on 2019-06-07..
@@ -89,6 +89,11 @@ object Utility {
   fun isKakaoTalkInstalled(context: Context): Boolean {
     return isPackageInstalled(context, "com.kakao.talk") ||
         isPackageInstalled(context, "com.kakao.onetalk")
+  }
+
+  fun isKakaoNaviInstalled(context: Context): Boolean {
+    return isPackageInstalled(context, "com.locnall.KimGiSa") ||
+            isPackageInstalled(context, "com.lguplus.navi")
   }
 
   private fun isPackageInstalled(context: Context, packageName: String): Boolean {

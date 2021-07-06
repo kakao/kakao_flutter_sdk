@@ -44,6 +44,9 @@ class KakaoFlutterSdkPlugin(private val registrar: Registrar) : MethodCallHandle
       call.method == "isKakaoTalkInstalled" -> {
         result.success(Utility.isKakaoTalkInstalled(registrar.context()))
       }
+      call.method == "isKakaoNaviInstalled" -> {
+        result.success(Utility.isKakaoNaviInstalled(registrar.context()))
+      }
       call.method == "launchKakaoTalk" -> {
         if (!Utility.isKakaoTalkInstalled(registrar.context())) {
           result.success(false)
