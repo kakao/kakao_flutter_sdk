@@ -105,8 +105,8 @@ class TalkProfileBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return UserAccountsDrawerHeader(
-        accountName: Text(_profile.nickname),
-        accountEmail: Text(_profile.countryISO),
+        accountName: Text(_profile.nickname ?? ""),
+        accountEmail: Text(_profile.countryISO ?? ""),
         currentAccountPicture: CircleAvatar(
             radius: 40,
             backgroundImage: _profile.thumbnailUrl != null &&

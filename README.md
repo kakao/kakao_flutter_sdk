@@ -29,7 +29,7 @@ Specify Kakao SDK dependency as below in your `pubspec.yaml`.
 
 ```yaml
 dependencies:
-  kakao_flutter_sdk: ^0.6.3
+  kakao_flutter_sdk: ^0.6.4
 ```
 
 ### dependencies
@@ -92,6 +92,34 @@ KakaoContext.clientId = "${put your native app key here}"
 ```
 
 ### Kakao Login
+
+Now, you can use method `loginWithKakaoTalk()` and `loginWithKakaoAccount()` in `UserApi`.
+If you use these methods, you don't need to implement codes which is getting authorization code and getting access token.
+If you want to use `loginWithKakaoAccount()`, Go to 'Via browser' and set 'For Android' and 'For iOS'.
+
+```dart
+// login with KakaoTalk (0.6.4 ~ )
+void loginButtonClicked() async {
+  try {
+    await UserApi.instance.loginWithKakaoTalk();
+    // perform actions after login
+  } catch (e) {
+    print('error on login: $e');
+  }
+}
+```
+
+```dart
+// login with KakaoAccount (0.6.4 ~ )
+void loginButtonClicked() async {
+  try {
+    await UserApi.instance.loginWithKakaoAccount();
+    // perform actions after login
+  } catch (e) {
+    print('error on login: $e');
+  }
+}
+```
 
 First, users have to get access token in order to call Kakao API. Access tokens are issued according to [OAuth 2.0 spec](https://oauth.net/2).
 
@@ -204,9 +232,22 @@ Below example shows how you can divide user login logic depending on whether use
 
 ```dart
 import 'package:kakao_flutter_sdk/common.dart'; // import utility methods
+import 'package:kakao_flutter_sdk/user.dart'; // must be imported if version is 0.6.4 or higher
 
 ...
-  login() async {
+  // login sample code (0.6.4 ~ ) 
+  void login() async {
+    try {
+      final installed = await isKakaoTalkInstalled();
+      installed ? await UserApi.instance.loginWithKakaoTalk() : await UserApi.instance.loginWithKakaoAccount();
+      // perform actions after login
+    } catch (e) {
+      
+    }
+  }
+
+  // login sample code ( ~ 0.6.3)
+  void login() async {
     try {
       final installed = await isKakaoTalkInstalled();
       final authCode = installed ? await AuthCodeClient.instance.requestWithTalk() : await AuthCodeClient.instance.request();
@@ -215,10 +256,8 @@ import 'package:kakao_flutter_sdk/common.dart'; // import utility methods
     } on kakaoClientException catch(e) {
 
     }
-
   }
 ...
-
 ```
 
 

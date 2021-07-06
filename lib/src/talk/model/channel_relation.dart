@@ -4,9 +4,9 @@ part 'channel_relation.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class ChannelRelation {
-  @JsonKey(name: "plus_friend_uuid")
+  @JsonKey(name: "channel_uuid")
   String uuid;
-  @JsonKey(name: "plus_friend_public_id")
+  @JsonKey(name: "channel_public_id")
   String publicId;
   String relation;
   DateTime? updatedAt;

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/src/common/api_factory.dart';
 
 import 'model/access_token_info.dart';
@@ -17,6 +18,30 @@ class UserApi {
 
   /// default instance SDK provides.
   static final UserApi instance = UserApi(ApiFactory.authApi);
+
+  /// Login with KakaoTalk.
+  /// Authenticate the user with a Kakao account connected to KakaoTalk and issue OAuthToken
+  Future<void> loginWithKakaoTalk() async {
+    try {
+      final authCode = await AuthCodeClient.instance.requestWithTalk();
+      final token = await AuthApi.instance.issueAccessToken(authCode);
+      AccessTokenStore.instance.toStore(token);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /// Login with KakaoAccount.
+  /// Authenticate the user with a Kakao account cookie in default web browser(CustomTabs) and issue OAuthToken
+  Future<void> loginWithKakaoAccount() async {
+    try {
+      final authCode = await AuthCodeClient.instance.request();
+      final token = await AuthApi.instance.issueAccessToken(authCode);
+      AccessTokenStore.instance.toStore(token);
+    } catch (e) {
+      throw e;
+    }
+  }
 
   /// Fetches current user's information.
   Future<User> me() async {

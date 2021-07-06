@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/common.dart';
-import 'search_bloc/bloc.dart';
-import 'package:bloc/bloc.dart';
+import 'package:kakao_flutter_sdk/user.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -34,16 +32,6 @@ class _LoginState extends State<LoginScreen> {
 
   bool _isKakaoTalkInstalled = true;
 
-  _issueAccessToken(String authCode) async {
-    try {
-      var token = await AuthApi.instance.issueAccessToken(authCode);
-      AccessTokenStore.instance.toStore(token);
-      Navigator.of(context).pushReplacementNamed("/main");
-    } catch (e) {
-      print("error on issuing access token: $e");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     isKakaoTalkInstalled();
@@ -66,19 +54,19 @@ class _LoginState extends State<LoginScreen> {
 
   _loginWithKakao() async {
     try {
-      var code = await AuthCodeClient.instance.request();
-      await _issueAccessToken(code);
+      await UserApi.instance.loginWithKakaoAccount();
+      Navigator.of(context).pushReplacementNamed("/main");
     } catch (e) {
-      print(e);
+      print('error on login: $e');
     }
   }
 
   _loginWithTalk() async {
     try {
-      var code = await AuthCodeClient.instance.requestWithTalk();
-      await _issueAccessToken(code);
+      await UserApi.instance.loginWithKakaoTalk();
+      Navigator.of(context).pushReplacementNamed("/main");
     } catch (e) {
-      print(e);
+      print('error on login: $e');
     }
   }
 }

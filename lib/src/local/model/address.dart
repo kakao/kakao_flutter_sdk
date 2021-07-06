@@ -36,7 +36,7 @@ class Address extends NullableCoord {
   final String subAddressNo;
 
   /// deprecated
-  final String zipCode;
+  final String? zipCode;
 
   Address(
       this.addressName,
