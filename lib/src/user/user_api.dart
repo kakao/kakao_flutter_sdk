@@ -112,4 +112,13 @@ class UserApi {
       print(response);
     });
   }
+
+  /// Request app connection for user with app connection status **PREREGISTER**. **Auto Link** Used by apps with disabled settings.
+  Future<void> signup({Map<String, String>? properties}) {
+    return ApiFactory.handleApiError(() async {
+      Response response = await _dio.post('/v1/user/signup',
+          data: {'properties': jsonEncode(properties)});
+      print(response);
+    });
+  }
 }
