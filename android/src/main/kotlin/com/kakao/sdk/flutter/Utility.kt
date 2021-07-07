@@ -2,20 +2,16 @@ package com.kakao.sdk.flutter
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.pm.LabeledIntent
-import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Parcelable
 import android.provider.Settings
 import android.util.Base64
-import java.lang.IllegalStateException
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
+import java.util.*
 
 /**
  * @author kevin.kang. Created on 2019-06-07..
@@ -99,7 +95,6 @@ object Utility {
     return context.packageManager.getLaunchIntentForPackage(packageName) != null
   }
 
-
   @SuppressLint("HardwareIds")
   @Throws(NoSuchAlgorithmException::class)
   fun androidId(context: Context): ByteArray {
@@ -114,6 +109,4 @@ object Utility {
       ("xxxx" + Build.PRODUCT + "a23456789012345bcdefg").toByteArray()
     }
   }
-
-
 }
