@@ -61,6 +61,16 @@ class LinkApi {
     });
   }
 
+  /// Upload remote image to Kakao Image Server to use as KakaoLink content image.
+  Future<ImageUploadResult> scrapImage(String imageUrl,
+      {bool secureResource = true}) {
+    return ApiFactory.handleApiError(() async {
+      Response response = await dio.post('/v2/api/talk/message/image/scrap',
+          data: {'image_url': imageUrl, 'secure_resource': secureResource});
+      return ImageUploadResult.fromJson(response.data);
+    });
+  }
+
   Future<LinkResult> _validate(String postfix, Map<String, dynamic> data) {
     return ApiFactory.handleApiError(() async {
       Response res = await dio.get("/v2/api/kakaolink/talk/template/$postfix",

@@ -136,6 +136,12 @@ class LinkClient {
     return await api.uploadImage(image, secureResource: secureResource);
   }
 
+  /// Upload remote image to Kakao Image Server to use as KakaoLink content image.
+  Future<ImageUploadResult> scrapImage(String imageUrl,
+      {bool secureResource = true}) async {
+    return await api.scrapImage(imageUrl, secureResource: secureResource);
+  }
+
   Future<int> _attachmentSize(LinkResult response,
       {String? clientId, Map<String, String>? serverCallbackArgs}) async {
     final templateMsg = response.templateMsg;
