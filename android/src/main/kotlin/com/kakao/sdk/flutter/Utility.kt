@@ -13,7 +13,6 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.provider.Settings
 import android.util.Base64
-import android.util.*
 import java.lang.IllegalStateException
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
