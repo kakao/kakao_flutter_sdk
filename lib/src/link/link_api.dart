@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk/src/common/api_factory.dart';
+import 'package:kakao_flutter_sdk/src/link/model/image_upload_result.dart';
 import 'package:kakao_flutter_sdk/src/link/model/link_result.dart';
 import 'package:kakao_flutter_sdk/src/template/default_template.dart';
 
@@ -41,6 +43,22 @@ class LinkApi {
     };
     params.removeWhere((k, v) => v == null);
     return _validate("scrap", params);
+  }
+
+  /// Upload the local image to the Kakao Image Server to use it as a KakaoLink content image.
+  Future<ImageUploadResult> uploadImage(File image,
+      {bool secureResource = true}) {
+    return ApiFactory.handleApiError(() async {
+      var formData = FormData();
+      var file = await MultipartFile.fromFile(image.path,
+          filename: image.path.split("/").last);
+      formData.files.add(MapEntry('file', file));
+      formData.fields
+          .add(MapEntry('secure_resource', secureResource.toString()));
+      Response response =
+          await dio.post('/v2/api/talk/message/image/upload', data: formData);
+      return ImageUploadResult.fromJson(response.data);
+    });
   }
 
   Future<LinkResult> _validate(String postfix, Map<String, dynamic> data) {
