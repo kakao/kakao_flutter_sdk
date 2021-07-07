@@ -38,6 +38,12 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
             return
         }
         result(UIApplication.shared.canOpenURL(talkUrl))
+    case "isKakaoNaviInstalled":
+         guard let naviUrl = URL(string: "kakaonavi-sdk://") else {
+             result(false)
+             return
+         }
+         result(UIApplication.shared.canOpenURL(naviUrl))
     case "launchKakaoTalk":
         let args = call.arguments as! Dictionary<String, String>
         let uri = args["uri"]
