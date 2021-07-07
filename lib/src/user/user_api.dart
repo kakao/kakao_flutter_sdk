@@ -6,6 +6,7 @@ import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/src/common/api_factory.dart';
 
 import 'model/access_token_info.dart';
+import 'model/scope_info.dart';
 import 'model/shipping_addresses.dart';
 import 'model/user.dart';
 import 'model/user_id_response.dart';
@@ -119,6 +120,15 @@ class UserApi {
       Response response = await _dio.post('/v1/user/signup',
           data: {'properties': jsonEncode(properties)});
       print(response);
+    });
+  }
+
+  /// Returns a list of details of a user's consent item.
+  Future<ScopeInfo> scopes({List<String>? scopes}) {
+    return ApiFactory.handleApiError(() async {
+      Response response = await _dio.get('/v2/user/scopes',
+          queryParameters: {'scopes': jsonEncode(scopes)});
+      return ScopeInfo.fromJson(response.data);
     });
   }
 }
