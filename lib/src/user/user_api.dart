@@ -131,4 +131,13 @@ class UserApi {
       return ScopeInfo.fromJson(response.data);
     });
   }
+
+  /// Revoke consent to a specific consent item of the user and returns a detailed list of remaining consent items.
+  Future<ScopeInfo> revokeScopes(List<String> scopes) {
+    return ApiFactory.handleApiError(() async {
+      Response response = await _dio
+          .post('/v2/user/revoke/scopes', data: {'scopes': jsonEncode(scopes)});
+      return ScopeInfo.fromJson(response.data);
+    });
+  }
 }
