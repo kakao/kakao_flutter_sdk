@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk/common.dart';
@@ -28,15 +30,15 @@ class NaviApi {
     final naviParams =
         KakaoNaviParams(location, option: option, viaList: viaList);
     final extras = {
-      'appPkg': KakaoContext.packageName,
-      'keyHash': KakaoContext.origin,
-      'KA': KakaoContext.kaHeader
+      'appPkg': await KakaoContext.packageName,
+      'keyHash': await KakaoContext.origin,
+      'KA': await KakaoContext.kaHeader
     };
     final params = {
-      'param': naviParams.toString(),
+      'param': jsonEncode(naviParams).toString(),
       'apiver': '1.0',
       'appkey': KakaoContext.clientId,
-      'extras': extras.toString()
+      'extras': jsonEncode(extras).toString()
     };
     return Uri.https(NAVI_HOSTS, 'navigate.html', params);
   }
