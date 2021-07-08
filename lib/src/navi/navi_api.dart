@@ -25,7 +25,7 @@ class NaviApi {
     return isInstalled;
   }
 
-  Future<Uri?> navigateWebUrl(Location location,
+  Future<Uri> navigateWebUrl(Location location,
       {NaviOption? option, List<Location>? viaList}) async {
     final naviParams =
         KakaoNaviParams(location, option: option, viaList: viaList);
@@ -35,10 +35,10 @@ class NaviApi {
       'KA': await KakaoContext.kaHeader
     };
     final params = {
-      'param': jsonEncode(naviParams).toString(),
+      'param': jsonEncode(naviParams),
       'apiver': '1.0',
       'appkey': KakaoContext.clientId,
-      'extras': jsonEncode(extras).toString()
+      'extras': jsonEncode(extras)
     };
     return Uri.https(NAVI_HOSTS, 'navigate.html', params);
   }
