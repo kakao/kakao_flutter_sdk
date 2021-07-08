@@ -28,6 +28,8 @@ class NaviApi {
     return isInstalled;
   }
 
+  /// Returns the web directions URL.
+  /// If you request the obtained URL to your browser, you can guide the way even in an environment where the KakaoNavi app is not installed.
   Future<Uri> navigateWebUrl(Location location,
       {NaviOption? option, List<Location>? viaList}) async {
     final naviParams =
