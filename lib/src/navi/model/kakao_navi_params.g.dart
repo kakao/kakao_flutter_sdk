@@ -9,10 +9,10 @@ part of 'kakao_navi_params.dart';
 KakaoNaviParams _$KakaoNaviParamsFromJson(Map<String, dynamic> json) {
   return KakaoNaviParams(
     Location.fromJson(json['destination'] as Map<String, dynamic>),
-    json['option'] == null
+    option: json['option'] == null
         ? null
         : NaviOption.fromJson(json['option'] as Map<String, dynamic>),
-    (json['via_list'] as List<dynamic>?)
+    viaList: (json['via_list'] as List<dynamic>?)
         ?.map((e) => Location.fromJson(e as Map<String, dynamic>))
         .toList(),
   );

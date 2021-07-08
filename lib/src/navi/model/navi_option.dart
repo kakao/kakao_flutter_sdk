@@ -8,7 +8,7 @@ class NaviOption {
   final VehicleType? vehicleType;
 
   @JsonKey(name: "rpoption")
-  final RpOption rpOption;
+  final RpOption? rpOption;
 
   final bool? routeInfo;
 
@@ -22,7 +22,15 @@ class NaviOption {
 
   final String? returnUri;
 
-  NaviOption(this.coordType, this.vehicleType, this.rpOption, this.routeInfo, this.startX, this.startY, this.startAngle, this.returnUri);
+  NaviOption(
+      {this.coordType,
+      this.vehicleType,
+      this.rpOption,
+      this.routeInfo,
+      this.startX,
+      this.startY,
+      this.startAngle,
+      this.returnUri});
 
   /// <nodoc>
   Map<String, dynamic> toJson() => _$NaviOptionToJson(this);
@@ -42,7 +50,6 @@ enum CoordType {
 }
 
 enum RpOption {
-
   /// Fastest route
   @JsonValue("1")
   FAST, // 빠른길
@@ -77,7 +84,6 @@ enum RpOption {
 }
 
 enum VehicleType {
-
   /// 1종 (승용차/소형승합차/소형화물화)
   @JsonValue("1")
   FIRST,

@@ -10,11 +10,10 @@ class Location {
   @JsonKey(name: "rpflag")
   final String? rpFlag;
 
-  Location(this.name, this.x, this.y, this.rpFlag);
+  Location(this.name, this.x, this.y, {this.rpFlag});
 
   /// <nodoc>
   Map<String, dynamic> toJson() => _$LocationToJson(this);
-
 
   /// <nodoc>
   factory Location.fromJson(Map<String, dynamic> json) =>

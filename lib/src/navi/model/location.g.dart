@@ -11,7 +11,7 @@ Location _$LocationFromJson(Map<String, dynamic> json) {
     json['name'] as String,
     json['x'] as String,
     json['y'] as String,
-    json['rpflag'] as String?,
+    rpFlag: json['rpflag'] as String?,
   );
 }
 
