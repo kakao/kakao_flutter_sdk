@@ -47,6 +47,7 @@ class NaviApi {
       'appkey': KakaoContext.clientId,
       'extras': jsonEncode(extras)
     };
-    return Uri.https(NAVI_HOSTS, 'navigate.html', params);
+    final url = Uri.https(NAVI_HOSTS, 'navigate.html', params);
+    return Uri.parse(url.toString().replaceAll('+', '%20'));
   }
 }
