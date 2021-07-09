@@ -48,6 +48,9 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
         let args = call.arguments as! Dictionary<String, String>
         let uri = args["uri"]
         launchKakaoTalk(uri: uri!, result: result)
+    case "isKakaoLinkAvailable":
+        let isKakaoLinkAvailable = UIApplication.shared.canOpenURL(URL(string:"kakaolink://send")!)
+        result(isKakaoLinkAvailable)
     default:
       result(FlutterMethodNotImplemented)
     }

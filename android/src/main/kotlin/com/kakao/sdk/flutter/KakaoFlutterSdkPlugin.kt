@@ -59,6 +59,12 @@ class KakaoFlutterSdkPlugin(private val registrar: Registrar) : MethodCallHandle
         registrar.activity().startActivity(intent)
         result.success(true)
       }
+      call.method == "isKakaoLinkAvailable" -> {
+        val uriBuilder = Uri.Builder().scheme("kakaolink").authority("send")
+        val linkIntentClient = IntentResolveClient.instance
+        val isKakaoLinkAvailable = linkIntentClient.resolveTalkIntent(registrar.context(), Intent(Intent.ACTION_VIEW, uriBuilder.build())) != null
+        result.success(isKakaoLinkAvailable)
+      }
       else -> result.notImplemented()
     }
   }

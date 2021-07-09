@@ -19,8 +19,14 @@ class LinkClient {
   LinkApi api;
   Platform _platform;
 
+  static final MethodChannel _channel = MethodChannel("kakao_flutter_sdk");
+
   /// singleton instance of this class.
   static final LinkClient instance = LinkClient(LinkApi.instance);
+
+  Future<bool> isKakaoLinkAvailable() async {
+    return await _channel.invokeMethod('isKakaoLinkAvailable') ?? false;
+  }
 
   /// Send KakaoLink messages with custom templates.
   Future<Uri> customWithWeb(int templateId,
