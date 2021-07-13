@@ -56,7 +56,7 @@ object Utility {
         Constants.OS, Build.VERSION.SDK_INT,
         Constants.LANG, Locale.getDefault().language.toLowerCase(), Locale.getDefault().country.toUpperCase(),
         Constants.ORIGIN, getKeyHash(context),
-        Constants.DEVICE, Build.MODEL.replace("\\s".toRegex(), "-").toUpperCase(),
+        Constants.DEVICE, Build.MODEL.replace("[^\\p{ASCII}]".toRegex(), "*").replace("\\s".toRegex(), "-").toUpperCase(),
         Constants.ANDROID_PKG, context.packageName,
         Constants.APP_VER, context.packageManager.getPackageInfo(context.packageName, 0).versionName
     )
