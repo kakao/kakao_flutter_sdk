@@ -11,8 +11,6 @@ import 'package:kakao_flutter_sdk/src/link/model/link_result.dart';
 import 'package:kakao_flutter_sdk/src/template/default_template.dart';
 import 'package:platform/platform.dart';
 
-const _channel = MethodChannel("kakao_flutter_sdk");
-
 class LinkClient {
   LinkClient(this.api, {Platform? platform})
       : _platform = platform ?? LocalPlatform();
