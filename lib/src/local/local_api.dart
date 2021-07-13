@@ -17,11 +17,12 @@ import 'package:kakao_flutter_sdk/src/search/model/search_meta.dart';
 ///
 /// see https://developers.kakao.com/docs/latest/ko/local/dev-guide
 class LocalApi {
-  LocalApi(this._dio);
   final Dio _dio;
 
   /// singleton instance for this class
   static final instance = LocalApi(ApiFactory.dapi);
+
+  LocalApi(this._dio);
 
   /// Provides coordinates and full address information (both 도로명 and 지번) with the given address.
   Future<LocalEnvelope<SearchMeta, TotalAddress>> address(String query,
@@ -61,7 +62,7 @@ class LocalApi {
       "x": x,
       "y": y,
       "input_coord": inputCoord == null ? null : describeEnum(inputCoord),
-      "output_coord": outputCoord == null ? null : describeEnum(outputCoord)
+      "output_coord": describeEnum(outputCoord)
     };
     return _localApi("/v2/local/geo/transcoord.json", params);
   }
@@ -100,8 +101,7 @@ class LocalApi {
       int? size,
       Order? sort}) async {
     final params = {
-      "category_group_code":
-          categoryGroup == null ? null : describeEnum(categoryGroup),
+      "category_group_code": describeEnum(categoryGroup),
       "x": x,
       "y": y,
       "radius": radius,

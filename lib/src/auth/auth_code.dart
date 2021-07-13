@@ -60,7 +60,7 @@ class AuthCodeClient {
       "redirect_uri": finalRedirectUri,
       "response_type": "code",
       "agt": agt,
-      "scope": scopes == null ? null : scopes.join(" "),
+      "scope": scopes.length == 0 ? null : scopes.join(" "),
       "ka": await KakaoContext.kaHeader
     };
     params.removeWhere((k, v) => v == null);
