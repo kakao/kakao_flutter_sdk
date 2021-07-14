@@ -21,7 +21,10 @@ class AuthCodeClient {
 
   /// Requests authorization code via `Chrome Custom Tabs` (on Android) and `ASWebAuthenticationSession` (on iOS).
   Future<String> request(
-      {String? clientId, String? redirectUri, List<String>? scopes}) async {
+      {String? clientId,
+      String? redirectUri,
+      List<Prompt>? prompts,
+      List<String>? scopes}) async {
     final finalRedirectUri = redirectUri ?? "kakao${_platformKey()}://oauth";
 
     final params = {
@@ -30,6 +33,9 @@ class AuthCodeClient {
       "response_type": "code",
       "approval_type": "individual",
       "scope": scopes == null ? null : scopes.join(" "),
+      "prompt": prompts == null
+          ? null
+          : describeEnum(prompts.join(" ")).toLowerCase(),
       "ka": await KakaoContext.kaHeader
     };
     params.removeWhere((k, v) => v == null);
@@ -106,3 +112,5 @@ class AuthCodeClient {
 //   }
 // }
 }
+
+enum Prompt { LOGIN }

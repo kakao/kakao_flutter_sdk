@@ -31,8 +31,8 @@ class UserApi {
 
   /// Login with KakaoAccount.
   /// Authenticate the user with a Kakao account cookie in default web browser(CustomTabs) and issue OAuthToken
-  Future<void> loginWithKakaoAccount() async {
-    final authCode = await AuthCodeClient.instance.request();
+  Future<void> loginWithKakaoAccount({List<Prompt>? prompts}) async {
+    final authCode = await AuthCodeClient.instance.request(prompts: prompts);
     final token = await AuthApi.instance.issueAccessToken(authCode);
     await AccessTokenStore.instance.toStore(token);
   }
