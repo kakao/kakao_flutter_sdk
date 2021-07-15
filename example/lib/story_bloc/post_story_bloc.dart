@@ -52,7 +52,7 @@ class PostStoryBloc extends Bloc<PostStoryEvent, PostStoryState> {
         }
         yield PostStoryState.init().assign(posted: true);
       } on KakaoApiException catch (e) {
-        if (e.code == ApiErrorCause.INVALID_SCOPE) {}
+        if (e.code == ApiErrorCause.INSUFFICIENT_SCOPE) {}
         yield this.state.assign(exception: e);
       } catch (e) {
         yield this.state.assign(exception: e);

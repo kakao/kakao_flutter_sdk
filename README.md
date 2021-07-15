@@ -339,8 +339,8 @@ Future<void> requestFriends() async {
   } on KakaoAuthException catch (e) {
     if (e.code == ApiErrorCause.INVALID_TOKEN) { // access token has expired and cannot be refrsehd. access tokens are already cleared here
       Navigator.of(context).pushReplacementNamed('/login'); // redirect to login page
-    } else if (e.code == ApiErrorCause.INVALID_SCOPE) {
-      // If code is ApiErrorCause.INVALID_SCOPE, error instance will contain missing required scopes.
+    } else if (e.code == ApiErrorCause.INSUFFICIENT_SCOPE) {
+      // If code is ApiErrorCause.INSUFFICIENT_SCOPE, error instance will contain missing required scopes.
     }
   } catch (e) {
     // other api or client-side errors
@@ -360,7 +360,7 @@ Future<void> retryAfterUserAgrees(List<String> requiredScopes) async {
 ##### Certain fields are missing
 
 This can happen when `/v2/user/me` API is called with `UserApi#me()` method.
-`UserApi#me()` never throws `ApiErrorCause.INVALID_SCOPE` error because it is dependent on many scopes, not only one scope.
+`UserApi#me()` never throws `ApiErrorCause.INSUFFICIENT_SCOPE` error because it is dependent on many scopes, not only one scope.
 Therefore you have to construct a list of scopes yourself like below.
 
 ```dart
