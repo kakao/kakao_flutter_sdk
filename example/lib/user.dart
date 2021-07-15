@@ -35,12 +35,14 @@ class _UserState extends State<UserScreen> {
                         accountEmail: _user.kakaoAccount.email == null
                             ? null
                             : Text(_user.kakaoAccount.email),
-                        accountName: Text(_user.properties != null
+                        accountName: Text(_user.properties != null &&
+                                _user.properties['nickname'] != null
                             ? _user.properties['nickname']
                             : _user.kakaoAccount.profile.nickname),
                         currentAccountPicture: CircleAvatar(
                             radius: 40,
-                            backgroundImage: _user.properties != null
+                            backgroundImage: _user.properties != null &&
+                                    _user.properties["profile_image"] != null
                                 ? NetworkImage(
                                     _user.properties["profile_image"])
                                 : NetworkImage(_user
