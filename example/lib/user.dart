@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:kakao_flutter_sdk/user.dart';
 import 'package:kakao_flutter_sdk_example/user_bloc/bloc.dart';
 import 'package:kakao_flutter_sdk_example/user_bloc/user_bloc.dart';
@@ -36,14 +35,16 @@ class _UserState extends State<UserScreen> {
                         accountEmail: _user.kakaoAccount.email == null
                             ? null
                             : Text(_user.kakaoAccount.email),
-                        accountName: Text(_user.properties["nickname"]),
+                        accountName: Text(_user.properties != null
+                            ? _user.properties['nickname']
+                            : _user.kakaoAccount.profile.nickname),
                         currentAccountPicture: CircleAvatar(
                             radius: 40,
-                            backgroundImage:
-                                _user.properties.containsKey("profile_image")
-                                    ? NetworkImage(
-                                        _user.properties["profile_image"])
-                                    : AssetImage("assets/images/cat2.png"))),
+                            backgroundImage: _user.properties != null
+                                ? NetworkImage(
+                                    _user.properties["profile_image"])
+                                : NetworkImage(_user
+                                    .kakaoAccount.profile.profileImageUrl))),
                     _user != null ? Text(_user.id.toString()) : Container(),
                     TokenInfoBox(_tokenInfo),
                     RaisedButton(
@@ -79,7 +80,9 @@ class _UserState extends State<UserScreen> {
 
 class TokenInfoBox extends StatelessWidget {
   TokenInfoBox(this.tokenInfo);
+
   final AccessTokenInfo tokenInfo;
+
   @override
   Widget build(BuildContext context) {
     if (tokenInfo == null) return Container();
