@@ -1,3 +1,4 @@
+/// Provides KakaoNavi API.
 library navi;
 
 export 'package:kakao_flutter_sdk/common.dart';
