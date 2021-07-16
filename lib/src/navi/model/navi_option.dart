@@ -4,7 +4,7 @@ part 'navi_option.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class NaviOption {
-  final CoordType? coordType;
+  final NaviCoordType? coordType;
   final VehicleType? vehicleType;
 
   @JsonKey(name: "rpoption")
@@ -41,7 +41,7 @@ class NaviOption {
 }
 
 /// 좌표계 타입을 선택합니다.
-enum CoordType {
+enum NaviCoordType {
   @JsonValue("wgs84")
   WGS84,
 

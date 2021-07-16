@@ -8,7 +8,7 @@ part of 'navi_option.dart';
 
 NaviOption _$NaviOptionFromJson(Map<String, dynamic> json) {
   return NaviOption(
-    coordType: _$enumDecodeNullable(_$CoordTypeEnumMap, json['coord_type']),
+    coordType: _$enumDecodeNullable(_$NaviCoordTypeEnumMap, json['coord_type']),
     vehicleType:
         _$enumDecodeNullable(_$VehicleTypeEnumMap, json['vehicle_type']),
     rpOption: _$enumDecodeNullable(_$RpOptionEnumMap, json['rpoption']),
@@ -29,7 +29,7 @@ Map<String, dynamic> _$NaviOptionToJson(NaviOption instance) {
     }
   }
 
-  writeNotNull('coord_type', _$CoordTypeEnumMap[instance.coordType]);
+  writeNotNull('coord_type', _$NaviCoordTypeEnumMap[instance.coordType]);
   writeNotNull('vehicle_type', _$VehicleTypeEnumMap[instance.vehicleType]);
   writeNotNull('rpoption', _$RpOptionEnumMap[instance.rpOption]);
   writeNotNull('route_info', instance.routeInfo);
@@ -77,9 +77,9 @@ K? _$enumDecodeNullable<K, V>(
   return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
-const _$CoordTypeEnumMap = {
-  CoordType.WGS84: 'wgs84',
-  CoordType.KATEC: 'katec',
+const _$NaviCoordTypeEnumMap = {
+  NaviCoordType.WGS84: 'wgs84',
+  NaviCoordType.KATEC: 'katec',
 };
 
 const _$VehicleTypeEnumMap = {
