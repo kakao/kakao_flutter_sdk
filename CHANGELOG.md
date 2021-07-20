@@ -1,9 +1,19 @@
+## 0.7.0
+
+- Add `signup()`, `scopes()` and `revokeScopes()` in `UserApi`
+- Add prompt Login to `loginWithKakaoAccount()` in `UserApi`.
+- Add `isKakaoLinkAvailable()`, `uploadImage()`, `scrapImage()` in `LinkClient`
+- Add Kakao Navi API
+- Add `navigateWebUrl()` in `NaviApi`
+- Implement additional consents automatically when a -402 error occurs
+- Rename ApiErrorCause based on `Kakao Developers's Android/iOS v2 SDK`
+
 ## 0.6.4
 
 - Add fields `profileNicknameNeedsAgreement` and `profileImageNeedsAgreement` in `Account`
 - Modify string value (url, key) regarding channel api
 - Modify field type in `Address`
-- Make `loginWithKakaoTalk()` and `loginWithKakaoAccount()` in `UserApi`
+- Add `loginWithKakaoTalk()` and `loginWithKakaoAccount()` in `UserApi`
 
 ## 0.6.3
 
@@ -88,7 +98,7 @@
 ## 0.2.3
 
 - Provide `presentationContextProvider` to `ASWebAuthenticationSession` in login. (fix for iOS13.0)
-- Make `isRetryable` method of `AccessTokenInterceptor` public so that the interceptor can be used in a customized way. Third-party can override this method for their own API client if `Authorization` header matches the format `Bearer ${kakao_access_token}` for their API (which is a very uncommon need).
+- Make `isRetriable` method of `AccessTokenInterceptor` public so that the interceptor can be used in a customized way. Third-party can override this method for their own API client if `Authorization` header matches the format `Bearer ${kakao_access_token}` for their API (which is a very uncommon need).
 
 ## 0.2.2
 
