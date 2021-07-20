@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk/link.dart';
 import 'package:kakao_flutter_sdk/src/common/kakao_context.dart';
 import 'package:kakao_flutter_sdk/src/link/link_api.dart';
+import 'package:kakao_flutter_sdk/src/link/model/image_upload_result.dart';
 import 'package:kakao_flutter_sdk/src/link/model/link_result.dart';
 import 'package:kakao_flutter_sdk/src/template/default_template.dart';
 import 'package:platform/platform.dart';
-
-const _channel = MethodChannel("kakao_flutter_sdk");
 
 class LinkClient {
   LinkClient(this.api, {Platform? platform})
@@ -17,8 +17,14 @@ class LinkClient {
   LinkApi api;
   Platform _platform;
 
+  static final MethodChannel _channel = MethodChannel("kakao_flutter_sdk");
+
   /// singleton instance of this class.
   static final LinkClient instance = LinkClient(LinkApi.instance);
+
+  Future<bool> isKakaoLinkAvailable() async {
+    return await _channel.invokeMethod('isKakaoLinkAvailable') ?? false;
+  }
 
   /// Send KakaoLink messages with custom templates.
   Future<Uri> customWithWeb(int templateId,
@@ -126,6 +132,18 @@ class LinkClient {
     };
     extras.removeWhere((k, v) => v == null);
     return extras;
+  }
+
+  /// Upload the local image to the Kakao Image Server to use it as a KakaoLink content image.
+  Future<ImageUploadResult> uploadImage(File image,
+      {bool secureResource = true}) async {
+    return await api.uploadImage(image, secureResource: secureResource);
+  }
+
+  /// Upload remote image to Kakao Image Server to use as KakaoLink content image.
+  Future<ImageUploadResult> scrapImage(String imageUrl,
+      {bool secureResource = true}) async {
+    return await api.scrapImage(imageUrl, secureResource: secureResource);
   }
 
   Future<int> _attachmentSize(LinkResult response,

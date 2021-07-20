@@ -13,7 +13,8 @@ class NullableCoord {
   NullableCoord(this.x, this.y);
 
   /// <nodoc>
-  factory NullableCoord.fromJson(Map<String, dynamic> json) => _$NullableCoordFromJson(json);
+  factory NullableCoord.fromJson(Map<String, dynamic> json) =>
+      _$NullableCoordFromJson(json);
 
   /// <nodoc>
   Map<String, dynamic> toJson() => _$NullableCoordToJson(this);
@@ -21,7 +22,6 @@ class NullableCoord {
   @override
   String toString() => toJson().toString();
 }
-
 
 // /// <nodoc>
 // String doubleToString(double v) => v.toString();

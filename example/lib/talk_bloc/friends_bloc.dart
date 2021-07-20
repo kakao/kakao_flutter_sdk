@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/talk.dart';
+import 'package:kakao_flutter_sdk/user.dart';
 import 'package:kakao_flutter_sdk_example/talk_bloc/bloc.dart';
 import 'package:kakao_flutter_sdk_example/talk_bloc/friends_event.dart';
 
@@ -25,7 +26,7 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
         final friends = await _api.friends();
         yield FriendsFetched(friends.elements);
       } on KakaoApiException catch (e) {
-        if (e.code == ApiErrorCause.INVALID_SCOPE) {
+        if (e.code == ApiErrorCause.INSUFFICIENT_SCOPE) {
           yield FriendsPermissionRequired(e.requiredScopes);
           return;
         }
@@ -39,9 +40,7 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
     if (event is RequestAgreement) {
       try {
         print(event.scopes);
-        final code = await _authCodeClient.requestWithAgt(event.scopes);
-        final token = await _authApi.issueAccessToken(code);
-        await AccessTokenStore.instance.toStore(token);
+        await UserApi.instance.loginWithNewScopes(event.scopes);
         this.add(FetchFriends());
       } catch (e) {
         yield FriendsPermissionRequired(event.scopes);

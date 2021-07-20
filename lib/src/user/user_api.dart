@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/src/common/api_factory.dart';
 
 import 'model/access_token_info.dart';
+import 'model/scope_info.dart';
 import 'model/shipping_addresses.dart';
 import 'model/user.dart';
 import 'model/user_id_response.dart';
@@ -22,25 +24,25 @@ class UserApi {
   /// Login with KakaoTalk.
   /// Authenticate the user with a Kakao account connected to KakaoTalk and issue OAuthToken
   Future<void> loginWithKakaoTalk() async {
-    try {
-      final authCode = await AuthCodeClient.instance.requestWithTalk();
-      final token = await AuthApi.instance.issueAccessToken(authCode);
-      AccessTokenStore.instance.toStore(token);
-    } catch (e) {
-      throw e;
-    }
+    final authCode = await AuthCodeClient.instance.requestWithTalk();
+    final token = await AuthApi.instance.issueAccessToken(authCode);
+    await AccessTokenStore.instance.toStore(token);
   }
 
   /// Login with KakaoAccount.
   /// Authenticate the user with a Kakao account cookie in default web browser(CustomTabs) and issue OAuthToken
-  Future<void> loginWithKakaoAccount() async {
-    try {
-      final authCode = await AuthCodeClient.instance.request();
-      final token = await AuthApi.instance.issueAccessToken(authCode);
-      AccessTokenStore.instance.toStore(token);
-    } catch (e) {
-      throw e;
-    }
+  Future<void> loginWithKakaoAccount({List<Prompt>? prompts}) async {
+    final authCode = await AuthCodeClient.instance.request(prompts: prompts);
+    final token = await AuthApi.instance.issueAccessToken(authCode);
+    await AccessTokenStore.instance.toStore(token);
+  }
+
+  /// Displays a consent screen requesting consent for personal information and access rights consent items that the user has not yet agreed to,
+  /// and issues an updated OAuthToken with the consent items when the user agrees.
+  Future<void> loginWithNewScopes(List<String> scopes) async {
+    final authCode = await AuthCodeClient.instance.requestWithAgt(scopes);
+    final token = await AuthApi.instance.issueAccessToken(authCode);
+    await AccessTokenStore.instance.toStore(token);
   }
 
   /// Fetches current user's information.
@@ -96,6 +98,46 @@ class UserApi {
     return ApiFactory.handleApiError(() async {
       Response response = await _dio.get("/v1/user/service/terms");
       return UserServiceTerms.fromJson(response.data);
+    });
+  }
+
+  /// Save or modify user's additional information provided in User class.
+  ///
+  /// Check the savable key name in Kakao Developers > Kakao Login > User Properties menu.
+  /// The nickname, profile_image, and thumbnail_image values ​​that are saved by default when connecting the app can be overwritten,
+  /// and information can be saved with the key name by adding a new column.
+  Future<void> updateProfile(Map<String, String> properties) {
+    return ApiFactory.handleApiError(() async {
+      Response response = await _dio.post('/v1/user/update_profile',
+          data: {'properties': jsonEncode(properties)});
+      print(response);
+    });
+  }
+
+  /// Request app connection for user with app connection status **PREREGISTER**. **Auto Link** Used by apps with disabled settings.
+  Future<void> signup({Map<String, String>? properties}) {
+    return ApiFactory.handleApiError(() async {
+      Response response = await _dio.post('/v1/user/signup',
+          data: {'properties': jsonEncode(properties)});
+      print(response);
+    });
+  }
+
+  /// Returns a list of details of a user's consent item.
+  Future<ScopeInfo> scopes({List<String>? scopes}) {
+    return ApiFactory.handleApiError(() async {
+      Response response = await _dio.get('/v2/user/scopes',
+          queryParameters: {'scopes': jsonEncode(scopes)});
+      return ScopeInfo.fromJson(response.data);
+    });
+  }
+
+  /// Revoke consent to a specific consent item of the user and returns a detailed list of remaining consent items.
+  Future<ScopeInfo> revokeScopes(List<String> scopes) {
+    return ApiFactory.handleApiError(() async {
+      Response response = await _dio
+          .post('/v2/user/revoke/scopes', data: {'scopes': jsonEncode(scopes)});
+      return ScopeInfo.fromJson(response.data);
     });
   }
 }

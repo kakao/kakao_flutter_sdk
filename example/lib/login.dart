@@ -45,6 +45,9 @@ class _LoginState extends State<LoginScreen> {
         children: <Widget>[
           RaisedButton(child: Text("Login"), onPressed: _loginWithKakao),
           RaisedButton(
+              child: Text("Login(prompts:)"),
+              onPressed: _loginWithKakaoPrompts),
+          RaisedButton(
               child: Text("Login with Talk"),
               onPressed: _isKakaoTalkInstalled ? _loginWithTalk : null),
         ],
@@ -55,6 +58,15 @@ class _LoginState extends State<LoginScreen> {
   _loginWithKakao() async {
     try {
       await UserApi.instance.loginWithKakaoAccount();
+      Navigator.of(context).pushReplacementNamed("/main");
+    } catch (e) {
+      print('error on login: $e');
+    }
+  }
+
+  _loginWithKakaoPrompts() async {
+    try {
+      await UserApi.instance.loginWithKakaoAccount(prompts: [Prompt.LOGIN]);
       Navigator.of(context).pushReplacementNamed("/main");
     } catch (e) {
       print('error on login: $e');

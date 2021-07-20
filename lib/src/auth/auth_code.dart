@@ -21,7 +21,10 @@ class AuthCodeClient {
 
   /// Requests authorization code via `Chrome Custom Tabs` (on Android) and `ASWebAuthenticationSession` (on iOS).
   Future<String> request(
-      {String? clientId, String? redirectUri, List<String>? scopes}) async {
+      {String? clientId,
+      String? redirectUri,
+      List<Prompt>? prompts,
+      List<String>? scopes}) async {
     final finalRedirectUri = redirectUri ?? "kakao${_platformKey()}://oauth";
 
     final params = {
@@ -30,6 +33,9 @@ class AuthCodeClient {
       "response_type": "code",
       "approval_type": "individual",
       "scope": scopes == null ? null : scopes.join(" "),
+      "prompt": prompts == null
+          ? null
+          : describeEnum(prompts.join(" ")).toLowerCase(),
       "ka": await KakaoContext.kaHeader
     };
     params.removeWhere((k, v) => v == null);
@@ -60,7 +66,7 @@ class AuthCodeClient {
       "redirect_uri": finalRedirectUri,
       "response_type": "code",
       "agt": agt,
-      "scope": scopes == null ? null : scopes.join(" "),
+      "scope": scopes.length == 0 ? null : scopes.join(" "),
       "ka": await KakaoContext.kaHeader
     };
     params.removeWhere((k, v) => v == null);
@@ -82,10 +88,12 @@ class AuthCodeClient {
   }
 
   Future<String> _openKakaoTalk(String clientId, String redirectUri) async {
-    final redirectUriWithParams = await _channel.invokeMethod<String>("authorizeWithTalk",
+    final redirectUriWithParams = await _channel.invokeMethod<String>(
+        "authorizeWithTalk",
         {"client_id": clientId, "redirect_uri": redirectUri});
-        if (redirectUriWithParams != null) return redirectUriWithParams;
-        throw KakaoClientException("OAuth 2.0 redirect uri was null, which should not happen.");
+    if (redirectUriWithParams != null) return redirectUriWithParams;
+    throw KakaoClientException(
+        "OAuth 2.0 redirect uri was null, which should not happen.");
   }
 
   String _platformKey() {
@@ -98,9 +106,11 @@ class AuthCodeClient {
     return KakaoContext.javascriptClientId;
   }
 
-  // String _platformRedirectUri() {
-  //   if (kIsWeb) {
-  //     return "${html.win}"
-  //   }
-  // }
+// String _platformRedirectUri() {
+//   if (kIsWeb) {
+//     return "${html.win}"
+//   }
+// }
 }
+
+enum Prompt { LOGIN }

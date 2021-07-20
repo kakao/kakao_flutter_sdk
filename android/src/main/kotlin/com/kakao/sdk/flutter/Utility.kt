@@ -2,18 +2,13 @@ package com.kakao.sdk.flutter
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.pm.LabeledIntent
-import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Parcelable
 import android.provider.Settings
 import android.util.Base64
-import java.lang.IllegalStateException
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.*
@@ -61,7 +56,7 @@ object Utility {
         Constants.OS, Build.VERSION.SDK_INT,
         Constants.LANG, Locale.getDefault().language.toLowerCase(), Locale.getDefault().country.toUpperCase(),
         Constants.ORIGIN, getKeyHash(context),
-        Constants.DEVICE, Build.MODEL.replace("\\s".toRegex(), "-").toUpperCase(),
+        Constants.DEVICE, Build.MODEL.replace("[^\\p{ASCII}]".toRegex(), "*").replace("\\s".toRegex(), "-").toUpperCase(),
         Constants.ANDROID_PKG, context.packageName,
         Constants.APP_VER, context.packageManager.getPackageInfo(context.packageName, 0).versionName
     )
@@ -91,10 +86,14 @@ object Utility {
         isPackageInstalled(context, "com.kakao.onetalk")
   }
 
+  fun isKakaoNaviInstalled(context: Context): Boolean {
+    return isPackageInstalled(context, "com.locnall.KimGiSa") ||
+            isPackageInstalled(context, "com.lguplus.navi")
+  }
+
   private fun isPackageInstalled(context: Context, packageName: String): Boolean {
     return context.packageManager.getLaunchIntentForPackage(packageName) != null
   }
-
 
   @SuppressLint("HardwareIds")
   @Throws(NoSuchAlgorithmException::class)
@@ -110,6 +109,4 @@ object Utility {
       ("xxxx" + Build.PRODUCT + "a23456789012345bcdefg").toByteArray()
     }
   }
-
-
 }

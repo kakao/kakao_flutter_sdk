@@ -3,12 +3,12 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'kakao_flutter_sdk'
-  s.version          = '0.6.4'
+  s.version          = '0.7.0'
   s.summary          = 'Flutter SDK for Kakao API'
   s.description      = <<-DESC
 A new flutter plugin project.
                        DESC
-  s.homepage         = 'https://github.com/CoderSpinoza/kakao_flutter_sdk'
+  s.homepage         = 'https://github.com/kakao/kakao_flutter_sdk'
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Hara Kang' => 'hara0115@gmail.com' }
   s.source           = { :path => '.' }

@@ -29,7 +29,7 @@ Specify Kakao SDK dependency as below in your `pubspec.yaml`.
 
 ```yaml
 dependencies:
-  kakao_flutter_sdk: ^0.6.4
+  kakao_flutter_sdk: ^0.7.0
 ```
 
 ### dependencies
@@ -95,7 +95,6 @@ KakaoContext.clientId = "${put your native app key here}"
 
 Now, you can use method `loginWithKakaoTalk()` and `loginWithKakaoAccount()` in `UserApi`.
 If you use these methods, you don't need to implement codes which is getting authorization code and getting access token.
-If you want to use `loginWithKakaoAccount()`, Go to 'Via browser' and set 'For Android' and 'For iOS'.
 
 ```dart
 // login with KakaoTalk (0.6.4 ~ )
@@ -109,11 +108,28 @@ void loginButtonClicked() async {
 }
 ```
 
+If you want to use `loginWithKakaoAccount()`, Go to 'Via browser' and set 'For Android' and 'For iOS'.
+
 ```dart
 // login with KakaoAccount (0.6.4 ~ )
 void loginButtonClicked() async {
   try {
     await UserApi.instance.loginWithKakaoAccount();
+    // perform actions after login
+  } catch (e) {
+    print('error on login: $e');
+  }
+}
+```
+
+You can request reauthentication regardless of a user's login status to enhance security. Set prompts to Prompt.LOGIN. 
+Then, the login screen is prompted even though a user has already been logged in on the same web browser on the device.
+
+```dart
+// login with KakaoAccount (0.6.4 ~ )
+void loginButtonClicked() async {
+  try {
+    await UserApi.instance.loginWithKakaoAccount(prompts: [Prompt.LOGIN]);
     // perform actions after login
   } catch (e) {
     print('error on login: $e');
@@ -330,6 +346,9 @@ There are cases when users have to agree in order to call specific API endpoints
 
 ##### When 403 forbidden error is returned from API server
 
+If your Kakao Flutter SDK version is 0.7.0 or higher, An additional consent window will appear automatically.
+So you don't need to handle `ApiErrorCause.INSUFFICIENT_SCOPE`.
+
 ```dart
 
 Future<void> requestFriends() async {
@@ -339,8 +358,9 @@ Future<void> requestFriends() async {
   } on KakaoAuthException catch (e) {
     if (e.code == ApiErrorCause.INVALID_TOKEN) { // access token has expired and cannot be refrsehd. access tokens are already cleared here
       Navigator.of(context).pushReplacementNamed('/login'); // redirect to login page
-    } else if (e.code == ApiErrorCause.INVALID_SCOPE) {
-      // If code is ApiErrorCause.INVALID_SCOPE, error instance will contain missing required scopes.
+    } else if (e.code == ApiErrorCause.INSUFFICIENT_SCOPE) {
+      // If code is ApiErrorCause.INSUFFICIENT_SCOPE, error instance will contain missing required scopes.
+      // If your Kakao Flutter SDK version is 0.7.0 or higher, An additional consent window will appear automatically.
     }
   } catch (e) {
     // other api or client-side errors
@@ -360,7 +380,7 @@ Future<void> retryAfterUserAgrees(List<String> requiredScopes) async {
 ##### Certain fields are missing
 
 This can happen when `/v2/user/me` API is called with `UserApi#me()` method.
-`UserApi#me()` never throws `ApiErrorCause.INVALID_SCOPE` error because it is dependent on many scopes, not only one scope.
+`UserApi#me()` never throws `ApiErrorCause.INSUFFICIENT_SCOPE` error because it is dependent on many scopes, not only one scope.
 Therefore you have to construct a list of scopes yourself like below.
 
 ```dart
@@ -416,15 +436,39 @@ Uri uri = await LinkClient.instance
 await launchBrowserTab(uri);
 ```
 
+#### KakaoNavi
+
+The Flutter SDK uses the default browser to run directions with the web version of Kakao Navigation. The URL used is generated using the navigateUrl() API. You can also use this API to obtain only URL values as needed.
+You can use coordinate system WGS64 or KATEC in [CoordType]. Default is KATEC.
+If you want more detail, Visit this [Kakao Developers Guide](https://developers.kakao.com/docs/latest/en/kakaonavi/android#set-parameter).
+
+```dart
+// (0.7.0 ~ )
+void _navigationButtonClicked() async {
+  try {
+    var url = await NaviApi.instance
+        .navigateWebUrl(Location("카카오 판교오피스", "321286", "533707"));
+    print(url);
+    await launchBrowserTab(url);
+  } catch (e) {
+    print(e);
+  }
+}
+```
+
 ## SDK Architecture
 
 ### Automatic token refreshing
 
 Tokens are automatically refreshed on relevant api errors (ApiErrorCause.INVALID_TOKEN).
 
+### Automatic additional consent (0.7.0 ~ )
+
+An additional consent window will appear automatically on relevant api errors (ApiErrorCause.INSUFFICIENT_SCOPE). 
+
 ## Development Guide
 
-Visit this [Development Guide](https://github.com/CoderSpinoza/kakao_flutter_sdk/wiki/Development-Guide) to contribute to this repository.
+Visit this [Development Guide](https://github.com/kakao/kakao_flutter_sdk/wiki/Development-Guide) to contribute to this repository.
 
 
 ## References

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
+import 'package:kakao_flutter_sdk/src/auth/required_scopes_interceptor.dart';
 import 'package:kakao_flutter_sdk/src/common/dapi_exception.dart';
 
 /// Factory for network clients, interceptors, and error transformers used by other libraries.
@@ -28,7 +29,9 @@ class ApiFactory {
     dio.options.baseUrl = "https://${KakaoContext.hosts.kapi}";
     dio.options.contentType = "application/x-www-form-urlencoded";
     var tokenInterceptor = AccessTokenInterceptor(dio, AuthApi.instance);
-    dio.interceptors.addAll([tokenInterceptor, kaInterceptor]);
+    var scopeInterceptor = RequiredScopesInterceptor(dio);
+    dio.interceptors
+        .addAll([tokenInterceptor, scopeInterceptor, kaInterceptor]);
     return dio;
   }
 
