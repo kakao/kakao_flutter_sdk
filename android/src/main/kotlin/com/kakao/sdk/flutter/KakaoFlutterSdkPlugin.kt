@@ -47,6 +47,10 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
         AuthCodeCustomTabsActivity.startWithUrl(activity, uri)
       }
       call.method == "authorizeWithTalk" -> {
+        if (!Utility.isKakaoTalkInstalled(applicationContext)) {
+          result.error("Error", "KakaoTalk is not installed. If you want KakaoTalk Login, please install KakaoTalk", null)
+          return
+        }
         try {
           @Suppress("UNCHECKED_CAST") val args = call.arguments as Map<String, String>
           val clientId = args["client_id"] ?: throw IllegalArgumentException("Client id is required.")
