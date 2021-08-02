@@ -269,7 +269,7 @@ import 'package:kakao_flutter_sdk/user.dart'; // must be imported if version is 
       final authCode = installed ? await AuthCodeClient.instance.requestWithTalk() : await AuthCodeClient.instance.request();
     } on KakaoAuthException catch (e) {
 
-    } on KakaoClientException catch(e) {
+    } on kakaoClientException catch(e) {
 
     }
   }
