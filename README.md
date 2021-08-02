@@ -464,9 +464,9 @@ Tokens are automatically refreshed on relevant api errors (ApiErrorCause.INVALID
 
 An additional consent window will appear automatically on relevant api errors (ApiErrorCause.INSUFFICIENT_SCOPE). 
 
-## Development Guide
+## How to Contribute
 
-Visit this [Development Guide](https://github.com/kakao/kakao_flutter_sdk/wiki/Development-Guide) to contribute to this repository.
+If you want to contribute to this repository, Please read [Development Guide](https://github.com/kakao/kakao_flutter_sdk/wiki/Development-Guide) and [Submitting Pull Requests](https://github.com/kakao/kakao_flutter_sdk/wiki/Submitting-Pull-Requests) pages.
 
 
 ## References
