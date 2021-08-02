@@ -62,10 +62,8 @@ Follow the instructions below:
 
 Below are additional steps you have to take for Android and iOS platform.
 
-1. [키 해시(Key Hash) 등록](https://developers.kakao.com/docs/latest/ko/getting-started/sdk-android-v1#key-hash) to use Kakao API.
-1. [plist 설정](https://developers.kakao.com/docs/latest/ko/getting-started/sdk-ios-v1#plist)
-1. [URL Scheme 설정](https://developers.kakao.com/docs/latest/ko/getting-started/sdk-ios-v1#url-scheme)
-1. [화이트리스트 설정](https://developers.kakao.com/docs/latest/ko/getting-started/sdk-ios-v1#white-list)
+1. [키 해시(Key Hash) 등록](https://developers.kakao.com/docs/latest/ko/getting-started/sdk-android#add-key-hash) to use Kakao API.
+1. [plist 설정 & URL Scheme 설정](https://developers.kakao.com/docs/latest/ko/getting-started/sdk-ios#set-plist)
 
 Also, minimum iOS version for Kakao Flutter SDK is 11.
 Therefore, you have to specify 11 is your iOS application's `Podfile` like below:
