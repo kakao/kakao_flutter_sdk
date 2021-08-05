@@ -1,3 +1,7 @@
+## 0.7.0+1
+
+- Migrated from the deprecated package_info plugin to package_info_plus.
+
 ## 0.7.0
 
 - Add `signup()`, `scopes()` and `revokeScopes()` in `UserApi`
