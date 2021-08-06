@@ -40,7 +40,7 @@ Kakao Flutter SDK has following dependencies:
 1. [json_annotation](https://pub.dev/packages/json_serializable) (4.0.1)
 1. [shared_preferences](https://pub.dev/packages/shared_preferences) (2.0.5)
 1. platform (3.0.0)
-1. package_info (2.0.0)
+1. package_info_plus (1.0.4)
 
 Below dependencies were considered but were removed due to restrictions against our needs:
 
