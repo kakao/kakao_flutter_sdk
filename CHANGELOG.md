@@ -1,3 +1,9 @@
+## 0.7.1
+
+- Fix the bug that caused the crash when logged in via KakaoTalk when KakaoTalk was not installed
+- Fix the bug that intercepts url that sdk cannot handle in iOS
+- Migrated from the deprecated package_info plugin to package_info_plus.
+
 ## 0.7.0
 
 - Add `signup()`, `scopes()` and `revokeScopes()` in `UserApi`

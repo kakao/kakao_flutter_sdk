@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 /// Singleton context for Kakao Flutter SDK.
 class KakaoContext {
@@ -14,7 +14,7 @@ class KakaoContext {
   static late String clientId;
   static late String javascriptClientId;
 
-  static String sdkVersion = "0.7.0";
+  static String sdkVersion = "0.7.1";
 
   /// [ServerHosts] used by SDK.
   ///

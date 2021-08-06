@@ -29,7 +29,7 @@ Specify Kakao SDK dependency as below in your `pubspec.yaml`.
 
 ```yaml
 dependencies:
-  kakao_flutter_sdk: ^0.7.0
+  kakao_flutter_sdk: ^0.7.1
 ```
 
 ### dependencies
@@ -62,10 +62,8 @@ Follow the instructions below:
 
 Below are additional steps you have to take for Android and iOS platform.
 
-1. [키 해시(Key Hash) 등록](https://developers.kakao.com/docs/latest/ko/getting-started/sdk-android-v1#key-hash) to use Kakao API.
-1. [plist 설정](https://developers.kakao.com/docs/latest/ko/getting-started/sdk-ios-v1#plist)
-1. [URL Scheme 설정](https://developers.kakao.com/docs/latest/ko/getting-started/sdk-ios-v1#url-scheme)
-1. [화이트리스트 설정](https://developers.kakao.com/docs/latest/ko/getting-started/sdk-ios-v1#white-list)
+1. [키 해시(Key Hash) 등록](https://developers.kakao.com/docs/latest/ko/getting-started/sdk-android#add-key-hash) to use Kakao API.
+1. [plist 설정 & URL Scheme 설정](https://developers.kakao.com/docs/latest/ko/getting-started/sdk-ios#set-plist)
 
 Also, minimum iOS version for Kakao Flutter SDK is 11.
 Therefore, you have to specify 11 is your iOS application's `Podfile` like below:
@@ -269,7 +267,7 @@ import 'package:kakao_flutter_sdk/user.dart'; // must be imported if version is 
       final authCode = installed ? await AuthCodeClient.instance.requestWithTalk() : await AuthCodeClient.instance.request();
     } on KakaoAuthException catch (e) {
 
-    } on kakaoClientException catch(e) {
+    } on KakaoClientException catch(e) {
 
     }
   }
@@ -466,9 +464,9 @@ Tokens are automatically refreshed on relevant api errors (ApiErrorCause.INVALID
 
 An additional consent window will appear automatically on relevant api errors (ApiErrorCause.INSUFFICIENT_SCOPE). 
 
-## Development Guide
+## How to Contribute
 
-Visit this [Development Guide](https://github.com/kakao/kakao_flutter_sdk/wiki/Development-Guide) to contribute to this repository.
+If you want to contribute to this repository, Please read [Development Guide](https://github.com/kakao/kakao_flutter_sdk/wiki/Development-Guide) and [Submitting Pull Requests](https://github.com/kakao/kakao_flutter_sdk/wiki/Submitting-Pull-Requests) pages.
 
 
 ## References

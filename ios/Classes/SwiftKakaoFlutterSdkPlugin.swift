@@ -154,14 +154,14 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
     public func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         guard let finalRedirectUri = self.redirectUri else {
             self.authorizeTalkCompletionHandler?(nil, FlutterError(code: "EUNKNOWN", message: "No redirect uri to compare. This is probably a bug in Kakao Flutter SDK.", details: nil))
-            return true
+            return false
         }
         if (url.absoluteString.hasPrefix(finalRedirectUri)) {
             self.authorizeTalkCompletionHandler?(url, nil)
             return true
         }
         self.authorizeTalkCompletionHandler?(nil, FlutterError(code: "REDIRECT_URL_MISMATCH", message: "Expected: \(finalRedirectUri), Actual: \(url.absoluteString)", details: nil))
-        return true
+        return false
     }
     
     @available(iOS 12.0, *)
