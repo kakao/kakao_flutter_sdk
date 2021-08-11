@@ -13,6 +13,7 @@ Content _$ContentFromJson(Map<String, dynamic> json) {
     Link.fromJson(json['link'] as Map<String, dynamic>),
     imageWidth: json['image_width'] as int?,
     imageHeight: json['image_height'] as int?,
+    description: json['description'] as String?,
   );
 }
 
@@ -31,5 +32,6 @@ Map<String, dynamic> _$ContentToJson(Content instance) {
 
   writeNotNull('image_width', instance.imageWidth);
   writeNotNull('image_height', instance.imageHeight);
+  writeNotNull('description', instance.description);
   return val;
 }
