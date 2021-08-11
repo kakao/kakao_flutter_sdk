@@ -9,10 +9,12 @@ part 'content.g.dart';
 class Content {
   /// <nodoc>
   Content(this.title, this.imageUrl, this.link,
-      {this.imageWidth, this.imageHeight});
+      {this.description, this.imageWidth, this.imageHeight});
+
   final String title;
   final Uri imageUrl;
   final Link link;
+  final String? description;
   final int? imageWidth;
   final int? imageHeight;
 
