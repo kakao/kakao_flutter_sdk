@@ -39,6 +39,11 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+                <!-- alpha -->
+                <data android:scheme="kakao01a5e3755dee69871faf55fe79d47c42" android:host="oauth"/>
+                <!-- sandbox -->
+                <data android:scheme="kakao148b7d8c3c52e3421f7a13a8fc236b19" android:host="oauth"/>
+                <!-- beta-real -->
                 <data android:scheme="kakao030ba7c59137629e86e8721eb1a22fd6" android:host="oauth"/>
             </intent-filter>
         </activity>
