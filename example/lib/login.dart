@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/common.dart';
 import 'package:kakao_flutter_sdk/user.dart';
+import 'package:kakao_flutter_sdk_example/server_phase.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -12,15 +14,31 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginState extends State<LoginScreen> {
+  String currentPhase = '';
+  bool _isKakaoTalkInstalled = true;
+
   @override
   void initState() {
     super.initState();
     _initKakaoTalkInstalled();
+    _getCurrentPhase();
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  _getCurrentPhase() async {
+    var prefs = await SharedPreferences.getInstance();
+    var phase = prefs.getString('KakaoPhase');
+    setState(() {
+      if (phase == null) {
+        currentPhase = "PRODUCTION";
+      } else {
+        currentPhase = phase;
+      }
+    });
   }
 
   _initKakaoTalkInstalled() async {
@@ -30,15 +48,32 @@ class _LoginState extends State<LoginScreen> {
     });
   }
 
-  bool _isKakaoTalkInstalled = true;
-
   @override
   Widget build(BuildContext context) {
     isKakaoTalkInstalled();
     return Scaffold(
       appBar: AppBar(
         title: Text("Kakao Flutter SDK Login"),
-        actions: [],
+        actions: [
+          TextButton(
+            child: Text(currentPhase),
+            style: TextButton.styleFrom(primary: Colors.white),
+            onPressed: () {
+              showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return SizedBox(
+                        height: 300,
+                        child: Column(children: [
+                          _buildListTile(context, KakaoPhase.DEV),
+                          _buildListTile(context, KakaoPhase.SANDBOX),
+                          _buildListTile(context, KakaoPhase.CBT),
+                          _buildListTile(context, KakaoPhase.PRODUCTION),
+                        ]));
+                  });
+            },
+          ),
+        ],
       ),
       body: Center(
           child: Column(
@@ -52,6 +87,33 @@ class _LoginState extends State<LoginScreen> {
               onPressed: _isKakaoTalkInstalled ? _loginWithTalk : null),
         ],
       )),
+    );
+  }
+
+  ListTile _buildListTile(BuildContext context, KakaoPhase phase) {
+    var title;
+    if (phase == KakaoPhase.DEV) {
+      title = "DEV";
+    } else if (phase == KakaoPhase.SANDBOX) {
+      title = "SANDBOX";
+    } else if (phase == KakaoPhase.CBT) {
+      title = "CBT";
+    } else {
+      title = "PRODUCTION";
+    }
+    return ListTile(
+      title: Text(title),
+      onTap: () async {
+        var prefs = await SharedPreferences.getInstance();
+        await prefs.setString('KakaoPhase', title);
+        KakaoContext.clientId = PhasedAppKey(phase).getAppKey();
+        KakaoContext.hosts = PhasedServerHosts(phase);
+        Navigator.pop(context);
+        setState(() {
+          currentPhase = title;
+        });
+        // TODO: fix the issue that you cannot log in when you change the phase after log out.
+      },
     );
   }
 
