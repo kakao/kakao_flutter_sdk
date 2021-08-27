@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/common.dart';
 import 'package:kakao_flutter_sdk/user.dart';
@@ -14,6 +15,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginState extends State<LoginScreen> {
+  static final _platform = const MethodChannel('kakao.flutter.sdk.sample');
   String currentPhase = '';
   bool _isKakaoTalkInstalled = true;
 
@@ -112,7 +114,7 @@ class _LoginState extends State<LoginScreen> {
         setState(() {
           currentPhase = title;
         });
-        // TODO: fix the issue that you cannot log in when you change the phase after log out.
+        await _platform.invokeMethod('changePhase');
       },
     );
   }
