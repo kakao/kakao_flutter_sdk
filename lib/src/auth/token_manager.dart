@@ -5,24 +5,24 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Stores access token and refresh token from [AuthApi].
 ///
 /// This abstract class can be used to store token information in different locations than provided by the SDK.
-abstract class AccessTokenStore {
+abstract class TokenManageable {
   // stores access token and other retrieved information from [AuthApi.issueAccessToken]
-  Future<OAuthToken> toStore(AccessTokenResponse response);
+  Future<void> setToken(AccessTokenResponse response);
 
   // retrieves access token and other information from the designated store.
-  Future<OAuthToken> fromStore();
+  Future<OAuthToken> getToken();
 
   // clears all data related to access token from the device.
   Future<void> clear();
 
-  // singleton instance of the default [AccessTokenStore] used by the SDK.
-  static final AccessTokenStore instance = DefaultAccessTokenStore();
+  // singleton instance of the default [TokenManager] used by the SDK.
+  static final TokenManageable instance = TokenManager();
 }
 
-/// Default [AccessTokenStore] provided by Kakao Flutter SDK.
+/// Default [TokenManageable] provided by Kakao Flutter SDK.
 ///
 /// Currently uses SharedPreferences (on Android) and UserDefaults (on iOS).
-class DefaultAccessTokenStore implements AccessTokenStore {
+class TokenManager implements TokenManageable {
   static const atKey = "com.kakao.token.AccessToken";
   static const atExpiresAtKey = "com.kakao.token.AccessToken.ExpiresAt";
   static const rtKey = "com.kakao.token.RefreshToken";
@@ -41,7 +41,7 @@ class DefaultAccessTokenStore implements AccessTokenStore {
     preferences.remove(scopesKey);
   }
 
-  Future<OAuthToken> toStore(AccessTokenResponse response) async {
+  Future<void> setToken(AccessTokenResponse response) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString(atKey, response.accessToken);
     preferences.setInt(atExpiresAtKey,
@@ -59,10 +59,9 @@ class DefaultAccessTokenStore implements AccessTokenStore {
     if (scopes != null) {
       preferences.setStringList(scopesKey, scopes.split(' '));
     }
-    return fromStore();
   }
 
-  Future<OAuthToken> fromStore() async {
+  Future<OAuthToken> getToken() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? accessToken = preferences.getString(atKey);
     int? atExpiresAtMillis = preferences.getInt(atExpiresAtKey);

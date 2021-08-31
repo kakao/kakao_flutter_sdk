@@ -26,7 +26,7 @@ class UserApi {
   Future<void> loginWithKakaoTalk() async {
     final authCode = await AuthCodeClient.instance.requestWithTalk();
     final token = await AuthApi.instance.issueAccessToken(authCode);
-    await AccessTokenStore.instance.toStore(token);
+    await TokenManageable.instance.setToken(token);
   }
 
   /// Login with KakaoAccount.
@@ -34,7 +34,7 @@ class UserApi {
   Future<void> loginWithKakaoAccount({List<Prompt>? prompts}) async {
     final authCode = await AuthCodeClient.instance.request(prompts: prompts);
     final token = await AuthApi.instance.issueAccessToken(authCode);
-    await AccessTokenStore.instance.toStore(token);
+    await TokenManageable.instance.setToken(token);
   }
 
   /// Displays a consent screen requesting consent for personal information and access rights consent items that the user has not yet agreed to,
@@ -42,7 +42,7 @@ class UserApi {
   Future<void> loginWithNewScopes(List<String> scopes) async {
     final authCode = await AuthCodeClient.instance.requestWithAgt(scopes);
     final token = await AuthApi.instance.issueAccessToken(authCode);
-    await AccessTokenStore.instance.toStore(token);
+    await TokenManageable.instance.setToken(token);
   }
 
   /// Fetches current user's information.

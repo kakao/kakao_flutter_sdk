@@ -5,11 +5,11 @@ import 'package:kakao_flutter_sdk/auth.dart';
 class RequiredScopesInterceptor extends Interceptor {
   Dio _dio;
   AuthCodeClient _authCodeClient;
-  AccessTokenStore _tokenStore;
+  TokenManageable _tokenManager;
 
-  RequiredScopesInterceptor(this._dio, {AccessTokenStore? tokenStore})
+  RequiredScopesInterceptor(this._dio, {TokenManageable? tokenManager})
       : this._authCodeClient = AuthCodeClient(),
-        this._tokenStore = tokenStore ?? AccessTokenStore.instance;
+        this._tokenManager = tokenManager ?? TokenManageable.instance;
 
   @override
   void onRequest(
@@ -33,7 +33,7 @@ class RequiredScopesInterceptor extends Interceptor {
       try {
         final authCode = await _authCodeClient.requestWithAgt(requiredScopes);
         final token = await AuthApi.instance.issueAccessToken(authCode);
-        await _tokenStore.toStore(token);
+        await _tokenManager.setToken(token);
       } catch (e) {
         handler.next(err);
         return;
