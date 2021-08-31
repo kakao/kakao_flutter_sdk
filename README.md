@@ -277,6 +277,11 @@ import 'package:kakao_flutter_sdk/user.dart'; // must be imported if version is 
 
 #### Getting Access Token
 
+
+> `AccessTokenStore` has been renamed to `TokenManager` since version 0.8.0.
+> Also,  Method `fromStore()` has been renamed to `getToken()` and `toStore()` has been rename to `setToken()`.
+ 
+
 Then, you have to issue access token for the user with authorization code acuiqred from the process above.
 Sample login code is pasted below:
 
@@ -286,7 +291,7 @@ void loginButtonClicked() async {
     String authCode = await AuthCodeClient.instance.request(); // via browser
     // String authCode = await AuthCodeClient.instance.requestWithTalk() // or with KakaoTalk
     AccessTokenResponse token = await AuthApi.instance.issueAccessToken(authCode);
-    AccessTokenStore.instance.toStore(token); // Store access token in AccessTokenStore for future API requests.
+    TokenManager.instance.setToken(token); // Store access token in TokenManager for future API requests.
   } catch (e) {
     // some error happened during the course of user login... deal with it.
   }
@@ -298,11 +303,11 @@ void loginButtonClicked() async {
 
 > Kakao Flutter SDK supports Kakao Login via KakaoTalk on Android and iOS now.
 
-After user's first login (access token persisted correctly), you can check the status of _AccessTokenStore_ in order to skip this process.
+After user's first login (access token persisted correctly), you can check the status of _TokenManager_ in order to skip this process.
 Below is the sample code of checking token status and redirecting to login screen if refresh token does not exist.
 
 ```dart
-AccessToken token = await AccessTokenStore.instance.fromStore();
+AccessToken token = await TokenManager.instance.getToken();
 if (token.refreshToken == null) {
   Navigator.of(context).pushReplacementNamed('/login');
 } else {
@@ -369,7 +374,7 @@ Future<void> retryAfterUserAgrees(List<String> requiredScopes) async {
     // Getting a new access token with current access token and required scopes.
     String authCode = await AuthCodeClient.instance.requestWithAgt(e.requiredScopes);
     AccessTokenResponse token = await AuthApi.instance.issueAccessToken(authCode);
-    AccessTokenStore.instance.toStore(token); // Store access token in AccessTokenStore for future API requests.
+    TokenManager.instance.setToken(token); // Store access token in TokenManager for future API requests.
     await requestFriends();
 }
 
@@ -406,7 +411,7 @@ Future<void> retryAfterUserAgrees(List<String> requiredScopes) async {
     // Getting a new access token with current access token and required scopes.
     String authCode = await AuthCodeClient.instance.requestWithAgt(requiredScopes);
     AccessTokenResponse token = await AuthApi.instance.issueAccessToken(authCode);
-    AccessTokenStore.instance.toStore(token); // Store access token in AccessTokenStore for future API requests.
+    TokenManager.instance.setToken(token); // Store access token in TokenManager for future API requests.
     await requestMe();
 }
 ```
