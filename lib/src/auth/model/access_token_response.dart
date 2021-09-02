@@ -26,8 +26,12 @@ class AccessTokenResponse {
   String tokenType;
 
   /// <nodoc>
+  String? txId;
+
+  /// <nodoc>
   AccessTokenResponse(this.accessToken, this.expiresIn, this.refreshToken,
-      this.refreshTokenExpiresIn, this.scopes, this.tokenType);
+      this.refreshTokenExpiresIn, this.scopes, this.tokenType,
+      {this.txId});
 
   /// <nodoc>
   factory AccessTokenResponse.fromJson(Map<String, dynamic> json) =>
