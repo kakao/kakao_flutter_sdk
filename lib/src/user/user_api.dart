@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
+import 'package:kakao_flutter_sdk/src/auth/model/cert_token_info.dart';
 import 'package:kakao_flutter_sdk/src/common/api_factory.dart';
 
 import 'model/access_token_info.dart';
@@ -43,6 +44,21 @@ class UserApi {
     final authCode = await AuthCodeClient.instance.requestWithAgt(scopes);
     final token = await AuthApi.instance.issueAccessToken(authCode);
     return await TokenManageable.instance.setToken(token);
+  }
+
+  Future<CertTokenInfo> certLoginWithKakaoAccount(
+      {List<Prompt>? prompts, required String state}) async {
+    final authCode =
+        await AuthCodeClient.instance.request(prompts: prompts, state: state);
+    final accessTokenResponse =
+        await AuthApi.instance.issueAccessToken(authCode);
+    await TokenManageable.instance.setToken(accessTokenResponse);
+    final token = await TokenManageable.instance.getToken();
+    final txId = accessTokenResponse.txId;
+    if (txId == null) {
+      throw KakaoClientException('txId is null');
+    }
+    return CertTokenInfo(token, txId);
   }
 
   /// Fetches current user's information.

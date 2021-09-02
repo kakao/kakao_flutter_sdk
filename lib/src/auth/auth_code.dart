@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:kakao_flutter_sdk/common.dart';
 import 'package:kakao_flutter_sdk/src/auth/auth_api.dart';
 import 'package:platform/platform.dart';
@@ -27,21 +28,22 @@ class AuthCodeClient {
       {String? clientId,
       String? redirectUri,
       List<Prompt>? prompts,
-      List<String>? scopes}) async {
+      List<String>? scopes,
+      String? state}) async {
     final finalRedirectUri = redirectUri ?? "kakao${_platformKey()}://oauth";
     final codeVerifier = AuthCodeClient.codeVerifier();
     final codeChallenge =
         base64.encode(sha256.convert(utf8.encode(codeVerifier)).bytes);
-
     final params = {
       "client_id": clientId ?? _platformKey(),
       "redirect_uri": finalRedirectUri,
       "response_type": "code",
       // "approval_type": "individual",
       "scope": scopes == null ? null : scopes.join(" "),
-      "prompt": prompts == null
-          ? null
-          : describeEnum(prompts.join(" ")).toLowerCase(),
+      "prompt": state == null
+          ? (prompts == null ? null : parsePrompts(prompts))
+          : parsePrompts(_makeCertPrompts(prompts)),
+      "state": state == null ? null : state,
       "codeChallenge": codeChallenge,
       "codeChallengeMethod": "S256",
       "ka": await KakaoContext.kaHeader
@@ -104,6 +106,24 @@ class AuthCodeClient {
         "OAuth 2.0 redirect uri was null, which should not happen.");
   }
 
+  List<Prompt> _makeCertPrompts(List<Prompt>? prompts) {
+    if (prompts == null) {
+      prompts = [];
+    }
+    if (!prompts.contains(Prompt.CERT)) {
+      prompts.add(Prompt.CERT);
+    }
+    return prompts;
+  }
+
+  String parsePrompts(List<Prompt> prompts) {
+    var parsedPrompt = '';
+    prompts.forEach((element) {
+      parsedPrompt += '${describeEnum(element).toLowerCase()} ';
+    });
+    return parsedPrompt;
+  }
+
   String _platformKey() {
     if (kIsWeb) {
       return KakaoContext.javascriptClientId;
@@ -126,4 +146,9 @@ class AuthCodeClient {
 // }
 }
 
-enum Prompt { LOGIN }
+enum Prompt {
+  LOGIN,
+
+  /// <nodoc>
+  CERT
+}
