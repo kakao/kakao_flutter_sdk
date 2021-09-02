@@ -23,26 +23,26 @@ class UserApi {
 
   /// Login with KakaoTalk.
   /// Authenticate the user with a Kakao account connected to KakaoTalk and issue OAuthToken
-  Future<void> loginWithKakaoTalk() async {
+  Future<OAuthToken> loginWithKakaoTalk() async {
     final authCode = await AuthCodeClient.instance.requestWithTalk();
     final token = await AuthApi.instance.issueAccessToken(authCode);
-    await TokenManageable.instance.setToken(token);
+    return await TokenManageable.instance.setToken(token);
   }
 
   /// Login with KakaoAccount.
   /// Authenticate the user with a Kakao account cookie in default web browser(CustomTabs) and issue OAuthToken
-  Future<void> loginWithKakaoAccount({List<Prompt>? prompts}) async {
+  Future<OAuthToken> loginWithKakaoAccount({List<Prompt>? prompts}) async {
     final authCode = await AuthCodeClient.instance.request(prompts: prompts);
     final token = await AuthApi.instance.issueAccessToken(authCode);
-    await TokenManageable.instance.setToken(token);
+    return await TokenManageable.instance.setToken(token);
   }
 
   /// Displays a consent screen requesting consent for personal information and access rights consent items that the user has not yet agreed to,
   /// and issues an updated OAuthToken with the consent items when the user agrees.
-  Future<void> loginWithNewScopes(List<String> scopes) async {
+  Future<OAuthToken> loginWithNewScopes(List<String> scopes) async {
     final authCode = await AuthCodeClient.instance.requestWithAgt(scopes);
     final token = await AuthApi.instance.issueAccessToken(authCode);
-    await TokenManageable.instance.setToken(token);
+    return await TokenManageable.instance.setToken(token);
   }
 
   /// Fetches current user's information.
