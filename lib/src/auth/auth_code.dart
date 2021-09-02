@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk/common.dart';
@@ -26,16 +29,21 @@ class AuthCodeClient {
       List<Prompt>? prompts,
       List<String>? scopes}) async {
     final finalRedirectUri = redirectUri ?? "kakao${_platformKey()}://oauth";
+    final codeVerifier = AuthCodeClient.codeVerifier();
+    final codeChallenge =
+        base64.encode(sha256.convert(utf8.encode(codeVerifier)).bytes);
 
     final params = {
       "client_id": clientId ?? _platformKey(),
       "redirect_uri": finalRedirectUri,
       "response_type": "code",
-      "approval_type": "individual",
+      // "approval_type": "individual",
       "scope": scopes == null ? null : scopes.join(" "),
       "prompt": prompts == null
           ? null
           : describeEnum(prompts.join(" ")).toLowerCase(),
+      "codeChallenge": codeChallenge,
+      "codeChallengeMethod": "S256",
       "ka": await KakaoContext.kaHeader
     };
     params.removeWhere((k, v) => v == null);
@@ -104,6 +112,11 @@ class AuthCodeClient {
       return KakaoContext.clientId;
     }
     return KakaoContext.javascriptClientId;
+  }
+
+  static String codeVerifier() {
+    return base64
+        .encode(sha512.convert(utf8.encode(UniqueKey().toString())).bytes);
   }
 
 // String _platformRedirectUri() {
