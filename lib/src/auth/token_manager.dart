@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// This abstract class can be used to store token information in different locations than provided by the SDK.
 abstract class TokenManageable {
   // stores access token and other retrieved information from [AuthApi.issueAccessToken]
-  Future<void> setToken(AccessTokenResponse response);
+  Future<OAuthToken> setToken(AccessTokenResponse response);
 
   // retrieves access token and other information from the designated store.
   Future<OAuthToken> getToken();
@@ -41,24 +41,34 @@ class TokenManager implements TokenManageable {
     preferences.remove(scopesKey);
   }
 
-  Future<void> setToken(AccessTokenResponse response) async {
+  Future<OAuthToken> setToken(AccessTokenResponse response) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString(atKey, response.accessToken);
-    preferences.setInt(atExpiresAtKey,
-        DateTime.now().millisecondsSinceEpoch + response.expiresIn * 1000);
+
+    var atExpiresAt =
+        DateTime.now().millisecondsSinceEpoch + response.expiresIn * 1000;
+    preferences.setInt(atExpiresAtKey, atExpiresAt);
 
     final refreshToken = response.refreshToken;
-    final refreshTokenExpiresIn = response.refreshTokenExpiresIn;
-    if (refreshToken != null && refreshTokenExpiresIn != null) {
+    var rtExpiresAt;
+    if (refreshToken != null && response.refreshTokenExpiresIn != null) {
+      rtExpiresAt = DateTime.now().millisecondsSinceEpoch +
+          response.refreshTokenExpiresIn! * 1000;
       preferences.setString(rtKey, refreshToken);
-      preferences.setInt(rtExpiresAtKey,
-          DateTime.now().millisecondsSinceEpoch + refreshTokenExpiresIn * 1000);
+      preferences.setInt(rtExpiresAtKey, rtExpiresAt);
     }
 
-    final scopes = response.scopes;
-    if (scopes != null) {
-      preferences.setStringList(scopesKey, scopes.split(' '));
+    var scopes;
+    if (response.scopes != null) {
+      scopes = response.scopes!.split(' ');
+      preferences.setStringList(scopesKey, scopes);
     }
+    return OAuthToken(
+        response.accessToken,
+        DateTime.fromMillisecondsSinceEpoch(atExpiresAt),
+        refreshToken,
+        DateTime.fromMillisecondsSinceEpoch(rtExpiresAt),
+        scopes);
   }
 
   Future<OAuthToken> getToken() async {
