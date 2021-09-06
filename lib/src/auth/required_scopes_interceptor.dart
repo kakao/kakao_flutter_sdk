@@ -26,6 +26,7 @@ class RequiredScopesInterceptor extends Interceptor {
     }
     var requiredScopes = error.requiredScopes;
     if (error.code == ApiErrorCause.INSUFFICIENT_SCOPE &&
+        requiredScopes != null &&
         requiredScopes.isNotEmpty) {
       _dio.interceptors.errorLock.lock();
       _dio.interceptors.requestLock.lock();
@@ -42,9 +43,12 @@ class RequiredScopesInterceptor extends Interceptor {
         _dio.interceptors.errorLock.unlock();
       }
     } else if (error.code == ApiErrorCause.INSUFFICIENT_SCOPE &&
+        requiredScopes != null &&
         requiredScopes.isEmpty) {
       throw KakaoApiException(ApiErrorCause.UNKNOWN, "requiredScopes not exist",
-          error.apiType, error.requiredScopes, error.allowedScopes);
+          apiType: error.apiType,
+          requiredScopes: error.requiredScopes,
+          allowedScopes: error.allowedScopes);
     }
     handler.next(err);
   }
