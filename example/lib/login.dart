@@ -87,6 +87,11 @@ class _LoginState extends State<LoginScreen> {
           RaisedButton(
               child: Text("Login with Talk"),
               onPressed: _isKakaoTalkInstalled ? _loginWithTalk : null),
+          RaisedButton(
+              child: Text("CertLoginTalk"),
+              onPressed: _isKakaoTalkInstalled ? _certLoginWithTalk : null),
+          RaisedButton(
+              child: Text("CertLogin"), onPressed: _certLoginWithKakao),
         ],
       )),
     );
@@ -140,6 +145,28 @@ class _LoginState extends State<LoginScreen> {
   _loginWithTalk() async {
     try {
       await UserApi.instance.loginWithKakaoTalk();
+      Navigator.of(context).pushReplacementNamed("/main");
+    } catch (e) {
+      print('error on login: $e');
+    }
+  }
+
+  _certLoginWithTalk() async {
+    final info = await UserApi.instance.certLoginWithKakaoTalk(state: "test");
+    print("${info.token.accessToken}");
+    print("${info.txId}");
+    Navigator.of(context).pushReplacementNamed("/main");
+    try {} catch (e) {
+      print('error on login: $e');
+    }
+  }
+
+  _certLoginWithKakao() async {
+    try {
+      final info =
+          await UserApi.instance.certLoginWithKakaoAccount(state: 'test');
+      print("${info.token.accessToken}");
+      print("${info.txId}");
       Navigator.of(context).pushReplacementNamed("/main");
     } catch (e) {
       print('error on login: $e');
