@@ -34,9 +34,9 @@ class TalkAuthCodeActivity : Activity() {
             ?: throw IllegalArgumentException("Client id is required.")
         val redirectUri = intent.extras?.getString(KEY_REDIRECT_URI)
             ?: throw IllegalArgumentException("Redirect uri is required.")
-
-        val loginIntent = Utility.talkLoginIntent(clientId, redirectUri, Utility.getKAHeader(this))
         val extra = intent.extras?.getBundle(KEY_EXTRAS) ?: Bundle()
+
+        val loginIntent = Utility.talkLoginIntent(clientId, redirectUri, Utility.getKAHeader(this), extra)
         startActivityForResult(loginIntent, REQUEST_CODE)
     }
 
