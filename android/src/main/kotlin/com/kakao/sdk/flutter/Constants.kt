@@ -34,4 +34,15 @@ object Constants {
   const val EXTRA_REDIRECT_URL = "com.kakao.sdk.talk.redirectUrl"
   const val EXTRA_ERROR_DESCRIPTION = "com.kakao.sdk.talk.error.description"
   const val EXTRA_ERROR_TYPE = "com.kakao.sdk.talk.error.type"
+
+  const val CHANNEL_PUBLIC_ID = "channel_public_id"
+  const val SERVICE_TERMS = "service_terms"
+  const val APPROVAL_TYPE = "approval_type"
+  const val PROMPT = "prompt"
+  const val STATE = "state"
+
+  const val CODE_CHALLENGE = "code_challenge"
+  const val CODE_CHALLENGE_METHOD = "code_challenge_method"
+  const val CODE_CHALLENGE_METHOD_VALUE = "S256"
+  const val CODE_CHALLENGE_ALGORITHM = "SHA-256"
 }

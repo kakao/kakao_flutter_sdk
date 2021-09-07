@@ -30,12 +30,13 @@ class AuthApi {
 
   /// Issues an access token from authCode acquired from [AuthCodeClient].
   Future<AccessTokenResponse> issueAccessToken(String authCode,
-      {String? redirectUri, String? clientId}) async {
+      {String? redirectUri, String? clientId, String? codeVerifier}) async {
     final data = {
       "code": authCode,
       "grant_type": "authorization_code",
       "client_id": clientId ?? KakaoContext.platformClientId,
       "redirect_uri": redirectUri ?? await _platformRedirectUri(),
+      "code_verifier": codeVerifier,
       ...await _platformData()
     };
     return await _issueAccessToken(data);

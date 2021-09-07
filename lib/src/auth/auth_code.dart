@@ -27,13 +27,16 @@ class AuthCodeClient {
   Future<String> request(
       {String? clientId,
       String? redirectUri,
+      String? codeVerifier,
       List<Prompt>? prompts,
       List<String>? scopes,
       String? state}) async {
     final finalRedirectUri = redirectUri ?? "kakao${_platformKey()}://oauth";
-    final codeVerifier = AuthCodeClient.codeVerifier();
-    final codeChallenge =
-        base64.encode(sha256.convert(utf8.encode(codeVerifier)).bytes);
+    var codeChallenge;
+    if (codeVerifier != null) {
+      codeChallenge =
+          base64.encode(sha256.convert(utf8.encode(codeVerifier)).bytes);
+    }
     final params = {
       "client_id": clientId ?? _platformKey(),
       "redirect_uri": finalRedirectUri,
@@ -45,7 +48,7 @@ class AuthCodeClient {
           : parsePrompts(_makeCertPrompts(prompts)),
       "state": state == null ? null : state,
       "codeChallenge": codeChallenge,
-      "codeChallengeMethod": "S256",
+      "codeChallengeMethod": codeChallenge != null ? "S256" : null,
       "ka": await KakaoContext.kaHeader
     };
     params.removeWhere((k, v) => v == null);
@@ -59,9 +62,18 @@ class AuthCodeClient {
   /// This will only work on devices where KakaoTalk is installed.
   /// You MUST check if KakaoTalk is installed before calling this method with [isKakaoTalkInstalled].
   Future<String> requestWithTalk(
-      {String? clientId, String? redirectUri, List<String>? scopes}) async {
-    return _parseCode(await _openKakaoTalk(clientId ?? _platformKey(),
-        redirectUri ?? "kakao${_platformKey()}://oauth"));
+      {String? clientId,
+      String? redirectUri,
+      List<String>? scopes,
+      List<Prompt>? prompts,
+      String? state,
+      String? codeVerifier}) async {
+    return _parseCode(await _openKakaoTalk(
+        clientId ?? _platformKey(),
+        redirectUri ?? "kakao${_platformKey()}://oauth",
+        codeVerifier,
+        prompts,
+        state));
   }
 
   /// Requests authorization code with current access token.
@@ -97,10 +109,19 @@ class AuthCodeClient {
     throw KakaoAuthException.fromJson(queryParams);
   }
 
-  Future<String> _openKakaoTalk(String clientId, String redirectUri) async {
-    final redirectUriWithParams = await _channel.invokeMethod<String>(
-        "authorizeWithTalk",
-        {"client_id": clientId, "redirect_uri": redirectUri});
+  Future<String> _openKakaoTalk(String clientId, String redirectUri,
+      String? codeVerifier, List<Prompt>? prompts, String? state) async {
+    var arguments = {
+      "client_id": clientId,
+      "redirect_uri": redirectUri,
+      "code_verifier": codeVerifier,
+      "prompt": state == null
+          ? (prompts == null ? null : parsePrompts(prompts))
+          : parsePrompts(_makeCertPrompts(prompts)),
+      "state": state == null ? null : state,
+    };
+    final redirectUriWithParams =
+        await _channel.invokeMethod<String>("authorizeWithTalk", arguments);
     if (redirectUriWithParams != null) return redirectUriWithParams;
     throw KakaoClientException(
         "OAuth 2.0 redirect uri was null, which should not happen.");

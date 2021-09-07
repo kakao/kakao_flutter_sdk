@@ -13,10 +13,16 @@ class TalkAuthCodeActivity : Activity() {
     private const val REQUEST_CODE = 1004
     const val KEY_CLIENT_ID = "key_client_Id"
     const val KEY_REDIRECT_URI = "key_redirect_uri"
+    const val KEY_EXTRAS = "key_extras"
 
-    fun start(context: Context, clientId: String, redirectUri: String) {
-      context.startActivity(Intent(context, TalkAuthCodeActivity::class.java)
-          .putExtra(KEY_CLIENT_ID, clientId).putExtra(KEY_REDIRECT_URI, redirectUri))
+    fun start(context: Context, clientId: String, redirectUri: String, extras: Bundle) {
+      context.startActivity(
+          Intent(context, TalkAuthCodeActivity::class.java).apply {
+            putExtra(KEY_CLIENT_ID, clientId)
+            putExtra(KEY_REDIRECT_URI, redirectUri)
+            putExtra(KEY_EXTRAS, extras)
+          }
+        )
     }
   }
 
@@ -24,12 +30,12 @@ class TalkAuthCodeActivity : Activity() {
     requestWindowFeature(Window.FEATURE_NO_TITLE)
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_talk_auth_code)
-
     val clientId = intent.extras?.getString(KEY_CLIENT_ID) ?: throw IllegalArgumentException("Client id is required.")
     val redirectUri = intent.extras?.getString(KEY_REDIRECT_URI)
         ?: throw IllegalArgumentException("Redirect uri is required.")
 
     val loginIntent = Utility.talkLoginIntent(clientId, redirectUri, Utility.getKAHeader(this))
+    val extra = intent.extras?.getBundle(KEY_EXTRAS) ?: Bundle()
     startActivityForResult(loginIntent, REQUEST_CODE)
   }
 

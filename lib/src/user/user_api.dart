@@ -24,10 +24,26 @@ class UserApi {
 
   /// Login with KakaoTalk.
   /// Authenticate the user with a Kakao account connected to KakaoTalk and issue OAuthToken
-  Future<OAuthToken> loginWithKakaoTalk() async {
-    final authCode = await AuthCodeClient.instance.requestWithTalk();
+  Future<OAuthToken> loginWithKakaoTalk({List<Prompt>? prompts}) async {
+    final authCode =
+        await AuthCodeClient.instance.requestWithTalk(prompts: prompts);
     final token = await AuthApi.instance.issueAccessToken(authCode);
     return await TokenManageable.instance.setToken(token);
+  }
+
+  Future<CertTokenInfo> certLoginWithKakaoTalk(
+      {List<Prompt>? prompts, required String state}) async {
+    var codeVerifier = AuthCodeClient.codeVerifier();
+    final authCode = await AuthCodeClient.instance.requestWithTalk(
+        prompts: prompts, state: state, codeVerifier: codeVerifier);
+    final accessTokenResponse = await AuthApi.instance
+        .issueAccessToken(authCode, codeVerifier: codeVerifier);
+    final token = await TokenManageable.instance.setToken(accessTokenResponse);
+    final txId = accessTokenResponse.txId;
+    if (txId == null) {
+      throw KakaoClientException('txId is null');
+    }
+    return CertTokenInfo(token, txId);
   }
 
   /// Login with KakaoAccount.
@@ -48,12 +64,12 @@ class UserApi {
 
   Future<CertTokenInfo> certLoginWithKakaoAccount(
       {List<Prompt>? prompts, required String state}) async {
+    var codeVerifier = AuthCodeClient.codeVerifier();
     final authCode =
         await AuthCodeClient.instance.request(prompts: prompts, state: state);
     final accessTokenResponse =
         await AuthApi.instance.issueAccessToken(authCode);
-    await TokenManageable.instance.setToken(accessTokenResponse);
-    final token = await TokenManageable.instance.getToken();
+    final token = await TokenManageable.instance.setToken(accessTokenResponse);
     final txId = accessTokenResponse.txId;
     if (txId == null) {
       throw KakaoClientException('txId is null');

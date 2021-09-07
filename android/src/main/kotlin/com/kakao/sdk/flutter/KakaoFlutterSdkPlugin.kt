@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
+import android.util.Base64
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -13,6 +15,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
+import java.security.MessageDigest
 
 class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
   private var _applicationContext: Context? = null
@@ -55,8 +58,23 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
           @Suppress("UNCHECKED_CAST") val args = call.arguments as Map<String, String>
           val clientId = args["client_id"] ?: throw IllegalArgumentException("Client id is required.")
           val redirectUri = args["redirect_uri"] ?: throw IllegalArgumentException("Redirect uri is required.")
+          val channelPublicIds = args["channel_public_ids"]
+          val serviceTerms = args["service_terms"]
+          val approvalType = args["approval_type"]
+          val codeVerifier = args["code_verifier"]
+          val prompts = args["prompt"]
+          val state = args["state"]
+          val extras = Bundle().apply {
+              channelPublicIds?.let { putString(Constants.CHANNEL_PUBLIC_ID, it) }
+              serviceTerms?.let { putString(Constants.SERVICE_TERMS, it) }
+              approvalType?.let { putString(Constants.APPROVAL_TYPE, it) }
+              codeVerifier?.let { putString(Constants.CODE_CHALLENGE, codeChallenge(it.toByteArray())) }
+              codeVerifier?.let { putString(Constants.CODE_CHALLENGE_METHOD, Constants.CODE_CHALLENGE_METHOD_VALUE) }
+              prompts?.let { putString(Constants.PROMPT, it) }
+              state?.let { putString(Constants.STATE, it) }
+          }
           redirectUriResult = result
-          TalkAuthCodeActivity.start(activity, clientId, redirectUri)
+          TalkAuthCodeActivity.start(activity, clientId, redirectUri, extras)
         } catch (e: Exception) {
           result.error(e.javaClass.simpleName, e.localizedMessage, e)
         }
@@ -123,4 +141,10 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
   override fun onDetachedFromActivity() {
     _activity = null
   }
+
+  private fun codeChallenge(codeVerifier: ByteArray): String =
+      Base64.encodeToString(
+          MessageDigest.getInstance(Constants.CODE_CHALLENGE_ALGORITHM).digest(codeVerifier),
+          Base64.NO_WRAP or Base64.NO_PADDING or Base64.URL_SAFE
+      )
 }
