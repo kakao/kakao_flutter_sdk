@@ -120,6 +120,7 @@ class AuthCodeClient {
           : parsePrompts(_makeCertPrompts(prompts)),
       "state": state == null ? null : state,
     };
+    arguments.removeWhere((k, v) => v == null);
     final redirectUriWithParams =
         await _channel.invokeMethod<String>("authorizeWithTalk", arguments);
     if (redirectUriWithParams != null) return redirectUriWithParams;

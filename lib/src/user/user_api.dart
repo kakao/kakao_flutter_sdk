@@ -38,12 +38,12 @@ class UserApi {
         prompts: prompts, state: state, codeVerifier: codeVerifier);
     final accessTokenResponse = await AuthApi.instance
         .issueAccessToken(authCode, codeVerifier: codeVerifier);
-    final token = await TokenManageable.instance.setToken(accessTokenResponse);
-    final txId = accessTokenResponse.txId;
-    if (txId == null) {
+    if (accessTokenResponse.txId == null) {
       throw KakaoClientException('txId is null');
     }
-    return CertTokenInfo(token, txId);
+    final txId = accessTokenResponse.txId;
+    final token = await TokenManageable.instance.setToken(accessTokenResponse);
+    return CertTokenInfo(token, txId!);
   }
 
   /// Login with KakaoAccount.
@@ -65,10 +65,10 @@ class UserApi {
   Future<CertTokenInfo> certLoginWithKakaoAccount(
       {List<Prompt>? prompts, required String state}) async {
     var codeVerifier = AuthCodeClient.codeVerifier();
-    final authCode =
-        await AuthCodeClient.instance.request(prompts: prompts, state: state);
-    final accessTokenResponse =
-        await AuthApi.instance.issueAccessToken(authCode);
+    final authCode = await AuthCodeClient.instance
+        .request(prompts: prompts, state: state, codeVerifier: codeVerifier);
+    final accessTokenResponse = await AuthApi.instance
+        .issueAccessToken(authCode, codeVerifier: codeVerifier);
     final token = await TokenManageable.instance.setToken(accessTokenResponse);
     final txId = accessTokenResponse.txId;
     if (txId == null) {
