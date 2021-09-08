@@ -17,7 +17,7 @@ class ApiFactory {
   static final Dio dapi = _dapiInstance();
 
   static Dio _kauthApiInstance() {
-    var dio = new Dio();
+    var dio = Dio();
     dio.options.baseUrl = "https://${KakaoContext.hosts.kauth}";
     dio.options.contentType = "application/x-www-form-urlencoded";
     dio.interceptors.addAll([kaInterceptor]);
@@ -25,7 +25,7 @@ class ApiFactory {
   }
 
   static Dio _authApiInstance() {
-    var dio = new Dio();
+    var dio = Dio();
     dio.options.baseUrl = "https://${KakaoContext.hosts.kapi}";
     dio.options.contentType = "application/x-www-form-urlencoded";
     var tokenInterceptor = AccessTokenInterceptor(dio, AuthApi.instance);
@@ -36,7 +36,7 @@ class ApiFactory {
   }
 
   static Dio _appKeyApiInstance() {
-    var dio = new Dio();
+    var dio = Dio();
     dio.options.baseUrl = "https://${KakaoContext.hosts.kapi}";
     dio.options.contentType = "application/x-www-form-urlencoded";
     dio.interceptors.addAll([appKeyInterceptor, kaInterceptor]);
@@ -44,7 +44,7 @@ class ApiFactory {
   }
 
   static Dio _dapiInstance() {
-    var dio = new Dio();
+    var dio = Dio();
     dio.options.baseUrl = "https://${KakaoContext.hosts.dapi}";
     dio.options.contentType = "application/x-www-form-urlencoded";
     dio.interceptors.addAll([appKeyInterceptor, kaInterceptor]);
