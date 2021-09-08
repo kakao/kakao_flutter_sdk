@@ -28,20 +28,35 @@ class RequiredScopesInterceptor extends Interceptor {
     if (error.code == ApiErrorCause.INSUFFICIENT_SCOPE &&
         requiredScopes != null &&
         requiredScopes.isNotEmpty) {
-      _dio.interceptors.errorLock.lock();
-      _dio.interceptors.requestLock.lock();
+      _dio.lock();
 
       try {
+        var options = err.response?.requestOptions;
+
+        if (options == null) {
+          _dio.unlock();
+          handler.next(err);
+          return;
+        }
+
         final authCode = await _authCodeClient.requestWithAgt(requiredScopes);
         final token = await AuthApi.instance.issueAccessToken(authCode);
-        await _tokenManager.setToken(token);
+        var newToken = await _tokenManager.setToken(token);
+
+        options.headers["Authorization"] = "Bearer ${newToken.accessToken}";
+
+        _dio
+            .fetch(options)
+            .then((response) => handler.resolve(response))
+            .catchError((error, stackTrace) {
+          handler.reject(error);
+        }).whenComplete(() => _dio.unlock());
       } catch (e) {
         handler.next(err);
-        return;
       } finally {
-        _dio.interceptors.requestLock.unlock();
-        _dio.interceptors.errorLock.unlock();
+        _dio.unlock();
       }
+      return;
     } else if (error.code == ApiErrorCause.INSUFFICIENT_SCOPE &&
         requiredScopes != null &&
         requiredScopes.isEmpty) {
