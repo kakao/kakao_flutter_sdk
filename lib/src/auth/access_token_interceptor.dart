@@ -29,19 +29,19 @@ class AccessTokenInterceptor extends Interceptor {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) async {
-    _dio.interceptors.errorLock.lock();
+    _dio.lock();
     if (!isRetryable(err)) {
-      _dio.interceptors.errorLock.unlock();
+      _dio.unlock();
       handler.next(err);
       return;
     }
     try {
-      _dio.interceptors.requestLock.lock();
       final options = err.response?.requestOptions;
       final request = err.requestOptions;
       final token = await _tokenManager.getToken();
       final refreshToken = token.refreshToken;
       if (options == null || refreshToken == null) {
+        _dio.unlock();
         handler.next(err);
         return;
       }
@@ -50,24 +50,32 @@ class AccessTokenInterceptor extends Interceptor {
         // tokens were refreshed by another API request.
         print(
             "just retry ${options.path} since access token was already refreshed by another request.");
-        await _dio.fetch(options);
+        _dio
+            .fetch(options)
+            .then((response) => handler.resolve(response))
+            .catchError((error, stackTrace) {
+          handler.reject(error);
+        }).whenComplete(() => _dio.unlock());
         return;
       }
       final tokenResponse = await _kauthApi.refreshAccessToken(refreshToken);
-      await _tokenManager.setToken(tokenResponse);
+      var newToken = await _tokenManager.setToken(tokenResponse);
       print("retry ${options.path} after refreshing access token.");
-      await _dio.fetch(options);
-      return;
+      options.headers["Authorization"] = "Bearer ${newToken.accessToken}";
+      _dio
+          .fetch(options)
+          .then((response) => handler.resolve(response))
+          .catchError((error, stackTrace) {
+        handler.reject(error);
+      }).whenComplete(() => _dio.unlock());
     } catch (e) {
       if (e is KakaoAuthException ||
           e is KakaoApiException && e.code == ApiErrorCause.INVALID_TOKEN) {
         await _tokenManager.clear();
       }
       handler.next(err);
-      return;
     } finally {
-      _dio.interceptors.requestLock.unlock();
-      _dio.interceptors.errorLock.unlock();
+      _dio.unlock();
     }
   }
 
