@@ -5,9 +5,9 @@ import 'package:kakao_flutter_sdk/talk.dart';
 
 class TalkBloc extends Bloc<TalkEvent, TalkState> {
   final TalkApi _talkApi;
-  TalkBloc({TalkApi talkApi}) :
-    _talkApi = talkApi ?? TalkApi.instance,
-    super(TalkprofileUninitialized());
+  TalkBloc({TalkApi talkApi})
+      : _talkApi = talkApi ?? TalkApi.instance,
+        super(TalkprofileUninitialized());
 
   @override
   Stream<TalkState> mapEventToState(

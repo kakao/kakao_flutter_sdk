@@ -6,7 +6,9 @@ import 'package:kakao_flutter_sdk/story.dart';
 
 class PostStoryBloc extends Bloc<PostStoryEvent, PostStoryState> {
   final StoryApi _storyApi;
-  PostStoryBloc({StoryApi storyApi}) : _storyApi = storyApi ?? StoryApi.instance, super(PostStoryState.init());
+  PostStoryBloc({StoryApi storyApi})
+      : _storyApi = storyApi ?? StoryApi.instance,
+        super(PostStoryState.init());
 
   @override
   PostStoryState get initialState => PostStoryState.init();
