@@ -10,14 +10,14 @@ import 'package:platform/platform.dart';
 
 /// Provides Kakao OAuth API.
 class AuthApi {
-  AuthApi({Dio? dio, Platform? platform, TokenManageable? tokenManager})
+  AuthApi({Dio? dio, Platform? platform, TokenManager? tokenManager})
       : _dio = dio ?? ApiFactory.kauthApi,
         _platform = platform ?? LocalPlatform(),
-        _tokenManager = tokenManager ?? TokenManageable.instance;
+        _tokenManager = tokenManager ?? TokenManager.instance;
 
   final Dio _dio;
   final Platform _platform;
-  final TokenManageable _tokenManager;
+  final TokenManager _tokenManager;
 
   /// Default instance SDK provides.
   static final AuthApi instance = AuthApi();
@@ -44,7 +44,7 @@ class AuthApi {
 
   /// Issues a new access token from the given refresh token.
   ///
-  /// Refresh tokens are usually retrieved from [TokenManageable].
+  /// Refresh tokens are usually retrieved from [TokenManager].
   Future<AccessTokenResponse> refreshAccessToken(String refreshToken,
       {String? redirectUri, String? clientId}) async {
     final data = {

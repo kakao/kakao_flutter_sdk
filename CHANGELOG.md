@@ -1,6 +1,11 @@
+## 0.8.1
+
+- Rename `AccessTokenStore` to `TokenManager` (In version 0.8.0, It was incorrectly renamed to `TokenManageable`)
+
 ## 0.8.0
+
 - Add 'productName', 'currencyUnit' and 'currencyUnitPosition' property in commerce template
-- Rename `AccessTokenStore` to `TokenManager`
+- Rename `AccessTokenStore` to `TokenManageable`
 - Improve to automatically recall the api after additional consent when the scope is insufficient 
 - Fix the bug in parsing Api error
 - Fix the bug in reissuing access token automatically
