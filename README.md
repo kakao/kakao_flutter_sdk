@@ -29,7 +29,7 @@ Specify Kakao SDK dependency as below in your `pubspec.yaml`.
 
 ```yaml
 dependencies:
-  kakao_flutter_sdk: ^0.8.0
+  kakao_flutter_sdk: ^0.8.1
 ```
 
 ### dependencies
@@ -277,8 +277,10 @@ import 'package:kakao_flutter_sdk/user.dart'; // must be imported if version is 
 
 #### Getting Access Token
 
-
-> `AccessTokenStore` has been renamed to `TokenManager` since version 0.8.0.
+> In version 0.8.0, `AccessTokenStore` was incorrectly renamed to `TokenManageable`.
+>
+> So, It has been renamed to **`TokenManager`** since version 0.8.1.
+>
 > Also,  Method `fromStore()` has been renamed to `getToken()` and `toStore()` has been rename to `setToken()`.
  
 

@@ -34,13 +34,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
     if (event is UserLogOut) {
       await _userApi.logout();
-      await TokenManageable.instance.clear();
+      await TokenManager.instance.clear();
       yield UserLoggedOut();
       return;
     }
     if (event is UserUnlink) {
       await _userApi.unlink();
-      await TokenManageable.instance.clear();
+      await TokenManager.instance.clear();
       yield UserLoggedOut();
       return;
     }

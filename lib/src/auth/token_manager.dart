@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Stores access token and refresh token from [AuthApi].
 ///
 /// This abstract class can be used to store token information in different locations than provided by the SDK.
-abstract class TokenManageable {
+abstract class TokenManager {
   // stores access token and other retrieved information from [AuthApi.issueAccessToken]
   Future<OAuthToken> setToken(AccessTokenResponse response);
 
@@ -16,13 +16,13 @@ abstract class TokenManageable {
   Future<void> clear();
 
   // singleton instance of the default [TokenManager] used by the SDK.
-  static final TokenManageable instance = TokenManager();
+  static final TokenManager instance = DefaultTokenManager();
 }
 
-/// Default [TokenManageable] provided by Kakao Flutter SDK.
+/// Default [TokenManager] provided by Kakao Flutter SDK.
 ///
 /// Currently uses SharedPreferences (on Android) and UserDefaults (on iOS).
-class TokenManager implements TokenManageable {
+class DefaultTokenManager implements TokenManager {
   static const atKey = "com.kakao.token.AccessToken";
   static const atExpiresAtKey = "com.kakao.token.AccessToken.ExpiresAt";
   static const rtKey = "com.kakao.token.RefreshToken";

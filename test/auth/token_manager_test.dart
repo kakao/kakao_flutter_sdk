@@ -8,7 +8,7 @@ import '../helper.dart';
 void main() {
   var map;
   var response;
-  late TokenManager tokenManager;
+  late DefaultTokenManager tokenManager;
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUp(() async {
@@ -25,7 +25,7 @@ void main() {
     });
     map = await loadJsonIntoMap('oauth/token_with_rt_and_scopes.json');
     response = AccessTokenResponse.fromJson(map);
-    tokenManager = TokenManager();
+    tokenManager = DefaultTokenManager();
   });
   tearDown(() {});
 

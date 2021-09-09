@@ -28,7 +28,7 @@ class UserApi {
     final authCode =
         await AuthCodeClient.instance.requestWithTalk(prompts: prompts);
     final token = await AuthApi.instance.issueAccessToken(authCode);
-    return await TokenManageable.instance.setToken(token);
+    return await TokenManager.instance.setToken(token);
   }
 
   Future<CertTokenInfo> certLoginWithKakaoTalk(
@@ -42,7 +42,7 @@ class UserApi {
       throw KakaoClientException('txId is null');
     }
     final txId = accessTokenResponse.txId;
-    final token = await TokenManageable.instance.setToken(accessTokenResponse);
+    final token = await TokenManager.instance.setToken(accessTokenResponse);
     return CertTokenInfo(token, txId!);
   }
 
@@ -51,7 +51,7 @@ class UserApi {
   Future<OAuthToken> loginWithKakaoAccount({List<Prompt>? prompts}) async {
     final authCode = await AuthCodeClient.instance.request(prompts: prompts);
     final token = await AuthApi.instance.issueAccessToken(authCode);
-    return await TokenManageable.instance.setToken(token);
+    return await TokenManager.instance.setToken(token);
   }
 
   /// Displays a consent screen requesting consent for personal information and access rights consent items that the user has not yet agreed to,
@@ -59,7 +59,7 @@ class UserApi {
   Future<OAuthToken> loginWithNewScopes(List<String> scopes) async {
     final authCode = await AuthCodeClient.instance.requestWithAgt(scopes);
     final token = await AuthApi.instance.issueAccessToken(authCode);
-    return await TokenManageable.instance.setToken(token);
+    return await TokenManager.instance.setToken(token);
   }
 
   Future<CertTokenInfo> certLoginWithKakaoAccount(
@@ -69,7 +69,7 @@ class UserApi {
         .request(prompts: prompts, state: state, codeVerifier: codeVerifier);
     final accessTokenResponse = await AuthApi.instance
         .issueAccessToken(authCode, codeVerifier: codeVerifier);
-    final token = await TokenManageable.instance.setToken(accessTokenResponse);
+    final token = await TokenManager.instance.setToken(accessTokenResponse);
     final txId = accessTokenResponse.txId;
     if (txId == null) {
       throw KakaoClientException('txId is null');
