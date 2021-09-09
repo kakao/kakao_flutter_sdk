@@ -11,12 +11,12 @@ part 'text_template.g.dart';
 class TextTemplate extends DefaultTemplate {
   /// <nodoc>
   TextTemplate(this.text, this.link,
-      {this.buttonTitle, this.buttons, this.objectType = "text"});
+      {this.buttons, this.buttonTitle, this.objectType = "text"});
 
   final String text;
   final Link link;
-  final String? buttonTitle;
   final List<Button>? buttons;
+  final String? buttonTitle;
 
   final String objectType;
 

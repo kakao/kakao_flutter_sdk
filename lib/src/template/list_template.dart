@@ -11,13 +11,14 @@ part 'list_template.g.dart';
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class ListTemplate extends DefaultTemplate {
   /// <nodoc>
-  ListTemplate(this.headerTitle, this.headerLink,
-      {this.contents, this.buttons, this.objectType = "list"});
+  ListTemplate(this.headerTitle, this.headerLink, this.contents,
+      {this.buttons, this.buttonTitle, this.objectType = "list"});
 
   final String headerTitle;
   final Link headerLink;
-  final List<Content>? contents;
+  final List<Content> contents;
   final List<Button>? buttons;
+  final String? buttonTitle;
 
   final String objectType;
 

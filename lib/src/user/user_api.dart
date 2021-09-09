@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
+import 'package:kakao_flutter_sdk/src/auth/model/cert_token_info.dart';
 import 'package:kakao_flutter_sdk/src/common/api_factory.dart';
 
 import 'model/access_token_info.dart';
@@ -23,26 +24,57 @@ class UserApi {
 
   /// Login with KakaoTalk.
   /// Authenticate the user with a Kakao account connected to KakaoTalk and issue OAuthToken
-  Future<void> loginWithKakaoTalk() async {
-    final authCode = await AuthCodeClient.instance.requestWithTalk();
+  Future<OAuthToken> loginWithKakaoTalk({List<Prompt>? prompts}) async {
+    final authCode =
+        await AuthCodeClient.instance.requestWithTalk(prompts: prompts);
     final token = await AuthApi.instance.issueAccessToken(authCode);
-    await AccessTokenStore.instance.toStore(token);
+    return await TokenManageable.instance.setToken(token);
+  }
+
+  Future<CertTokenInfo> certLoginWithKakaoTalk(
+      {List<Prompt>? prompts, required String state}) async {
+    var codeVerifier = AuthCodeClient.codeVerifier();
+    final authCode = await AuthCodeClient.instance.requestWithTalk(
+        prompts: prompts, state: state, codeVerifier: codeVerifier);
+    final accessTokenResponse = await AuthApi.instance
+        .issueAccessToken(authCode, codeVerifier: codeVerifier);
+    if (accessTokenResponse.txId == null) {
+      throw KakaoClientException('txId is null');
+    }
+    final txId = accessTokenResponse.txId;
+    final token = await TokenManageable.instance.setToken(accessTokenResponse);
+    return CertTokenInfo(token, txId!);
   }
 
   /// Login with KakaoAccount.
   /// Authenticate the user with a Kakao account cookie in default web browser(CustomTabs) and issue OAuthToken
-  Future<void> loginWithKakaoAccount({List<Prompt>? prompts}) async {
+  Future<OAuthToken> loginWithKakaoAccount({List<Prompt>? prompts}) async {
     final authCode = await AuthCodeClient.instance.request(prompts: prompts);
     final token = await AuthApi.instance.issueAccessToken(authCode);
-    await AccessTokenStore.instance.toStore(token);
+    return await TokenManageable.instance.setToken(token);
   }
 
   /// Displays a consent screen requesting consent for personal information and access rights consent items that the user has not yet agreed to,
   /// and issues an updated OAuthToken with the consent items when the user agrees.
-  Future<void> loginWithNewScopes(List<String> scopes) async {
+  Future<OAuthToken> loginWithNewScopes(List<String> scopes) async {
     final authCode = await AuthCodeClient.instance.requestWithAgt(scopes);
     final token = await AuthApi.instance.issueAccessToken(authCode);
-    await AccessTokenStore.instance.toStore(token);
+    return await TokenManageable.instance.setToken(token);
+  }
+
+  Future<CertTokenInfo> certLoginWithKakaoAccount(
+      {List<Prompt>? prompts, required String state}) async {
+    var codeVerifier = AuthCodeClient.codeVerifier();
+    final authCode = await AuthCodeClient.instance
+        .request(prompts: prompts, state: state, codeVerifier: codeVerifier);
+    final accessTokenResponse = await AuthApi.instance
+        .issueAccessToken(authCode, codeVerifier: codeVerifier);
+    final token = await TokenManageable.instance.setToken(accessTokenResponse);
+    final txId = accessTokenResponse.txId;
+    if (txId == null) {
+      throw KakaoClientException('txId is null');
+    }
+    return CertTokenInfo(token, txId);
   }
 
   /// Fetches current user's information.

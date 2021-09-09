@@ -15,6 +15,7 @@ class LocationTemplate extends DefaultTemplate {
       {this.addressTitle,
       this.social,
       this.buttons,
+      this.buttonTitle,
       this.objectType = "location"});
 
   final String address;
@@ -22,6 +23,7 @@ class LocationTemplate extends DefaultTemplate {
   final String? addressTitle;
   final Social? social;
   final List<Button>? buttons;
+  final String? buttonTitle;
 
   final String objectType;
 

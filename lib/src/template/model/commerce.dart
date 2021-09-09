@@ -7,7 +7,12 @@ part 'commerce.g.dart';
 class Commerce {
   /// <nodoc>
   Commerce(this.regularPrice,
-      {this.discountPrice, this.fixedDiscountPrice, this.discountRate});
+      {this.discountPrice,
+      this.fixedDiscountPrice,
+      this.discountRate,
+      this.productName,
+      this.currencyUnit,
+      this.currencyUnitPosition});
 
   final int regularPrice;
   final int? discountPrice;
@@ -17,6 +22,10 @@ class Commerce {
 
   /// exclusive with [fixedDiscountPrice].
   final int? discountRate;
+
+  final String? productName;
+  final String? currencyUnit;
+  final int? currencyUnitPosition;
 
   /// <nodoc>
   factory Commerce.fromJson(Map<String, dynamic> json) =>

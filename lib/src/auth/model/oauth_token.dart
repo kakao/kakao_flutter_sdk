@@ -1,6 +1,11 @@
 import 'dart:convert';
 
+import 'package:json_annotation/json_annotation.dart';
+
+part 'oauth_token.g.dart';
+
 /// Access token and refresh token information.
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class OAuthToken {
   String? accessToken;
 
@@ -25,4 +30,11 @@ class OAuthToken {
       "scopes": scopes
     });
   }
+
+  /// <nodoc>
+  factory OAuthToken.fromJson(Map<String, dynamic> json) =>
+      _$OAuthTokenFromJson(json);
+
+  /// <nodoc>
+  Map<String, dynamic> toJson() => _$OAuthTokenToJson(this);
 }

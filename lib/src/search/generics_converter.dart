@@ -34,7 +34,7 @@ class GenericsConverter<T> implements JsonConverter<T, Object> {
     if (T == Cafe) {
       return Cafe.fromJson(json as Map<String, dynamic>) as T;
     }
-    throw new KakaoClientException("Not a valid generic type.");
+    throw KakaoClientException("Not a valid generic type.");
   }
 
   @override

@@ -2,6 +2,7 @@ import Flutter
 import UIKit
 import AuthenticationServices
 import SafariServices
+import CommonCrypto
 
 public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthenticationPresentationContextProviding {
     var result: FlutterResult? = nil
@@ -31,7 +32,10 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
         let args = call.arguments as! Dictionary<String, String>
         let clientId = args["client_id"]
         let redirectUri = args["redirect_uri"]
-        authorizeWithTalk(clientId: clientId!, redirectUri: redirectUri!, result: result)
+        let codeVerifier = args["code_verifier"]
+        let prompt = args["prompt"]
+        let state = args["state"]
+        authorizeWithTalk(clientId: clientId!, redirectUri: redirectUri!, codeVerifier: codeVerifier, prompt: prompt, state: state, result: result)
     case "isKakaoTalkInstalled":
         guard let talkUrl = URL(string: "kakaokompassauth://authorize") else {
             result(false)
@@ -65,7 +69,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
         }
     }
     
-    private func authorizeWithTalk(clientId: String, redirectUri: String, result: @escaping FlutterResult) {
+    private func authorizeWithTalk(clientId: String, redirectUri: String, codeVerifier: String?, prompt: String?, state: String?, result: @escaping FlutterResult) {
         self.result = result
         self.redirectUri = redirectUri
         self.authorizeTalkCompletionHandler = {
@@ -89,6 +93,19 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
         parameters["client_id"] = clientId
         parameters["redirect_uri"] = redirectUri
         parameters["response_type"] = "code"
+        
+        if(codeVerifier != nil) {
+            parameters["code_challenge"] = SdkCrypto.base64url(data: SdkCrypto.sha256(string: codeVerifier!)!)
+            parameters["code_challenge_method"] = "S256"
+        }
+        
+        if(prompt != nil) {
+            parameters["prompt"] = prompt
+        }
+        
+        if(state != nil) {
+            parameters["state"] = state
+        }
 
         guard let url = Utility.makeUrlWithParameters("kakaokompassauth://authorize", parameters: parameters) else {
             result(FlutterError(code: "makeURL", message: "This is probably a bug in Kakao Flutter SDK.", details: nil))
@@ -167,5 +184,58 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
     @available(iOS 12.0, *)
     public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
         return UIApplication.shared.keyWindow ?? ASPresentationAnchor()
+    }
+}
+
+///:nodoc:
+class SdkCrypto {
+    public static func generateCodeVerifier() -> String? {
+        let uuid = UUID().uuidString
+        if let codeVerifierData = self.sha512(string: uuid) {
+            return self.base64(data: codeVerifierData).replacingOccurrences(of: "=", with: "")
+        }
+        return nil
+    }
+    
+    static func sha512(data: Data) -> Data? {
+        var hash = [UInt8](repeating: 0,  count: Int(CC_SHA512_DIGEST_LENGTH))
+        data.withUnsafeBytes {
+            _ = CC_SHA512($0.baseAddress, CC_LONG(data.count), &hash)
+        }
+        return Data(hash)
+    }
+    
+    static func sha512(string: String) -> Data? {
+        guard let data = string.data(using: String.Encoding.utf8) else {
+            return nil
+        }
+        return self.sha512(data: data)
+    }
+    
+    public static func base64(data: Data) -> String {
+        return data.base64EncodedString(options: [.endLineWithCarriageReturn, .endLineWithLineFeed])
+    }
+    
+    public static func base64url(data: Data) -> String {
+        let base64url = self.base64(data:data)
+            .replacingOccurrences(of: "+", with: "-")
+            .replacingOccurrences(of: "/", with: "_")
+            .replacingOccurrences(of: "=", with: "")
+        return base64url
+    }
+    
+    public static func sha256(data: Data) -> Data? {
+        var hash = [UInt8](repeating: 0,  count: Int(CC_SHA256_DIGEST_LENGTH))
+        data.withUnsafeBytes {
+            _ = CC_SHA256($0.baseAddress, CC_LONG(data.count), &hash)
+        }
+        return Data(hash)
+    }
+    
+    public static func sha256(string: String) -> Data? {
+        guard let data = string.data(using: String.Encoding.utf8) else {
+            return nil
+        }
+        return self.sha256(data: data)
     }
 }

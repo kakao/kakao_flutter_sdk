@@ -12,11 +12,12 @@ part 'commerce_template.g.dart';
 class CommerceTemplate extends DefaultTemplate {
   /// <nodoc>
   CommerceTemplate(this.content, this.commerce,
-      {this.buttons, this.objectType = "commerce"});
+      {this.buttons, this.buttonTitle, this.objectType = "commerce"});
 
   final Content content;
   final Commerce commerce;
   final List<Button>? buttons;
+  final String? buttonTitle;
   final String objectType;
 
   /// <nodoc>

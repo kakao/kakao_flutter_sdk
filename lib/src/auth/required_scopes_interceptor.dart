@@ -5,11 +5,11 @@ import 'package:kakao_flutter_sdk/auth.dart';
 class RequiredScopesInterceptor extends Interceptor {
   Dio _dio;
   AuthCodeClient _authCodeClient;
-  AccessTokenStore _tokenStore;
+  TokenManageable _tokenManager;
 
-  RequiredScopesInterceptor(this._dio, {AccessTokenStore? tokenStore})
+  RequiredScopesInterceptor(this._dio, {TokenManageable? tokenManager})
       : this._authCodeClient = AuthCodeClient(),
-        this._tokenStore = tokenStore ?? AccessTokenStore.instance;
+        this._tokenManager = tokenManager ?? TokenManageable.instance;
 
   @override
   void onRequest(
@@ -26,25 +26,44 @@ class RequiredScopesInterceptor extends Interceptor {
     }
     var requiredScopes = error.requiredScopes;
     if (error.code == ApiErrorCause.INSUFFICIENT_SCOPE &&
+        requiredScopes != null &&
         requiredScopes.isNotEmpty) {
-      _dio.interceptors.errorLock.lock();
-      _dio.interceptors.requestLock.lock();
+      _dio.lock();
 
       try {
+        var options = err.response?.requestOptions;
+
+        if (options == null) {
+          _dio.unlock();
+          handler.next(err);
+          return;
+        }
+
         final authCode = await _authCodeClient.requestWithAgt(requiredScopes);
         final token = await AuthApi.instance.issueAccessToken(authCode);
-        await _tokenStore.toStore(token);
+        var newToken = await _tokenManager.setToken(token);
+
+        options.headers["Authorization"] = "Bearer ${newToken.accessToken}";
+
+        _dio
+            .fetch(options)
+            .then((response) => handler.resolve(response))
+            .catchError((error, stackTrace) {
+          handler.reject(error);
+        }).whenComplete(() => _dio.unlock());
       } catch (e) {
         handler.next(err);
-        return;
       } finally {
-        _dio.interceptors.requestLock.unlock();
-        _dio.interceptors.errorLock.unlock();
+        _dio.unlock();
       }
+      return;
     } else if (error.code == ApiErrorCause.INSUFFICIENT_SCOPE &&
+        requiredScopes != null &&
         requiredScopes.isEmpty) {
       throw KakaoApiException(ApiErrorCause.UNKNOWN, "requiredScopes not exist",
-          error.apiType, error.requiredScopes, error.allowedScopes);
+          apiType: error.apiType,
+          requiredScopes: error.requiredScopes,
+          allowedScopes: error.allowedScopes);
     }
     handler.next(err);
   }

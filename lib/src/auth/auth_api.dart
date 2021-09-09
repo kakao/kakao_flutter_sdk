@@ -2,40 +2,41 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:kakao_flutter_sdk/src/auth/access_token_store.dart';
 import 'package:kakao_flutter_sdk/src/auth/model/access_token_response.dart';
+import 'package:kakao_flutter_sdk/src/auth/token_manager.dart';
 import 'package:kakao_flutter_sdk/src/common/api_factory.dart';
 import 'package:kakao_flutter_sdk/src/common/kakao_context.dart';
 import 'package:platform/platform.dart';
 
 /// Provides Kakao OAuth API.
 class AuthApi {
-  AuthApi({Dio? dio, Platform? platform, AccessTokenStore? tokenStore})
+  AuthApi({Dio? dio, Platform? platform, TokenManageable? tokenManager})
       : _dio = dio ?? ApiFactory.kauthApi,
         _platform = platform ?? LocalPlatform(),
-        _tokenStore = tokenStore ?? AccessTokenStore.instance;
+        _tokenManager = tokenManager ?? TokenManageable.instance;
 
   final Dio _dio;
   final Platform _platform;
-  final AccessTokenStore _tokenStore;
+  final TokenManageable _tokenManager;
 
   /// Default instance SDK provides.
   static final AuthApi instance = AuthApi();
 
   /// Check OAuthToken is issued.
   Future<bool> hasToken() async {
-    final token = await _tokenStore.fromStore();
+    final token = await _tokenManager.getToken();
     return token.accessToken != null && token.refreshToken != null;
   }
 
   /// Issues an access token from authCode acquired from [AuthCodeClient].
   Future<AccessTokenResponse> issueAccessToken(String authCode,
-      {String? redirectUri, String? clientId}) async {
+      {String? redirectUri, String? clientId, String? codeVerifier}) async {
     final data = {
       "code": authCode,
       "grant_type": "authorization_code",
       "client_id": clientId ?? KakaoContext.platformClientId,
       "redirect_uri": redirectUri ?? await _platformRedirectUri(),
+      "code_verifier": codeVerifier,
       ...await _platformData()
     };
     return await _issueAccessToken(data);
@@ -43,7 +44,7 @@ class AuthApi {
 
   /// Issues a new access token from the given refresh token.
   ///
-  /// Refresh tokens are usually retrieved from [AccessTokenStore].
+  /// Refresh tokens are usually retrieved from [TokenManageable].
   Future<AccessTokenResponse> refreshAccessToken(String refreshToken,
       {String? redirectUri, String? clientId}) async {
     final data = {
@@ -58,7 +59,7 @@ class AuthApi {
 
   /// Issues temporary agt (access token-generated token), which can be used to acquire auth code.
   Future<String> agt({String? clientId, String? accessToken}) async {
-    final tokenInfo = await _tokenStore.fromStore();
+    final tokenInfo = await _tokenManager.getToken();
     final data = {
       "client_id": clientId ?? KakaoContext.platformClientId,
       "access_token": accessToken ?? tokenInfo.accessToken

@@ -7,21 +7,21 @@ part 'kakao_api_exception.g.dart';
 @JsonSerializable(includeIfNull: false, fieldRename: FieldRename.snake)
 class KakaoApiException extends KakaoException {
   /// <nodoc>
-  KakaoApiException(this.code, this.msg, this.apiType, this.requiredScopes,
-      this.allowedScopes)
+  KakaoApiException(this.code, this.msg,
+      {this.apiType, this.requiredScopes, this.allowedScopes})
       : super(msg);
 
   @JsonKey(unknownEnumValue: ApiErrorCause.UNKNOWN)
   final ApiErrorCause code;
   final String msg;
-  final String apiType;
+  final String? apiType;
 
   /// List of scopes required to call the API that threw this exception.
   /// Use this with [AuthCodeClient.requestWithAgt] to let users agree to providing relevant information.
-  final List<String> requiredScopes;
+  final List<String>? requiredScopes;
 
   // List of scopes this user already agreed to.
-  final List<String> allowedScopes;
+  final List<String>? allowedScopes;
 
   /// <nodoc>
   factory KakaoApiException.fromJson(Map<String, dynamic> json) =>
@@ -50,18 +50,6 @@ enum ApiErrorCause {
   DEPRECATED_API,
   @JsonValue(-10)
   API_LIMIT_EXCEEDED,
-  @JsonValue(-301)
-  APP_DOES_NOT_EXIST,
-  @JsonValue(-401)
-  INVALID_TOKEN,
-  @JsonValue(-403)
-  INVALID_ORIGIN,
-  @JsonValue(-603)
-  TIME_OUT,
-  @JsonValue(-903)
-  DEVELOPER_DOES_NOT_EXIST,
-  @JsonValue(-9798)
-  UNDER_MAINTENANCE,
 
   @JsonValue(-101)
   NOT_REGISTERED_USER,
@@ -69,15 +57,23 @@ enum ApiErrorCause {
   ALREADY_REGISTERD_USER,
   @JsonValue(-103)
   ACCOUNT_DOES_NOT_EXIST,
+
+  @JsonValue(-201)
+  PROPERTY_KEY_DOES_NOT_EXIST,
+
+  @JsonValue(-301)
+  APP_DOES_NOT_EXIST,
+
+  @JsonValue(-401)
+  INVALID_TOKEN,
   @JsonValue(-402)
   INSUFFICIENT_SCOPE,
+  @JsonValue(-403)
+  INVALID_ORIGIN,
   @JsonValue(-405)
   REQUIRED_AGE_VERIFICATION,
   @JsonValue(-406)
   UNDER_AGE_LIMIT,
-
-  @JsonValue(-201)
-  PROPERTY_KEY_DOES_NOT_EXIST,
 
   @JsonValue(-501)
   NOT_TALK_USER,
@@ -96,11 +92,19 @@ enum ApiErrorCause {
   NOT_STORY_USER,
   @JsonValue(-602)
   STORY_IMAGE_UPOLOAD_SIZE_EXCEEDED,
+  @JsonValue(-603)
+  TIME_OUT,
   @JsonValue(-604)
   STORY_INVALID_SCRAP_URL,
   @JsonValue(-605)
   STROY_INVALID_POST_ID,
   @JsonValue(-606)
   STORY_MAX_UPLOAD_COUNT_EXCEED,
+
+  @JsonValue(-903)
+  DEVELOPER_DOES_NOT_EXIST,
+  @JsonValue(-9798)
+  UNDER_MAINTENANCE,
+
   UNKNOWN
 }

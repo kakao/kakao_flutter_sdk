@@ -1,26 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:kakao_flutter_sdk/auth.dart';
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kakao_flutter_sdk/auth.dart';
+import 'package:kakao_flutter_sdk_example/search_bloc/bloc.dart';
+import 'package:kakao_flutter_sdk_example/server_phase.dart';
 import 'package:kakao_flutter_sdk_example/story_bloc/bloc.dart';
 import 'package:kakao_flutter_sdk_example/talk_bloc/bloc.dart';
 import 'package:kakao_flutter_sdk_example/user_bloc/bloc.dart';
-import 'package:kakao_flutter_sdk_example/search_bloc/bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'add_story.dart';
 import 'link.dart';
 import 'login.dart';
-import 'user.dart';
+import 'search.dart';
+import 'server_phase.dart';
 import 'story.dart';
 import 'talk.dart';
-import 'search.dart';
+import 'user.dart';
 
 void main() {
-  KakaoContext.clientId = "030ba7c59137629e86e8721eb1a22fd6";
-  KakaoContext.javascriptClientId = "fa2d8e9f47b88445000592c9a293bbe2";
-
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider<UserBloc>(create: (context) => UserBloc()),
@@ -48,6 +47,34 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    _initializeSdk();
+  }
+
+  _initializeSdk() async {
+    KakaoPhase phase = await _getKakaoPhase();
+    KakaoContext.hosts = PhasedServerHosts(phase);
+    KakaoContext.clientId = PhasedAppKey(phase).getAppKey();
+  }
+
+  Future<KakaoPhase> _getKakaoPhase() async {
+    var prefs = await SharedPreferences.getInstance();
+    var prevPhase = prefs.getString('KakaoPhase');
+    print('$prevPhase');
+    KakaoPhase phase;
+    if (prevPhase == null) {
+      phase = KakaoPhase.PRODUCTION;
+    } else {
+      if (prevPhase == "DEV") {
+        phase = KakaoPhase.DEV;
+      } else if (prevPhase == "SANDBOX") {
+        phase = KakaoPhase.SANDBOX;
+      } else if (prevPhase == "CBT") {
+        phase = KakaoPhase.CBT;
+      } else {
+        phase = KakaoPhase.PRODUCTION;
+      }
+    }
+    return phase;
   }
 
   @override
@@ -84,7 +111,7 @@ class SplashState extends State<SplashScreen> {
   }
 
   _checkAccessToken() async {
-    var token = await AccessTokenStore.instance.fromStore();
+    var token = await TokenManageable.instance.getToken();
     debugPrint(token.toString());
     if (token.refreshToken == null) {
       Navigator.of(context).pushReplacementNamed('/login');

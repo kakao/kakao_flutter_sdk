@@ -1,14 +1,14 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kakao_flutter_sdk/src/auth/access_token_store.dart';
 import 'package:kakao_flutter_sdk/src/auth/model/access_token_response.dart';
+import 'package:kakao_flutter_sdk/src/auth/token_manager.dart';
 
 import '../helper.dart';
 
 void main() {
   var map;
   var response;
-  late DefaultAccessTokenStore store;
+  late TokenManager tokenManager;
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUp(() async {
@@ -25,14 +25,15 @@ void main() {
     });
     map = await loadJsonIntoMap('oauth/token_with_rt_and_scopes.json');
     response = AccessTokenResponse.fromJson(map);
-    store = DefaultAccessTokenStore();
+    tokenManager = TokenManager();
   });
   tearDown(() {});
 
   test('toCache', () async {
     expect(response.accessToken, map["access_token"]);
     expect(response.refreshToken, map["refresh_token"]);
-    var token = await store.toStore(response);
+    await tokenManager.setToken(response);
+    var token = await tokenManager.getToken();
     expect(token.accessToken, response.accessToken);
     expect(token.refreshToken, response.refreshToken);
     expect(token.scopes?.join(" "), response.scopes); // null
@@ -40,9 +41,9 @@ void main() {
   });
 
   test("clear", () async {
-    await store.toStore(response);
-    await store.clear();
-    var token = await store.fromStore();
+    await tokenManager.setToken(response);
+    await tokenManager.clear();
+    var token = await tokenManager.getToken();
     expect(null, token.accessToken);
     expect(null, token.accessTokenExpiresAt);
     expect(null, token.refreshToken);

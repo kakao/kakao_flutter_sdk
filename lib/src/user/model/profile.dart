@@ -10,7 +10,8 @@ class Profile {
   final bool? isDefaultImage;
 
   /// <nodoc>
-  Profile(this.nickname, this.thumbnailImageUrl, this.profileImageUrl, this.isDefaultImage);
+  Profile(this.nickname, this.thumbnailImageUrl, this.profileImageUrl,
+      this.isDefaultImage);
 
   /// <nodoc>
   factory Profile.fromJson(Map<String, dynamic> json) =>

@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:kakao_flutter_sdk/common.dart';
 import 'package:kakao_flutter_sdk/src/auth/auth_api.dart';
 import 'package:platform/platform.dart';
@@ -23,19 +27,28 @@ class AuthCodeClient {
   Future<String> request(
       {String? clientId,
       String? redirectUri,
+      String? codeVerifier,
       List<Prompt>? prompts,
-      List<String>? scopes}) async {
+      List<String>? scopes,
+      String? state}) async {
     final finalRedirectUri = redirectUri ?? "kakao${_platformKey()}://oauth";
-
+    var codeChallenge;
+    if (codeVerifier != null) {
+      codeChallenge =
+          base64.encode(sha256.convert(utf8.encode(codeVerifier)).bytes);
+    }
     final params = {
       "client_id": clientId ?? _platformKey(),
       "redirect_uri": finalRedirectUri,
       "response_type": "code",
-      "approval_type": "individual",
+      // "approval_type": "individual",
       "scope": scopes == null ? null : scopes.join(" "),
-      "prompt": prompts == null
-          ? null
-          : describeEnum(prompts.join(" ")).toLowerCase(),
+      "prompt": state == null
+          ? (prompts == null ? null : parsePrompts(prompts))
+          : parsePrompts(_makeCertPrompts(prompts)),
+      "state": state == null ? null : state,
+      "codeChallenge": codeChallenge,
+      "codeChallengeMethod": codeChallenge != null ? "S256" : null,
       "ka": await KakaoContext.kaHeader
     };
     params.removeWhere((k, v) => v == null);
@@ -49,9 +62,18 @@ class AuthCodeClient {
   /// This will only work on devices where KakaoTalk is installed.
   /// You MUST check if KakaoTalk is installed before calling this method with [isKakaoTalkInstalled].
   Future<String> requestWithTalk(
-      {String? clientId, String? redirectUri, List<String>? scopes}) async {
-    return _parseCode(await _openKakaoTalk(clientId ?? _platformKey(),
-        redirectUri ?? "kakao${_platformKey()}://oauth"));
+      {String? clientId,
+      String? redirectUri,
+      List<String>? scopes,
+      List<Prompt>? prompts,
+      String? state,
+      String? codeVerifier}) async {
+    return _parseCode(await _openKakaoTalk(
+        clientId ?? _platformKey(),
+        redirectUri ?? "kakao${_platformKey()}://oauth",
+        codeVerifier,
+        prompts,
+        state));
   }
 
   /// Requests authorization code with current access token.
@@ -87,13 +109,41 @@ class AuthCodeClient {
     throw KakaoAuthException.fromJson(queryParams);
   }
 
-  Future<String> _openKakaoTalk(String clientId, String redirectUri) async {
-    final redirectUriWithParams = await _channel.invokeMethod<String>(
-        "authorizeWithTalk",
-        {"client_id": clientId, "redirect_uri": redirectUri});
+  Future<String> _openKakaoTalk(String clientId, String redirectUri,
+      String? codeVerifier, List<Prompt>? prompts, String? state) async {
+    var arguments = {
+      "client_id": clientId,
+      "redirect_uri": redirectUri,
+      "code_verifier": codeVerifier,
+      "prompt": state == null
+          ? (prompts == null ? null : parsePrompts(prompts))
+          : parsePrompts(_makeCertPrompts(prompts)),
+      "state": state == null ? null : state,
+    };
+    arguments.removeWhere((k, v) => v == null);
+    final redirectUriWithParams =
+        await _channel.invokeMethod<String>("authorizeWithTalk", arguments);
     if (redirectUriWithParams != null) return redirectUriWithParams;
     throw KakaoClientException(
         "OAuth 2.0 redirect uri was null, which should not happen.");
+  }
+
+  List<Prompt> _makeCertPrompts(List<Prompt>? prompts) {
+    if (prompts == null) {
+      prompts = [];
+    }
+    if (!prompts.contains(Prompt.CERT)) {
+      prompts.add(Prompt.CERT);
+    }
+    return prompts;
+  }
+
+  String parsePrompts(List<Prompt> prompts) {
+    var parsedPrompt = '';
+    prompts.forEach((element) {
+      parsedPrompt += '${describeEnum(element).toLowerCase()} ';
+    });
+    return parsedPrompt;
   }
 
   String _platformKey() {
@@ -106,6 +156,11 @@ class AuthCodeClient {
     return KakaoContext.javascriptClientId;
   }
 
+  static String codeVerifier() {
+    return base64
+        .encode(sha512.convert(utf8.encode(UniqueKey().toString())).bytes);
+  }
+
 // String _platformRedirectUri() {
 //   if (kIsWeb) {
 //     return "${html.win}"
@@ -113,4 +168,9 @@ class AuthCodeClient {
 // }
 }
 
-enum Prompt { LOGIN }
+enum Prompt {
+  LOGIN,
+
+  /// <nodoc>
+  CERT
+}

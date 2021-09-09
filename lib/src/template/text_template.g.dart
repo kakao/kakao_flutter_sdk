@@ -10,10 +10,10 @@ TextTemplate _$TextTemplateFromJson(Map<String, dynamic> json) {
   return TextTemplate(
     json['text'] as String,
     Link.fromJson(json['link'] as Map<String, dynamic>),
-    buttonTitle: json['button_title'] as String?,
     buttons: (json['buttons'] as List<dynamic>?)
         ?.map((e) => Button.fromJson(e as Map<String, dynamic>))
         .toList(),
+    buttonTitle: json['button_title'] as String?,
     objectType: json['object_type'] as String,
   );
 }
@@ -30,8 +30,8 @@ Map<String, dynamic> _$TextTemplateToJson(TextTemplate instance) {
     }
   }
 
-  writeNotNull('button_title', instance.buttonTitle);
   writeNotNull('buttons', instance.buttons?.map((e) => e.toJson()).toList());
+  writeNotNull('button_title', instance.buttonTitle);
   val['object_type'] = instance.objectType;
   return val;
 }

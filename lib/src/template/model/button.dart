@@ -9,6 +9,7 @@ part 'button.g.dart';
 class Button {
   /// <nodoc>
   Button(this.title, this.link);
+
   final String title;
   final Link link;
 

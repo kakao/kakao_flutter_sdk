@@ -12,13 +12,14 @@ part 'feed_template.g.dart';
 class FeedTemplate extends DefaultTemplate {
   /// <nodoc>
   FeedTemplate(this.content,
-      {this.social, this.buttons, this.objectType = "feed"});
+      {this.social, this.buttons, this.buttonTitle, this.objectType = "feed"});
 
   final Content content;
   final Social? social;
 
   // Buttons . Currently supports maximum of 2 buttons.
   final List<Button>? buttons;
+  final String? buttonTitle;
   final String objectType;
 
   /// <nodoc>
