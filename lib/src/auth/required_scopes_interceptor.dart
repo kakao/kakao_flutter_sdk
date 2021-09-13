@@ -8,14 +8,8 @@ class RequiredScopesInterceptor extends Interceptor {
   TokenManager _tokenManager;
 
   RequiredScopesInterceptor(this._dio, {TokenManager? tokenManager})
-      : this._authCodeClient = AuthCodeClient(),
+      : this._authCodeClient = AuthCodeClient.instance,
         this._tokenManager = tokenManager ?? TokenManager.instance;
-
-  @override
-  void onRequest(
-      RequestOptions options, RequestInterceptorHandler handler) async {
-    handler.next(options);
-  }
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) async {
@@ -24,47 +18,53 @@ class RequiredScopesInterceptor extends Interceptor {
       handler.next(err);
       return;
     }
+
     var requiredScopes = error.requiredScopes;
     if (error.code == ApiErrorCause.INSUFFICIENT_SCOPE &&
-        requiredScopes != null &&
-        requiredScopes.isNotEmpty) {
-      _dio.lock();
+        requiredScopes != null) {
+      if (requiredScopes.isEmpty) {
+        throw KakaoApiException(
+            ApiErrorCause.UNKNOWN, "requiredScopes not exist",
+            apiType: error.apiType,
+            requiredScopes: error.requiredScopes,
+            allowedScopes: error.allowedScopes);
+      }
+
+      var options = err.response?.requestOptions;
+
+      if (options == null) {
+        handler.next(err);
+        return;
+      }
 
       try {
-        var options = err.response?.requestOptions;
+        _dio.lock();
+        _dio.interceptors.errorLock.lock();
 
-        if (options == null) {
-          _dio.unlock();
-          handler.next(err);
-          return;
-        }
-
+        // get additional consents
         final authCode = await _authCodeClient.requestWithAgt(requiredScopes);
         final token = await AuthApi.instance.issueAccessToken(authCode);
         var newToken = await _tokenManager.setToken(token);
-
         options.headers["Authorization"] = "Bearer ${newToken.accessToken}";
 
-        _dio
-            .fetch(options)
-            .then((response) => handler.resolve(response))
-            .catchError((error, stackTrace) {
+        _dio.unlock();
+        _dio.interceptors.errorLock.unlock();
+
+        // after getting additional consents, retry api call
+        var response = await _dio.fetch(options);
+        handler.resolve(response);
+      } catch (error) {
+        if (error is DioError) {
           handler.reject(error);
-        }).whenComplete(() => _dio.unlock());
-      } catch (e) {
-        handler.next(err);
+        } else {
+          handler.next(err);
+        }
       } finally {
         _dio.unlock();
+        _dio.interceptors.errorLock.unlock();
       }
-      return;
-    } else if (error.code == ApiErrorCause.INSUFFICIENT_SCOPE &&
-        requiredScopes != null &&
-        requiredScopes.isEmpty) {
-      throw KakaoApiException(ApiErrorCause.UNKNOWN, "requiredScopes not exist",
-          apiType: error.apiType,
-          requiredScopes: error.requiredScopes,
-          allowedScopes: error.allowedScopes);
+    } else {
+      handler.next(err);
     }
-    handler.next(err);
   }
 }
