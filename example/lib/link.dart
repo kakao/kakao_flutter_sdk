@@ -139,7 +139,7 @@ class LinkScreen extends StatelessWidget {
           Link(
               webUrl: Uri.parse("https://developers.kakao.com"),
               mobileWebUrl: Uri.parse("https://developers.kakao.com"))),
-      feed: Feed(
+      itemContent: ItemContent(
           profileText: 'Kakao',
           profileImageUrl:
               'http://mud-kage.kakao.co.kr/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
@@ -148,14 +148,14 @@ class LinkScreen extends StatelessWidget {
           titleImageText: 'Cheese cake',
           titleImageCategory: 'cake',
           items: [
-            FeedItem(item: 'cake1', itemOp: '1000'),
-            FeedItem(item: 'cake2', itemOp: '2000'),
-            FeedItem(item: 'cake3', itemOp: '3000'),
-            FeedItem(item: 'cake4', itemOp: '4000'),
-            FeedItem(item: 'cake5', itemOp: '5000'),
+            ItemInfo(item: 'cake1', itemOp: '1000원'),
+            ItemInfo(item: 'cake2', itemOp: '2000원'),
+            ItemInfo(item: 'cake3', itemOp: '3000원'),
+            ItemInfo(item: 'cake4', itemOp: '4000원'),
+            ItemInfo(item: 'cake5', itemOp: '5000원'),
           ],
           sum: 'total',
-          sumOp: '15000'),
+          sumOp: '15000원'),
       social: Social(likeCount: 286, commentCount: 45, sharedCount: 845),
       buttons: [
         Button(

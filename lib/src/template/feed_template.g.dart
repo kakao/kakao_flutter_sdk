@@ -9,9 +9,9 @@ part of 'feed_template.dart';
 FeedTemplate _$FeedTemplateFromJson(Map<String, dynamic> json) {
   return FeedTemplate(
     Content.fromJson(json['content'] as Map<String, dynamic>),
-    feed: json['feed'] == null
+    itemContent: json['item_content'] == null
         ? null
-        : Feed.fromJson(json['feed'] as Map<String, dynamic>),
+        : ItemContent.fromJson(json['item_content'] as Map<String, dynamic>),
     social: json['social'] == null
         ? null
         : Social.fromJson(json['social'] as Map<String, dynamic>),
@@ -35,7 +35,7 @@ Map<String, dynamic> _$FeedTemplateToJson(FeedTemplate instance) {
   }
 
   writeNotNull('social', instance.social?.toJson());
-  writeNotNull('feed', instance.feed?.toJson());
+  writeNotNull('item_content', instance.itemContent?.toJson());
   writeNotNull('buttons', instance.buttons?.map((e) => e.toJson()).toList());
   writeNotNull('button_title', instance.buttonTitle);
   val['object_type'] = instance.objectType;

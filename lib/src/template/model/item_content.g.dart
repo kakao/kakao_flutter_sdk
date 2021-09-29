@@ -1,27 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'feed.dart';
+part of 'item_content.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Feed _$FeedFromJson(Map<String, dynamic> json) {
-  return Feed(
+ItemContent _$ItemContentFromJson(Map<String, dynamic> json) {
+  return ItemContent(
     profileText: json['profile_text'] as String?,
     profileImageUrl: json['profile_image_url'] as String?,
     titleImageText: json['title_image_text'] as String?,
     titleImageUrl: json['title_image_url'] as String?,
     titleImageCategory: json['title_image_category'] as String?,
     items: (json['items'] as List<dynamic>?)
-        ?.map((e) => FeedItem.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => ItemInfo.fromJson(e as Map<String, dynamic>))
         .toList(),
     sum: json['sum'] as String?,
     sumOp: json['sum_op'] as String?,
   );
 }
 
-Map<String, dynamic> _$FeedToJson(Feed instance) {
+Map<String, dynamic> _$ItemContentToJson(ItemContent instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {

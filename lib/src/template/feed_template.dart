@@ -4,7 +4,7 @@ import 'package:kakao_flutter_sdk/src/template/model/button.dart';
 import 'package:kakao_flutter_sdk/src/template/model/content.dart';
 import 'package:kakao_flutter_sdk/src/template/model/social.dart';
 
-import 'model/feed.dart';
+import 'model/item_content.dart';
 
 part 'feed_template.g.dart';
 
@@ -12,20 +12,23 @@ part 'feed_template.g.dart';
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class FeedTemplate extends DefaultTemplate {
+  /// Main content information of the message.
   final Content content;
+
+  /// Contents to be included in the item area. Please refer to [ItemContent].
+  final ItemContent? itemContent;
+
+  /// Social information about the contents.
   final Social? social;
 
-  /// Content of the message. Include content in the form of an item list.
-  final Feed? feed;
-
-  /// Buttons. Currently supports maximum of 2 buttons.
+  /// List of buttons, up to 2. Use when you want to change the title and link of the button, and when you want to insert two buttons.
   final List<Button>? buttons;
   final String? buttonTitle;
   final String objectType;
 
   /// <nodoc>
   FeedTemplate(this.content,
-      {this.feed,
+      {this.itemContent,
       this.social,
       this.buttons,
       this.buttonTitle,
