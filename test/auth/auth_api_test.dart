@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
@@ -13,6 +14,7 @@ void main() {
   late Dio _dio;
   late MockAdapter _adapter;
   late AuthApi _authApi;
+  late TokenManager _tokenManager;
 
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -25,6 +27,7 @@ void main() {
     _dio.interceptors.add(ApiFactory.kaInterceptor);
     _dio.options.baseUrl = "https://${KakaoContext.hosts.kauth}";
     _authApi = AuthApi(dio: _dio);
+    _tokenManager = DefaultTokenManager();
     channel.setMockMethodCallHandler((MethodCall methodCall) async {
       return "sample_origin";
     });
@@ -82,24 +85,45 @@ void main() {
     }
   });
 
-  group("/oauth/token refresh", () {
+  group("/oauth/token refresh access token only", () {
     var map;
     var refreshToken = "test_refresh_token";
     var redirectUri = "kakaosample_app_key://oauth";
     var clientId = "sample_app_key";
+
     setUp(() async {
-      String body = await loadJson("oauth/token_with_rt.json");
+      const MethodChannel('plugins.flutter.io/shared_preferences')
+          .setMockMethodCallHandler((MethodCall methodCall) async {
+        if (methodCall.method == 'getAll') {
+          return <String, dynamic>{}; // set initial values here if desired
+        }
+        if (methodCall.method.startsWith("set") ||
+            methodCall.method == 'remove') {
+          return true;
+        }
+        return null;
+      });
+
+      String body = await loadJson("oauth/token.json");
       map = jsonDecode(body);
       _adapter.setResponseString(body, 200);
     });
 
     tearDown(() async {
-      var res = await _authApi.refreshAccessToken(refreshToken,
+      // setting oldToken
+      var tokenJson = await loadJson("oauth/token_with_rt_and_scopes.json");
+      var tokenResponse = AccessTokenResponse.fromJson(jsonDecode(tokenJson));
+      final oldToken = await _tokenManager.setToken(tokenResponse);
+
+      var newToken = await _authApi.refreshAccessToken(refreshToken,
           redirectUri: redirectUri, clientId: clientId);
-      expect(res.accessToken, map["access_token"]);
-      expect(res.expiresIn, map["expires_in"]);
-      expect(res.refreshToken, map["refresh_token"]);
-      expect(res.refreshTokenExpiresIn, map["refresh_token_expires_in"]);
+      expect(true, oldToken.accessToken != newToken.accessToken);
+      expect(
+          true, oldToken.accessTokenExpiresAt != newToken.accessTokenExpiresAt);
+      expect(true, oldToken.refreshToken == newToken.refreshToken);
+      expect(true,
+          oldToken.refreshTokenExpiresAt == newToken.refreshTokenExpiresAt);
+      expect(true, listEquals(oldToken.scopes, newToken.scopes));
     });
 
     test("on android", () async {
@@ -147,5 +171,76 @@ void main() {
     } catch (e) {
       expect(e, isInstanceOf<KakaoAuthException>());
     }
+  });
+
+  group("/oauth/token refresh access token and refresh token", () {
+    var map;
+    var refreshToken = "test_refresh_token";
+    var redirectUri = "kakaosample_app_key://oauth";
+    var clientId = "sample_app_key";
+
+    setUp(() async {
+      const MethodChannel('plugins.flutter.io/shared_preferences')
+          .setMockMethodCallHandler((MethodCall methodCall) async {
+        if (methodCall.method == 'getAll') {
+          return <String, dynamic>{}; // set initial values here if desired
+        }
+        if (methodCall.method.startsWith("set") ||
+            methodCall.method == 'remove') {
+          return true;
+        }
+        return null;
+      });
+
+      String body = await loadJson("oauth/token_with_rt.json");
+      map = jsonDecode(body);
+      _adapter.setResponseString(body, 200);
+    });
+
+    tearDown(() async {
+      // setting oldToken
+      var tokenJson = await loadJson("oauth/token_with_rt_and_scopes.json");
+      var tokenResponse = AccessTokenResponse.fromJson(jsonDecode(tokenJson));
+      final oldToken = await _tokenManager.setToken(tokenResponse);
+
+      var newToken = await _authApi.refreshAccessToken(refreshToken,
+          redirectUri: redirectUri, clientId: clientId);
+      expect(true, oldToken.accessToken != newToken.accessToken);
+      expect(
+          true, oldToken.accessTokenExpiresAt != newToken.accessTokenExpiresAt);
+      expect(true, oldToken.refreshToken != newToken.refreshToken);
+      expect(true,
+          oldToken.refreshTokenExpiresAt != newToken.refreshTokenExpiresAt);
+      expect(true, listEquals(oldToken.scopes, newToken.scopes));
+    });
+
+    test("on android", () async {
+      _authApi = AuthApi(
+          dio: _dio, platform: FakePlatform(operatingSystem: "android"));
+      _adapter.requestAssertions = (RequestOptions options) {
+        expect(options.method, "POST");
+        expect(options.path, "/oauth/token");
+        Map<String, dynamic> params = options.data;
+        expect(params.length, 5);
+        expect(params["refresh_token"], refreshToken);
+        expect(params["redirect_uri"], redirectUri);
+        expect(params["client_id"], clientId);
+        expect(params["android_key_hash"], "sample_origin");
+      };
+    });
+    test("on ios", () async {
+      _authApi =
+          AuthApi(dio: _dio, platform: FakePlatform(operatingSystem: "ios"));
+      _adapter.requestAssertions = (RequestOptions options) {
+        expect(options.method, "POST");
+        expect(options.path, "/oauth/token");
+        Map<String, dynamic> params = options.data;
+        expect(params.length, 5);
+        expect(params["refresh_token"], refreshToken);
+        expect(params["redirect_uri"], redirectUri);
+        expect(params["client_id"], clientId);
+        expect(params["ios_bundle_id"], "sample_origin");
+      };
+    });
   });
 }
