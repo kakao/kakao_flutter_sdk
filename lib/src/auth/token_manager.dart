@@ -44,24 +44,36 @@ class DefaultTokenManager implements TokenManager {
   Future<OAuthToken> setToken(AccessTokenResponse response) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString(atKey, response.accessToken);
+    final oldToken = await getToken();
 
-    var atExpiresAt =
+    final atExpiresAt =
         DateTime.now().millisecondsSinceEpoch + response.expiresIn * 1000;
     preferences.setInt(atExpiresAtKey, atExpiresAt);
 
-    final refreshToken = response.refreshToken;
+    var refreshToken;
     var rtExpiresAt;
-    if (refreshToken != null && response.refreshTokenExpiresIn != null) {
-      rtExpiresAt = DateTime.now().millisecondsSinceEpoch +
-          response.refreshTokenExpiresIn! * 1000;
-      preferences.setString(rtKey, refreshToken);
-      preferences.setInt(rtExpiresAtKey, rtExpiresAt);
+
+    if (response.refreshToken != null) {
+      // issue AccessToken and RefreshToken
+      refreshToken = response.refreshToken;
+      if (refreshToken != null && response.refreshTokenExpiresIn != null) {
+        rtExpiresAt = DateTime.now().millisecondsSinceEpoch +
+            response.refreshTokenExpiresIn! * 1000;
+        preferences.setString(rtKey, refreshToken);
+        preferences.setInt(rtExpiresAtKey, rtExpiresAt);
+      }
+    } else {
+      // issue AccessToken only
+      refreshToken = oldToken.refreshToken;
+      rtExpiresAt = oldToken.refreshTokenExpiresAt?.millisecondsSinceEpoch;
     }
 
     var scopes;
     if (response.scopes != null) {
       scopes = response.scopes!.split(' ');
       preferences.setStringList(scopesKey, scopes);
+    } else {
+      scopes = oldToken.scopes;
     }
     return OAuthToken(
         response.accessToken,
