@@ -108,7 +108,8 @@ class LinkClient {
       "template_json": jsonEncode(response.templateMsg),
       "extras": jsonEncode(await _extras(serverCallbackArgs))
     };
-    return Uri(scheme: "kakaolink", host: "send", queryParameters: params);
+    var uri = Uri(scheme: "kakaolink", host: "send", queryParameters: params);
+    return Uri.parse(uri.toString().replaceAll('+', '%20'));
   }
 
   Future<void> launchKakaoTalk(Uri uri) {

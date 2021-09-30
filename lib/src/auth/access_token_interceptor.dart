@@ -29,53 +29,52 @@ class AccessTokenInterceptor extends Interceptor {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) async {
-    _dio.lock();
-    if (!isRetryable(err)) {
-      _dio.unlock();
+    final options = err.response?.requestOptions;
+    final request = err.requestOptions;
+    final token = await _tokenManager.getToken();
+    final refreshToken = token.refreshToken;
+
+    if (!isRetryable(err) || options == null || refreshToken == null) {
       handler.next(err);
       return;
     }
-    try {
-      final options = err.response?.requestOptions;
-      final request = err.requestOptions;
-      final token = await _tokenManager.getToken();
-      final refreshToken = token.refreshToken;
-      if (options == null || refreshToken == null) {
-        _dio.unlock();
-        handler.next(err);
-        return;
-      }
 
+    try {
       if (request.headers["Authorization"] != "Bearer ${token.accessToken}") {
         // tokens were refreshed by another API request.
         print(
             "just retry ${options.path} since access token was already refreshed by another request.");
-        _dio
-            .fetch(options)
-            .then((response) => handler.resolve(response))
-            .catchError((error, stackTrace) {
-          handler.reject(error);
-        }).whenComplete(() => _dio.unlock());
+
+        var response = await _dio.fetch(options);
+        handler.resolve(response);
         return;
       }
-      final tokenResponse = await _kauthApi.refreshAccessToken(refreshToken);
-      var newToken = await _tokenManager.setToken(tokenResponse);
-      print("retry ${options.path} after refreshing access token.");
+
+      _dio.lock();
+      _dio.interceptors.errorLock.lock();
+
+      final newToken = await _kauthApi.refreshAccessToken(refreshToken);
       options.headers["Authorization"] = "Bearer ${newToken.accessToken}";
-      _dio
-          .fetch(options)
-          .then((response) => handler.resolve(response))
-          .catchError((error, stackTrace) {
-        handler.reject(error);
-      }).whenComplete(() => _dio.unlock());
-    } catch (e) {
-      if (e is KakaoAuthException ||
-          e is KakaoApiException && e.code == ApiErrorCause.INVALID_TOKEN) {
+
+      _dio.unlock();
+      _dio.interceptors.errorLock.unlock();
+
+      print("retry ${options.path} after refreshing access token.");
+      var response = await _dio.fetch(options);
+      handler.resolve(response);
+    } catch (error) {
+      if (_isTokenError(error)) {
         await _tokenManager.clear();
       }
-      handler.next(err);
+      if (error is DioError) {
+        handler.reject(error);
+      } else {
+        handler.reject(DioError(requestOptions: options, error: error));
+      }
     } finally {
+      // The lock must be unlocked because errors may occur while the lock is locked.
       _dio.unlock();
+      _dio.interceptors.errorLock.unlock();
     }
   }
 
@@ -84,4 +83,12 @@ class AccessTokenInterceptor extends Interceptor {
       err.requestOptions.baseUrl == "https://${KakaoContext.hosts.kapi}" &&
       err.response != null &&
       err.response?.statusCode == 401;
+
+  bool _isTokenError(Object err) {
+    if (err is KakaoAuthException ||
+        err is KakaoApiException && err.code == ApiErrorCause.INVALID_TOKEN) {
+      return true;
+    }
+    return false;
+  }
 }
