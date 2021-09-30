@@ -33,22 +33,22 @@ class DefaultTokenManager implements TokenManager {
   /// Deletes all token information.
   clear() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.remove(atKey);
-    preferences.remove(atExpiresAtKey);
-    preferences.remove(rtKey);
-    preferences.remove(rtExpiresAtKey);
-    preferences.remove(secureModeKey);
-    preferences.remove(scopesKey);
+    await preferences.remove(atKey);
+    await preferences.remove(atExpiresAtKey);
+    await preferences.remove(rtKey);
+    await preferences.remove(rtExpiresAtKey);
+    await preferences.remove(secureModeKey);
+    await preferences.remove(scopesKey);
   }
 
   Future<OAuthToken> setToken(AccessTokenResponse response) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.setString(atKey, response.accessToken);
+    await preferences.setString(atKey, response.accessToken);
     final oldToken = await getToken();
 
     final atExpiresAt =
         DateTime.now().millisecondsSinceEpoch + response.expiresIn * 1000;
-    preferences.setInt(atExpiresAtKey, atExpiresAt);
+    await preferences.setInt(atExpiresAtKey, atExpiresAt);
 
     var refreshToken;
     var rtExpiresAt;
@@ -59,8 +59,8 @@ class DefaultTokenManager implements TokenManager {
       if (refreshToken != null && response.refreshTokenExpiresIn != null) {
         rtExpiresAt = DateTime.now().millisecondsSinceEpoch +
             response.refreshTokenExpiresIn! * 1000;
-        preferences.setString(rtKey, refreshToken);
-        preferences.setInt(rtExpiresAtKey, rtExpiresAt);
+        await preferences.setString(rtKey, refreshToken);
+        await preferences.setInt(rtExpiresAtKey, rtExpiresAt);
       }
     } else {
       // issue AccessToken only
@@ -71,7 +71,7 @@ class DefaultTokenManager implements TokenManager {
     var scopes;
     if (response.scopes != null) {
       scopes = response.scopes!.split(' ');
-      preferences.setStringList(scopesKey, scopes);
+      await preferences.setStringList(scopesKey, scopes);
     } else {
       scopes = oldToken.scopes;
     }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:kakao_flutter_sdk/src/auth/model/access_token_response.dart';
+import 'package:kakao_flutter_sdk/src/auth/model/oauth_token.dart';
 import 'package:kakao_flutter_sdk/src/auth/token_manager.dart';
 import 'package:kakao_flutter_sdk/src/common/api_factory.dart';
 import 'package:kakao_flutter_sdk/src/common/kakao_context.dart';
@@ -45,7 +46,7 @@ class AuthApi {
   /// Issues a new access token from the given refresh token.
   ///
   /// Refresh tokens are usually retrieved from [TokenManager].
-  Future<AccessTokenResponse> refreshAccessToken(String refreshToken,
+  Future<OAuthToken> refreshAccessToken(String refreshToken,
       {String? redirectUri, String? clientId}) async {
     final data = {
       "refresh_token": refreshToken,
@@ -54,7 +55,8 @@ class AuthApi {
       "redirect_uri": redirectUri ?? await _platformRedirectUri(),
       ...await _platformData()
     };
-    return await _issueAccessToken(data);
+    final newToken = await _issueAccessToken(data);
+    return await _tokenManager.setToken(newToken);
   }
 
   /// Issues temporary agt (access token-generated token), which can be used to acquire auth code.
