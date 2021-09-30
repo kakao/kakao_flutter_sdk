@@ -14,7 +14,7 @@ class KakaoContext {
   static late String clientId;
   static late String javascriptClientId;
 
-  static String sdkVersion = "0.8.1";
+  static String sdkVersion = "0.8.2";
 
   /// [ServerHosts] used by SDK.
   ///

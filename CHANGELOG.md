@@ -1,3 +1,11 @@
+## 0.8.2
+
+- Improve token reissue logic
+- Improve the logic of getting additional consent
+- Add 'ItemContent' property in FeedTemplate
+- Fix the bug where blank characters were marked + on Kakao Link in iOS
+- Fix the bug of null errors when saving the token after calling AuthApi.refreshAccessToken()
+
 ## 0.8.1
 
 - Rename `AccessTokenStore` to `TokenManager` (In version 0.8.0, It was incorrectly renamed to `TokenManageable`)
