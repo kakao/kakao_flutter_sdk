@@ -23,7 +23,7 @@ class AccessTokenInterceptor extends Interceptor {
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     final token = await _tokenManager.getToken();
-    options.headers["Authorization"] = "Bearer ${token.accessToken}";
+    options.headers["Authorization"] = "Bearer ${token?.accessToken}";
     handler.next(options);
   }
 
@@ -32,9 +32,8 @@ class AccessTokenInterceptor extends Interceptor {
     final options = err.response?.requestOptions;
     final request = err.requestOptions;
     final token = await _tokenManager.getToken();
-    final refreshToken = token.refreshToken;
 
-    if (!isRetryable(err) || options == null || refreshToken == null) {
+    if (!isRetryable(err) || options == null || token == null) {
       handler.next(err);
       return;
     }
@@ -53,7 +52,7 @@ class AccessTokenInterceptor extends Interceptor {
       _dio.lock();
       _dio.interceptors.errorLock.lock();
 
-      final newToken = await _kauthApi.refreshAccessToken(refreshToken);
+      final newToken = await _kauthApi.refreshAccessToken(token);
       options.headers["Authorization"] = "Bearer ${newToken.accessToken}";
 
       _dio.unlock();

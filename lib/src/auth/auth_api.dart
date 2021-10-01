@@ -46,17 +46,18 @@ class AuthApi {
   /// Issues a new access token from the given refresh token.
   ///
   /// Refresh tokens are usually retrieved from [TokenManager].
-  Future<OAuthToken> refreshAccessToken(String refreshToken,
+  Future<OAuthToken> refreshAccessToken(OAuthToken oldToken,
       {String? redirectUri, String? clientId}) async {
     final data = {
-      "refresh_token": refreshToken,
+      "refresh_token": oldToken.refreshToken,
       "grant_type": "refresh_token",
       "client_id": clientId ?? KakaoContext.platformClientId,
       "redirect_uri": redirectUri ?? await _platformRedirectUri(),
       ...await _platformData()
     };
-    final newToken = await _issueAccessToken(data);
-    return await _tokenManager.setToken(newToken);
+    final newToken = await _issueAccessToken(data, oldToken: oldToken);
+    await _tokenManager.setToken(newToken);
+    return newToken;
   }
 
   /// Issues temporary agt (access token-generated token), which can be used to acquire auth code.
@@ -73,7 +74,13 @@ class AuthApi {
     });
   }
 
-  Future<AccessTokenResponse> _issueAccessToken(data) async {
+  Future<OAuthToken> _issueAccessToken(data, {OAuthToken? oldToken}) async {
+    return await ApiFactory.handleApiError(() async {
+      Response response = await _dio.post("/oauth/token", data: data);
+      final tokenResponse = AccessTokenResponse.fromJson(response.data);
+      return OAuthToken.fromResponse(tokenResponse, oldToken: oldToken);
+    });
+  }
     return await ApiFactory.handleApiError(() async {
       Response response = await _dio.post("/oauth/token", data: data);
       return AccessTokenResponse.fromJson(response.data);
