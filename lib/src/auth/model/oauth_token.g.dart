@@ -8,20 +8,22 @@ part of 'oauth_token.dart';
 
 OAuthToken _$OAuthTokenFromJson(Map<String, dynamic> json) {
   return OAuthToken(
-    json['access_token'] as String?,
-    json['access_token_expires_at'] == null
-        ? null
-        : DateTime.parse(json['access_token_expires_at'] as String),
-    json['refresh_token'] as String?,
-    json['refresh_token_expires_at'] == null
-        ? null
-        : DateTime.parse(json['refresh_token_expires_at'] as String),
+    json['access_token'] as String,
+    DateTime.parse(json['access_token_expires_at'] as String),
+    json['refresh_token'] as String,
+    DateTime.parse(json['refresh_token_expires_at'] as String),
     (json['scopes'] as List<dynamic>?)?.map((e) => e as String).toList(),
   );
 }
 
 Map<String, dynamic> _$OAuthTokenToJson(OAuthToken instance) {
-  final val = <String, dynamic>{};
+  final val = <String, dynamic>{
+    'access_token': instance.accessToken,
+    'access_token_expires_at': instance.accessTokenExpiresAt.toIso8601String(),
+    'refresh_token': instance.refreshToken,
+    'refresh_token_expires_at':
+        instance.refreshTokenExpiresAt.toIso8601String(),
+  };
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -29,12 +31,6 @@ Map<String, dynamic> _$OAuthTokenToJson(OAuthToken instance) {
     }
   }
 
-  writeNotNull('access_token', instance.accessToken);
-  writeNotNull('access_token_expires_at',
-      instance.accessTokenExpiresAt?.toIso8601String());
-  writeNotNull('refresh_token', instance.refreshToken);
-  writeNotNull('refresh_token_expires_at',
-      instance.refreshTokenExpiresAt?.toIso8601String());
   writeNotNull('scopes', instance.scopes);
   return val;
 }
