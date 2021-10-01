@@ -1,4 +1,5 @@
-import 'package:kakao_flutter_sdk/src/auth/model/access_token_response.dart';
+import 'dart:convert';
+
 import 'package:kakao_flutter_sdk/src/auth/model/oauth_token.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -7,10 +8,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// This abstract class can be used to store token information in different locations than provided by the SDK.
 abstract class TokenManager {
   // stores access token and other retrieved information from [AuthApi.issueAccessToken]
-  Future<OAuthToken> setToken(AccessTokenResponse response);
+  Future<void> setToken(OAuthToken token);
 
   // retrieves access token and other information from the designated store.
-  Future<OAuthToken> getToken();
+  Future<OAuthToken?> getToken();
 
   // clears all data related to access token from the device.
   Future<void> clear();
@@ -23,6 +24,7 @@ abstract class TokenManager {
 ///
 /// Currently uses SharedPreferences (on Android) and UserDefaults (on iOS).
 class DefaultTokenManager implements TokenManager {
+  static const tokenKey = "com.kakao.token.OAuthToken";
   static const atKey = "com.kakao.token.AccessToken";
   static const atExpiresAtKey = "com.kakao.token.AccessToken.ExpiresAt";
   static const rtKey = "com.kakao.token.RefreshToken";
@@ -31,7 +33,8 @@ class DefaultTokenManager implements TokenManager {
   static const scopesKey = "com.kakao.token.Scopes";
 
   /// Deletes all token information.
-  clear() async {
+  @override
+  Future<void> clear() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.remove(atKey);
     await preferences.remove(atExpiresAtKey);
@@ -39,66 +42,23 @@ class DefaultTokenManager implements TokenManager {
     await preferences.remove(rtExpiresAtKey);
     await preferences.remove(secureModeKey);
     await preferences.remove(scopesKey);
+    await preferences.remove(tokenKey);
   }
 
-  Future<OAuthToken> setToken(AccessTokenResponse response) async {
+  @override
+  Future<void> setToken(OAuthToken token) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.setString(atKey, response.accessToken);
-    final oldToken = await getToken();
-
-    final atExpiresAt =
-        DateTime.now().millisecondsSinceEpoch + response.expiresIn * 1000;
-    await preferences.setInt(atExpiresAtKey, atExpiresAt);
-
-    var refreshToken;
-    var rtExpiresAt;
-
-    if (response.refreshToken != null) {
-      // issue AccessToken and RefreshToken
-      refreshToken = response.refreshToken;
-      if (refreshToken != null && response.refreshTokenExpiresIn != null) {
-        rtExpiresAt = DateTime.now().millisecondsSinceEpoch +
-            response.refreshTokenExpiresIn! * 1000;
-        await preferences.setString(rtKey, refreshToken);
-        await preferences.setInt(rtExpiresAtKey, rtExpiresAt);
-      }
-    } else {
-      // issue AccessToken only
-      refreshToken = oldToken.refreshToken;
-      rtExpiresAt = oldToken.refreshTokenExpiresAt?.millisecondsSinceEpoch;
-    }
-
-    var scopes;
-    if (response.scopes != null) {
-      scopes = response.scopes!.split(' ');
-      await preferences.setStringList(scopesKey, scopes);
-    } else {
-      scopes = oldToken.scopes;
-    }
-    return OAuthToken(
-        response.accessToken,
-        DateTime.fromMillisecondsSinceEpoch(atExpiresAt),
-        refreshToken,
-        DateTime.fromMillisecondsSinceEpoch(rtExpiresAt),
-        scopes);
+    await preferences.setString(tokenKey, jsonEncode(token));
   }
 
-  Future<OAuthToken> getToken() async {
+  @override
+  Future<OAuthToken?> getToken() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String? accessToken = preferences.getString(atKey);
-    int? atExpiresAtMillis = preferences.getInt(atExpiresAtKey);
+    var jsonToken = preferences.getString(tokenKey);
 
-    DateTime? accessTokenExpiresAt = atExpiresAtMillis != null
-        ? DateTime.fromMillisecondsSinceEpoch(atExpiresAtMillis)
-        : null;
-    String? refreshToken = preferences.getString(rtKey);
-    int? rtExpiresAtMillis = preferences.getInt(rtExpiresAtKey);
-    DateTime? refreshTokenExpiresAt = rtExpiresAtMillis != null
-        ? DateTime.fromMillisecondsSinceEpoch(rtExpiresAtMillis)
-        : null;
-    List<String>? scopes = preferences.getStringList(scopesKey);
-
-    return OAuthToken(accessToken, accessTokenExpiresAt, refreshToken,
-        refreshTokenExpiresAt, scopes);
+    if (jsonToken == null) {
+      return null;
+    }
+    return OAuthToken.fromJson(jsonDecode(jsonToken));
   }
 }

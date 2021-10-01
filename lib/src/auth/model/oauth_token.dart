@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:kakao_flutter_sdk/src/auth/model/access_token_response.dart';
+import 'package:kakao_flutter_sdk/src/common/kakao_error.dart';
 
 part 'oauth_token.g.dart';
 
@@ -37,4 +39,40 @@ class OAuthToken {
 
   /// <nodoc>
   Map<String, dynamic> toJson() => _$OAuthTokenToJson(this);
+
+  static OAuthToken fromResponse(AccessTokenResponse response,
+      {OAuthToken? oldToken}) {
+    final atExpiresAt =
+        DateTime.now().millisecondsSinceEpoch + response.expiresIn * 1000;
+
+    var refreshToken;
+    var rtExpiresAt;
+
+    if (response.refreshToken != null) {
+      refreshToken = response.refreshToken;
+      if (refreshToken != null && response.refreshTokenExpiresIn != null) {
+        rtExpiresAt = DateTime.now().millisecondsSinceEpoch +
+            response.refreshTokenExpiresIn! * 1000;
+      }
+    } else {
+      refreshToken = oldToken != null
+          ? oldToken.refreshToken
+          : throw KakaoClientException(
+              'Refresh token not found in the response.');
+      rtExpiresAt = oldToken.refreshTokenExpiresAt.millisecondsSinceEpoch;
+    }
+
+    var scopes;
+    if (response.scopes != null) {
+      scopes = response.scopes!.split(' ');
+    } else {
+      scopes = oldToken?.scopes;
+    }
+    return OAuthToken(
+        response.accessToken,
+        DateTime.fromMillisecondsSinceEpoch(atExpiresAt),
+        refreshToken,
+        DateTime.fromMillisecondsSinceEpoch(rtExpiresAt),
+        scopes);
+  }
 }
