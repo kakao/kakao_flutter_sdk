@@ -44,8 +44,8 @@ class RequiredScopesInterceptor extends Interceptor {
         // get additional consents
         final authCode = await _authCodeClient.requestWithAgt(requiredScopes);
         final token = await AuthApi.instance.issueAccessToken(authCode);
-        var newToken = await _tokenManager.setToken(token);
-        options.headers["Authorization"] = "Bearer ${newToken.accessToken}";
+        await _tokenManager.setToken(token);
+        options.headers["Authorization"] = "Bearer ${token.accessToken}";
 
         _dio.unlock();
         _dio.interceptors.errorLock.unlock();

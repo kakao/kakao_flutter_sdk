@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:kakao_flutter_sdk/src/auth/model/access_token_response.dart';
+import 'package:kakao_flutter_sdk/src/auth/model/cert_token_info.dart';
 import 'package:kakao_flutter_sdk/src/auth/model/oauth_token.dart';
 import 'package:kakao_flutter_sdk/src/auth/token_manager.dart';
 import 'package:kakao_flutter_sdk/src/common/api_factory.dart';
 import 'package:kakao_flutter_sdk/src/common/kakao_context.dart';
+import 'package:kakao_flutter_sdk/src/common/kakao_error.dart';
 import 'package:platform/platform.dart';
 
 /// Provides Kakao OAuth API.
@@ -26,11 +28,11 @@ class AuthApi {
   /// Check OAuthToken is issued.
   Future<bool> hasToken() async {
     final token = await _tokenManager.getToken();
-    return token.accessToken != null && token.refreshToken != null;
+    return token == null;
   }
 
   /// Issues an access token from authCode acquired from [AuthCodeClient].
-  Future<AccessTokenResponse> issueAccessToken(String authCode,
+  Future<OAuthToken> issueAccessToken(String authCode,
       {String? redirectUri, String? clientId, String? codeVerifier}) async {
     final data = {
       "code": authCode,
@@ -41,6 +43,20 @@ class AuthApi {
       ...await _platformData()
     };
     return await _issueAccessToken(data);
+  }
+
+  /// Issues an access token from authCode acquired from [AuthCodeClient].
+  Future<CertTokenInfo> issueAccessTokenWithCert(String authCode,
+      {String? redirectUri, String? clientId, String? codeVerifier}) async {
+    final data = {
+      "code": authCode,
+      "grant_type": "authorization_code",
+      "client_id": clientId ?? KakaoContext.platformClientId,
+      "redirect_uri": redirectUri ?? await _platformRedirectUri(),
+      "code_verifier": codeVerifier,
+      ...await _platformData()
+    };
+    return await _issueAccessTokenWithCert(data);
   }
 
   /// Issues a new access token from the given refresh token.
@@ -65,7 +81,7 @@ class AuthApi {
     final tokenInfo = await _tokenManager.getToken();
     final data = {
       "client_id": clientId ?? KakaoContext.platformClientId,
-      "access_token": accessToken ?? tokenInfo.accessToken
+      "access_token": accessToken ?? tokenInfo!.accessToken
     };
 
     return await ApiFactory.handleApiError(() async {
@@ -81,9 +97,16 @@ class AuthApi {
       return OAuthToken.fromResponse(tokenResponse, oldToken: oldToken);
     });
   }
+
+  Future<CertTokenInfo> _issueAccessTokenWithCert(data) async {
     return await ApiFactory.handleApiError(() async {
       Response response = await _dio.post("/oauth/token", data: data);
-      return AccessTokenResponse.fromJson(response.data);
+      final tokenResponse = AccessTokenResponse.fromJson(response.data);
+      if (tokenResponse.txId == null) {
+        throw KakaoClientException('txId is null');
+      }
+      return CertTokenInfo(
+          OAuthToken.fromResponse(tokenResponse), tokenResponse.txId!);
     });
   }
 
