@@ -59,12 +59,6 @@ class DefaultTokenManager implements TokenManager {
   @override
   Future<void> clear() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.remove(atKey);
-    await preferences.remove(atExpiresAtKey);
-    await preferences.remove(rtKey);
-    await preferences.remove(rtExpiresAtKey);
-    await preferences.remove(secureModeKey);
-    await preferences.remove(scopesKey);
     await preferences.remove(tokenKey);
   }
 
@@ -80,8 +74,46 @@ class DefaultTokenManager implements TokenManager {
     var jsonToken = preferences.getString(tokenKey);
 
     if (jsonToken == null) {
-      return null;
+      return await _migrateOldToken();
     }
     return OAuthToken.fromJson(jsonDecode(jsonToken));
+  }
+
+  // Token management logic has been changed from 0.9.0 version.
+  // This code has been added for compatibility with previous versions.
+  Future<OAuthToken?> _migrateOldToken() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var accessToken = preferences.getString(atKey);
+    var refreshToken = preferences.getString(rtKey);
+    var atExpiresAtMillis = preferences.getInt(atExpiresAtKey);
+    var rtExpiresAtMillis = preferences.getInt(rtExpiresAtKey);
+    List<String>? scopes = preferences.getStringList(scopesKey);
+
+    // If token that issued before 0.9.0 version are loaded, then return OAuthToken.
+    if (accessToken != null &&
+        refreshToken != null &&
+        atExpiresAtMillis != null &&
+        rtExpiresAtMillis != null) {
+      print("=== Migrate from old version token ===");
+
+      var accessTokenExpiresAt =
+          DateTime.fromMillisecondsSinceEpoch(atExpiresAtMillis);
+      var refreshTokenExpiresAt =
+          DateTime.fromMillisecondsSinceEpoch(rtExpiresAtMillis);
+
+      final token = OAuthToken(accessToken, accessTokenExpiresAt, refreshToken,
+          refreshTokenExpiresAt, scopes);
+
+      // Remove all token properties that saved before 0.9.0 version and save migrated token.
+      await preferences.remove(atKey);
+      await preferences.remove(atExpiresAtKey);
+      await preferences.remove(rtKey);
+      await preferences.remove(rtExpiresAtKey);
+      await preferences.remove(secureModeKey);
+      await preferences.remove(scopesKey);
+      await preferences.setString(tokenKey, jsonEncode(token));
+      return token;
+    }
+    return null;
   }
 }
