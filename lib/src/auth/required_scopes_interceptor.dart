@@ -5,11 +5,13 @@ import 'package:kakao_flutter_sdk/auth.dart';
 class RequiredScopesInterceptor extends Interceptor {
   Dio _dio;
   AuthCodeClient _authCodeClient;
-  TokenManager _tokenManager;
+  TokenManagerProvider _tokenManagerProvider;
 
-  RequiredScopesInterceptor(this._dio, {TokenManager? tokenManager})
+  RequiredScopesInterceptor(this._dio,
+      {TokenManagerProvider? tokenManagerProvider})
       : this._authCodeClient = AuthCodeClient.instance,
-        this._tokenManager = tokenManager ?? TokenManager.instance;
+        this._tokenManagerProvider =
+            tokenManagerProvider ?? TokenManagerProvider.instance;
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) async {
@@ -44,7 +46,7 @@ class RequiredScopesInterceptor extends Interceptor {
         // get additional consents
         final authCode = await _authCodeClient.requestWithAgt(requiredScopes);
         final token = await AuthApi.instance.issueAccessToken(authCode);
-        await _tokenManager.setToken(token);
+        await _tokenManagerProvider.manager.setToken(token);
         options.headers["Authorization"] = "Bearer ${token.accessToken}";
 
         _dio.unlock();

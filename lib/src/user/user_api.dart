@@ -28,7 +28,7 @@ class UserApi {
     final authCode =
         await AuthCodeClient.instance.requestWithTalk(prompts: prompts);
     final token = await AuthApi.instance.issueAccessToken(authCode);
-    await TokenManager.instance.setToken(token);
+    await TokenManagerProvider.instance.manager.setToken(token);
     return token;
   }
 
@@ -39,7 +39,7 @@ class UserApi {
         prompts: prompts, state: state, codeVerifier: codeVerifier);
     final certTokenInfo = await AuthApi.instance
         .issueAccessTokenWithCert(authCode, codeVerifier: codeVerifier);
-    await TokenManager.instance.setToken(certTokenInfo.token);
+    await TokenManagerProvider.instance.manager.setToken(certTokenInfo.token);
     return certTokenInfo;
   }
 
@@ -48,7 +48,7 @@ class UserApi {
   Future<OAuthToken> loginWithKakaoAccount({List<Prompt>? prompts}) async {
     final authCode = await AuthCodeClient.instance.request(prompts: prompts);
     final token = await AuthApi.instance.issueAccessToken(authCode);
-    await TokenManager.instance.setToken(token);
+    await TokenManagerProvider.instance.manager.setToken(token);
     return token;
   }
 
@@ -57,7 +57,7 @@ class UserApi {
   Future<OAuthToken> loginWithNewScopes(List<String> scopes) async {
     final authCode = await AuthCodeClient.instance.requestWithAgt(scopes);
     final token = await AuthApi.instance.issueAccessToken(authCode);
-    await TokenManager.instance.setToken(token);
+    await TokenManagerProvider.instance.manager.setToken(token);
     return token;
   }
 
@@ -68,7 +68,7 @@ class UserApi {
         .request(prompts: prompts, state: state, codeVerifier: codeVerifier);
     final certTokenInfo = await AuthApi.instance
         .issueAccessTokenWithCert(authCode, codeVerifier: codeVerifier);
-    await TokenManager.instance.setToken(certTokenInfo.token);
+    await TokenManagerProvider.instance.manager.setToken(certTokenInfo.token);
     return certTokenInfo;
   }
 

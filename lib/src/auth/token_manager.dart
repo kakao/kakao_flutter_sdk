@@ -3,21 +3,36 @@ import 'dart:convert';
 import 'package:kakao_flutter_sdk/src/auth/model/oauth_token.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Token storage provider used by kakao flutter sdk
+///
+/// [DefaultTokenManager] is used as the default storage.
+/// If you want to manage tokens yourself, you can set up your own storage by implementing the [TokenManager].
+/// If you change the implementation of the storage during the app service, you should consider migrating existing stored tokens for app update users.
+///
+/// ```dart
+/// // Set up custom storage
+/// TokenManagerProvider.instance.manager = MyTokenManager();
+/// ```
+///
+class TokenManagerProvider {
+  TokenManager manager = DefaultTokenManager();
+
+  /// singleton instance of the default [TokenManagerProvider] used by the SDK.
+  static final instance = TokenManagerProvider();
+}
+
 /// Stores access token and refresh token from [AuthApi].
 ///
 /// This abstract class can be used to store token information in different locations than provided by the SDK.
 abstract class TokenManager {
-  // stores access token and other retrieved information from [AuthApi.issueAccessToken]
+  /// stores access token and other retrieved information from [AuthApi.issueAccessToken]
   Future<void> setToken(OAuthToken token);
 
-  // retrieves access token and other information from the designated store.
+  /// retrieves access token and other information from the designated store.
   Future<OAuthToken?> getToken();
 
-  // clears all data related to access token from the device.
+  /// clears all data related to access token from the device.
   Future<void> clear();
-
-  // singleton instance of the default [TokenManager] used by the SDK.
-  static final TokenManager instance = DefaultTokenManager();
 }
 
 /// Default [TokenManager] provided by Kakao Flutter SDK.
@@ -31,6 +46,14 @@ class DefaultTokenManager implements TokenManager {
   static const rtExpiresAtKey = "com.kakao.token.RefreshToken.ExpiresAt";
   static const secureModeKey = "com.kakao.token.KakaoSecureMode";
   static const scopesKey = "com.kakao.token.Scopes";
+
+  static final _instance = DefaultTokenManager._();
+
+  DefaultTokenManager._();
+
+  factory DefaultTokenManager() {
+    return _instance;
+  }
 
   /// Deletes all token information.
   @override

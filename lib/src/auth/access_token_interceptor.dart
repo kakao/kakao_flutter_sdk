@@ -12,17 +12,18 @@ import 'package:kakao_flutter_sdk/src/auth/token_manager.dart';
 ///
 class AccessTokenInterceptor extends Interceptor {
   AccessTokenInterceptor(this._dio, this._kauthApi,
-      {TokenManager? tokenManager})
-      : this._tokenManager = tokenManager ?? TokenManager.instance;
+      {TokenManagerProvider? tokenManagerProvider})
+      : this._tokenManagerProvider =
+            tokenManagerProvider ?? TokenManagerProvider.instance;
 
   Dio _dio;
   AuthApi _kauthApi;
-  TokenManager _tokenManager;
+  TokenManagerProvider _tokenManagerProvider;
 
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    final token = await _tokenManager.getToken();
+    final token = await _tokenManagerProvider.manager.getToken();
     options.headers["Authorization"] = "Bearer ${token?.accessToken}";
     handler.next(options);
   }
@@ -31,7 +32,7 @@ class AccessTokenInterceptor extends Interceptor {
   void onError(DioError err, ErrorInterceptorHandler handler) async {
     final options = err.response?.requestOptions;
     final request = err.requestOptions;
-    final token = await _tokenManager.getToken();
+    final token = await _tokenManagerProvider.manager.getToken();
 
     if (!isRetryable(err) || options == null || token == null) {
       handler.next(err);
@@ -63,7 +64,7 @@ class AccessTokenInterceptor extends Interceptor {
       handler.resolve(response);
     } catch (error) {
       if (_isTokenError(error)) {
-        await _tokenManager.clear();
+        await _tokenManagerProvider.manager.clear();
       }
       if (error is DioError) {
         handler.reject(error);
