@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kakao_flutter_sdk/src/auth/model/access_token_response.dart';
+import 'package:kakao_flutter_sdk/src/auth/model/oauth_token.dart';
 import 'package:kakao_flutter_sdk/src/auth/token_manager.dart';
 
 import '../helper.dart';
@@ -32,22 +33,19 @@ void main() {
   test('toCache', () async {
     expect(response.accessToken, map["access_token"]);
     expect(response.refreshToken, map["refresh_token"]);
-    await tokenManager.setToken(response);
-    var token = await tokenManager.getToken();
-    expect(token.accessToken, response.accessToken);
-    expect(token.refreshToken, response.refreshToken);
-    expect(token.scopes?.join(" "), response.scopes); // null
-    expect(true, token.toString() != null);
+    await tokenManager.setToken(OAuthToken.fromResponse(response));
+    var newToken = await tokenManager.getToken();
+    expect(true, newToken != null);
+    expect(newToken!.accessToken, response.accessToken);
+    expect(newToken.refreshToken, response.refreshToken);
+    expect(newToken.scopes?.join(" "), response.scopes);
   });
 
   test("clear", () async {
-    await tokenManager.setToken(response);
+    var token = OAuthToken.fromResponse(response);
+    await tokenManager.setToken(token);
     await tokenManager.clear();
-    var token = await tokenManager.getToken();
-    expect(null, token.accessToken);
-    expect(null, token.accessTokenExpiresAt);
-    expect(null, token.refreshToken);
-    expect(null, token.refreshTokenExpiresAt);
-    expect(null, token.scopes);
+    var newToken = await tokenManager.getToken();
+    expect(null, newToken);
   });
 }
