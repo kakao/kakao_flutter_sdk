@@ -89,10 +89,11 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
             result(callbackUrl.absoluteString)
             return
         }
-        var parameters = [String:String]()
+        var parameters = [String:Any]()
         parameters["client_id"] = clientId
         parameters["redirect_uri"] = redirectUri
         parameters["response_type"] = "code"
+        parameters["headers"] = ["KA": Utility.kaHeader()].toJsonString()
         
         if(codeVerifier != nil) {
             parameters["code_challenge"] = SdkCrypto.base64url(data: SdkCrypto.sha256(string: codeVerifier!)!)
