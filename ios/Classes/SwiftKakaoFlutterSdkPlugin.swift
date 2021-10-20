@@ -30,12 +30,13 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
         launchBrowserTab(url: url!, redirectUri: redirectUri, result: result)
     case "authorizeWithTalk":
         let args = call.arguments as! Dictionary<String, String>
+        let sdkVersion = args["sdk_version"]
         let clientId = args["client_id"]
         let redirectUri = args["redirect_uri"]
         let codeVerifier = args["code_verifier"]
         let prompt = args["prompt"]
         let state = args["state"]
-        authorizeWithTalk(clientId: clientId!, redirectUri: redirectUri!, codeVerifier: codeVerifier, prompt: prompt, state: state, result: result)
+        authorizeWithTalk(sdkVersion: sdkVersion!, clientId: clientId!, redirectUri: redirectUri!, codeVerifier: codeVerifier, prompt: prompt, state: state, result: result)
     case "isKakaoTalkInstalled":
         guard let talkUrl = URL(string: "kakaokompassauth://authorize") else {
             result(false)
@@ -69,7 +70,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
         }
     }
     
-    private func authorizeWithTalk(clientId: String, redirectUri: String, codeVerifier: String?, prompt: String?, state: String?, result: @escaping FlutterResult) {
+    private func authorizeWithTalk(sdkVersion: String, clientId: String, redirectUri: String, codeVerifier: String?, prompt: String?, state: String?, result: @escaping FlutterResult) {
         self.result = result
         self.redirectUri = redirectUri
         self.authorizeTalkCompletionHandler = {
@@ -93,7 +94,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
         parameters["client_id"] = clientId
         parameters["redirect_uri"] = redirectUri
         parameters["response_type"] = "code"
-        parameters["headers"] = ["KA": Utility.kaHeader()].toJsonString()
+        parameters["headers"] = ["KA": "\(sdkVersion) \(Utility.kaHeader())"].toJsonString()
         
         if(codeVerifier != nil) {
             parameters["code_challenge"] = SdkCrypto.base64url(data: SdkCrypto.sha256(string: codeVerifier!)!)
