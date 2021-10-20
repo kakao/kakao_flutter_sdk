@@ -11,13 +11,21 @@ import kotlin.IllegalArgumentException
 class TalkAuthCodeActivity : Activity() {
     companion object {
         private const val REQUEST_CODE = 1004
+        const val KEY_SDK_VERSION = "key_sdk_version"
         const val KEY_CLIENT_ID = "key_client_Id"
         const val KEY_REDIRECT_URI = "key_redirect_uri"
         const val KEY_EXTRAS = "key_extras"
 
-        fun start(context: Context, clientId: String, redirectUri: String, extras: Bundle) {
+        fun start(
+            context: Context,
+            sdkVersion: String,
+            clientId: String,
+            redirectUri: String,
+            extras: Bundle
+        ) {
             context.startActivity(
                 Intent(context, TalkAuthCodeActivity::class.java).apply {
+                    putExtra(KEY_SDK_VERSION, sdkVersion)
                     putExtra(KEY_CLIENT_ID, clientId)
                     putExtra(KEY_REDIRECT_URI, redirectUri)
                     putExtra(KEY_EXTRAS, extras)
@@ -30,13 +38,19 @@ class TalkAuthCodeActivity : Activity() {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_talk_auth_code)
+        val sdkVersion = intent.extras?.getString(KEY_SDK_VERSION)
         val clientId = intent.extras?.getString(KEY_CLIENT_ID)
             ?: throw IllegalArgumentException("Client id is required.")
         val redirectUri = intent.extras?.getString(KEY_REDIRECT_URI)
             ?: throw IllegalArgumentException("Redirect uri is required.")
         val extra = intent.extras?.getBundle(KEY_EXTRAS) ?: Bundle()
 
-        val loginIntent = Utility.talkLoginIntent(clientId, redirectUri, Utility.getKAHeader(this), extra)
+        val loginIntent = Utility.talkLoginIntent(
+            clientId,
+            redirectUri,
+            "$sdkVersion ${Utility.getKAHeader(this)}",
+            extra
+        )
         startActivityForResult(loginIntent, REQUEST_CODE)
     }
 

@@ -112,6 +112,7 @@ class AuthCodeClient {
   Future<String> _openKakaoTalk(String clientId, String redirectUri,
       String? codeVerifier, List<Prompt>? prompts, String? state) async {
     var arguments = {
+      "sdk_version": "sdk/${KakaoContext.sdkVersion} sdk_type/flutter",
       "client_id": clientId,
       "redirect_uri": redirectUri,
       "code_verifier": codeVerifier,

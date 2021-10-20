@@ -61,6 +61,8 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
                 }
                 try {
                     @Suppress("UNCHECKED_CAST") val args = call.arguments as Map<String, String>
+                    val sdkVersion = args["sdk_version"]
+                        ?: throw IllegalArgumentException("Sdk version id is required.")
                     val clientId = args["client_id"]
                         ?: throw IllegalArgumentException("Client id is required.")
                     val redirectUri = args["redirect_uri"]
@@ -91,7 +93,7 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
                         state?.let { putString(Constants.STATE, it) }
                     }
                     redirectUriResult = result
-                    TalkAuthCodeActivity.start(activity, clientId, redirectUri, extras)
+                    TalkAuthCodeActivity.start(activity, sdkVersion, clientId, redirectUri, extras)
                 } catch (e: Exception) {
                     result.error(e.javaClass.simpleName, e.localizedMessage, e)
                 }
