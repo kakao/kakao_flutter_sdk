@@ -35,7 +35,7 @@ class Utility {
     private static func appVer() -> String {
         return Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
     }
-
+    
     static func makeUrlStringWithParameters(_ url:String, parameters:[String:Any]?) -> String? {
         guard var components = URLComponents(string:url) else { return nil }
         components.queryItems = parameters?.urlQueryItems
@@ -47,7 +47,6 @@ class Utility {
         return URL(string:finalStringUrl)
     }
 }
-
 
 extension Dictionary {
     public var urlQueryItems: [URLQueryItem]? {

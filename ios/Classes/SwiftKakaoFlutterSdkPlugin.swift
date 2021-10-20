@@ -8,59 +8,59 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
     var result: FlutterResult? = nil
     var redirectUri: String? = nil
     var authorizeTalkCompletionHandler : ((URL?, FlutterError?) -> Void)?
-
-  public static func register(with registrar: FlutterPluginRegistrar) {
-    NSLog("nslog register")
-    let channel = FlutterMethodChannel(name: "kakao_flutter_sdk", binaryMessenger: registrar.messenger())
-    let instance = SwiftKakaoFlutterSdkPlugin()
-    registrar.addMethodCallDelegate(instance, channel: channel)
-    registrar.addApplicationDelegate(instance) // This is necessary to receive open iurl delegate method.
-  }
     
-  public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    switch call.method {
-    case "getOrigin":
-      result(Utility.origin())
-    case "getKaHeader":
-      result(Utility.kaHeader())
-    case "launchBrowserTab":
-        let args = call.arguments as! Dictionary<String, String>
-        let url = args["url"]
-        let redirectUri = args["redirect_uri"]
-        launchBrowserTab(url: url!, redirectUri: redirectUri, result: result)
-    case "authorizeWithTalk":
-        let args = call.arguments as! Dictionary<String, String>
-        let sdkVersion = args["sdk_version"]
-        let clientId = args["client_id"]
-        let redirectUri = args["redirect_uri"]
-        let codeVerifier = args["code_verifier"]
-        let prompt = args["prompt"]
-        let state = args["state"]
-        authorizeWithTalk(sdkVersion: sdkVersion!, clientId: clientId!, redirectUri: redirectUri!, codeVerifier: codeVerifier, prompt: prompt, state: state, result: result)
-    case "isKakaoTalkInstalled":
-        guard let talkUrl = URL(string: "kakaokompassauth://authorize") else {
-            result(false)
-            return
-        }
-        result(UIApplication.shared.canOpenURL(talkUrl))
-    case "isKakaoNaviInstalled":
-         guard let naviUrl = URL(string: "kakaonavi-sdk://") else {
-             result(false)
-             return
-         }
-         result(UIApplication.shared.canOpenURL(naviUrl))
-    case "launchKakaoTalk":
-        let args = call.arguments as! Dictionary<String, String>
-        let uri = args["uri"]
-        launchKakaoTalk(uri: uri!, result: result)
-    case "isKakaoLinkAvailable":
-        let isKakaoLinkAvailable = UIApplication.shared.canOpenURL(URL(string:"kakaolink://send")!)
-        result(isKakaoLinkAvailable)
-    default:
-      result(FlutterMethodNotImplemented)
+    public static func register(with registrar: FlutterPluginRegistrar) {
+        NSLog("nslog register")
+        let channel = FlutterMethodChannel(name: "kakao_flutter_sdk", binaryMessenger: registrar.messenger())
+        let instance = SwiftKakaoFlutterSdkPlugin()
+        registrar.addMethodCallDelegate(instance, channel: channel)
+        registrar.addApplicationDelegate(instance) // This is necessary to receive open iurl delegate method.
     }
-  }
-
+    
+    public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+        switch call.method {
+        case "getOrigin":
+            result(Utility.origin())
+        case "getKaHeader":
+            result(Utility.kaHeader())
+        case "launchBrowserTab":
+            let args = call.arguments as! Dictionary<String, String>
+            let url = args["url"]
+            let redirectUri = args["redirect_uri"]
+            launchBrowserTab(url: url!, redirectUri: redirectUri, result: result)
+        case "authorizeWithTalk":
+            let args = call.arguments as! Dictionary<String, String>
+            let sdkVersion = args["sdk_version"]
+            let clientId = args["client_id"]
+            let redirectUri = args["redirect_uri"]
+            let codeVerifier = args["code_verifier"]
+            let prompt = args["prompt"]
+            let state = args["state"]
+            authorizeWithTalk(sdkVersion: sdkVersion!, clientId: clientId!, redirectUri: redirectUri!, codeVerifier: codeVerifier, prompt: prompt, state: state, result: result)
+        case "isKakaoTalkInstalled":
+            guard let talkUrl = URL(string: "kakaokompassauth://authorize") else {
+                result(false)
+                return
+            }
+            result(UIApplication.shared.canOpenURL(talkUrl))
+        case "isKakaoNaviInstalled":
+            guard let naviUrl = URL(string: "kakaonavi-sdk://") else {
+                result(false)
+                return
+            }
+            result(UIApplication.shared.canOpenURL(naviUrl))
+        case "launchKakaoTalk":
+            let args = call.arguments as! Dictionary<String, String>
+            let uri = args["uri"]
+            launchKakaoTalk(uri: uri!, result: result)
+        case "isKakaoLinkAvailable":
+            let isKakaoLinkAvailable = UIApplication.shared.canOpenURL(URL(string:"kakaolink://send")!)
+            result(isKakaoLinkAvailable)
+        default:
+            result(FlutterMethodNotImplemented)
+        }
+    }
+    
     private func launchKakaoTalk(uri: String, result: @escaping FlutterResult) {
         let urlObject = URL(string: uri)!
         if (UIApplication.shared.canOpenURL(urlObject)) {
@@ -108,12 +108,12 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
         if(state != nil) {
             parameters["state"] = state
         }
-
+        
         guard let url = Utility.makeUrlWithParameters("kakaokompassauth://authorize", parameters: parameters) else {
             result(FlutterError(code: "makeURL", message: "This is probably a bug in Kakao Flutter SDK.", details: nil))
             return
         }
-
+        
         UIApplication.shared.open(url, options: [:]) { (openResult) in
             if (!openResult) {
                 result(FlutterError(code: "OPEN_URL_ERROR", message: "Failed to open KakaoTalk.", details: nil))
@@ -125,26 +125,26 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
         var keepMe: Any? = nil
         let completionHandler = { (url: URL?, err: Error?) in
             keepMe = nil
-
+            
             if let err = err {
                 if #available(iOS 12, *) {
                     if let error = err as? ASWebAuthenticationSessionError {
                         switch error.code {
-                            case .canceledLogin:
-                                result(FlutterError(code: "CANCELED", message: "User canceled login.", details: nil))
-                                return
-                            default:
-                                break
+                        case .canceledLogin:
+                            result(FlutterError(code: "CANCELED", message: "User canceled login.", details: nil))
+                            return
+                        default:
+                            break
                         }
                     }
                 } else {
                     if let error = err as? SFAuthenticationError {
                         switch error.code {
-                            case .canceledLogin:
-                                result(FlutterError(code: "CANCELED", message: "User canceled login.", details: nil))
-                                return
-                            default:
-                                break
+                        case .canceledLogin:
+                            result(FlutterError(code: "CANCELED", message: "User canceled login.", details: nil))
+                            return
+                        default:
+                            break
                         }
                     }
                 }
