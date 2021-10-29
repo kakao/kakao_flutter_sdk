@@ -16,6 +16,7 @@ import 'package:kakao_flutter_sdk/src/search/model/search_meta.dart';
 /// Provides Kakao Local API
 ///
 /// see https://developers.kakao.com/docs/latest/ko/local/dev-guide
+@Deprecated("These APIs will be removed. If you want to use it, use REST API.")
 class LocalApi {
   final Dio _dio;
 

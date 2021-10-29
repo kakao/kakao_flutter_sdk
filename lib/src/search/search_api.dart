@@ -11,6 +11,7 @@ import 'package:kakao_flutter_sdk/src/search/model/tip.dart';
 import 'package:kakao_flutter_sdk/src/search/model/vclip.dart';
 import 'package:kakao_flutter_sdk/src/search/model/web_result.dart';
 
+@Deprecated("These APIs will be removed. If you want to use it, use REST API.")
 class SearchApi {
   SearchApi(this._dio);
 
