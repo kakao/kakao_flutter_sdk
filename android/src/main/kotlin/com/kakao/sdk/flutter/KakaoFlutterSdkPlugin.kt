@@ -1,6 +1,7 @@
 package com.kakao.sdk.flutter
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -125,6 +126,26 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
                     Intent(Intent.ACTION_VIEW, uriBuilder.build())
                 ) != null
                 result.success(isKakaoLinkAvailable)
+            }
+            call.method == "navigate" -> {
+                @Suppress("UNCHECKED_CAST") val args = call.arguments as Map<String, String>
+                val appKey = args["app_key"]
+                val extras = args["extras"]
+                val params = args["navi_params"]
+                val uri = Uri.Builder().scheme("https").authority("kakaonavi-wguide.kakao.com")
+                    .appendQueryParameter(Constants.PARAM, params)
+                    .appendQueryParameter(Constants.APIVER, Constants.APIVER_10)
+                    .appendQueryParameter(Constants.APPKEY, appKey)
+                    .appendQueryParameter(Constants.EXTRAS, extras)
+                    .scheme(Constants.NAVI_SCHEME).authority(Constants.NAVIGATE).build()
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                try {
+                    applicationContext.startActivity(intent)
+                    result.success(true)
+                } catch (e: ActivityNotFoundException) {
+                    result.error("Error", "KakaoNavi not installed", null)
+                }
             }
             else -> result.notImplemented()
         }
