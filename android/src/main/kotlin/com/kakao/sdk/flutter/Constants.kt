@@ -46,6 +46,8 @@ object Constants {
     const val APPKEY = "appkey"
     const val APIVER_10 = "1.0"
 
+    const val NAVI_WEB_SCHEME = "https"
+    const val NAVI_HOST = "kakaonavi-wguide.kakao.com"
     const val NAVI_SCHEME = "kakaonavi-sdk"
     const val NAVIGATE = "navigate"
     const val SHARE_POI = "sharePoi"

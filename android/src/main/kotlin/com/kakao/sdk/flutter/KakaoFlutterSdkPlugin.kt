@@ -41,17 +41,17 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
     }
 
     override fun onMethodCall(call: MethodCall, result: Result) {
-        when {
-            call.method == "getOrigin" -> result.success(Utility.getKeyHash(applicationContext))
-            call.method == "getKaHeader" -> result.success(Utility.getKAHeader(applicationContext))
-            call.method == "launchBrowserTab" -> {
+        when (call.method) {
+            "getOrigin" -> result.success(Utility.getKeyHash(applicationContext))
+            "getKaHeader" -> result.success(Utility.getKAHeader(applicationContext))
+            "launchBrowserTab" -> {
                 @Suppress("UNCHECKED_CAST") val args = call.arguments as Map<String, String?>
                 val uri = args["url"] as String
                 redirectUri = args["redirect_uri"]
                 redirectUriResult = result
                 AuthCodeCustomTabsActivity.startWithUrl(activity, uri)
             }
-            call.method == "authorizeWithTalk" -> {
+            "authorizeWithTalk" -> {
                 if (!Utility.isKakaoTalkInstalled(applicationContext)) {
                     result.error(
                         "Error",
@@ -99,13 +99,13 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
                     result.error(e.javaClass.simpleName, e.localizedMessage, e)
                 }
             }
-            call.method == "isKakaoTalkInstalled" -> {
+            "isKakaoTalkInstalled" -> {
                 result.success(Utility.isKakaoTalkInstalled(applicationContext))
             }
-            call.method == "isKakaoNaviInstalled" -> {
+            "isKakaoNaviInstalled" -> {
                 result.success(Utility.isKakaoNaviInstalled(applicationContext))
             }
-            call.method == "launchKakaoTalk" -> {
+            "launchKakaoTalk" -> {
                 if (!Utility.isKakaoTalkInstalled(applicationContext)) {
                     result.success(false)
                     return
@@ -118,7 +118,7 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
                 applicationContext.startActivity(intent)
                 result.success(true)
             }
-            call.method == "isKakaoLinkAvailable" -> {
+            "isKakaoLinkAvailable" -> {
                 val uriBuilder = Uri.Builder().scheme("kakaolink").authority("send")
                 val linkIntentClient = IntentResolveClient.instance
                 val isKakaoLinkAvailable = linkIntentClient.resolveTalkIntent(
@@ -127,17 +127,13 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
                 ) != null
                 result.success(isKakaoLinkAvailable)
             }
-            call.method == "navigate" -> {
+            "navigate" -> {
                 @Suppress("UNCHECKED_CAST") val args = call.arguments as Map<String, String>
                 val appKey = args["app_key"]
                 val extras = args["extras"]
                 val params = args["navi_params"]
-                val uri = Uri.Builder().scheme("https").authority("kakaonavi-wguide.kakao.com")
-                    .appendQueryParameter(Constants.PARAM, params)
-                    .appendQueryParameter(Constants.APIVER, Constants.APIVER_10)
-                    .appendQueryParameter(Constants.APPKEY, appKey)
-                    .appendQueryParameter(Constants.EXTRAS, extras)
-                    .scheme(Constants.NAVI_SCHEME).authority(Constants.NAVIGATE).build()
+                val uri = naviBaseUriBuilder(appKey, extras, params).scheme(Constants.NAVI_SCHEME)
+                    .authority(Constants.NAVIGATE).build()
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 try {
@@ -147,17 +143,13 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
                     result.error("Error", "KakaoNavi not installed", null)
                 }
             }
-            call.method == "shareDestination" -> {
+            "shareDestination" -> {
                 @Suppress("UNCHECKED_CAST") val args = call.arguments as Map<String, String>
                 val appKey = args["app_key"]
                 val extras = args["extras"]
                 val params = args["navi_params"]
-                val uri = Uri.Builder().scheme("https").authority("kakaonavi-wguide.kakao.com")
-                    .appendQueryParameter(Constants.PARAM, params)
-                    .appendQueryParameter(Constants.APIVER, Constants.APIVER_10)
-                    .appendQueryParameter(Constants.APPKEY, appKey)
-                    .appendQueryParameter(Constants.EXTRAS, extras)
-                    .scheme(Constants.NAVI_SCHEME).authority(Constants.SHARE_POI).build()
+                val uri = naviBaseUriBuilder(appKey, extras, params).scheme(Constants.NAVI_SCHEME)
+                    .authority(Constants.SHARE_POI).build()
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 try {
@@ -211,4 +203,13 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
             MessageDigest.getInstance(Constants.CODE_CHALLENGE_ALGORITHM).digest(codeVerifier),
             Base64.NO_WRAP or Base64.NO_PADDING or Base64.URL_SAFE
         )
+
+    private fun naviBaseUriBuilder(appKey: String?, extras: String?, params: String?): Uri.Builder {
+        return Uri.Builder().scheme(Constants.NAVI_WEB_SCHEME)
+            .authority(Constants.NAVI_HOST)
+            .appendQueryParameter(Constants.PARAM, params)
+            .appendQueryParameter(Constants.APIVER, Constants.APIVER_10)
+            .appendQueryParameter(Constants.APPKEY, appKey)
+            .appendQueryParameter(Constants.EXTRAS, extras)
+    }
 }
