@@ -55,6 +55,20 @@ class NaviApi {
     await _channel.invokeMethod<bool>("navigate", arguments);
   }
 
+  Future shareDestination(
+      {required Location destination,
+      NaviOption? option,
+      List<Location>? viaList}) async {
+    final extras = await _getExtras();
+    final arguments = {
+      'app_key': KakaoContext.clientId,
+      'extras': jsonEncode(extras),
+      'navi_params': jsonEncode(
+          KakaoNaviParams(destination, option: option, viaList: viaList))
+    };
+    await _channel.invokeMethod<bool>("shareDestination", arguments);
+  }
+
   Future<Map<String, String>> _getExtras() async {
     return {
       'KA': await KakaoContext.kaHeader,

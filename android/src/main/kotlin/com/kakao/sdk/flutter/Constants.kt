@@ -48,6 +48,7 @@ object Constants {
 
     const val NAVI_SCHEME = "kakaonavi-sdk"
     const val NAVIGATE = "navigate"
+    const val SHARE_POI = "sharePoi"
 
     const val CODE_CHALLENGE = "code_challenge"
     const val CODE_CHALLENGE_METHOD = "code_challenge_method"
