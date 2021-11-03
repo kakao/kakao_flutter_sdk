@@ -56,6 +56,13 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
         case "isKakaoLinkAvailable":
             let isKakaoLinkAvailable = UIApplication.shared.canOpenURL(URL(string:"kakaolink://send")!)
             result(isKakaoLinkAvailable)
+        case "navigate":
+            let args = call.arguments as! Dictionary<String, String>
+            let appKey = args["app_key"]
+            let extras = args["extras"]
+            let params = args["navi_params"]
+            let url = Utility.makeUrlWithParameters("kakaonavi-sdk://navigate", parameters: ["extras": extras!, "param": params!, "appkey": appKey!, "apiver": "1.0"])            
+            UIApplication.shared.open(url!, options: [:], completionHandler: nil)
         default:
             result(FlutterMethodNotImplemented)
         }
