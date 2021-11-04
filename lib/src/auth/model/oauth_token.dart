@@ -2,25 +2,30 @@ import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kakao_flutter_sdk/src/auth/model/access_token_response.dart';
+import 'package:kakao_flutter_sdk/src/auth/token_manager.dart';
 import 'package:kakao_flutter_sdk/src/common/kakao_error.dart';
 
 part 'oauth_token.g.dart';
 
-/// Access token and refresh token information.
+/// 카카오 로그인을 통해 발급 받은 토큰. Kakao SDK는 [TokenManager]를 통해 토큰을 자동으로 관리함.
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class OAuthToken {
+  /// API 인증에 사용하는 엑세스 토큰.
   String accessToken;
 
-  /// Use this field with caution. Token might have expired on server side.
+  /// 엑세스 토큰 만료 시각.
   DateTime accessTokenExpiresAt;
+
+  /// 엑세스 토큰을 갱신하는데 사용하는 리프레시 토큰.
   String refreshToken;
 
-  /// Use this field with caution. Token might have expired on server side.
+  /// 리프레시 토큰 만료 시각.
   DateTime refreshTokenExpiresAt;
 
-  /// List of scopes this user has agreed to when this token was issued.
+  /// 이 토큰에 부여된 scope 목록.
   List<String>? scopes;
 
+  /// @nodoc
   OAuthToken(this.accessToken, this.accessTokenExpiresAt, this.refreshToken,
       this.refreshTokenExpiresAt, this.scopes);
 
@@ -33,13 +38,15 @@ class OAuthToken {
     });
   }
 
-  /// <nodoc>
+  /// @nodoc
   factory OAuthToken.fromJson(Map<String, dynamic> json) =>
       _$OAuthTokenFromJson(json);
 
-  /// <nodoc>
+  /// @nodoc
   Map<String, dynamic> toJson() => _$OAuthTokenToJson(this);
 
+  /// @nodoc
+  /// [AccessTokenResponse] 객체로부터 OAuthToken 객체 생성.
   static OAuthToken fromResponse(AccessTokenResponse response,
       {OAuthToken? oldToken}) {
     final atExpiresAt =

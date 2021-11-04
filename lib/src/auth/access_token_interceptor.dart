@@ -3,12 +3,9 @@ import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/src/auth/auth_api.dart';
 import 'package:kakao_flutter_sdk/src/auth/token_manager.dart';
 
-/// Access token interceptor for Kakao API requests.
-///
-/// Mainly does two things:
-///
-/// 1. Adds Authorization header to every request. `Bearer ${access_token}`
-/// 1. When access tokens are expired, retries API requests after refreshing access token.
+/// @nodoc
+/// API 요청에 AccessToken을 추가하는 인터셉터
+/// -401 발생시 자동 갱신
 ///
 class AccessTokenInterceptor extends Interceptor {
   AccessTokenInterceptor(this._dio, this._kauthApi,
@@ -78,7 +75,7 @@ class AccessTokenInterceptor extends Interceptor {
     }
   }
 
-  /// This can be overridden
+  // This can be overridden
   bool isRetryable(DioError err) =>
       err.requestOptions.baseUrl == "https://${KakaoContext.hosts.kapi}" &&
       err.response != null &&

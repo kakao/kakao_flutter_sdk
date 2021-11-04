@@ -3,41 +3,42 @@ import 'dart:convert';
 import 'package:kakao_flutter_sdk/src/auth/model/oauth_token.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Token storage provider used by kakao flutter sdk
+/// Kakao SDK가 사용하게 될 토큰 저장소 제공자.
 ///
-/// [DefaultTokenManager] is used as the default storage.
-/// If you want to manage tokens yourself, you can set up your own storage by implementing the [TokenManager].
-/// If you change the implementation of the storage during the app service, you should consider migrating existing stored tokens for app update users.
+/// Kakao SDK는 로그인에 성공하면 이 제공자를 통해 현재 지정된 토큰 저장소에 토큰 저장.
+/// 저장된 토큰은 로그인 기반 API 호출 시 자동으로 인증 헤더에 추가됨.
+///
+/// [DefaultTokenManager]를 기본 저장소로 사용하며, 토큰을 직접 관리하고 싶은 경우 [TokenManager] 인터페이스를 구현하여 나만의 저장소 설정 가능.
+/// 앱 서비스 도중 저장소 구현을 변경하는 경우, 앱 업데이트 사용자를 위하여 기존에 저장되어 있던 토큰 마이그레이션 고려해야 함.
 ///
 /// ```dart
-/// // Set up custom storage
+/// // 사용자 정의 저장소 설정하기
 /// TokenManagerProvider.instance.manager = MyTokenManager();
 /// ```
-///
 class TokenManagerProvider {
+  /// 현재 지정된 토큰 저장소. 기본 값 [DefaultTokenManager._instance]
   TokenManager manager = DefaultTokenManager();
 
-  /// singleton instance of the default [TokenManagerProvider] used by the SDK.
+  /// singleton 객체
   static final instance = TokenManagerProvider();
 }
 
-/// Stores access token and refresh token from [AuthApi].
-///
-/// This abstract class can be used to store token information in different locations than provided by the SDK.
+/// 카카오 API에 사용되는 액세스 토큰, 리프레시 토큰을 관리하는 추상 클래스.
 abstract class TokenManager {
-  /// stores access token and other retrieved information from [AuthApi.issueAccessToken]
+  /// 토큰([token])를 저장.
   Future<void> setToken(OAuthToken token);
 
-  /// retrieves access token and other information from the designated store.
+  /// 저장되어 있는 [OAuthToken] 반환.
   Future<OAuthToken?> getToken();
 
-  /// clears all data related to access token from the device.
+  /// 저장되어 있는 [OAuthToken] 객체를 삭제.
   Future<void> clear();
 }
 
-/// Default [TokenManager] provided by Kakao Flutter SDK.
+/// Kakao SDK에서 기본 제공하는 토큰 저장소 구현체.
 ///
-/// Currently uses SharedPreferences (on Android) and UserDefaults (on iOS).
+/// 기기 고유값을 이용해 토큰을 암호화하고 [SharedPreferences]에 저장함.
+/// (Android는 SharedPreferences, iOS는 UserDefaults에 저장함)
 class DefaultTokenManager implements TokenManager {
   static const tokenKey = "com.kakao.token.OAuthToken";
   static const atKey = "com.kakao.token.AccessToken";
@@ -55,7 +56,6 @@ class DefaultTokenManager implements TokenManager {
     return _instance;
   }
 
-  /// Deletes all token information.
   @override
   Future<void> clear() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
