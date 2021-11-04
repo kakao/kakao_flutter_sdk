@@ -13,6 +13,7 @@ Friend _$FriendFromJson(Map<String, dynamic> json) {
     json['profile_nickname'] as String?,
     json['profile_thumbnail_image'] as String?,
     json['favorite'] as bool?,
+    json['allowed_msg'] as bool?,
   );
 }
 
@@ -30,5 +31,6 @@ Map<String, dynamic> _$FriendToJson(Friend instance) {
   writeNotNull('profile_nickname', instance.profileNickname);
   writeNotNull('profile_thumbnail_image', instance.profileThumbnailImage);
   writeNotNull('favorite', instance.favorite);
+  writeNotNull('allowed_msg', instance.allowedMsg);
   return val;
 }
