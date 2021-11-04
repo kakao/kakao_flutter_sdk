@@ -19,8 +19,7 @@ class AccessTokenResponse {
 
   // list of scopes this user agreed to.
   // ex. "account_email story_publish"
-  @JsonKey(name: "scope")
-  String? scopes;
+  String? scope;
 
   /// <nodoc>
   String tokenType;
@@ -30,7 +29,7 @@ class AccessTokenResponse {
 
   /// <nodoc>
   AccessTokenResponse(this.accessToken, this.expiresIn, this.refreshToken,
-      this.refreshTokenExpiresIn, this.scopes, this.tokenType,
+      this.refreshTokenExpiresIn, this.scope, this.tokenType,
       {this.txId});
 
   /// <nodoc>

@@ -63,8 +63,8 @@ class OAuthToken {
     }
 
     var scopes;
-    if (response.scopes != null) {
-      scopes = response.scopes!.split(' ');
+    if (response.scope != null) {
+      scopes = response.scope!.split(' ');
     } else {
       scopes = oldToken?.scopes;
     }

@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
+import 'package:kakao_flutter_sdk/src/auth/model/access_token_response.dart';
 import 'package:platform/platform.dart';
 
 import '../helper.dart';

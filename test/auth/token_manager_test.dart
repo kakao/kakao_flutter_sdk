@@ -39,7 +39,7 @@ void main() {
     expect(true, newToken != null);
     expect(newToken!.accessToken, response.accessToken);
     expect(newToken.refreshToken, response.refreshToken);
-    expect(newToken.scopes?.join(" "), response.scopes);
+    expect(newToken.scopes?.join(" "), response.scope);
   });
 
   test("clear", () async {
