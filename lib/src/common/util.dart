@@ -5,6 +5,7 @@ import 'package:kakao_flutter_sdk/story.dart';
 
 const MethodChannel _channel = MethodChannel("kakao_flutter_sdk");
 
+/// @nodoc
 /// Launches a given url with platform-specific default browser tab.
 Future<String> launchBrowserTab(Uri uri, {String? redirectUri}) async {
   if (uri.scheme != 'http' && uri.scheme != 'https') {
@@ -22,6 +23,7 @@ Future<String> launchBrowserTab(Uri uri, {String? redirectUri}) async {
       "OAuth 2.0 redirect uri was null, which should not happen.");
 }
 
+/// @nodoc
 /// Determines whether KakaoTalk is installed on this device.
 Future<bool> isKakaoTalkInstalled() async {
   final isInstalled =
@@ -29,6 +31,7 @@ Future<bool> isKakaoTalkInstalled() async {
   return isInstalled;
 }
 
+/// @nodoc
 /// Collection of utility methods, usually for converting data types.
 class Util {
   static DateTime fromTimeStamp(int timestamp) =>
