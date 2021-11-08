@@ -34,8 +34,8 @@ Map<String, dynamic> _$FeedTemplateToJson(FeedTemplate instance) {
     }
   }
 
-  writeNotNull('social', instance.social?.toJson());
   writeNotNull('item_content', instance.itemContent?.toJson());
+  writeNotNull('social', instance.social?.toJson());
   writeNotNull('buttons', instance.buttons?.map((e) => e.toJson()).toList());
   writeNotNull('button_title', instance.buttonTitle);
   val['object_type'] = instance.objectType;
