@@ -3,18 +3,20 @@ import 'package:kakao_flutter_sdk/src/story/model/story_actor.dart';
 
 part 'story_comment.g.dart';
 
+/// 카카오스토리의 댓글 정보를 담고 있는 클래스
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class StoryComment {
-  /// <nodoc>
-  StoryComment(this.text, this.writer);
   final String text;
   final StoryActor writer;
 
-  /// <nodoc>
+  /// @nodoc
+  StoryComment(this.text, this.writer);
+
+  /// @nodoc
   factory StoryComment.fromJson(Map<String, dynamic> json) =>
       _$StoryCommentFromJson(json);
 
-  /// <nodoc>
+  /// @nodoc
   Map<String, dynamic> toJson() => _$StoryCommentToJson(this);
 
   @override

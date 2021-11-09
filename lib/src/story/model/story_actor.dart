@@ -2,19 +2,19 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'story_actor.g.dart';
 
-/// Story
+/// 카카오스토리의 작성자 정보를 담고 있는 클래스
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class StoryActor {
   final String displayName;
   final String? profileThumbnailUrl;
 
-  /// <nodoc>
+  /// @nodoc
   StoryActor(this.displayName, this.profileThumbnailUrl);
 
-  /// <nodoc>
+  /// @nodoc
   factory StoryActor.fromJson(Map<String, dynamic> json) =>
       _$StoryActorFromJson(json);
 
-  /// <nodoc>
+  /// @nodoc
   Map<String, dynamic> toJson() => _$StoryActorToJson(this);
 }
