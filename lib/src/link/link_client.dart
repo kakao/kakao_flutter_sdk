@@ -31,13 +31,15 @@ class LinkClient {
       {Map<String, String>? templateArgs,
       Map<String, String>? serverCallbackArgs}) async {
     final response = await api.custom(templateId, templateArgs: templateArgs);
-    return sharerWithResponse(response, serverCallbackArgs: serverCallbackArgs);
+    return _sharerWithResponse(response,
+        serverCallbackArgs: serverCallbackArgs);
   }
 
   Future<Uri> defaultWithWeb(DefaultTemplate template,
       {Map<String, String>? serverCallbackArgs}) async {
     final response = await api.defaultTemplate(template);
-    return sharerWithResponse(response, serverCallbackArgs: serverCallbackArgs);
+    return _sharerWithResponse(response,
+        serverCallbackArgs: serverCallbackArgs);
   }
 
   Future<Uri> scrapWithWeb(String url,
@@ -46,7 +48,8 @@ class LinkClient {
       Map<String, String>? serverCallbackArgs}) async {
     final response = await api.scrap(url,
         templateId: templateId, templateArgs: templateArgs);
-    return sharerWithResponse(response, serverCallbackArgs: serverCallbackArgs);
+    return _sharerWithResponse(response,
+        serverCallbackArgs: serverCallbackArgs);
   }
 
   /// Send KakaoLink messages with custom templates.
@@ -54,13 +57,13 @@ class LinkClient {
       {Map<String, String>? templateArgs,
       Map<String, String>? serverCallbackArgs}) async {
     final response = await api.custom(templateId, templateArgs: templateArgs);
-    return talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
+    return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
   Future<Uri> defaultWithTalk(DefaultTemplate template,
       {Map<String, String>? serverCallbackArgs}) async {
     final response = await api.defaultTemplate(template);
-    return talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
+    return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
   Future<Uri> scrapWithTalk(String url,
@@ -69,10 +72,26 @@ class LinkClient {
       Map<String, String>? serverCallbackArgs}) async {
     final response = await api.scrap(url,
         templateId: templateId, templateArgs: templateArgs);
-    return talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
+    return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
-  Future<Uri> sharerWithResponse(LinkResult response,
+  /// Upload the local image to the Kakao Image Server to use it as a KakaoLink content image.
+  Future<ImageUploadResult> uploadImage(File image,
+      {bool secureResource = true}) async {
+    return await api.uploadImage(image, secureResource: secureResource);
+  }
+
+  /// Upload remote image to Kakao Image Server to use as KakaoLink content image.
+  Future<ImageUploadResult> scrapImage(String imageUrl,
+      {bool secureResource = true}) async {
+    return await api.scrapImage(imageUrl, secureResource: secureResource);
+  }
+
+  Future<void> launchKakaoTalk(Uri uri) {
+    return _channel.invokeMethod("launchKakaoTalk", {"uri": uri.toString()});
+  }
+
+  Future<Uri> _sharerWithResponse(LinkResult response,
       {Map<String, String>? serverCallbackArgs}) async {
     final params = {
       "app_key": KakaoContext.clientId,
@@ -91,7 +110,7 @@ class LinkClient {
         KakaoContext.hosts.sharer, "talk/friends/picker/easylink", params);
   }
 
-  Future<Uri> talkWithResponse(LinkResult response,
+  Future<Uri> _talkWithResponse(LinkResult response,
       {String? clientId, Map<String, String>? serverCallbackArgs}) async {
     final attachmentSize = await _attachmentSize(response,
         clientId: clientId, serverCallbackArgs: serverCallbackArgs);
@@ -112,10 +131,6 @@ class LinkClient {
     return Uri.parse(uri.toString().replaceAll('+', '%20'));
   }
 
-  Future<void> launchKakaoTalk(Uri uri) {
-    return _channel.invokeMethod("launchKakaoTalk", {"uri": uri.toString()});
-  }
-
   Future<Map<String, String?>> _extras(
       [Map<String, String>? serverCallbackArgs]) async {
     Map<String, String?> extras = {
@@ -133,18 +148,6 @@ class LinkClient {
     };
     extras.removeWhere((k, v) => v == null);
     return extras;
-  }
-
-  /// Upload the local image to the Kakao Image Server to use it as a KakaoLink content image.
-  Future<ImageUploadResult> uploadImage(File image,
-      {bool secureResource = true}) async {
-    return await api.uploadImage(image, secureResource: secureResource);
-  }
-
-  /// Upload remote image to Kakao Image Server to use as KakaoLink content image.
-  Future<ImageUploadResult> scrapImage(String imageUrl,
-      {bool secureResource = true}) async {
-    return await api.scrapImage(imageUrl, secureResource: secureResource);
   }
 
   Future<int> _attachmentSize(LinkResult response,
