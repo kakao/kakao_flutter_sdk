@@ -2,8 +2,8 @@
 library talk;
 
 export 'package:kakao_flutter_sdk/common.dart';
-export 'package:kakao_flutter_sdk/src/talk/model/channel_relation.dart';
-export 'package:kakao_flutter_sdk/src/talk/model/channel_relations.dart';
+export 'package:kakao_flutter_sdk/src/talk/model/channel.dart';
+export 'package:kakao_flutter_sdk/src/talk/model/channels.dart';
 export 'package:kakao_flutter_sdk/src/talk/model/friend.dart';
 export 'package:kakao_flutter_sdk/src/talk/model/friends.dart';
 export 'package:kakao_flutter_sdk/src/talk/model/message_failure_info.dart';

@@ -31,11 +31,12 @@ Future<bool> isKakaoTalkInstalled() async {
 
 /// Collection of utility methods, usually for converting data types.
 class Util {
-  static DateTime fromTimeStamp(int timestamp) =>
-      DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+  static DateTime? fromTimeStamp(int? timestamp) => timestamp == null
+      ? null
+      : DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
 
-  static int fromDateTime(DateTime dateTime) =>
-      dateTime.millisecondsSinceEpoch ~/ 1000;
+  static int? fromDateTime(DateTime? dateTime) =>
+      dateTime == null ? null : dateTime.millisecondsSinceEpoch ~/ 1000;
 
   static String? dateTimeWithoutMillis(DateTime? dateTime) => dateTime == null
       ? null

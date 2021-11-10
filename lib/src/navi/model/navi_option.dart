@@ -22,6 +22,7 @@ class NaviOption {
 
   final String? returnUri;
 
+  /// <nodoc>
   NaviOption(
       {this.coordType,
       this.vehicleType,

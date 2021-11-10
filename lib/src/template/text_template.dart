@@ -9,16 +9,16 @@ part 'text_template.g.dart';
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class TextTemplate extends DefaultTemplate {
-  /// <nodoc>
-  TextTemplate(this.text, this.link,
-      {this.buttons, this.buttonTitle, this.objectType = "text"});
-
   final String text;
   final Link link;
   final List<Button>? buttons;
   final String? buttonTitle;
 
   final String objectType;
+
+  /// <nodoc>
+  TextTemplate(this.text, this.link,
+      {this.buttons, this.buttonTitle, this.objectType = "text"});
 
   /// <nodoc>
   factory TextTemplate.fromJson(Map<String, dynamic> json) =>

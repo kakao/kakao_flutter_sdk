@@ -5,13 +5,6 @@ part 'link.g.dart';
 /// Collection of links to open whe a specific area in KakaoTalk message is tapped.
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class Link {
-  /// <nodoc>
-  Link(
-      {this.webUrl,
-      this.mobileWebUrl,
-      this.androidExecParams,
-      this.iosExecParams});
-
   /// Url to open in PC or MacOS KakaoTalk.
   final Uri? webUrl;
 
@@ -59,6 +52,13 @@ class Link {
   ///
   @JsonKey(name: "ios_execution_params")
   final String? iosExecParams;
+
+  /// <nodoc>
+  Link(
+      {this.webUrl,
+      this.mobileWebUrl,
+      this.androidExecParams,
+      this.iosExecParams});
 
   /// <nodoc>
   factory Link.fromJson(Map<String, dynamic> json) => _$LinkFromJson(json);

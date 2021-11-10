@@ -179,7 +179,7 @@ void main() {
   });
   group("/v1/api/talk/channels", () {
     var map;
-    late ChannelRelations res;
+    late Channels res;
     setUp(() async {
       var body = await loadJson("talk/plusfriends/plus_friends.json");
       map = jsonDecode(body);
@@ -190,7 +190,7 @@ void main() {
       expect(res.userId, map["user_id"]);
       var elements = map["channels"];
       var friends = res.channels;
-      friends.asMap().forEach((index, friend) {
+      friends?.asMap().forEach((index, friend) {
         var element = elements[index];
         expect(friend.uuid, element["channel_uuid"]);
         expect(friend.relation, element["relation"]);

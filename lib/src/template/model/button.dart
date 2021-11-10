@@ -7,11 +7,11 @@ part 'button.g.dart';
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class Button {
-  /// <nodoc>
-  Button(this.title, this.link);
-
   final String title;
   final Link link;
+
+  /// <nodoc>
+  Button(this.title, this.link);
 
   /// <nodoc>
   factory Button.fromJson(Map<String, dynamic> json) => _$ButtonFromJson(json);

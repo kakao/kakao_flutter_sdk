@@ -10,7 +10,7 @@ class AccessTokenInfo {
   int appId;
 
   /// id of user this access token belongs to.
-  int id;
+  int? id;
   @JsonKey(name: "expires_in")
   int expiresIn;
 

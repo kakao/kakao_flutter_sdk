@@ -4,7 +4,7 @@ part 'profile.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class Profile {
-  final String nickname;
+  final String? nickname;
   final String? thumbnailImageUrl;
   final String? profileImageUrl;
   final bool? isDefaultImage;

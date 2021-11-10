@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'channel_relation.dart';
+part of 'channel.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ChannelRelation _$ChannelRelationFromJson(Map<String, dynamic> json) {
-  return ChannelRelation(
+Channel _$ChannelFromJson(Map<String, dynamic> json) {
+  return Channel(
     json['channel_uuid'] as String,
     json['channel_public_id'] as String,
     json['relation'] as String,
@@ -17,10 +17,10 @@ ChannelRelation _$ChannelRelationFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$ChannelRelationToJson(ChannelRelation instance) {
+Map<String, dynamic> _$ChannelToJson(Channel instance) {
   final val = <String, dynamic>{
     'channel_uuid': instance.uuid,
-    'channel_public_id': instance.publicId,
+    'channel_public_id': instance.encodedId,
     'relation': instance.relation,
   };
 

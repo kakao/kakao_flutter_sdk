@@ -10,15 +10,16 @@ part 'commerce_template.g.dart';
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class CommerceTemplate extends DefaultTemplate {
-  /// <nodoc>
-  CommerceTemplate(this.content, this.commerce,
-      {this.buttons, this.buttonTitle, this.objectType = "commerce"});
-
   final Content content;
   final Commerce commerce;
   final List<Button>? buttons;
   final String? buttonTitle;
+
   final String objectType;
+
+  /// <nodoc>
+  CommerceTemplate(this.content, this.commerce,
+      {this.buttons, this.buttonTitle, this.objectType = "commerce"});
 
   /// <nodoc>
   factory CommerceTemplate.fromJson(Map<String, dynamic> json) =>

@@ -10,14 +10,6 @@ part 'location_template.g.dart';
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class LocationTemplate extends DefaultTemplate {
-  /// <nodoc>
-  LocationTemplate(this.address, this.content,
-      {this.addressTitle,
-      this.social,
-      this.buttons,
-      this.buttonTitle,
-      this.objectType = "location"});
-
   final String address;
   final Content content;
   final String? addressTitle;
@@ -26,6 +18,14 @@ class LocationTemplate extends DefaultTemplate {
   final String? buttonTitle;
 
   final String objectType;
+
+  /// <nodoc>
+  LocationTemplate(this.address, this.content,
+      {this.addressTitle,
+      this.social,
+      this.buttons,
+      this.buttonTitle,
+      this.objectType = "location"});
 
   /// <nodoc>
   factory LocationTemplate.fromJson(Map<String, dynamic> json) =>

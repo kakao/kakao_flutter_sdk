@@ -12,7 +12,7 @@ Story _$StoryFromJson(Map<String, dynamic> json) {
     json['url'] as String,
     json['content'] as String,
     DateTime.parse(json['created_at'] as String),
-    _$enumDecode(_$StoryTypeEnumMap, json['media_type'],
+    _$enumDecodeNullable(_$StoryTypeEnumMap, json['media_type'],
         unknownValue: StoryType.NOT_SUPPORTED),
     json['comment_count'] as int,
     json['like_count'] as int,
@@ -36,9 +36,6 @@ Map<String, dynamic> _$StoryToJson(Story instance) {
     'url': instance.url,
     'content': instance.content,
     'created_at': instance.createdAt.toIso8601String(),
-    'media_type': _$StoryTypeEnumMap[instance.mediaType],
-    'comment_count': instance.commentCount,
-    'like_count': instance.likeCount,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -47,6 +44,9 @@ Map<String, dynamic> _$StoryToJson(Story instance) {
     }
   }
 
+  writeNotNull('media_type', _$StoryTypeEnumMap[instance.mediaType]);
+  val['comment_count'] = instance.commentCount;
+  val['like_count'] = instance.likeCount;
   writeNotNull('media', instance.media?.map((e) => e.toJson()).toList());
   writeNotNull('permission', _$StoryPermissionEnumMap[instance.permission]);
   writeNotNull('likes', instance.likes?.map((e) => e.toJson()).toList());
@@ -80,12 +80,6 @@ K _$enumDecode<K, V>(
   ).key;
 }
 
-const _$StoryTypeEnumMap = {
-  StoryType.NOTE: 'NOTE',
-  StoryType.PHOTO: 'PHOTO',
-  StoryType.NOT_SUPPORTED: 'NOT_SUPPORTED',
-};
-
 K? _$enumDecodeNullable<K, V>(
   Map<K, V> enumValues,
   dynamic source, {
@@ -96,6 +90,12 @@ K? _$enumDecodeNullable<K, V>(
   }
   return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
+
+const _$StoryTypeEnumMap = {
+  StoryType.NOTE: 'NOTE',
+  StoryType.PHOTO: 'PHOTO',
+  StoryType.NOT_SUPPORTED: 'NOT_SUPPORTED',
+};
 
 const _$StoryPermissionEnumMap = {
   StoryPermission.PUBLIC: 'PUBLIC',

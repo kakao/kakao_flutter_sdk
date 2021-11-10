@@ -7,16 +7,16 @@ part 'content.g.dart';
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class Content {
-  /// <nodoc>
-  Content(this.title, this.imageUrl, this.link,
-      {this.description, this.imageWidth, this.imageHeight});
-
   final String title;
   final Uri imageUrl;
   final Link link;
   final String? description;
   final int? imageWidth;
   final int? imageHeight;
+
+  /// <nodoc>
+  Content(this.title, this.imageUrl, this.link,
+      {this.description, this.imageWidth, this.imageHeight});
 
   /// <nodoc>
   factory Content.fromJson(Map<String, dynamic> json) =>

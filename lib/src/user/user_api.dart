@@ -8,10 +8,10 @@ import 'package:kakao_flutter_sdk/src/common/api_factory.dart';
 
 import 'model/access_token_info.dart';
 import 'model/scope_info.dart';
-import 'model/shipping_addresses.dart';
 import 'model/user.dart';
 import 'model/user_id_response.dart';
 import 'model/user_service_terms.dart';
+import 'model/user_shipping_addresses.dart';
 
 /// Provides User API.
 class UserApi {
@@ -113,10 +113,10 @@ class UserApi {
   }
 
   /// Fetches current user's shipping addresses stored in Kakao account.
-  Future<ShippingAddresses> shippingAddresses() async {
+  Future<UserShippingAddresses> shippingAddresses() async {
     return ApiFactory.handleApiError(() async {
       Response response = await _dio.get("/v1/user/shipping_address");
-      return ShippingAddresses.fromJson(response.data);
+      return UserShippingAddresses.fromJson(response.data);
     });
   }
 

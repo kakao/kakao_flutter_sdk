@@ -13,6 +13,7 @@ class Scope {
   final bool agreed;
   final bool? revocable;
 
+  /// <nodoc>
   Scope(this.id, this.displayName, this.type, this.using, this.delegated,
       this.agreed, this.revocable);
 
