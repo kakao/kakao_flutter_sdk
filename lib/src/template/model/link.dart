@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:kakao_flutter_sdk/src/common/util.dart';
 
 part 'link.g.dart';
 
@@ -29,8 +30,11 @@ class Link {
   ///
   /// These query paramters can then be parsed to direct users to appropriate screen.
   ///
-  @JsonKey(name: "android_execution_params")
-  final String? androidExecParams;
+  @JsonKey(
+      name: "android_execution_params",
+      fromJson: Util.StringToMap,
+      toJson: Util.mapToString)
+  final Map<String, String>? androidExecutionParams;
 
   /// query string to be passed to custom scheme in iOS.
   ///
@@ -50,15 +54,18 @@ class Link {
   ///
   /// These query paramters can then be parsed to direct users to appropriate screen.
   ///
-  @JsonKey(name: "ios_execution_params")
-  final String? iosExecParams;
+  @JsonKey(
+      name: "ios_execution_params",
+      fromJson: Util.StringToMap,
+      toJson: Util.mapToString)
+  final Map<String, String>? iosExecutionParams;
 
   /// <nodoc>
   Link(
       {this.webUrl,
       this.mobileWebUrl,
-      this.androidExecParams,
-      this.iosExecParams});
+      this.androidExecutionParams,
+      this.iosExecutionParams});
 
   /// <nodoc>
   factory Link.fromJson(Map<String, dynamic> json) => _$LinkFromJson(json);
