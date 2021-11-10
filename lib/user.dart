@@ -1,4 +1,4 @@
-/// Provides User API.
+/// 카카오톡으로 로그인, 카카오계정으로 로그인, 사용자 정보 API 관련 클라이언트들이 있는 패키지.
 library user;
 
 export 'package:kakao_flutter_sdk/common.dart';

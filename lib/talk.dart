@@ -1,4 +1,4 @@
-/// Provides KakaoTalk API.
+/// 카카오톡 API 클라이언트를 제공하는 패키지. 카카오톡 친구 및 메시지 기능 제공.
 library talk;
 
 export 'package:kakao_flutter_sdk/common.dart';
