@@ -2,22 +2,22 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'item_info.g.dart';
 
-/// An object containing the contents of a list of items.
+/// 아이템 목록 형태의 콘텐츠의 내용을 담고 있는 오브젝트.
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class ItemInfo {
-  /// Item name. up to 6 characters
+  /// 아이템 이름. 최대 6자까지 출력
   String item;
 
-  /// Item price. Available characters: numbers, currency symbols, commas (,), periods (), spaces. If the decimal unit amount is included, only two digits below the decimal point are recommended.
+  /// 아이템 이름. 최대 6자까지 출력
   String itemOp;
 
-  /// <nodoc>
+  /// @nodoc
   ItemInfo({required this.item, required this.itemOp});
 
-  /// <nodoc>
+  /// @nodoc
   factory ItemInfo.fromJson(Map<String, dynamic> json) =>
       _$ItemInfoFromJson(json);
 
-  /// <nodoc>
+  /// @nodoc
   Map<String, dynamic> toJson() => _$ItemInfoToJson(this);
 }

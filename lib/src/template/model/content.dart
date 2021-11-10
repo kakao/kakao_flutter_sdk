@@ -3,25 +3,34 @@ import 'package:kakao_flutter_sdk/src/template/model/link.dart';
 
 part 'content.g.dart';
 
-/// Represents content section of feed, location, and commerce type template.
+/// 콘텐츠의 내용을 담고 있는 오브젝트.
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class Content {
-  /// <nodoc>
+  /// 콘텐츠의 타이틀
+  final String title;
+
+  /// 콘텐츠의 이미지 URL
+  final Uri imageUrl;
+
+  /// 콘텐츠 클릭 시 이동할 링크 정보
+  final Link link;
+  final String? description;
+
+  /// 콘텐츠의 이미지 너비 (단위: 픽셀)
+  final int? imageWidth;
+
+  /// 콘텐츠의 이미지 높이 (단위: 픽셀)
+  final int? imageHeight;
+
+  /// @nodoc
   Content(this.title, this.imageUrl, this.link,
       {this.description, this.imageWidth, this.imageHeight});
 
-  final String title;
-  final Uri imageUrl;
-  final Link link;
-  final String? description;
-  final int? imageWidth;
-  final int? imageHeight;
-
-  /// <nodoc>
+  /// @nodoc
   factory Content.fromJson(Map<String, dynamic> json) =>
       _$ContentFromJson(json);
 
-  /// <nodoc>
+  /// @nodoc
   Map<String, dynamic> toJson() => _$ContentToJson(this);
 }
