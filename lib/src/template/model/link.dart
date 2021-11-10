@@ -11,8 +11,6 @@ class Link {
   /// 모바일 카카오톡에서 사용하는 웹 링크 URL.
   final Uri? mobileWebUrl;
 
-  /// query string to be passed to custom scheme in Android.
-
   /// 안드로이드 카카오톡에서 사용하는 앱 링크 URL에 추가할 파라미터.
   @JsonKey(name: "android_execution_params")
   final String? androidExecParams;
