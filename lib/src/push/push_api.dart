@@ -7,7 +7,8 @@ import 'package:kakao_flutter_sdk/src/push/model/push_token_info.dart';
 import 'package:platform/platform.dart';
 
 /// Provides Kakao Push API.
-@Deprecated("These APIs will be removed. If you want to use it, use REST API.")
+@Deprecated(
+    "These APIs will be removed when version 1.0.0 is released. If you want to use it, use REST API.")
 class PushApi {
   PushApi(this.dio, this.platform);
 
