@@ -27,7 +27,7 @@
   ],
   "likes": [
     {
-      "emoticon": "COOL",
+      "emotion": "COOL",
       "actor": {
         "display_name": "여바다",
         "profile_thumbnail_url": "http://xxxx.kakao.co.kr/.../1234566.jpeg"
