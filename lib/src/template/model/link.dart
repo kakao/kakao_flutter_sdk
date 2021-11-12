@@ -32,7 +32,7 @@ class Link {
   ///
   @JsonKey(
       name: "android_execution_params",
-      fromJson: Util.StringToMap,
+      fromJson: Util.stringToMap,
       toJson: Util.mapToString)
   final Map<String, String>? androidExecutionParams;
 
@@ -56,7 +56,7 @@ class Link {
   ///
   @JsonKey(
       name: "ios_execution_params",
-      fromJson: Util.StringToMap,
+      fromJson: Util.stringToMap,
       toJson: Util.mapToString)
   final Map<String, String>? iosExecutionParams;
 

@@ -14,9 +14,9 @@ Link _$LinkFromJson(Map<String, dynamic> json) {
         ? null
         : Uri.parse(json['mobile_web_url'] as String),
     androidExecutionParams:
-        Util.StringToMap(json['android_execution_params'] as String?),
+        Util.stringToMap(json['android_execution_params'] as String?),
     iosExecutionParams:
-        Util.StringToMap(json['ios_execution_params'] as String?),
+        Util.stringToMap(json['ios_execution_params'] as String?),
   );
 }
 

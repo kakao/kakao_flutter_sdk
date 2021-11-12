@@ -47,7 +47,7 @@ class Util {
       : Uri(queryParameters: params.map((key, value) => MapEntry(key, value)))
           .query;
 
-  static Map<String, String>? StringToMap(String? params) {
+  static Map<String, String>? stringToMap(String? params) {
     if (params == null) {
       return null;
     }
