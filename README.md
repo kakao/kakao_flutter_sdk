@@ -424,9 +424,11 @@ Below are set of APIs that can be called with app key after just initializing SD
 These APIs are relatively easy to use compared to token-based APIs.
 
 1. LinkApi
-1. LocalApi
-1. SearchApi
-1. PushApi
+1. NaviApi
+1. LocalApi (It be removed when version 1.0.0 is released)
+1. SearchApi (It be removed when version 1.0.0 is released)
+1. PushApi (It be removed when version 1.0.0 is released)
+
 
 #### KakaoLink
 
@@ -443,14 +445,27 @@ await launchBrowserTab(uri);
 
 #### KakaoNavi
 
+If you want to navigate with KakaoNavi App, You can use `NaviApi.navigate()` or `NaviApi.shareDestination()` method.
 The Flutter SDK uses the default browser to run directions with the web version of Kakao Navigation. The URL used is generated using the navigateUrl() API. You can also use this API to obtain only URL values as needed.
 You can use coordinate system WGS64 or KATEC in [CoordType]. Default is KATEC.
 If you want more detail, Visit this [Kakao Developers Guide](https://developers.kakao.com/docs/latest/en/kakaonavi/android#set-parameter).
 
 ```dart
+// (0.9.0 ~ )
+void _navigationButtonClicked() async {
+  try {
+    // navigate by KakaoNavi application
+    await NaviApi.instance
+        .navigate(destination: Location("카카오 판교오피스", "321286", "533707"));
+  } catch (e) {
+    print(e);
+  }
+}
+
 // (0.7.0 ~ )
 void _navigationButtonClicked() async {
   try {
+    // navigate by web
     var url = await NaviApi.instance
         .navigateWebUrl(Location("카카오 판교오피스", "321286", "533707"));
     print(url);
