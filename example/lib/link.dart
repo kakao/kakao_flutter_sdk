@@ -205,8 +205,9 @@ class LinkScreen extends StatelessWidget {
         Button(
           '앱으로 보기',
           Link(
-              androidExecParams: 'key1=value1&key2=value2',
-              iosExecParams: 'key1=value1&key2=value2'),
+            androidExecutionParams: {"key1": "value1", "key2": "value2"},
+            iosExecutionParams: {"key1": "value1", "key2": "value2"},
+          ),
         )
       ]);
 
@@ -247,8 +248,9 @@ class LinkScreen extends StatelessWidget {
         Button(
           "공유하기",
           Link(
-              androidExecParams: 'key1=value1&key2=value2',
-              iosExecParams: 'key1=value1&key2=value2'),
+            androidExecutionParams: {"key1": "value1", "key2": "value2"},
+            iosExecutionParams: {"key1": "value1", "key2": "value2"},
+          ),
         )
       ]);
 

@@ -10,10 +10,6 @@ part 'list_template.g.dart';
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class ListTemplate extends DefaultTemplate {
-  /// <nodoc>
-  ListTemplate(this.headerTitle, this.headerLink, this.contents,
-      {this.buttons, this.buttonTitle, this.objectType = "list"});
-
   final String headerTitle;
   final Link headerLink;
   final List<Content> contents;
@@ -21,6 +17,10 @@ class ListTemplate extends DefaultTemplate {
   final String? buttonTitle;
 
   final String objectType;
+
+  /// <nodoc>
+  ListTemplate(this.headerTitle, this.headerLink, this.contents,
+      {this.buttons, this.buttonTitle, this.objectType = "list"});
 
   /// <nodoc>
   factory ListTemplate.fromJson(Map<String, dynamic> json) =>

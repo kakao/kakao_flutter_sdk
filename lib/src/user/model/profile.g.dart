@@ -8,7 +8,7 @@ part of 'profile.dart';
 
 Profile _$ProfileFromJson(Map<String, dynamic> json) {
   return Profile(
-    json['nickname'] as String,
+    json['nickname'] as String?,
     json['thumbnail_image_url'] as String?,
     json['profile_image_url'] as String?,
     json['is_default_image'] as bool?,
@@ -16,9 +16,7 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$ProfileToJson(Profile instance) {
-  final val = <String, dynamic>{
-    'nickname': instance.nickname,
-  };
+  final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -26,6 +24,7 @@ Map<String, dynamic> _$ProfileToJson(Profile instance) {
     }
   }
 
+  writeNotNull('nickname', instance.nickname);
   writeNotNull('thumbnail_image_url', instance.thumbnailImageUrl);
   writeNotNull('profile_image_url', instance.profileImageUrl);
   writeNotNull('is_default_image', instance.isDefaultImage);

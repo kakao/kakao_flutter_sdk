@@ -111,9 +111,7 @@ class SplashState extends State<SplashScreen> {
   }
 
   _checkAccessToken() async {
-    var token = await TokenManager.instance.getToken();
-    debugPrint(token.toString());
-    if (token.refreshToken == null) {
+    if (await AuthApi.instance.hasToken()) {
       Navigator.of(context).pushReplacementNamed('/login');
     } else {
       Navigator.of(context).pushReplacementNamed("/main");

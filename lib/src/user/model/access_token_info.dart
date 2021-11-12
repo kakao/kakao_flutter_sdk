@@ -10,16 +10,12 @@ class AccessTokenInfo {
   int appId;
 
   /// id of user this access token belongs to.
-  int id;
+  int? id;
   @JsonKey(name: "expires_in")
   int expiresIn;
 
-  /// Replaced with property 'expiresIn' using 'second' units.
-  @deprecated
-  int? expiresInMillis;
-
   /// <nodoc>
-  AccessTokenInfo(this.appId, this.id, this.expiresIn, this.expiresInMillis);
+  AccessTokenInfo(this.appId, this.id, this.expiresIn);
 
   /// <nodoc>
   factory AccessTokenInfo.fromJson(Map<String, dynamic> json) =>

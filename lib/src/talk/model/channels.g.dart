@@ -1,21 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'channel_relations.dart';
+part of 'channels.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ChannelRelations _$ChannelRelationsFromJson(Map<String, dynamic> json) {
-  return ChannelRelations(
+Channels _$ChannelsFromJson(Map<String, dynamic> json) {
+  return Channels(
     json['user_id'] as int?,
-    (json['channels'] as List<dynamic>)
-        .map((e) => ChannelRelation.fromJson(e as Map<String, dynamic>))
+    (json['channels'] as List<dynamic>?)
+        ?.map((e) => Channel.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
 }
 
-Map<String, dynamic> _$ChannelRelationsToJson(ChannelRelations instance) {
+Map<String, dynamic> _$ChannelsToJson(Channels instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
@@ -25,6 +25,6 @@ Map<String, dynamic> _$ChannelRelationsToJson(ChannelRelations instance) {
   }
 
   writeNotNull('user_id', instance.userId);
-  val['channels'] = instance.channels.map((e) => e.toJson()).toList();
+  writeNotNull('channels', instance.channels?.map((e) => e.toJson()).toList());
   return val;
 }

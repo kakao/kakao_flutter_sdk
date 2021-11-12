@@ -24,6 +24,7 @@ class FeedTemplate extends DefaultTemplate {
   /// List of buttons, up to 2. Use when you want to change the title and link of the button, and when you want to insert two buttons.
   final List<Button>? buttons;
   final String? buttonTitle;
+
   final String objectType;
 
   /// <nodoc>

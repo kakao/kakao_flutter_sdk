@@ -9,12 +9,16 @@ part of 'account.dart';
 Account _$AccountFromJson(Map<String, dynamic> json) {
   return Account(
     json['profile_needs_agreement'] as bool?,
+    json['profile_nickname_needs_agreement'] as bool?,
+    json['profile_image_needs_agreement'] as bool?,
     json['profile'] == null
         ? null
         : Profile.fromJson(json['profile'] as Map<String, dynamic>),
+    json['name_needs_agreement'] as bool?,
+    json['name'] as String?,
     json['email_needs_agreement'] as bool?,
-    json['is_email_verified'] as bool?,
     json['is_email_valid'] as bool?,
+    json['is_email_verified'] as bool?,
     json['email'] as String?,
     json['age_range_needs_agreement'] as bool?,
     _$enumDecodeNullable(_$AgeRangeEnumMap, json['age_range'],
@@ -35,20 +39,16 @@ Account _$AccountFromJson(Map<String, dynamic> json) {
         : DateTime.parse(json['ci_authenticated_at'] as String),
     json['legal_name_needs_agreement'] as bool?,
     json['legal_name'] as String?,
-    json['legal_birth_date_needs_agreement'] as bool?,
-    json['legal_birth_date'] as String?,
     json['legal_gender_needs_agreement'] as bool?,
     _$enumDecodeNullable(_$GenderEnumMap, json['legal_gender'],
         unknownValue: Gender.OTHER),
+    json['legal_birth_date_needs_agreement'] as bool?,
+    json['legal_birth_date'] as String?,
     json['phone_number_needs_agreement'] as bool?,
     json['phone_number'] as String?,
     json['is_korean_needs_agreement'] as bool?,
     json['is_korean'] as bool?,
-  )
-    ..profileNicknameNeedsAgreement =
-        json['profile_nickname_needs_agreement'] as bool?
-    ..profileImageNeedsAgreement =
-        json['profile_image_needs_agreement'] as bool?;
+  );
 }
 
 Map<String, dynamic> _$AccountToJson(Account instance) {
@@ -66,6 +66,8 @@ Map<String, dynamic> _$AccountToJson(Account instance) {
   writeNotNull(
       'profile_image_needs_agreement', instance.profileImageNeedsAgreement);
   writeNotNull('profile', instance.profile?.toJson());
+  writeNotNull('name_needs_agreement', instance.nameNeedsAgreement);
+  writeNotNull('name', instance.name);
   writeNotNull('email_needs_agreement', instance.emailNeedsAgreement);
   writeNotNull('is_email_valid', instance.isEmailValid);
   writeNotNull('is_email_verified', instance.isEmailVerified);

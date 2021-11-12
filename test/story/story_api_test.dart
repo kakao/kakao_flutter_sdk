@@ -52,9 +52,9 @@ void main() {
 
     var story = await _api.myStory("AAAAAAA.CCCCCCCCCCC");
     var likes = story.likes;
-    print('${likes}');
+    print('$likes');
     expect(story.mediaType, StoryType.PHOTO);
-    expect(likes?[0].emoticon, Emoticon.COOL);
+    expect(likes?[0].emotion, Emotion.COOL);
     expect(story.permission, StoryPermission.PUBLIC);
   });
 

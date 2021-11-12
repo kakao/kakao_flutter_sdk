@@ -30,7 +30,47 @@ class NaviApi {
       {NaviOption? option, List<Location>? viaList}) async {
     final naviParams =
         KakaoNaviParams(location, option: option, viaList: viaList);
-    final extras = {
+    final extras = await _getExtras();
+    final params = {
+      'param': jsonEncode(naviParams),
+      'apiver': '1.0',
+      'appkey': KakaoContext.clientId,
+      'extras': jsonEncode(extras)
+    };
+    final url = Uri.https(NAVI_HOSTS, 'navigate.html', params);
+    return Uri.parse(url.toString().replaceAll('+', '%20'));
+  }
+
+  Future navigate(
+      {required Location destination,
+      NaviOption? option,
+      List<Location>? viaList}) async {
+    final extras = await _getExtras();
+    final arguments = {
+      'app_key': KakaoContext.clientId,
+      'extras': jsonEncode(extras),
+      'navi_params': jsonEncode(
+          KakaoNaviParams(destination, option: option, viaList: viaList))
+    };
+    await _channel.invokeMethod<bool>("navigate", arguments);
+  }
+
+  Future shareDestination(
+      {required Location destination,
+      NaviOption? option,
+      List<Location>? viaList}) async {
+    final extras = await _getExtras();
+    final arguments = {
+      'app_key': KakaoContext.clientId,
+      'extras': jsonEncode(extras),
+      'navi_params': jsonEncode(
+          KakaoNaviParams(destination, option: option, viaList: viaList))
+    };
+    await _channel.invokeMethod<bool>("shareDestination", arguments);
+  }
+
+  Future<Map<String, String>> _getExtras() async {
+    return {
       'KA': await KakaoContext.kaHeader,
       ...(_platform.isAndroid
           ? {
@@ -41,13 +81,5 @@ class NaviApi {
               ? {"appPkg": await KakaoContext.origin}
               : {})
     };
-    final params = {
-      'param': jsonEncode(naviParams),
-      'apiver': '1.0',
-      'appkey': KakaoContext.clientId,
-      'extras': jsonEncode(extras)
-    };
-    final url = Uri.https(NAVI_HOSTS, 'navigate.html', params);
-    return Uri.parse(url.toString().replaceAll('+', '%20'));
   }
 }

@@ -5,12 +5,12 @@ part 'story_like.g.dart';
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class StoryLike {
-  @JsonKey(unknownEnumValue: Emoticon.UNKNOWN)
-  final Emoticon emoticon;
+  @JsonKey(unknownEnumValue: Emotion.UNKNOWN)
+  final Emotion emotion;
   final StoryActor actor;
 
   /// <nodoc>
-  StoryLike(this.emoticon, this.actor);
+  StoryLike(this.emotion, this.actor);
 
   /// <nodoc>
   factory StoryLike.fromJson(Map<String, dynamic> json) =>
@@ -20,4 +20,4 @@ class StoryLike {
   Map<String, dynamic> toJson() => _$StoryLikeToJson(this);
 }
 
-enum Emoticon { LIKE, COOL, HAPPY, SAD, CHEER_UP, UNKNOWN }
+enum Emotion { LIKE, COOL, HAPPY, SAD, CHEER_UP, UNKNOWN }

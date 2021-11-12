@@ -14,6 +14,9 @@ class Account {
   bool? profileImageNeedsAgreement;
   Profile? profile;
 
+  bool? nameNeedsAgreement;
+  String? name;
+
   bool? emailNeedsAgreement;
   bool? isEmailValid;
   bool? isEmailVerified;
@@ -58,10 +61,14 @@ class Account {
   /// <nodoc>
   Account(
       this.profileNeedsAgreement,
+      this.profileNicknameNeedsAgreement,
+      this.profileImageNeedsAgreement,
       this.profile,
+      this.nameNeedsAgreement,
+      this.name,
       this.emailNeedsAgreement,
-      this.isEmailVerified,
       this.isEmailValid,
+      this.isEmailVerified,
       this.email,
       this.ageRangeNeedsAgreement,
       this.ageRange,
@@ -77,10 +84,10 @@ class Account {
       this.ciAuthenticatedAt,
       this.legalNameNeedsAgreement,
       this.legalName,
-      this.legalBirthDateNeedsAgreement,
-      this.legalBirthDate,
       this.legalGenderNeedsAgreement,
       this.legalGender,
+      this.legalBirthDateNeedsAgreement,
+      this.legalBirthDate,
       this.phoneNumberNeedsAgreement,
       this.phoneNumber,
       this.isKoreanNeedsAgreement,

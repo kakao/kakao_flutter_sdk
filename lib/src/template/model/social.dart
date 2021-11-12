@@ -5,6 +5,12 @@ part 'social.g.dart';
 /// Represents social section data of message template v2.
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class Social {
+  final int? likeCount;
+  final int? commentCount;
+  final int? sharedCount;
+  final int? viewCount;
+  final int? subscriberCount;
+
   /// <nodoc>
   Social(
       {this.likeCount,
@@ -12,12 +18,6 @@ class Social {
       this.sharedCount,
       this.viewCount,
       this.subscriberCount});
-
-  final int? likeCount;
-  final int? commentCount;
-  final int? sharedCount;
-  final int? viewCount;
-  final int? subscriberCount;
 
   /// <nodoc>
   factory Social.fromJson(Map<String, dynamic> json) => _$SocialFromJson(json);

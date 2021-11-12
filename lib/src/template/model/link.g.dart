@@ -13,8 +13,10 @@ Link _$LinkFromJson(Map<String, dynamic> json) {
     mobileWebUrl: json['mobile_web_url'] == null
         ? null
         : Uri.parse(json['mobile_web_url'] as String),
-    androidExecParams: json['android_execution_params'] as String?,
-    iosExecParams: json['ios_execution_params'] as String?,
+    androidExecutionParams:
+        Util.stringToMap(json['android_execution_params'] as String?),
+    iosExecutionParams:
+        Util.stringToMap(json['ios_execution_params'] as String?),
   );
 }
 
@@ -29,7 +31,9 @@ Map<String, dynamic> _$LinkToJson(Link instance) {
 
   writeNotNull('web_url', instance.webUrl?.toString());
   writeNotNull('mobile_web_url', instance.mobileWebUrl?.toString());
-  writeNotNull('android_execution_params', instance.androidExecParams);
-  writeNotNull('ios_execution_params', instance.iosExecParams);
+  writeNotNull('android_execution_params',
+      Util.mapToString(instance.androidExecutionParams));
+  writeNotNull(
+      'ios_execution_params', Util.mapToString(instance.iosExecutionParams));
   return val;
 }

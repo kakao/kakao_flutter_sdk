@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
+import 'package:kakao_flutter_sdk/src/auth/model/access_token_response.dart';
 import 'package:platform/platform.dart';
 
 import '../helper.dart';
@@ -19,6 +20,17 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   const MethodChannel channel = MethodChannel('kakao_flutter_sdk');
+
+  const MethodChannel('plugins.flutter.io/shared_preferences')
+      .setMockMethodCallHandler((MethodCall methodCall) async {
+    if (methodCall.method == 'getAll') {
+      return <String, dynamic>{}; // set initial values here if desired
+    }
+    if (methodCall.method.startsWith("set") || methodCall.method == 'remove') {
+      return true;
+    }
+    return null;
+  });
 
   setUp(() {
     _dio = Dio();
@@ -39,7 +51,7 @@ void main() {
 
   group("/oauth/token 200", () {
     var map;
-    AccessTokenResponse response;
+    OAuthToken token;
     setUp(() async {
       String body = await loadJson("oauth/token_with_rt_and_scopes.json");
       map = jsonDecode(body);
@@ -47,16 +59,21 @@ void main() {
     });
 
     tearDown(() async {
-      response = await _authApi.issueAccessToken("auth_code",
+      // before checking token, clear tokenManager
+      await _tokenManager.clear();
+
+      token = await _authApi.issueAccessToken("auth_code",
           redirectUri: "kakaosample_app_key://oauth",
           clientId: "sample_app_key");
-      expect(response.accessToken, map["access_token"]);
-      expect(response.refreshToken, map["refresh_token"]);
-      expect(response.expiresIn, map["expires_in"]);
-      expect(response.refreshTokenExpiresIn, map["refresh_token_expires_in"]);
-      expect(response.scopes, map["scope"]);
-
-      expect(map, response.toJson());
+      await _tokenManager.setToken(token);
+      final newToken = await _tokenManager.getToken();
+      expect(true, newToken != null);
+      expect(true, token.accessToken == newToken!.accessToken);
+      expect(true, token.accessTokenExpiresAt == newToken.accessTokenExpiresAt);
+      expect(true, token.refreshToken == newToken.refreshToken);
+      expect(
+          true, token.refreshTokenExpiresAt == newToken.refreshTokenExpiresAt);
+      expect(true, listEquals(token.scopes, newToken.scopes));
     });
     test('on android', () async {
       _authApi = AuthApi(
@@ -79,7 +96,6 @@ void main() {
       fail("Should not reach here");
     } on KakaoAuthException catch (e) {
       expect(e.error, AuthErrorCause.MISCONFIGURED);
-      expect(true, e.toJson() != null);
     } catch (e) {
       expect(e, isInstanceOf<KakaoAuthException>());
     }
@@ -87,23 +103,11 @@ void main() {
 
   group("/oauth/token refresh access token only", () {
     var map;
-    var refreshToken = "test_refresh_token";
+    var refreshToken = "e8sAQWpgBDWPGcvN1_tJR24QVcdAcHgopdtYAAAFi_FnbLAiMpaTTZ";
     var redirectUri = "kakaosample_app_key://oauth";
     var clientId = "sample_app_key";
 
     setUp(() async {
-      const MethodChannel('plugins.flutter.io/shared_preferences')
-          .setMockMethodCallHandler((MethodCall methodCall) async {
-        if (methodCall.method == 'getAll') {
-          return <String, dynamic>{}; // set initial values here if desired
-        }
-        if (methodCall.method.startsWith("set") ||
-            methodCall.method == 'remove') {
-          return true;
-        }
-        return null;
-      });
-
       String body = await loadJson("oauth/token.json");
       map = jsonDecode(body);
       _adapter.setResponseString(body, 200);
@@ -113,9 +117,12 @@ void main() {
       // setting oldToken
       var tokenJson = await loadJson("oauth/token_with_rt_and_scopes.json");
       var tokenResponse = AccessTokenResponse.fromJson(jsonDecode(tokenJson));
-      final oldToken = await _tokenManager.setToken(tokenResponse);
+      await _tokenManager.setToken(OAuthToken.fromResponse(tokenResponse));
+      final oldToken = await _tokenManager.getToken();
 
-      var newToken = await _authApi.refreshAccessToken(refreshToken,
+      expect(true, oldToken != null);
+
+      var newToken = await _authApi.refreshAccessToken(oldToken!,
           redirectUri: redirectUri, clientId: clientId);
       expect(true, oldToken.accessToken != newToken.accessToken);
       expect(
@@ -175,23 +182,12 @@ void main() {
 
   group("/oauth/token refresh access token and refresh token", () {
     var map;
-    var refreshToken = "test_refresh_token";
+    var refreshToken = "e8sAQWpgBDWPGcvN1_tJR24QVcdAcHgopdtYAAAFi_FnbLAiMpaTTZ";
     var redirectUri = "kakaosample_app_key://oauth";
     var clientId = "sample_app_key";
+    OAuthToken? newToken;
 
     setUp(() async {
-      const MethodChannel('plugins.flutter.io/shared_preferences')
-          .setMockMethodCallHandler((MethodCall methodCall) async {
-        if (methodCall.method == 'getAll') {
-          return <String, dynamic>{}; // set initial values here if desired
-        }
-        if (methodCall.method.startsWith("set") ||
-            methodCall.method == 'remove') {
-          return true;
-        }
-        return null;
-      });
-
       String body = await loadJson("oauth/token_with_rt.json");
       map = jsonDecode(body);
       _adapter.setResponseString(body, 200);
@@ -201,17 +197,22 @@ void main() {
       // setting oldToken
       var tokenJson = await loadJson("oauth/token_with_rt_and_scopes.json");
       var tokenResponse = AccessTokenResponse.fromJson(jsonDecode(tokenJson));
-      final oldToken = await _tokenManager.setToken(tokenResponse);
+      await _tokenManager.setToken(OAuthToken.fromResponse(tokenResponse));
+      final oldToken = await _tokenManager.getToken();
 
-      var newToken = await _authApi.refreshAccessToken(refreshToken,
+      expect(true, oldToken != null);
+
+      newToken = await _authApi.refreshAccessToken(oldToken!,
           redirectUri: redirectUri, clientId: clientId);
-      expect(true, oldToken.accessToken != newToken.accessToken);
-      expect(
-          true, oldToken.accessTokenExpiresAt != newToken.accessTokenExpiresAt);
-      expect(true, oldToken.refreshToken != newToken.refreshToken);
+
+      expect(true, newToken != null);
+      expect(true, oldToken.accessToken != newToken!.accessToken);
       expect(true,
-          oldToken.refreshTokenExpiresAt != newToken.refreshTokenExpiresAt);
-      expect(true, listEquals(oldToken.scopes, newToken.scopes));
+          oldToken.accessTokenExpiresAt != newToken!.accessTokenExpiresAt);
+      expect(true, oldToken.refreshToken != newToken!.refreshToken);
+      expect(true,
+          oldToken.refreshTokenExpiresAt != newToken!.refreshTokenExpiresAt);
+      expect(true, listEquals(oldToken.scopes, newToken!.scopes));
     });
 
     test("on android", () async {

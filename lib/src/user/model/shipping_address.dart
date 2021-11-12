@@ -10,10 +10,10 @@ class ShippingAddress {
   String? name;
   bool isDefault;
   @JsonKey(fromJson: Util.fromTimeStamp, toJson: Util.fromDateTime)
-  DateTime updatedAt;
-  String type;
-  String baseAddress;
-  String detailAddress;
+  DateTime? updatedAt;
+  String? type;
+  String? baseAddress;
+  String? detailAddress;
   String? receiverName;
   String? receiverPhoneNumber1;
   String? receiverPhoneNumber2;

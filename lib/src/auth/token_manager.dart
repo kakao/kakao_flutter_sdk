@@ -1,28 +1,45 @@
-import 'package:kakao_flutter_sdk/src/auth/model/access_token_response.dart';
+import 'dart:convert';
+
 import 'package:kakao_flutter_sdk/src/auth/model/oauth_token.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+/// Token storage provider used by kakao flutter sdk
+///
+/// [DefaultTokenManager] is used as the default storage.
+/// If you want to manage tokens yourself, you can set up your own storage by implementing the [TokenManager].
+/// If you change the implementation of the storage during the app service, you should consider migrating existing stored tokens for app update users.
+///
+/// ```dart
+/// // Set up custom storage
+/// TokenManagerProvider.instance.manager = MyTokenManager();
+/// ```
+///
+class TokenManagerProvider {
+  TokenManager manager = DefaultTokenManager();
+
+  /// singleton instance of the default [TokenManagerProvider] used by the SDK.
+  static final instance = TokenManagerProvider();
+}
 
 /// Stores access token and refresh token from [AuthApi].
 ///
 /// This abstract class can be used to store token information in different locations than provided by the SDK.
 abstract class TokenManager {
-  // stores access token and other retrieved information from [AuthApi.issueAccessToken]
-  Future<OAuthToken> setToken(AccessTokenResponse response);
+  /// stores access token and other retrieved information from [AuthApi.issueAccessToken]
+  Future<void> setToken(OAuthToken token);
 
-  // retrieves access token and other information from the designated store.
-  Future<OAuthToken> getToken();
+  /// retrieves access token and other information from the designated store.
+  Future<OAuthToken?> getToken();
 
-  // clears all data related to access token from the device.
+  /// clears all data related to access token from the device.
   Future<void> clear();
-
-  // singleton instance of the default [TokenManager] used by the SDK.
-  static final TokenManager instance = DefaultTokenManager();
 }
 
 /// Default [TokenManager] provided by Kakao Flutter SDK.
 ///
 /// Currently uses SharedPreferences (on Android) and UserDefaults (on iOS).
 class DefaultTokenManager implements TokenManager {
+  static const tokenKey = "com.kakao.token.OAuthToken";
   static const atKey = "com.kakao.token.AccessToken";
   static const atExpiresAtKey = "com.kakao.token.AccessToken.ExpiresAt";
   static const rtKey = "com.kakao.token.RefreshToken";
@@ -30,75 +47,73 @@ class DefaultTokenManager implements TokenManager {
   static const secureModeKey = "com.kakao.token.KakaoSecureMode";
   static const scopesKey = "com.kakao.token.Scopes";
 
+  static final _instance = DefaultTokenManager._();
+
+  DefaultTokenManager._();
+
+  factory DefaultTokenManager() {
+    return _instance;
+  }
+
   /// Deletes all token information.
-  clear() async {
+  @override
+  Future<void> clear() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.remove(atKey);
-    await preferences.remove(atExpiresAtKey);
-    await preferences.remove(rtKey);
-    await preferences.remove(rtExpiresAtKey);
-    await preferences.remove(secureModeKey);
-    await preferences.remove(scopesKey);
+    await preferences.remove(tokenKey);
   }
 
-  Future<OAuthToken> setToken(AccessTokenResponse response) async {
+  @override
+  Future<void> setToken(OAuthToken token) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.setString(atKey, response.accessToken);
-    final oldToken = await getToken();
-
-    final atExpiresAt =
-        DateTime.now().millisecondsSinceEpoch + response.expiresIn * 1000;
-    await preferences.setInt(atExpiresAtKey, atExpiresAt);
-
-    var refreshToken;
-    var rtExpiresAt;
-
-    if (response.refreshToken != null) {
-      // issue AccessToken and RefreshToken
-      refreshToken = response.refreshToken;
-      if (refreshToken != null && response.refreshTokenExpiresIn != null) {
-        rtExpiresAt = DateTime.now().millisecondsSinceEpoch +
-            response.refreshTokenExpiresIn! * 1000;
-        await preferences.setString(rtKey, refreshToken);
-        await preferences.setInt(rtExpiresAtKey, rtExpiresAt);
-      }
-    } else {
-      // issue AccessToken only
-      refreshToken = oldToken.refreshToken;
-      rtExpiresAt = oldToken.refreshTokenExpiresAt?.millisecondsSinceEpoch;
-    }
-
-    var scopes;
-    if (response.scopes != null) {
-      scopes = response.scopes!.split(' ');
-      await preferences.setStringList(scopesKey, scopes);
-    } else {
-      scopes = oldToken.scopes;
-    }
-    return OAuthToken(
-        response.accessToken,
-        DateTime.fromMillisecondsSinceEpoch(atExpiresAt),
-        refreshToken,
-        DateTime.fromMillisecondsSinceEpoch(rtExpiresAt),
-        scopes);
+    await preferences.setString(tokenKey, jsonEncode(token));
   }
 
-  Future<OAuthToken> getToken() async {
+  @override
+  Future<OAuthToken?> getToken() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String? accessToken = preferences.getString(atKey);
-    int? atExpiresAtMillis = preferences.getInt(atExpiresAtKey);
+    var jsonToken = preferences.getString(tokenKey);
 
-    DateTime? accessTokenExpiresAt = atExpiresAtMillis != null
-        ? DateTime.fromMillisecondsSinceEpoch(atExpiresAtMillis)
-        : null;
-    String? refreshToken = preferences.getString(rtKey);
-    int? rtExpiresAtMillis = preferences.getInt(rtExpiresAtKey);
-    DateTime? refreshTokenExpiresAt = rtExpiresAtMillis != null
-        ? DateTime.fromMillisecondsSinceEpoch(rtExpiresAtMillis)
-        : null;
+    if (jsonToken == null) {
+      return await _migrateOldToken();
+    }
+    return OAuthToken.fromJson(jsonDecode(jsonToken));
+  }
+
+  // Token management logic has been changed from 0.9.0 version.
+  // This code has been added for compatibility with previous versions.
+  Future<OAuthToken?> _migrateOldToken() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var accessToken = preferences.getString(atKey);
+    var refreshToken = preferences.getString(rtKey);
+    var atExpiresAtMillis = preferences.getInt(atExpiresAtKey);
+    var rtExpiresAtMillis = preferences.getInt(rtExpiresAtKey);
     List<String>? scopes = preferences.getStringList(scopesKey);
 
-    return OAuthToken(accessToken, accessTokenExpiresAt, refreshToken,
-        refreshTokenExpiresAt, scopes);
+    // If token that issued before 0.9.0 version are loaded, then return OAuthToken.
+    if (accessToken != null &&
+        refreshToken != null &&
+        atExpiresAtMillis != null &&
+        rtExpiresAtMillis != null) {
+      print("=== Migrate from old version token ===");
+
+      var accessTokenExpiresAt =
+          DateTime.fromMillisecondsSinceEpoch(atExpiresAtMillis);
+      var refreshTokenExpiresAt =
+          DateTime.fromMillisecondsSinceEpoch(rtExpiresAtMillis);
+
+      final token = OAuthToken(accessToken, accessTokenExpiresAt, refreshToken,
+          refreshTokenExpiresAt, scopes);
+
+      // Remove all token properties that saved before 0.9.0 version and save migrated token.
+      await preferences.remove(atKey);
+      await preferences.remove(atExpiresAtKey);
+      await preferences.remove(rtKey);
+      await preferences.remove(rtExpiresAtKey);
+      await preferences.remove(secureModeKey);
+      await preferences.remove(scopesKey);
+      await preferences.setString(tokenKey, jsonEncode(token));
+      return token;
+    }
+    return null;
   }
 }

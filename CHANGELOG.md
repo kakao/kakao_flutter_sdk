@@ -1,10 +1,21 @@
+## 0.9.0
+
+- Modify nullability of `OAuthToken` field
+- Modify return type of `issueAccessToken`
+- Modify return type of `TokenManager` methods
+- Modify parameter of `AuthApi.refreshAccessToken()`
+- Add `TokenManagerProvider` for custom token storage
+- Add `navigate()` and `shareDestination()` in `NaviApi`
+- Rename model classes and field based on `Kakao Developers's Android/iOS v2 SDK`
+- Add @Deprecate annotaion to push, search and local API
+
 ## 0.8.2
 
 - Improve token reissue logic
 - Improve the logic of getting additional consent
-- Add 'ItemContent' property in FeedTemplate
+- Add 'ItemContent' property in `FeedTemplate`
 - Fix the bug where blank characters were marked + on Kakao Link in iOS
-- Fix the bug of null errors when saving the token after calling AuthApi.refreshAccessToken()
+- Fix the bug of null errors when saving the token after calling `AuthApi.refreshAccessToken()`
 
 ## 0.8.1
 

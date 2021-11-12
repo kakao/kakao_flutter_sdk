@@ -41,6 +41,17 @@ object Constants {
     const val PROMPT = "prompt"
     const val STATE = "state"
 
+    const val PARAM = "param"
+    const val APIVER = "apiver"
+    const val APPKEY = "appkey"
+    const val APIVER_10 = "1.0"
+
+    const val NAVI_WEB_SCHEME = "https"
+    const val NAVI_HOST = "kakaonavi-wguide.kakao.com"
+    const val NAVI_SCHEME = "kakaonavi-sdk"
+    const val NAVIGATE = "navigate"
+    const val SHARE_POI = "sharePoi"
+
     const val CODE_CHALLENGE = "code_challenge"
     const val CODE_CHALLENGE_METHOD = "code_challenge_method"
     const val CODE_CHALLENGE_METHOD_VALUE = "S256"

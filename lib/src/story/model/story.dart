@@ -15,7 +15,7 @@ class Story {
   final String content;
   final DateTime createdAt;
   @JsonKey(unknownEnumValue: StoryType.NOT_SUPPORTED)
-  final StoryType mediaType;
+  final StoryType? mediaType;
   final int commentCount;
   final int likeCount;
   final List<StoryImage>? media;

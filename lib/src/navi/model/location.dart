@@ -10,6 +10,7 @@ class Location {
   @JsonKey(name: "rpflag")
   final String? rpFlag;
 
+  /// <nodoc>
   Location(this.name, this.x, this.y, {this.rpFlag});
 
   /// <nodoc>

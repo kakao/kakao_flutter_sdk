@@ -63,7 +63,7 @@ void main() {
     var tokenInfo = await _api.accessTokenInfo();
     // expect(tokenInfo.appId, map["appId"]);
     expect(tokenInfo.id, map["id"]);
-    expect(tokenInfo.expiresInMillis, map["expiresInMillis"]);
+    expect(tokenInfo.expiresIn, map["expires_in"]);
     expect(tokenInfo.toJson(), map);
   });
 

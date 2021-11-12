@@ -31,13 +31,30 @@ Future<bool> isKakaoTalkInstalled() async {
 
 /// Collection of utility methods, usually for converting data types.
 class Util {
-  static DateTime fromTimeStamp(int timestamp) =>
-      DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+  static DateTime? fromTimeStamp(int? timestamp) => timestamp == null
+      ? null
+      : DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
 
-  static int fromDateTime(DateTime dateTime) =>
-      dateTime.millisecondsSinceEpoch ~/ 1000;
+  static int? fromDateTime(DateTime? dateTime) =>
+      dateTime == null ? null : dateTime.millisecondsSinceEpoch ~/ 1000;
 
   static String? dateTimeWithoutMillis(DateTime? dateTime) => dateTime == null
       ? null
       : "${dateTime.toIso8601String().substring(0, dateTime.toIso8601String().length - 5)}Z";
+
+  static String? mapToString(Map<String, String>? params) => params == null
+      ? null
+      : Uri(queryParameters: params.map((key, value) => MapEntry(key, value)))
+          .query;
+
+  static Map<String, String>? stringToMap(String? params) {
+    if (params == null) {
+      return null;
+    }
+    var paramMap = Map<String, String>();
+    params.split('&').forEach((element) {
+      paramMap[element.split('=').first] = element.split('=').last;
+    });
+    return paramMap;
+  }
 }

@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kakao_flutter_sdk/common.dart';
 import 'package:kakao_flutter_sdk/src/common/api_factory.dart';
-import 'package:kakao_flutter_sdk/src/talk/model/channel_relations.dart';
+import 'package:kakao_flutter_sdk/src/talk/model/channels.dart';
 import 'package:kakao_flutter_sdk/src/talk/model/friends.dart';
 import 'package:kakao_flutter_sdk/src/talk/model/message_send_result.dart';
 import 'package:kakao_flutter_sdk/src/talk/model/talk_profile.dart';
@@ -60,13 +60,13 @@ class TalkApi {
     });
   }
 
-  Future<ChannelRelations> plusFriends([List<String>? publicIds]) async {
+  Future<Channels> plusFriends([List<String>? publicIds]) async {
     return ApiFactory.handleApiError(() async {
       Response response = await _dio.get("/v1/api/talk/channels",
           queryParameters: publicIds == null
               ? {}
               : {"channel_public_ids": jsonEncode(publicIds)});
-      return ChannelRelations.fromJson(response.data);
+      return Channels.fromJson(response.data);
     });
   }
 

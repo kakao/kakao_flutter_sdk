@@ -35,15 +35,36 @@ class Utility {
     private static func appVer() -> String {
         return Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
     }
-
-    static func makeUrlStringWithParameters(_ url:String, parameters:[String:String]) -> String? {
+    
+    static func makeUrlStringWithParameters(_ url:String, parameters:[String:Any]?) -> String? {
         guard var components = URLComponents(string:url) else { return nil }
-        components.queryItems = parameters.map { URLQueryItem(name: $0.0, value: $0.1)}
+        components.queryItems = parameters?.urlQueryItems
         return components.url?.absoluteString
     }
     
-    static func makeUrlWithParameters(_ url:String, parameters:[String:String]) -> URL? {
+    static func makeUrlWithParameters(_ url:String, parameters:[String:Any]?) -> URL? {
         guard let finalStringUrl = makeUrlStringWithParameters(url, parameters:parameters) else { return nil }
         return URL(string:finalStringUrl)
+    }
+}
+
+extension Dictionary {
+    public var urlQueryItems: [URLQueryItem]? {
+        let queryItems = self.map { (key, value) in
+            URLQueryItem(name: String(describing: key),
+                         value: String(describing: value))
+        }
+        return queryItems
+    }
+}
+
+extension Dictionary where Key == String, Value: Any {
+    public func toJsonString() -> String? {
+        if let data = try? JSONSerialization.data(withJSONObject: self, options:[]) {
+            return String(data:data, encoding: .utf8)
+        }
+        else {
+            return nil
+        }
     }
 }
