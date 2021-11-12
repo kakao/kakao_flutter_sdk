@@ -11,7 +11,6 @@ AccessTokenInfo _$AccessTokenInfoFromJson(Map<String, dynamic> json) {
     json['app_id'] as int,
     json['id'] as int?,
     json['expires_in'] as int,
-    json['expiresInMillis'] as int?,
   );
 }
 
@@ -28,6 +27,5 @@ Map<String, dynamic> _$AccessTokenInfoToJson(AccessTokenInfo instance) {
 
   writeNotNull('id', instance.id);
   val['expires_in'] = instance.expiresIn;
-  writeNotNull('expiresInMillis', instance.expiresInMillis);
   return val;
 }

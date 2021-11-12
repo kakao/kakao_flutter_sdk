@@ -91,8 +91,7 @@ class TokenInfoBox extends StatelessWidget {
     return Column(
       children: <Widget>[
         Text("App id: ${tokenInfo.appId}"),
-        Text(
-            "Token expires in: ${(tokenInfo.expiresInMillis / 1000).floor()} seconds.")
+        Text("Token expires in: ${tokenInfo.expiresIn} seconds.")
       ],
     );
   }
