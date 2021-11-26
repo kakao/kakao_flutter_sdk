@@ -336,10 +336,9 @@ Below is an example of calling _/v2/user/me_ API with `UserApi` class.
 try {
   User user = await UserApi.instance.me();
   // do anything you want with user instance
-} on KakaoAuthException catch (e) {
-  if (e.code == ApiErrorCause.INVALID_TOKEN) { // access token has expired and cannot be refrsehd. access tokens are already cleared here
-    Navigator.of(context).pushReplacementNamed('/login'); // redirect to login page
-  }
+} on KakaoClientException catch (e) {
+  // Access token and refresh token have expired. Both tokens are already cleared here
+  Navigator.of(context).pushReplacementNamed('/login'); // redirect to login page
 } catch (e) {
   // other api or client-side errors
 }
@@ -360,12 +359,13 @@ Future<void> requestFriends() async {
   try {
     FriendsResponse friends = await TalkApi.instance.friends();
     // do anything you want with user instance
-  } on KakaoAuthException catch (e) {
-    if (e.code == ApiErrorCause.INVALID_TOKEN) { // access token has expired and cannot be refrsehd. access tokens are already cleared here
-      Navigator.of(context).pushReplacementNamed('/login'); // redirect to login page
-    } else if (e.code == ApiErrorCause.INSUFFICIENT_SCOPE) {
-      // If code is ApiErrorCause.INSUFFICIENT_SCOPE, error instance will contain missing required scopes.
-      // If your Kakao Flutter SDK version is 0.7.0 or higher, An additional consent window will appear automatically.
+  } on KakaoClientException catch (e) {
+    // Access token and refresh token have expired. Both tokens are already cleared here
+    Navigator.of(context).pushReplacementNamed('/login'); // redirect to login page
+  } on KakaoApiException {
+    if (e.code == ApiErrorCause.INSUFFICIENT_SCOPE) {
+    // If code is ApiErrorCause.INSUFFICIENT_SCOPE, error instance will contain missing required scopes.
+    // If your Kakao Flutter SDK version is 0.7.0 or higher, An additional consent window will appear automatically.
     }
   } catch (e) {
     // other api or client-side errors
@@ -400,10 +400,9 @@ void requestMe() async {
       return;
     }
     // do anything you want with user instance
-  } on KakaoAuthException catch (e) {
-    if (e.code == ApiErrorCause.INVALID_TOKEN) { // access token has expired and cannot be refrsehd. access tokens are already cleared here
-      Navigator.of(context).pushReplacementNamed('/login'); // redirect to login page
-    }
+  } on KakaoClientException catch (e) {
+    // Access token and refresh token have expired. Both tokens are already cleared here
+    Navigator.of(context).pushReplacementNamed('/login'); // redirect to login page
   } catch (e) {
     // other api or client-side errors
   }
