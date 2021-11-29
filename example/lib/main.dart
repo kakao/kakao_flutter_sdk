@@ -19,7 +19,10 @@ import 'story.dart';
 import 'talk.dart';
 import 'user.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await _initializeSdk();
+
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider<UserBloc>(create: (context) => UserBloc()),
@@ -38,45 +41,39 @@ void main() {
   ));
 }
 
+Future _initializeSdk() async {
+  KakaoPhase phase = await _getKakaoPhase();
+  KakaoContext.hosts = PhasedServerHosts(phase);
+  KakaoContext.clientId = PhasedAppKey(phase).getAppKey();
+}
+
+Future<KakaoPhase> _getKakaoPhase() async {
+  var prefs = await SharedPreferences.getInstance();
+  var prevPhase = prefs.getString('KakaoPhase');
+  print('$prevPhase');
+  KakaoPhase phase;
+  if (prevPhase == null) {
+    phase = KakaoPhase.PRODUCTION;
+  } else {
+    if (prevPhase == "DEV") {
+      phase = KakaoPhase.DEV;
+    } else if (prevPhase == "SANDBOX") {
+      phase = KakaoPhase.SANDBOX;
+    } else if (prevPhase == "CBT") {
+      phase = KakaoPhase.CBT;
+    } else {
+      phase = KakaoPhase.PRODUCTION;
+    }
+  }
+  return phase;
+}
+
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
-  @override
-  void initState() {
-    super.initState();
-    _initializeSdk();
-  }
-
-  _initializeSdk() async {
-    KakaoPhase phase = await _getKakaoPhase();
-    KakaoContext.hosts = PhasedServerHosts(phase);
-    KakaoContext.clientId = PhasedAppKey(phase).getAppKey();
-  }
-
-  Future<KakaoPhase> _getKakaoPhase() async {
-    var prefs = await SharedPreferences.getInstance();
-    var prevPhase = prefs.getString('KakaoPhase');
-    print('$prevPhase');
-    KakaoPhase phase;
-    if (prevPhase == null) {
-      phase = KakaoPhase.PRODUCTION;
-    } else {
-      if (prevPhase == "DEV") {
-        phase = KakaoPhase.DEV;
-      } else if (prevPhase == "SANDBOX") {
-        phase = KakaoPhase.SANDBOX;
-      } else if (prevPhase == "CBT") {
-        phase = KakaoPhase.CBT;
-      } else {
-        phase = KakaoPhase.PRODUCTION;
-      }
-    }
-    return phase;
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
