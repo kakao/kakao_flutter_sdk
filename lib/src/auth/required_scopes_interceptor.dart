@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 
-/// Automatically add consent in case of -402 error
+/// @nodoc
+/// -402 에러 시 자동 추가 동의
 class RequiredScopesInterceptor extends Interceptor {
   Dio _dio;
   AuthCodeClient _authCodeClient;

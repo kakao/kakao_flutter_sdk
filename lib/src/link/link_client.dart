@@ -19,14 +19,15 @@ class LinkClient {
 
   static final MethodChannel _channel = MethodChannel("kakao_flutter_sdk");
 
-  /// singleton instance of this class.
+  /// 간편한 API 호출을 위해 기본 제공되는 singleton 객체
   static final LinkClient instance = LinkClient(LinkApi.instance);
 
   Future<bool> isKakaoLinkAvailable() async {
     return await _channel.invokeMethod('isKakaoLinkAvailable') ?? false;
   }
 
-  /// Send KakaoLink messages with custom templates.
+  /// 카카오 디벨로퍼스에서 생성한 메시지 템플릿을 웹으로 공유.
+  /// 템플릿을 생성하는 방법은 [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/ko/message/message-template) 참고.
   Future<Uri> customWithWeb(int templateId,
       {Map<String, String>? templateArgs,
       Map<String, String>? serverCallbackArgs}) async {
@@ -35,6 +36,7 @@ class LinkClient {
         serverCallbackArgs: serverCallbackArgs);
   }
 
+  /// 기본 템플릿을 웹으로 공유.
   Future<Uri> defaultWithWeb(DefaultTemplate template,
       {Map<String, String>? serverCallbackArgs}) async {
     final response = await api.defaultTemplate(template);
@@ -42,6 +44,8 @@ class LinkClient {
         serverCallbackArgs: serverCallbackArgs);
   }
 
+  /// 카카오링크 컨텐츠 이미지로 활용하기 위해 원격 이미지를 카카오 이미지 서버로 업로드.
+  /// 지정된 URL 을 스크랩하여 만들어진 템플릿을 웹으로 공유.
   Future<Uri> scrapWithWeb(String url,
       {int? templateId,
       Map<String, String>? templateArgs,
@@ -52,7 +56,8 @@ class LinkClient {
         serverCallbackArgs: serverCallbackArgs);
   }
 
-  /// Send KakaoLink messages with custom templates.
+  /// 카카오 디벨로퍼스에서 생성한 메시지 템플릿을 카카오톡으로 공유.
+  /// 템플릿을 생성하는 방법은 [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/ko/message/message-template) 참고.
   Future<Uri> customWithTalk(int templateId,
       {Map<String, String>? templateArgs,
       Map<String, String>? serverCallbackArgs}) async {
@@ -60,12 +65,15 @@ class LinkClient {
     return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
+  /// 기본 템플릿을 카카오톡으로 공유.
   Future<Uri> defaultWithTalk(DefaultTemplate template,
       {Map<String, String>? serverCallbackArgs}) async {
     final response = await api.defaultTemplate(template);
     return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
+  /// 카카오링크 컨텐츠 이미지로 활용하기 위해 원격 이미지를 카카오 이미지 서버로 업로드.
+  /// 지정된 URL 을 스크랩하여 만들어진 템플릿을 카카오톡으로 공유.
   Future<Uri> scrapWithTalk(String url,
       {int? templateId,
       Map<String, String>? templateArgs,
@@ -75,13 +83,13 @@ class LinkClient {
     return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
-  /// Upload the local image to the Kakao Image Server to use it as a KakaoLink content image.
+  /// 카카오링크 컨텐츠 이미지로 활용하기 위해 로컬 이미지를 카카오 이미지 서버로 업로드.
   Future<ImageUploadResult> uploadImage(File image,
       {bool secureResource = true}) async {
     return await api.uploadImage(image, secureResource: secureResource);
   }
 
-  /// Upload remote image to Kakao Image Server to use as KakaoLink content image.
+  /// 카카오링크 컨텐츠 이미지로 활용하기 위해 원격 이미지를 카카오 이미지 서버로 업로드.
   Future<ImageUploadResult> scrapImage(String imageUrl,
       {bool secureResource = true}) async {
     return await api.scrapImage(imageUrl, secureResource: secureResource);

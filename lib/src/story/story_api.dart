@@ -9,15 +9,16 @@ import 'package:kakao_flutter_sdk/src/story/model/link_info.dart';
 import 'package:kakao_flutter_sdk/src/story/model/story.dart';
 import 'package:kakao_flutter_sdk/src/story/model/story_profile.dart';
 
-/// Provides KakaoStory API.
+/// 카카오스토리 API 호출을 담당하는 클라이언트.
 class StoryApi {
   StoryApi(this._dio);
+
   final Dio _dio;
 
-  /// Default instance SDK provides.
+  /// 간편한 API 호출을 위해 기본 제공되는 singleton 객체
   static final StoryApi instance = StoryApi(ApiFactory.authApi);
 
-  /// Check whether current user is a KakaoStory user or not.
+  /// 카카오스토리 사용자인지 확인하기.
   Future<bool> isStoryUser() async {
     return ApiFactory.handleApiError(() async {
       final response = await _dio.get("/v1/api/story/isstoryuser");
@@ -25,7 +26,7 @@ class StoryApi {
     });
   }
 
-  /// Fetches current user's KakaoStory profile.
+  /// 카카오스토리 프로필 가져오기.
   Future<StoryProfile> profile() async {
     return ApiFactory.handleApiError(() async {
       final response = await _dio.get("/v1/api/story/profile",
@@ -34,7 +35,7 @@ class StoryApi {
     });
   }
 
-  /// Fetches an individual story with the given id.
+  /// 카카오스토리의 특정 내 스토리 가져오기. comments, likes 등 각종 상세정보 포함.
   Future<Story> myStory(String storyId) async {
     return ApiFactory.handleApiError(() async {
       final response = await _dio
@@ -43,7 +44,8 @@ class StoryApi {
     });
   }
 
-  /// Fetches a list of stories where id is smaller the given lastId.
+  /// 카카오스토리의 내 스토리 여러 개 가져오기.
+  /// 단, comments, likes 등의 상세정보는 없으며 이는 내스토리 정보 요청 [myStory] 통해 획득 가능.
   Future<List<Story>> myStories([String? lastId]) async {
     return ApiFactory.handleApiError(() async {
       final response = await _dio.get("/v1/api/story/mystories",
@@ -56,13 +58,7 @@ class StoryApi {
     });
   }
 
-  /// Posts a story with a simple content text.
-  ///
-  /// @param enableShare Whether friends can share this story if [permission] is [StoryPermission.FRIEND]. (default is false) Always always true if [permission] is [StoryPermission.PUBLIC].
-  /// @param androidExecParams Query string to be passed to custom scheme in Android.
-  /// @param iosExecParams Query string to be passed to custom scheme in iOS.
-  /// @param androidMarketParms Query string to be passed to Google play market url.
-  /// @param iosMarketParams Query string to be passed to App Store url.
+  /// 카카오스토리에 글 스토리 쓰기.
   Future<String> postNote(String content,
           {StoryPermission? permission,
           bool? enableShare,
@@ -79,7 +75,9 @@ class StoryApi {
           androidMarketParams: androidMarketParams,
           iosMarketParams: iosMarketParams);
 
-  /// Posts a story with a list of image urls returned by [StoryApi.scrapImages()].
+  /// 카카오스토리에 사진 스토리 쓰기.
+  ///
+  /// 먼저 올리고자 하는 사진 파일을 [upload]로 카카오 서버에 업로드하고 반환되는 path 목록을 파라미터로 사용.
   Future<String> postPhotos(List<String> images,
           {String? content,
           StoryPermission? permission,
@@ -97,7 +95,9 @@ class StoryApi {
           androidMarketParams: androidMarketParams,
           iosMarketParams: iosMarketParams);
 
-  /// Posts a story with a [LinkInfo] returned by [StoryApi.scrapLink()].
+  /// 카카오스토리에 링크 스토리 쓰기
+  ///
+  /// 먼저 포스팅하고자 하는 URL로 [scrapLink]를 호출하고 반환된 링크 정보를 파라미터로 사용.
   Future<String> postLink(LinkInfo linkInfo,
           {String? content,
           StoryPermission? permission,
@@ -149,6 +149,7 @@ class StoryApi {
     });
   }
 
+  /// 카카오스토리의 특정 내 스토리 삭제.
   Future<void> deleteStory(String storyId) async {
     return ApiFactory.handleApiError(() async {
       await _dio.delete("/v1/api/story/delete/mystory",
@@ -156,9 +157,7 @@ class StoryApi {
     });
   }
 
-  /// Gets a scraping result with the given url.
-  ///
-  /// Returned [LinkInfo] can be used by [StoryApi.postLink()].
+  /// 포스팅하고자 하는 URL 을 스크랩하여 링크 정보 생성
   Future<LinkInfo> scrapLink(String url) async {
     return ApiFactory.handleApiError(() async {
       final response = await _dio
@@ -167,9 +166,7 @@ class StoryApi {
     });
   }
 
-  /// Uploads a list of images to storage server used by Kakao API.
-  ///
-  /// Returned list of image urls can be passed to [StoryApi.postPhotos()].
+  /// 로컬 이미지 파일 여러장을 카카오스토리에 업로드
   Future<List<String>> scrapImages(List<File> images) async {
     return ApiFactory.handleApiError(() async {
       List<MultipartFile> files = await Future.wait(images.map((image) async =>

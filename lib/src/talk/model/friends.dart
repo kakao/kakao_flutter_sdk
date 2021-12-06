@@ -3,27 +3,27 @@ import 'package:kakao_flutter_sdk/src/talk/model/friend.dart';
 
 part 'friends.g.dart';
 
-/// Response from [TalkApi.friends()].
+/// 친구 목록 조회 API 응답 클래스
 @JsonSerializable(
     fieldRename: FieldRename.snake, includeIfNull: false, explicitToJson: true)
 class Friends {
   final List<Friend>? elements;
   final int totalCount;
 
-  /// Number of friends enrolled in favorites
+  /// 조회된 친구 중 즐겨찾기에 등록된 친구 수
   final int? favoriteCount;
   final String? beforeUrl;
   final String? afterUrl;
 
-  /// <nodoc>
+  /// @nodoc
   Friends(this.elements, this.totalCount, this.favoriteCount, this.beforeUrl,
       this.afterUrl);
 
-  /// <nodoc>
+  /// @nodoc
   factory Friends.fromJson(Map<String, dynamic> json) =>
       _$FriendsFromJson(json);
 
-  /// <nodoc>
+  /// @nodoc
   Map<String, dynamic> toJson() => _$FriendsToJson(this);
 
   @override

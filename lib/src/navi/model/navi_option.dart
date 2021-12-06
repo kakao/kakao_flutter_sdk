@@ -2,27 +2,37 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'navi_option.g.dart';
 
+/// 길안내 옵션을 설정합니다.
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class NaviOption {
+  /// 사용할 좌표계
   final NaviCoordType? coordType;
+
+  /// 차종
   final VehicleType? vehicleType;
 
+  /// 경로 옵션
   @JsonKey(name: "rpoption")
   final RpOption? rpOption;
 
+  /// 전체 경로정보 보기 사용여부
   final bool? routeInfo;
 
+  /// 시작 위치의 경도 좌표
   @JsonKey(name: "s_x")
   final String? startX;
 
+  /// 시작 위치의 위도 좌표
   @JsonKey(name: "s_y")
   final String? startY;
 
+  /// 시작 차량 각도 (0 ~ 359)
   final int? startAngle;
 
+  /// 길안내 종료(전체 경로보기시 종료) 후 호출 될 URI.
   final String? returnUri;
 
-  /// <nodoc>
+  /// @nodoc
   NaviOption(
       {this.coordType,
       this.vehicleType,
@@ -33,23 +43,26 @@ class NaviOption {
       this.startAngle,
       this.returnUri});
 
-  /// <nodoc>
+  /// @nodoc
   Map<String, dynamic> toJson() => _$NaviOptionToJson(this);
 
-  /// <nodoc>
+  /// @nodoc
   factory NaviOption.fromJson(Map<String, dynamic> json) =>
       _$NaviOptionFromJson(json);
 }
 
 /// 좌표계 타입을 선택합니다.
 enum NaviCoordType {
+  /// World Geodetic System 84 좌표계
   @JsonValue("wgs84")
   WGS84,
 
+  /// Katec 좌표계 (서버 기본값)
   @JsonValue("katec")
   KATEC
 }
 
+/// 안내할 경로를 최적화하기 위한 옵션입니다.
 enum RpOption {
   /// Fastest route
   @JsonValue("1")
@@ -84,6 +97,7 @@ enum RpOption {
   RECOMMENDED // 추천경로 (기본값)
 }
 
+/// 길안내를 사용할 차종(1~7)을 선택합니다.
 enum VehicleType {
   /// 1종 (승용차/소형승합차/소형화물화)
   @JsonValue("1")

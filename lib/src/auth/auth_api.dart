@@ -11,7 +11,6 @@ import 'package:kakao_flutter_sdk/src/common/kakao_context.dart';
 import 'package:kakao_flutter_sdk/src/common/kakao_error.dart';
 import 'package:platform/platform.dart';
 
-/// Provides Kakao OAuth API.
 class AuthApi {
   AuthApi(
       {Dio? dio,
@@ -24,18 +23,21 @@ class AuthApi {
 
   final Dio _dio;
   final Platform _platform;
+
+  /// @nodoc
   final TokenManagerProvider _tokenManagerProvider;
 
-  /// Default instance SDK provides.
   static final AuthApi instance = AuthApi();
 
-  /// Check OAuthToken is issued.
+  /// 사용자가 앞서 로그인을 통해 토큰을 발급 받은 상태인지 확인합니다.
+  /// 주의: 기존 토큰 존재 여부를 확인하는 기능으로, 사용자가 현재도 로그인 상태임을 보장하지 않습니다.
   Future<bool> hasToken() async {
     final token = await _tokenManagerProvider.manager.getToken();
     return token == null;
   }
 
-  /// Issues an access token from authCode acquired from [AuthCodeClient].
+  /// 사용자 인증코드([authCode])를 이용하여 신규 토큰 발급을 요청합니다.
+  /// [codeVerifier]는 사용자 인증 코드 verifier로 사용합니다.
   Future<OAuthToken> issueAccessToken(String authCode,
       {String? redirectUri, String? clientId, String? codeVerifier}) async {
     final data = {
@@ -49,7 +51,8 @@ class AuthApi {
     return await _issueAccessToken(data);
   }
 
-  /// Issues an access token from authCode acquired from [AuthCodeClient].
+  /// @nodoc
+  /// Internal Only
   Future<CertTokenInfo> issueAccessTokenWithCert(String authCode,
       {String? redirectUri, String? clientId, String? codeVerifier}) async {
     final data = {
@@ -63,9 +66,7 @@ class AuthApi {
     return await _issueAccessTokenWithCert(data);
   }
 
-  /// Issues a new access token from the given refresh token.
-  ///
-  /// Refresh tokens are usually retrieved from [TokenManager].
+  /// 기존 토큰([oldToken])을 갱신합니다
   Future<OAuthToken> refreshAccessToken(OAuthToken oldToken,
       {String? redirectUri, String? clientId}) async {
     final data = {
@@ -80,7 +81,7 @@ class AuthApi {
     return newToken;
   }
 
-  /// Issues temporary agt (access token-generated token), which can be used to acquire auth code.
+  /// @nodoc
   Future<String> agt({String? clientId, String? accessToken}) async {
     final tokenInfo = await _tokenManagerProvider.manager.getToken();
     final data = {

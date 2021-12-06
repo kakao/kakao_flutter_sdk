@@ -3,17 +3,19 @@ import 'package:kakao_flutter_sdk/src/link/model/image_info.dart';
 
 part 'image_infos.g.dart';
 
+/// 업로드된 이미지 정보
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class ImageInfos {
+  /// 원본 이미지
   final ImageInfo original;
 
-  /// <nodoc>
+  /// @nodoc
   ImageInfos(this.original);
 
-  /// <nodoc>
+  /// @nodoc
   factory ImageInfos.fromJson(Map<String, dynamic> json) =>
       _$ImageInfosFromJson(json);
 
-  /// <nodoc>
+  /// @nodoc
   Map<String, dynamic> toJson() => _$ImageInfosToJson(this);
 }

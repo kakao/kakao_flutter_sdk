@@ -10,9 +10,9 @@ import 'package:platform/platform.dart';
 
 const MethodChannel _channel = MethodChannel("kakao_flutter_sdk");
 
-/// Provides OAuth authorization process.
-///
-/// Corresponds to Authorization Endpoint of [OAuth 2.0 spec](https://tools.ietf.org/html/rfc6749).
+/// @nodoc
+// Provides OAuth authorization process.
+// Corresponds to Authorization Endpoint of [OAuth 2.0 spec](https://tools.ietf.org/html/rfc6749).
 class AuthCodeClient {
   AuthCodeClient({AuthApi? authApi, Platform? platform})
       : _kauthApi = authApi ?? AuthApi.instance,
@@ -23,7 +23,7 @@ class AuthCodeClient {
 
   static final AuthCodeClient instance = AuthCodeClient();
 
-  /// Requests authorization code via `Chrome Custom Tabs` (on Android) and `ASWebAuthenticationSession` (on iOS).
+  // Requests authorization code via `Chrome Custom Tabs` (on Android) and `ASWebAuthenticationSession` (on iOS).
   Future<String> request(
       {String? clientId,
       String? redirectUri,
@@ -57,10 +57,10 @@ class AuthCodeClient {
     return _parseCode(authCode);
   }
 
-  /// Requests authorization code via KakaoTalk.
-  ///
-  /// This will only work on devices where KakaoTalk is installed.
-  /// You MUST check if KakaoTalk is installed before calling this method with [isKakaoTalkInstalled].
+  // Requests authorization code via KakaoTalk.
+  //
+  // This will only work on devices where KakaoTalk is installed.
+  // You MUST check if KakaoTalk is installed before calling this method with [isKakaoTalkInstalled].
   Future<String> requestWithTalk(
       {String? clientId,
       String? redirectUri,
@@ -76,9 +76,9 @@ class AuthCodeClient {
         state));
   }
 
-  /// Requests authorization code with current access token.
-  ///
-  /// User should be logged in in order to call this method.
+  // Requests authorization code with current access token.
+  //
+  // User should be logged in in order to call this method.
   Future<String> requestWithAgt(List<String> scopes,
       {String? clientId, String? redirectUri}) async {
     final agt = await _kauthApi.agt();
@@ -97,7 +97,7 @@ class AuthCodeClient {
         await launchBrowserTab(url, redirectUri: finalRedirectUri));
   }
 
-  /// Retreives auth code in web environment. (This method is web specific. Use after checking the platform)
+  // Retreives auth code in web environment. (This method is web specific. Use after checking the platform)
   void retrieveAuthCode() {
     _channel.invokeMethod("retrieveAuthCode");
   }
@@ -169,9 +169,11 @@ class AuthCodeClient {
 // }
 }
 
+/// 동의 화면 요청 시 추가 상호작용을 요청하고자 할 때 전달하는 파라미터
 enum Prompt {
+  /// 기본 웹 브라우저(CustomTabs)에 카카오계정 cookie 가 이미 있더라도 이를 무시하고 무조건 로그인 화면을 보여주도록 함
   LOGIN,
 
-  /// <nodoc>
+  /// @nodoc
   CERT
 }

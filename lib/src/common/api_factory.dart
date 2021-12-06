@@ -3,6 +3,7 @@ import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/src/auth/required_scopes_interceptor.dart';
 import 'package:kakao_flutter_sdk/src/common/dapi_exception.dart';
 
+/// @nodoc
 /// Factory for network clients, interceptors, and error transformers used by other libraries.
 class ApiFactory {
   /// [Dio] instance for Kakao OAuth server.
@@ -61,7 +62,6 @@ class ApiFactory {
   }
 
   /// transforms [DioError] to [KakaoException].
-  ///
   static KakaoException transformApiError(DioError e) {
     var response = e.response;
     var request = e.requestOptions;

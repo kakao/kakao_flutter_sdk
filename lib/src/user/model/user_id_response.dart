@@ -4,16 +4,16 @@ part 'user_id_response.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class UserIdResponse {
-  /// current user's app user id
+  /// 회원번호
   int id;
 
-  /// <nodoc>
+  /// @nodoc
   UserIdResponse(this.id);
 
-  /// <nodoc>
+  /// @nodoc
   factory UserIdResponse.fromJson(Map<String, dynamic> json) =>
       _$UserIdResponseFromJson(json);
 
-  /// <nodoc>
+  /// @nodoc
   Map<String, dynamic> toJson() => _$UserIdResponseToJson(this);
 }

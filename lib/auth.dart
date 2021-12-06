@@ -1,10 +1,4 @@
-/// Provides OAuth API.
-///
-/// Mainly you can do two things with this library:
-///
-/// 1. Issue authorization code (via [AuthCodeClient])
-/// 1. Issue or refrresh access token. (via [AuthApi])
-///
+/// Oauth 관련 API 클라이언트를 제공하는 패키지.
 library auth;
 
 export 'package:kakao_flutter_sdk/common.dart';
