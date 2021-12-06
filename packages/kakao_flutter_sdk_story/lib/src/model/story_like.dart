@@ -1,4 +1,4 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:kakao_flutter_sdk_auth/auth.dart';
 import 'package:kakao_flutter_sdk_story/src/model/story_actor.dart';
 
 part 'story_like.g.dart';
