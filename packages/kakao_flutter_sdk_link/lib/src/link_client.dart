@@ -3,12 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:kakao_flutter_sdk_common/common.dart';
 import 'package:kakao_flutter_sdk_link/src/link_api.dart';
 import 'package:kakao_flutter_sdk_link/src/model/image_upload_result.dart';
 import 'package:kakao_flutter_sdk_link/src/model/link_result.dart';
 import 'package:kakao_flutter_sdk_template/template.dart';
-import 'package:platform/platform.dart';
 
 class LinkClient {
   LinkClient(this.api, {Platform? platform})
