@@ -1,4 +1,4 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:kakao_flutter_sdk_common/common.dart';
 import 'package:kakao_flutter_sdk_template/src/model/link.dart';
 
 part 'button.g.dart';

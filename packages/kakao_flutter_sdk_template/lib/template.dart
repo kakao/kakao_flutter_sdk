@@ -2,6 +2,7 @@
 /// 기본 메시지 템플릿의 계층 구조를 효과적으로 표현하기 위하여 기본 자료형 이외에도 다양한 클래스 제공.
 library template;
 
+export 'package:kakao_flutter_sdk_common/common.dart';
 export 'package:kakao_flutter_sdk_template/src/commerce_template.dart';
 export 'package:kakao_flutter_sdk_template/src/default_template.dart';
 export 'package:kakao_flutter_sdk_template/src/feed_template.dart';
