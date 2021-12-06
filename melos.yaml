@@ -2,10 +2,11 @@ name: kakao_flutter_sdk
 
 packages:
   - packages/**
+  - example/**
 
 scripts:
   analyze: melos exec --fail-fast -- dart analyze .
 
-#environment:
-#  sdk: ">=2.12.0 <3.0.0"
-#  flutter: '>=1.10.0'
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: '>=1.10.0'
