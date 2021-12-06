@@ -4,10 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kakao_flutter_sdk/story.dart';
 import 'package:kakao_flutter_sdk_example/story_bloc/post_story_bloc.dart';
 import 'package:kakao_flutter_sdk_example/story_bloc/post_story_event.dart';
 import 'package:kakao_flutter_sdk_example/story_bloc/post_story_state.dart';
+import 'package:kakao_flutter_sdk_story/story.dart';
 
 class AddStoryScreen extends StatefulWidget {
   @override

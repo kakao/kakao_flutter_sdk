@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'bloc.dart';
 import 'package:kakao_flutter_sdk_example/talk_bloc/talk_event.dart';
-import 'package:kakao_flutter_sdk/talk.dart';
+import 'package:kakao_flutter_sdk_talk/talk.dart';
+
+import 'bloc.dart';
 
 class TalkBloc extends Bloc<TalkEvent, TalkState> {
   final TalkApi _talkApi;

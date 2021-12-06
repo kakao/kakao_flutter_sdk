@@ -2,8 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kakao_flutter_sdk/auth.dart';
-import 'package:kakao_flutter_sdk_example/search_bloc/bloc.dart';
+import 'package:kakao_flutter_sdk_auth/auth.dart';
 import 'package:kakao_flutter_sdk_example/server_phase.dart';
 import 'package:kakao_flutter_sdk_example/story_bloc/bloc.dart';
 import 'package:kakao_flutter_sdk_example/talk_bloc/bloc.dart';
@@ -13,7 +12,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'add_story.dart';
 import 'link.dart';
 import 'login.dart';
-import 'search.dart';
 import 'server_phase.dart';
 import 'story.dart';
 import 'talk.dart';
@@ -35,7 +33,7 @@ void main() async {
       BlocProvider<PostStoryBloc>(
         create: (context) => PostStoryBloc(),
       ),
-      BlocProvider<SearchBloc>(create: (context) => SearchBloc())
+      // BlocProvider<SearchBloc>(create: (context) => SearchBloc())
     ],
     child: MyApp(),
   ));
@@ -142,7 +140,7 @@ class _MainScreenState extends State<MainScreen>
     super.initState();
     BlocProvider.of<UserBloc>(context).add(UserFetchStarted());
     _controller = TabController(length: 4, vsync: this);
-    _actions = _searchActions();
+    // _actions = _searchActions();
   }
 
   @override
@@ -189,17 +187,17 @@ class _MainScreenState extends State<MainScreen>
     );
   }
 
-  List<Widget> _searchActions() {
-    return [
-      IconButton(
-          icon: Icon(Icons.search),
-          onPressed: () {
-            showSearch(
-                context: context,
-                delegate: DataSearch(BlocProvider.of<SearchBloc>(context)));
-          })
-    ];
-  }
+  // List<Widget> _searchActions() {
+  //   return [
+  //     IconButton(
+  //         icon: Icon(Icons.search),
+  //         onPressed: () {
+  //           showSearch(
+  //               context: context,
+  //               delegate: DataSearch(BlocProvider.of<SearchBloc>(context)));
+  //         })
+  //   ];
+  // }
 
   List<Widget> _storyActions() {
     return [
@@ -216,7 +214,7 @@ class _MainScreenState extends State<MainScreen>
   void setTabIndex(index) {
     String title;
 
-    List<Widget> actions = _searchActions();
+    List<Widget> actions = [];
     switch (index) {
       case 0:
         title = "User API";
@@ -241,7 +239,7 @@ class _MainScreenState extends State<MainScreen>
       tabIndex = index;
       _controller.index = tabIndex;
       _title = title;
-      if (actions != null) {
+      if (actions.isNotEmpty) {
         _actions = actions;
       }
     });

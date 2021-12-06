@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kakao_flutter_sdk/talk.dart';
 import 'package:kakao_flutter_sdk_example/talk_bloc/bloc.dart';
+import 'package:kakao_flutter_sdk_talk/talk.dart';
 
 class TalkScreen extends StatelessWidget {
   @override

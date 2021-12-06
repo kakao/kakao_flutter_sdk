@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:kakao_flutter_sdk/auth.dart';
-import 'package:kakao_flutter_sdk/user.dart';
+import 'package:kakao_flutter_sdk_auth/auth.dart';
+import 'package:kakao_flutter_sdk_user/user.dart';
 
 import 'bloc.dart';
 
