@@ -1,6 +1,7 @@
 /// Kakao SDK의 모든 모듈에 공통적으로 사용되는 패키지. 주요 설정 및 초기화 함수 제공.
 library common;
 
+export 'package:crypto/crypto.dart';
 export 'package:dio/dio.dart';
 export 'package:json_annotation/json_annotation.dart';
 export 'package:kakao_flutter_sdk_common/src/api_factory.dart';

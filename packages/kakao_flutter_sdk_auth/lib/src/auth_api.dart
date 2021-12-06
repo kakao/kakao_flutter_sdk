@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:kakao_flutter_sdk_auth/src/auth_api_factory.dart';
 import 'package:kakao_flutter_sdk_auth/src/model/access_token_response.dart';
@@ -8,7 +7,6 @@ import 'package:kakao_flutter_sdk_auth/src/model/cert_token_info.dart';
 import 'package:kakao_flutter_sdk_auth/src/model/oauth_token.dart';
 import 'package:kakao_flutter_sdk_auth/src/token_manager.dart';
 import 'package:kakao_flutter_sdk_common/common.dart';
-import 'package:platform/platform.dart';
 
 class AuthApi {
   AuthApi(

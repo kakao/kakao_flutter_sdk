@@ -1,6 +1,6 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:kakao_flutter_sdk_auth/src/model/oauth_token.dart';
 import 'package:kakao_flutter_sdk_auth/src/token_manager.dart';
+import 'package:kakao_flutter_sdk_common/common.dart';
 
 part 'cert_token_info.g.dart';
 

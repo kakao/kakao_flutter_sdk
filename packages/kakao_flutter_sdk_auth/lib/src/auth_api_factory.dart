@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk_auth/auth.dart';
 import 'package:kakao_flutter_sdk_auth/src/access_token_interceptor.dart';
 import 'package:kakao_flutter_sdk_auth/src/auth_api.dart';
