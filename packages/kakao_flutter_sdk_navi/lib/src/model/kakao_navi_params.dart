@@ -1,4 +1,4 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:kakao_flutter_sdk_common/common.dart';
 import 'package:kakao_flutter_sdk_navi/src/model/location.dart';
 import 'package:kakao_flutter_sdk_navi/src/model/navi_option.dart';
 
