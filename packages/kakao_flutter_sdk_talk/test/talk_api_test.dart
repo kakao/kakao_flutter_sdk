@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kakao_flutter_sdk_talk/talk.dart';
 

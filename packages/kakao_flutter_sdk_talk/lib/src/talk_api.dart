@@ -1,11 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:kakao_flutter_sdk_auth/auth.dart';
-import 'package:kakao_flutter_sdk_common/common.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/channels.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/friends.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/message_send_result.dart';
