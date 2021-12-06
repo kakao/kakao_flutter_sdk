@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk_auth/auth.dart';
-import 'package:kakao_flutter_sdk_common/common.dart';
 
 import 'model/access_token_info.dart';
 import 'model/scope_info.dart';

@@ -1,4 +1,4 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:kakao_flutter_sdk_auth/auth.dart';
 
 part 'access_token_info.g.dart';
 

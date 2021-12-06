@@ -1,4 +1,4 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:kakao_flutter_sdk_auth/auth.dart';
 
 part 'app_service_terms.g.dart';
 
