@@ -177,8 +177,12 @@ class TalkApi {
 }
 
 enum FriendOrder {
-  @JsonValue("nickname")
-  NICKNAME,
-  @JsonValue("favorite")
-  FAVORITE
+  /// 이름 순 정렬
+  nickname,
+
+  /// 즐겨찾기 순 정렬
+  favorite,
+
+  /// 나이 순 정렬
+  age
 }

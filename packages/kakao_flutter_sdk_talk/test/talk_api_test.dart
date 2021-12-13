@@ -28,7 +28,6 @@ void main() {
     expect(profile.profileImageUrl.toString(), map["profileImageURL"]);
     expect(profile.thumbnailUrl.toString(), map["thumbnailURL"]);
     expect(map["countryISO"], profile.countryISO);
-    expect(true, profile.toJson() != null);
   });
 
   bool compareFriend(Map<String, dynamic> element, Friend friend) {
@@ -53,7 +52,6 @@ void main() {
     List<Friend> friends = res.elements!;
     friends.asMap().forEach(
         (idx, friend) => expect(true, compareFriend(elements[idx], friend)));
-    expect(true, res.toJson() != null);
   });
 
   group("/v2/api/talk/memo", () {
@@ -147,7 +145,7 @@ void main() {
   });
 
   group("v1/api/talk/friends/message/send", () {
-    var map;
+    Map<String, dynamic> map;
     setUp(() async {});
     test("custom without failure infos", () async {
       final body = await loadJson("talk/message/success.json");
@@ -177,7 +175,7 @@ void main() {
     });
   });
   group("/v1/api/talk/channels", () {
-    var map;
+    Map<String, dynamic>? map;
     late Channels res;
     setUp(() async {
       var body = await loadJson("talk/plusfriends/plus_friends.json");
@@ -186,8 +184,8 @@ void main() {
     });
 
     tearDown(() async {
-      expect(res.userId, map["user_id"]);
-      var elements = map["channels"];
+      expect(res.userId, map!["user_id"]);
+      var elements = map!["channels"];
       var friends = res.channels;
       friends?.asMap().forEach((index, friend) {
         var element = elements[index];
@@ -196,7 +194,6 @@ void main() {
         expect(Util.dateTimeWithoutMillis(friend.updatedAt),
             element["updated_at"]);
       });
-      expect(true, res.toJson() != null);
     });
 
     test("with no parameter", () async {
