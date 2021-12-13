@@ -8,11 +8,11 @@ import 'package:kakao_flutter_sdk_navi/src/model/navi_option.dart';
 
 /// 카카오내비 API 호출을 담당하는 클래스
 class NaviApi {
-  NaviApi({Platform? platform}) : _platform = platform ?? LocalPlatform();
+  NaviApi({Platform? platform}) : _platform = platform ?? const LocalPlatform();
 
   final Platform _platform;
-  final MethodChannel _channel = MethodChannel("kakao_flutter_sdk");
-  static const String NAVI_HOSTS = "kakaonavi-wguide.kakao.com";
+  static const MethodChannel _channel = MethodChannel("kakao_flutter_sdk");
+  static const String naviHosts = "kakaonavi-wguide.kakao.com";
 
   /// 간편한 API 호출을 위해 기본 제공되는 singleton 객체
   static final NaviApi instance = NaviApi();

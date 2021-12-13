@@ -54,76 +54,74 @@ class NaviOption {
 /// 좌표계 타입을 선택합니다.
 enum NaviCoordType {
   /// World Geodetic System 84 좌표계
-  @JsonValue("wgs84")
-  WGS84,
+  wgs84,
 
   /// Katec 좌표계 (서버 기본값)
-  @JsonValue("katec")
-  KATEC
+  katec
 }
 
 /// 안내할 경로를 최적화하기 위한 옵션입니다.
 enum RpOption {
   /// Fastest route
   @JsonValue("1")
-  FAST, // 빠른길
+  fast, // 빠른길
 
   /// Free route
   @JsonValue("2")
-  FREE, // 무료도로
+  free, // 무료도로
 
   /// Shortest route
   @JsonValue("3")
-  SHORTEST, // 최단거리
+  shortest, // 최단거리
 
   ///Exclude motorway
   @JsonValue("4")
-  NO_AUTO, // 자동차전용제외
+  noAuto, // 자동차전용제외
 
   ///Wide road first
   @JsonValue("5")
-  WIDE, // 큰길우선
+  wide, // 큰길우선
 
   /// Highway first
   @JsonValue("6")
-  HIGHWAY, // 고속도로우선
+  highway, // 고속도로우선
 
   ///Normal road first
   @JsonValue("8")
-  NORMAL, // 일반도로우선
+  normal, // 일반도로우선
 
   ///Recommended route (Current default option if not set)
   @JsonValue("100")
-  RECOMMENDED // 추천경로 (기본값)
+  recommended // 추천경로 (기본값)
 }
 
 /// 길안내를 사용할 차종(1~7)을 선택합니다.
 enum VehicleType {
   /// 1종 (승용차/소형승합차/소형화물화)
   @JsonValue("1")
-  FIRST,
+  first,
 
   ///2종 (중형승합차/중형화물차)
   @JsonValue("2")
-  SECOND,
+  second,
 
   /// 3종 (대형승합차/2축 대형화물차)
   @JsonValue("3")
-  THIRD,
+  third,
 
   /// 4종 (3축 대형화물차)
   @JsonValue("4")
-  FOURTH,
+  fourth,
 
   /// 5종 (4축이상 특수화물차)
   @JsonValue("5")
-  FIFTH,
+  fifth,
 
   /// 6종 (경차)
   @JsonValue("6")
-  SIXTH,
+  sixth,
 
   ///이륜차
   @JsonValue("7")
-  TWO_WHEEL
+  twoWheel
 }

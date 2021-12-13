@@ -68,7 +68,7 @@ class _UserState extends State<UserScreen> {
                         NaviApi.instance.navigate(
                             destination: Location(
                                 "카카오 판교오피스", "127.108640", "37.402111"),
-                            option: NaviOption(coordType: NaviCoordType.WGS84));
+                            option: NaviOption(coordType: NaviCoordType.wgs84));
                       },
                       color: Colors.red,
                       textColor: Colors.white,

@@ -78,27 +78,27 @@ K? _$enumDecodeNullable<K, V>(
 }
 
 const _$NaviCoordTypeEnumMap = {
-  NaviCoordType.WGS84: 'wgs84',
-  NaviCoordType.KATEC: 'katec',
+  NaviCoordType.wgs84: 'wgs84',
+  NaviCoordType.katec: 'katec',
 };
 
 const _$VehicleTypeEnumMap = {
-  VehicleType.FIRST: '1',
-  VehicleType.SECOND: '2',
-  VehicleType.THIRD: '3',
-  VehicleType.FOURTH: '4',
-  VehicleType.FIFTH: '5',
-  VehicleType.SIXTH: '6',
-  VehicleType.TWO_WHEEL: '7',
+  VehicleType.first: '1',
+  VehicleType.second: '2',
+  VehicleType.third: '3',
+  VehicleType.fourth: '4',
+  VehicleType.fifth: '5',
+  VehicleType.sixth: '6',
+  VehicleType.twoWheel: '7',
 };
 
 const _$RpOptionEnumMap = {
-  RpOption.FAST: '1',
-  RpOption.FREE: '2',
-  RpOption.SHORTEST: '3',
-  RpOption.NO_AUTO: '4',
-  RpOption.WIDE: '5',
-  RpOption.HIGHWAY: '6',
-  RpOption.NORMAL: '8',
-  RpOption.RECOMMENDED: '100',
+  RpOption.fast: '1',
+  RpOption.free: '2',
+  RpOption.shortest: '3',
+  RpOption.noAuto: '4',
+  RpOption.wide: '5',
+  RpOption.highway: '6',
+  RpOption.normal: '8',
+  RpOption.recommended: '100',
 };
