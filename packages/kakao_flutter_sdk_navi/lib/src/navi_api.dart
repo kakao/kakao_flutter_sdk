@@ -24,25 +24,6 @@ class NaviApi {
     return isInstalled;
   }
 
-  /// 웹 길안내 URL 반환.
-  /// 획득한 URL을 브라우저에 요청하면 카카오내비 앱이 설치되지 않은 환경에서도 길안내 가능.
-  /// [location]로 목적지를 입력받고 [option]를 통해 길안내 옵션을 입력받음.
-  /// 경유지 목록은 최대 3개까지 등록 가능하고 [viaList]로 입력받음.
-  Future<Uri> navigateWebUrl(Location location,
-      {NaviOption? option, List<Location>? viaList}) async {
-    final naviParams =
-        KakaoNaviParams(location, option: option, viaList: viaList);
-    final extras = await _getExtras();
-    final params = {
-      'param': jsonEncode(naviParams),
-      'apiver': '1.0',
-      'appkey': KakaoSdk.nativeKey,
-      'extras': jsonEncode(extras)
-    };
-    final url = Uri.https(NAVI_HOSTS, 'navigate.html', params);
-    return Uri.parse(url.toString().replaceAll('+', '%20'));
-  }
-
   /// 카카오내비 앱으로 길안내를 실행.
   /// [location]로 목적지를 입력받고 [option]를 통해 길안내 옵션을 입력받음.
   /// 경유지 목록은 최대 3개까지 등록 가능하고 [viaList]로 입력받음.
