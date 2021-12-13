@@ -36,7 +36,7 @@ class NaviApi {
     final params = {
       'param': jsonEncode(naviParams),
       'apiver': '1.0',
-      'appkey': KakaoContext.clientId,
+      'appkey': KakaoSdk.nativeKey,
       'extras': jsonEncode(extras)
     };
     final url = Uri.https(NAVI_HOSTS, 'navigate.html', params);
@@ -52,7 +52,7 @@ class NaviApi {
       List<Location>? viaList}) async {
     final extras = await _getExtras();
     final arguments = {
-      'app_key': KakaoContext.clientId,
+      'app_key': KakaoSdk.nativeKey,
       'extras': jsonEncode(extras),
       'navi_params': jsonEncode(
           KakaoNaviParams(destination, option: option, viaList: viaList))
@@ -69,7 +69,7 @@ class NaviApi {
       List<Location>? viaList}) async {
     final extras = await _getExtras();
     final arguments = {
-      'app_key': KakaoContext.clientId,
+      'app_key': KakaoSdk.nativeKey,
       'extras': jsonEncode(extras),
       'navi_params': jsonEncode(
           KakaoNaviParams(destination, option: option, viaList: viaList))
@@ -79,14 +79,14 @@ class NaviApi {
 
   Future<Map<String, String>> _getExtras() async {
     return {
-      'KA': await KakaoContext.kaHeader,
+      'KA': await KakaoSdk.kaHeader,
       ...(_platform.isAndroid
           ? {
-              "appPkg": await KakaoContext.packageName,
-              "keyHash": await KakaoContext.origin
+              "appPkg": await KakaoSdk.packageName,
+              "keyHash": await KakaoSdk.origin
             }
           : _platform.isIOS
-              ? {"appPkg": await KakaoContext.origin}
+              ? {"appPkg": await KakaoSdk.origin}
               : {})
     };
   }

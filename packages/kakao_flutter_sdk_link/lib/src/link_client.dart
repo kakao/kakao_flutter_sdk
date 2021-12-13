@@ -99,8 +99,8 @@ class LinkClient {
   Future<Uri> _sharerWithResponse(LinkResult response,
       {Map<String, String>? serverCallbackArgs}) async {
     final params = {
-      "app_key": KakaoContext.clientId,
-      "ka": await KakaoContext.kaHeader,
+      "app_key": KakaoSdk.nativeKey,
+      "ka": await KakaoSdk.kaHeader,
       "validation_action": "custom",
       "validation_params": jsonEncode({
         "template_id": response.templateId,
@@ -112,21 +112,21 @@ class LinkClient {
 
     params.removeWhere((k, v) => v == null);
     return Uri.https(
-        KakaoContext.hosts.sharer, "talk/friends/picker/easylink", params);
+        KakaoSdk.hosts.sharer, "talk/friends/picker/easylink", params);
   }
 
   Future<Uri> _talkWithResponse(LinkResult response,
-      {String? clientId, Map<String, String>? serverCallbackArgs}) async {
+      {String? appKey, Map<String, String>? serverCallbackArgs}) async {
     final attachmentSize = await _attachmentSize(response,
-        clientId: clientId, serverCallbackArgs: serverCallbackArgs);
+        appKey: appKey, serverCallbackArgs: serverCallbackArgs);
     if (attachmentSize > 10 * 1024) {
       throw KakaoClientException(
           "Exceeded message template v2 size limit (${attachmentSize / 1024}kb > 10kb).");
     }
     Map<String, String> params = {
       "linkver": "4.0",
-      "appkey": clientId ?? KakaoContext.clientId,
-      "appver": await KakaoContext.appVer,
+      "appkey": appKey ?? KakaoSdk.nativeKey,
+      "appver": await KakaoSdk.appVer,
       "template_id": response.templateId.toString(),
       "template_args": jsonEncode(response.templateArgs),
       "template_json": jsonEncode(response.templateMsg),
@@ -139,16 +139,16 @@ class LinkClient {
   Future<Map<String, String?>> _extras(
       [Map<String, String>? serverCallbackArgs]) async {
     Map<String, String?> extras = {
-      "KA": await KakaoContext.kaHeader,
+      "KA": await KakaoSdk.kaHeader,
       "lcba":
           serverCallbackArgs == null ? null : jsonEncode(serverCallbackArgs),
       ...(_platform.isAndroid
           ? {
-              "appPkg": await KakaoContext.packageName,
-              "keyHash": await KakaoContext.origin
+              "appPkg": await KakaoSdk.packageName,
+              "keyHash": await KakaoSdk.origin
             }
           : _platform.isIOS
-              ? {"iosBundleId": await KakaoContext.origin}
+              ? {"iosBundleId": await KakaoSdk.origin}
               : {}),
     };
     extras.removeWhere((k, v) => v == null);
@@ -156,12 +156,12 @@ class LinkClient {
   }
 
   Future<int> _attachmentSize(LinkResult response,
-      {String? clientId, Map<String, String>? serverCallbackArgs}) async {
+      {String? appKey, Map<String, String>? serverCallbackArgs}) async {
     final templateMsg = response.templateMsg;
     final attachment = {
       "lv": "4.0",
       "av": "4.0",
-      "ak": clientId ?? KakaoContext.clientId,
+      "ak": appKey ?? KakaoSdk.nativeKey,
       "P": templateMsg["P"],
       "C": templateMsg["C"],
       "template_id": response.templateId,

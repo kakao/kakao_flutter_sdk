@@ -2,20 +2,22 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:kakao_flutter_sdk_common/common.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 /// Kakao SDK의 싱글턴 Context
-class KakaoContext {
-  KakaoContext._();
+class KakaoSdk {
+  KakaoSdk._();
+
   static const MethodChannel _channel =
       const MethodChannel('kakao_flutter_sdk');
 
   /// Kakao Natvie App Key.
   /// SDK를 사용하기 전에 반드시 초기화 필요.
-  static late String clientId;
-  static late String javascriptClientId;
+  static late String nativeKey;
+  static late String jsKey;
 
-  static String sdkVersion = "1.0.0";
+  static String sdkVersion = "0.9.0";
 
   // ServerHosts used by SDK.
   //
@@ -33,7 +35,7 @@ class KakaoContext {
   //  String get sharer => "sandbox-${super.sharer}";
   // }
   // ```
-  static ServerHosts hosts = ServerHosts();
+  static late ServerHosts hosts;
 
   // Origin value in KA header.
   //
@@ -64,6 +66,7 @@ class KakaoContext {
 
   static Future<PackageInfo> get packageInfo async =>
       await PackageInfo.fromPlatform();
+
   static Future<String> get appVer async {
     final packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.version;
@@ -74,11 +77,25 @@ class KakaoContext {
     return packageInfo.packageName;
   }
 
-  static String get platformClientId {
+  static String get platformAppKey {
     if (kIsWeb) {
-      return KakaoContext.javascriptClientId;
+      return KakaoSdk.jsKey;
     }
-    return KakaoContext.clientId;
+    return KakaoSdk.nativeKey;
+  }
+
+  static void init(
+      {String? nativeAppKey,
+      String? javaScriptAppKey,
+      ServerHosts? serviceHosts}) {
+    if (nativeAppKey == null && javaScriptAppKey == null) {
+      throw KakaoClientException(
+          "Native App Key or JavaScript App Key is required");
+    }
+
+    nativeKey = nativeAppKey ?? "";
+    jsKey = javaScriptAppKey ?? "";
+    hosts = serviceHosts ?? ServerHosts();
   }
 }
 

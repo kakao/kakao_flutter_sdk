@@ -140,7 +140,7 @@ class TalkApi {
   Future<Uri> channelAddUrl(final String channelId) async {
     return Uri(
         scheme: "https",
-        host: KakaoContext.hosts.pf,
+        host: KakaoSdk.hosts.pf,
         path: "/$channelId/friend",
         queryParameters: await _channelBaseParams());
   }
@@ -152,7 +152,7 @@ class TalkApi {
   Future<Uri> channelChatUrl(final String channelId) async {
     return Uri(
         scheme: "https",
-        host: KakaoContext.hosts.pf,
+        host: KakaoSdk.hosts.pf,
         path: "/$channelId/chat",
         queryParameters: await _channelBaseParams());
   }
@@ -169,8 +169,8 @@ class TalkApi {
 
   Future<Map<String, String>> _channelBaseParams() async {
     return {
-      "app_key": KakaoContext.clientId,
-      "kakao_agent": await KakaoContext.kaHeader,
+      "app_key": KakaoSdk.nativeKey,
+      "kakao_agent": await KakaoSdk.kaHeader,
       "api_ver": "1.0"
     };
   }

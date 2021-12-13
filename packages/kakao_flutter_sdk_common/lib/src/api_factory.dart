@@ -14,7 +14,7 @@ class ApiFactory {
 
   static Dio _appKeyApiInstance() {
     var dio = Dio();
-    dio.options.baseUrl = "https://${KakaoContext.hosts.kapi}";
+    dio.options.baseUrl = "https://${KakaoSdk.hosts.kapi}";
     dio.options.contentType = "application/x-www-form-urlencoded";
     dio.interceptors.addAll([appKeyInterceptor, kaInterceptor]);
     return dio;
@@ -22,7 +22,7 @@ class ApiFactory {
 
   static Dio _dapiInstance() {
     var dio = Dio();
-    dio.options.baseUrl = "https://${KakaoContext.hosts.dapi}";
+    dio.options.baseUrl = "https://${KakaoSdk.hosts.dapi}";
     dio.options.contentType = "application/x-www-form-urlencoded";
     dio.interceptors.addAll([appKeyInterceptor, kaInterceptor]);
     return dio;
@@ -46,10 +46,10 @@ class ApiFactory {
     if (response.statusCode == 404) {
       return KakaoClientException(e.message);
     }
-    if (Uri.parse(request.baseUrl).host == KakaoContext.hosts.kauth) {
+    if (Uri.parse(request.baseUrl).host == KakaoSdk.hosts.kauth) {
       return KakaoAuthException.fromJson(response.data);
     }
-    if (Uri.parse(request.baseUrl).host == KakaoContext.hosts.dapi) {
+    if (Uri.parse(request.baseUrl).host == KakaoSdk.hosts.dapi) {
       return DapiException.fromJson(response.data);
     }
 
@@ -59,7 +59,7 @@ class ApiFactory {
   /// DIO interceptor for App-key based API (Link, Local, Search, etc).
   static Interceptor appKeyInterceptor = InterceptorsWrapper(onRequest:
       (RequestOptions options, RequestInterceptorHandler handler) async {
-    var appKey = KakaoContext.clientId;
+    var appKey = KakaoSdk.nativeKey;
     options.headers["Authorization"] = "KakaoAK $appKey";
     handler.next(options);
   });
@@ -67,7 +67,7 @@ class ApiFactory {
   /// DIO interceptor for all Kakao API that requires KA header.
   static Interceptor kaInterceptor = InterceptorsWrapper(onRequest:
       (RequestOptions options, RequestInterceptorHandler handler) async {
-    var kaHeader = await KakaoContext.kaHeader;
+    var kaHeader = await KakaoSdk.kaHeader;
     options.headers["KA"] = kaHeader;
     handler.next(options);
   });

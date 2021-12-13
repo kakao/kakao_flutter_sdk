@@ -16,8 +16,10 @@ void main() {
   late AuthApi _authApi;
   late TokenManager _tokenManager;
 
-  TestWidgetsFlutterBinding.ensureInitialized();
+  var appKey = "sample_app_key";
+  KakaoSdk.init(nativeAppKey: appKey);
 
+  TestWidgetsFlutterBinding.ensureInitialized();
   const MethodChannel channel = MethodChannel('kakao_flutter_sdk');
 
   const MethodChannel('plugins.flutter.io/shared_preferences')
@@ -36,7 +38,7 @@ void main() {
     _adapter = MockAdapter();
     _dio.httpClientAdapter = _adapter;
     _dio.interceptors.add(ApiFactory.kaInterceptor);
-    _dio.options.baseUrl = "https://${KakaoContext.hosts.kauth}";
+    _dio.options.baseUrl = "https://${KakaoSdk.hosts.kauth}";
     _authApi = AuthApi(dio: _dio);
     _tokenManager = DefaultTokenManager();
     channel.setMockMethodCallHandler((MethodCall methodCall) async {
@@ -62,8 +64,7 @@ void main() {
       await _tokenManager.clear();
 
       token = await _authApi.issueAccessToken("auth_code",
-          redirectUri: "kakaosample_app_key://oauth",
-          clientId: "sample_app_key");
+          redirectUri: "kakaosample_app_key://oauth", appKey: "sample_app_key");
       await _tokenManager.setToken(token);
       final newToken = await _tokenManager.getToken();
       expect(true, newToken != null);
@@ -90,8 +91,7 @@ void main() {
     _adapter.setResponseString(body, 401);
     try {
       await _authApi.issueAccessToken("authCode",
-          redirectUri: "kakaosample_app_key://oauth",
-          clientId: "sample_app_key");
+          redirectUri: "kakaosample_app_key://oauth", appKey: "sample_app_key");
       fail("Should not reach here");
     } on KakaoAuthException catch (e) {
       expect(e.error, AuthErrorCause.MISCONFIGURED);
@@ -104,7 +104,6 @@ void main() {
     var map;
     var refreshToken = "e8sAQWpgBDWPGcvN1_tJR24QVcdAcHgopdtYAAAFi_FnbLAiMpaTTZ";
     var redirectUri = "kakaosample_app_key://oauth";
-    var clientId = "sample_app_key";
 
     setUp(() async {
       String body = await loadJson("oauth/token.json");
@@ -122,7 +121,7 @@ void main() {
       expect(true, oldToken != null);
 
       var newToken = await _authApi.refreshAccessToken(oldToken!,
-          redirectUri: redirectUri, clientId: clientId);
+          redirectUri: redirectUri, appKey: appKey);
       expect(true, oldToken.accessToken != newToken.accessToken);
       expect(
           true, oldToken.accessTokenExpiresAt != newToken.accessTokenExpiresAt);
@@ -142,7 +141,7 @@ void main() {
         expect(params.length, 5);
         expect(params["refresh_token"], refreshToken);
         expect(params["redirect_uri"], redirectUri);
-        expect(params["client_id"], clientId);
+        expect(params["client_id"], appKey);
         expect(params["android_key_hash"], "sample_origin");
       };
     });
@@ -156,7 +155,7 @@ void main() {
         expect(params.length, 5);
         expect(params["refresh_token"], refreshToken);
         expect(params["redirect_uri"], redirectUri);
-        expect(params["client_id"], clientId);
+        expect(params["client_id"], appKey);
         expect(params["ios_bundle_id"], "sample_origin");
       };
     });
@@ -169,8 +168,7 @@ void main() {
     _adapter.setResponseString(body, 401);
     try {
       await _authApi.issueAccessToken("authCode",
-          redirectUri: "kakaosample_app_key://oauth",
-          clientId: "sample_app_key");
+          redirectUri: "kakaosample_app_key://oauth", appKey: "sample_app_key");
       fail("Should not reach here");
     } on KakaoAuthException catch (e) {
       expect(e.error, AuthErrorCause.UNKNOWN);
@@ -202,7 +200,7 @@ void main() {
       expect(true, oldToken != null);
 
       newToken = await _authApi.refreshAccessToken(oldToken!,
-          redirectUri: redirectUri, clientId: clientId);
+          redirectUri: redirectUri, appKey: clientId);
 
       expect(true, newToken != null);
       expect(true, oldToken.accessToken != newToken!.accessToken);

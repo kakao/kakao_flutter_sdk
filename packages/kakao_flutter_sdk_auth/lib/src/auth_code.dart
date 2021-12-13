@@ -47,10 +47,10 @@ class AuthCodeClient {
       "state": state == null ? null : state,
       "codeChallenge": codeChallenge,
       "codeChallengeMethod": codeChallenge != null ? "S256" : null,
-      "ka": await KakaoContext.kaHeader
+      "ka": await KakaoSdk.kaHeader
     };
     params.removeWhere((k, v) => v == null);
-    final url = Uri.https(KakaoContext.hosts.kauth, "/oauth/authorize", params);
+    final url = Uri.https(KakaoSdk.hosts.kauth, "/oauth/authorize", params);
     final authCode = await launchBrowserTab(url, redirectUri: finalRedirectUri);
     return _parseCode(authCode);
   }
@@ -87,10 +87,10 @@ class AuthCodeClient {
       "response_type": "code",
       "agt": agt,
       "scope": scopes.length == 0 ? null : scopes.join(" "),
-      "ka": await KakaoContext.kaHeader
+      "ka": await KakaoSdk.kaHeader
     };
     params.removeWhere((k, v) => v == null);
-    final url = Uri.https(KakaoContext.hosts.kauth, "/oauth/authorize", params);
+    final url = Uri.https(KakaoSdk.hosts.kauth, "/oauth/authorize", params);
     return _parseCode(
         await launchBrowserTab(url, redirectUri: finalRedirectUri));
   }
@@ -110,7 +110,7 @@ class AuthCodeClient {
   Future<String> _openKakaoTalk(String clientId, String redirectUri,
       String? codeVerifier, List<Prompt>? prompts, String? state) async {
     var arguments = {
-      "sdk_version": "sdk/${KakaoContext.sdkVersion} sdk_type/flutter",
+      "sdk_version": "sdk/${KakaoSdk.sdkVersion} sdk_type/flutter",
       "client_id": clientId,
       "redirect_uri": redirectUri,
       "code_verifier": codeVerifier,
@@ -147,12 +147,12 @@ class AuthCodeClient {
 
   String _platformKey() {
     if (kIsWeb) {
-      return KakaoContext.javascriptClientId;
+      return KakaoSdk.jsKey;
     }
     if (_platform.isAndroid || _platform.isIOS) {
-      return KakaoContext.clientId;
+      return KakaoSdk.nativeKey;
     }
-    return KakaoContext.javascriptClientId;
+    return KakaoSdk.jsKey;
   }
 
   static String codeVerifier() {

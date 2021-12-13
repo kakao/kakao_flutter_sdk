@@ -36,11 +36,11 @@ class AuthApi {
   /// 사용자 인증코드([authCode])를 이용하여 신규 토큰 발급을 요청합니다.
   /// [codeVerifier]는 사용자 인증 코드 verifier로 사용합니다.
   Future<OAuthToken> issueAccessToken(String authCode,
-      {String? redirectUri, String? clientId, String? codeVerifier}) async {
+      {String? redirectUri, String? appKey, String? codeVerifier}) async {
     final data = {
       "code": authCode,
       "grant_type": "authorization_code",
-      "client_id": clientId ?? KakaoContext.platformClientId,
+      "client_id": appKey ?? KakaoSdk.platformAppKey,
       "redirect_uri": redirectUri ?? await _platformRedirectUri(),
       "code_verifier": codeVerifier,
       ...await _platformData()
@@ -51,11 +51,11 @@ class AuthApi {
   /// @nodoc
   /// Internal Only
   Future<CertTokenInfo> issueAccessTokenWithCert(String authCode,
-      {String? redirectUri, String? clientId, String? codeVerifier}) async {
+      {String? redirectUri, String? appKey, String? codeVerifier}) async {
     final data = {
       "code": authCode,
       "grant_type": "authorization_code",
-      "client_id": clientId ?? KakaoContext.platformClientId,
+      "client_id": appKey ?? KakaoSdk.platformAppKey,
       "redirect_uri": redirectUri ?? await _platformRedirectUri(),
       "code_verifier": codeVerifier,
       ...await _platformData()
@@ -65,11 +65,11 @@ class AuthApi {
 
   /// 기존 토큰([oldToken])을 갱신합니다
   Future<OAuthToken> refreshAccessToken(OAuthToken oldToken,
-      {String? redirectUri, String? clientId}) async {
+      {String? redirectUri, String? appKey}) async {
     final data = {
       "refresh_token": oldToken.refreshToken,
       "grant_type": "refresh_token",
-      "client_id": clientId ?? KakaoContext.platformClientId,
+      "client_id": appKey ?? KakaoSdk.platformAppKey,
       "redirect_uri": redirectUri ?? await _platformRedirectUri(),
       ...await _platformData()
     };
@@ -79,10 +79,10 @@ class AuthApi {
   }
 
   /// @nodoc
-  Future<String> agt({String? clientId, String? accessToken}) async {
+  Future<String> agt({String? appKey, String? accessToken}) async {
     final tokenInfo = await _tokenManagerProvider.manager.getToken();
     final data = {
-      "client_id": clientId ?? KakaoContext.platformClientId,
+      "client_id": appKey ?? KakaoSdk.platformAppKey,
       "access_token": accessToken ?? tokenInfo!.accessToken
     };
 
@@ -113,7 +113,7 @@ class AuthApi {
   }
 
   Future<Map<String, String>> _platformData() async {
-    final origin = await KakaoContext.origin;
+    final origin = await KakaoSdk.origin;
     if (kIsWeb) return {"client_origin": origin};
     return _platform.isAndroid
         ? {"android_key_hash": origin}
@@ -123,7 +123,7 @@ class AuthApi {
   }
 
   Future<String> _platformRedirectUri() async {
-    if (kIsWeb) return await KakaoContext.origin;
-    return "kakao${KakaoContext.clientId}://oauth";
+    if (kIsWeb) return await KakaoSdk.origin;
+    return "kakao${KakaoSdk.nativeKey}://oauth";
   }
 }

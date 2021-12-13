@@ -76,7 +76,7 @@ class AccessTokenInterceptor extends Interceptor {
 
   // This can be overridden
   bool isRetryable(DioError err) =>
-      err.requestOptions.baseUrl == "https://${KakaoContext.hosts.kapi}" &&
+      err.requestOptions.baseUrl == "https://${KakaoSdk.hosts.kapi}" &&
       err.response != null &&
       err.response?.statusCode == 401;
 

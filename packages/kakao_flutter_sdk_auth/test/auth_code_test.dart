@@ -4,6 +4,10 @@ import 'package:kakao_flutter_sdk_auth/auth.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+
+  var appKey = "sampleappkey";
+  KakaoSdk.init(nativeAppKey: appKey);
+
   var channel = MethodChannel("kakao_flutter_sdk");
   setUp(() async {});
 
@@ -12,8 +16,7 @@ void main() {
   });
 
   group("/oauth/authorize", () {
-    var clientId = "sampleappkey";
-    var redirectUri = "kakao$clientId://oauth";
+    var redirectUri = "kakao$appKey://oauth";
     var expectedCode = "sample_auth_code";
     var state = "state";
     test("200", () async {
@@ -22,7 +25,7 @@ void main() {
       });
 
       var code = await AuthCodeClient.instance.request(
-          clientId: clientId,
+          clientId: appKey,
           redirectUri: redirectUri,
           scopes: ["profile", "account_email"]);
       expect(code, expectedCode);
@@ -35,7 +38,7 @@ void main() {
 
       try {
         await AuthCodeClient.instance
-            .request(clientId: clientId, redirectUri: redirectUri);
+            .request(clientId: appKey, redirectUri: redirectUri);
         fail("should not reach here");
       } on KakaoAuthException catch (e) {
         expect(e.error, AuthErrorCause.ACCESS_DENIED);
