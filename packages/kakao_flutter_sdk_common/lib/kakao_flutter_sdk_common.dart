@@ -5,7 +5,6 @@ export 'package:crypto/crypto.dart';
 export 'package:dio/dio.dart';
 export 'package:json_annotation/json_annotation.dart';
 export 'package:kakao_flutter_sdk_common/src/api_factory.dart';
-export 'package:kakao_flutter_sdk_common/src/dapi_exception.dart';
 export 'package:kakao_flutter_sdk_common/src/kakao_api_exception.dart';
 export 'package:kakao_flutter_sdk_common/src/kakao_auth_exception.dart';
 export 'package:kakao_flutter_sdk_common/src/kakao_error.dart';

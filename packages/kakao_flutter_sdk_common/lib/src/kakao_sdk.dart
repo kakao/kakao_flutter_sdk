@@ -101,7 +101,6 @@ class KakaoSdk {
 // List of hosts used by Kakao API.
 class ServerHosts {
   final String kapi = "kapi.kakao.com";
-  final String dapi = "dapi.kakao.com";
   final String kauth = "kauth.kakao.com";
   final String sharer = "sharer.kakao.com";
   final String pf = "pf.kakao.com";

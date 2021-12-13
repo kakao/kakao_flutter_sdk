@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
-import 'package:kakao_flutter_sdk_common/src/dapi_exception.dart';
 import 'package:kakao_flutter_sdk_common/src/kakao_api_exception.dart';
 import 'package:kakao_flutter_sdk_common/src/kakao_auth_exception.dart';
 
@@ -10,19 +9,9 @@ class ApiFactory {
   /// [Dio] instance for appkey-based Kakao API.
   static final Dio appKeyApi = _appKeyApiInstance();
 
-  static final Dio dapi = _dapiInstance();
-
   static Dio _appKeyApiInstance() {
     var dio = Dio();
     dio.options.baseUrl = "https://${KakaoSdk.hosts.kapi}";
-    dio.options.contentType = "application/x-www-form-urlencoded";
-    dio.interceptors.addAll([appKeyInterceptor, kaInterceptor]);
-    return dio;
-  }
-
-  static Dio _dapiInstance() {
-    var dio = Dio();
-    dio.options.baseUrl = "https://${KakaoSdk.hosts.dapi}";
     dio.options.contentType = "application/x-www-form-urlencoded";
     dio.interceptors.addAll([appKeyInterceptor, kaInterceptor]);
     return dio;
@@ -48,9 +37,6 @@ class ApiFactory {
     }
     if (Uri.parse(request.baseUrl).host == KakaoSdk.hosts.kauth) {
       return KakaoAuthException.fromJson(response.data);
-    }
-    if (Uri.parse(request.baseUrl).host == KakaoSdk.hosts.dapi) {
-      return DapiException.fromJson(response.data);
     }
 
     return KakaoApiException.fromJson(response.data);
