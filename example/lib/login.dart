@@ -137,7 +137,7 @@ class _LoginState extends State<LoginScreen> {
 
   _loginWithKakaoPrompts() async {
     try {
-      await UserApi.instance.loginWithKakaoAccount(prompts: [Prompt.LOGIN]);
+      await UserApi.instance.loginWithKakaoAccount(prompts: [Prompt.login]);
       Navigator.of(context).pushReplacementNamed("/main");
     } catch (e) {
       print('error on login: $e');

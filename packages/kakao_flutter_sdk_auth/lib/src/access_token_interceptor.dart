@@ -9,12 +9,12 @@ import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 class AccessTokenInterceptor extends Interceptor {
   AccessTokenInterceptor(this._dio, this._kauthApi,
       {TokenManagerProvider? tokenManagerProvider})
-      : this._tokenManagerProvider =
+      : _tokenManagerProvider =
             tokenManagerProvider ?? TokenManagerProvider.instance;
 
-  Dio _dio;
-  AuthApi _kauthApi;
-  TokenManagerProvider _tokenManagerProvider;
+  final Dio _dio;
+  final AuthApi _kauthApi;
+  final TokenManagerProvider _tokenManagerProvider;
 
   @override
   void onRequest(

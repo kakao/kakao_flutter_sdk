@@ -8,8 +8,8 @@ import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import '../../kakao_flutter_sdk_common/test/helper.dart';
 
 void main() {
-  var map;
-  var response;
+  Map<String, dynamic>? map;
+  AccessTokenResponse? response;
   late DefaultTokenManager tokenManager;
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -26,24 +26,24 @@ void main() {
       return null;
     });
     map = await loadJsonIntoMap('oauth/token_with_rt_and_scopes.json');
-    response = AccessTokenResponse.fromJson(map);
+    response = AccessTokenResponse.fromJson(map!);
     tokenManager = DefaultTokenManager();
   });
   tearDown(() {});
 
   test('toCache', () async {
-    expect(response.accessToken, map["access_token"]);
-    expect(response.refreshToken, map["refresh_token"]);
-    await tokenManager.setToken(OAuthToken.fromResponse(response));
+    expect(response!.accessToken, map!["access_token"]);
+    expect(response!.refreshToken, map!["refresh_token"]);
+    await tokenManager.setToken(OAuthToken.fromResponse(response!));
     var newToken = await tokenManager.getToken();
     expect(true, newToken != null);
-    expect(newToken!.accessToken, response.accessToken);
-    expect(newToken.refreshToken, response.refreshToken);
-    expect(newToken.scopes?.join(" "), response.scope);
+    expect(newToken!.accessToken, response!.accessToken);
+    expect(newToken.refreshToken, response!.refreshToken);
+    expect(newToken.scopes?.join(" "), response!.scope);
   });
 
   test("clear", () async {
-    var token = OAuthToken.fromResponse(response);
+    var token = OAuthToken.fromResponse(response!);
     await tokenManager.setToken(token);
     await tokenManager.clear();
     var newToken = await tokenManager.getToken();
@@ -52,7 +52,7 @@ void main() {
 
   test("token migration test", () async {
     var oldTokenManager = OldTokenManager();
-    await oldTokenManager.setToken(OAuthToken.fromResponse(response));
+    await oldTokenManager.setToken(OAuthToken.fromResponse(response!));
     final oldToken = await oldTokenManager.getToken();
     expect(true, oldToken != null);
     final newToken = await tokenManager.getToken();

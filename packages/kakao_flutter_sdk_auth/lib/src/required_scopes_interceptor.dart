@@ -4,20 +4,20 @@ import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 /// @nodoc
 /// -402 에러 시 자동 추가 동의
 class RequiredScopesInterceptor extends Interceptor {
-  Dio _dio;
-  AuthCodeClient _authCodeClient;
-  TokenManagerProvider _tokenManagerProvider;
+  final Dio _dio;
+  final AuthCodeClient _authCodeClient;
+  final TokenManagerProvider _tokenManagerProvider;
 
   RequiredScopesInterceptor(this._dio,
       {TokenManagerProvider? tokenManagerProvider})
-      : this._authCodeClient = AuthCodeClient.instance,
-        this._tokenManagerProvider =
+      : _authCodeClient = AuthCodeClient.instance,
+        _tokenManagerProvider =
             tokenManagerProvider ?? TokenManagerProvider.instance;
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) async {
     var error = ApiFactory.transformApiError(err);
-    if (!(error is KakaoApiException)) {
+    if (error is! KakaoApiException) {
       handler.next(err);
       return;
     }

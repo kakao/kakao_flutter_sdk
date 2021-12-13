@@ -14,7 +14,7 @@ class AuthApi {
       Platform? platform,
       TokenManagerProvider? tokenManagerProvider})
       : _dio = dio ?? AuthApiFactory.kauthApi,
-        _platform = platform ?? LocalPlatform(),
+        _platform = platform ?? const LocalPlatform(),
         _tokenManagerProvider =
             tokenManagerProvider ?? TokenManagerProvider.instance;
 

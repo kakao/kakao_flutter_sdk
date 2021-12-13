@@ -51,11 +51,9 @@ void main() {
   });
 
   group("/oauth/token 200", () {
-    var map;
     OAuthToken token;
     setUp(() async {
       String body = await loadJson("oauth/token_with_rt_and_scopes.json");
-      map = jsonDecode(body);
       _adapter.setResponseString(body, 200);
     });
 
@@ -101,13 +99,11 @@ void main() {
   });
 
   group("/oauth/token refresh access token only", () {
-    var map;
     var refreshToken = "e8sAQWpgBDWPGcvN1_tJR24QVcdAcHgopdtYAAAFi_FnbLAiMpaTTZ";
     var redirectUri = "kakaosample_app_key://oauth";
 
     setUp(() async {
       String body = await loadJson("oauth/token.json");
-      map = jsonDecode(body);
       _adapter.setResponseString(body, 200);
     });
 
@@ -178,7 +174,6 @@ void main() {
   });
 
   group("/oauth/token refresh access token and refresh token", () {
-    var map;
     var refreshToken = "e8sAQWpgBDWPGcvN1_tJR24QVcdAcHgopdtYAAAFi_FnbLAiMpaTTZ";
     var redirectUri = "kakaosample_app_key://oauth";
     var clientId = "sample_app_key";
@@ -186,7 +181,6 @@ void main() {
 
     setUp(() async {
       String body = await loadJson("oauth/token_with_rt.json");
-      map = jsonDecode(body);
       _adapter.setResponseString(body, 200);
     });
 

@@ -14,7 +14,7 @@ const MethodChannel _channel = MethodChannel("kakao_flutter_sdk");
 class AuthCodeClient {
   AuthCodeClient({AuthApi? authApi, Platform? platform})
       : _kauthApi = authApi ?? AuthApi.instance,
-        _platform = platform ?? LocalPlatform();
+        _platform = platform ?? const LocalPlatform();
 
   final AuthApi _kauthApi;
   final Platform _platform;
@@ -30,7 +30,7 @@ class AuthCodeClient {
       List<String>? scopes,
       String? state}) async {
     final finalRedirectUri = redirectUri ?? "kakao${_platformKey()}://oauth";
-    var codeChallenge;
+    String? codeChallenge;
     if (codeVerifier != null) {
       codeChallenge =
           base64.encode(sha256.convert(utf8.encode(codeVerifier)).bytes);
@@ -40,11 +40,11 @@ class AuthCodeClient {
       "redirect_uri": finalRedirectUri,
       "response_type": "code",
       // "approval_type": "individual",
-      "scope": scopes == null ? null : scopes.join(" "),
+      "scope": scopes?.join(" "),
       "prompt": state == null
           ? (prompts == null ? null : parsePrompts(prompts))
           : parsePrompts(_makeCertPrompts(prompts)),
-      "state": state == null ? null : state,
+      "state": state,
       "codeChallenge": codeChallenge,
       "codeChallengeMethod": codeChallenge != null ? "S256" : null,
       "ka": await KakaoSdk.kaHeader
@@ -86,7 +86,7 @@ class AuthCodeClient {
       "redirect_uri": finalRedirectUri,
       "response_type": "code",
       "agt": agt,
-      "scope": scopes.length == 0 ? null : scopes.join(" "),
+      "scope": scopes.isEmpty ? null : scopes.join(" "),
       "ka": await KakaoSdk.kaHeader
     };
     params.removeWhere((k, v) => v == null);
@@ -117,7 +117,7 @@ class AuthCodeClient {
       "prompt": state == null
           ? (prompts == null ? null : parsePrompts(prompts))
           : parsePrompts(_makeCertPrompts(prompts)),
-      "state": state == null ? null : state,
+      "state": state,
     };
     arguments.removeWhere((k, v) => v == null);
     final redirectUriWithParams =
@@ -128,20 +128,18 @@ class AuthCodeClient {
   }
 
   List<Prompt> _makeCertPrompts(List<Prompt>? prompts) {
-    if (prompts == null) {
-      prompts = [];
-    }
-    if (!prompts.contains(Prompt.CERT)) {
-      prompts.add(Prompt.CERT);
+    prompts ??= [];
+    if (!prompts.contains(Prompt.cert)) {
+      prompts.add(Prompt.cert);
     }
     return prompts;
   }
 
   String parsePrompts(List<Prompt> prompts) {
     var parsedPrompt = '';
-    prompts.forEach((element) {
+    for (var element in prompts) {
       parsedPrompt += '${describeEnum(element).toLowerCase()} ';
-    });
+    }
     return parsedPrompt;
   }
 
@@ -170,8 +168,8 @@ class AuthCodeClient {
 /// 동의 화면 요청 시 추가 상호작용을 요청하고자 할 때 전달하는 파라미터
 enum Prompt {
   /// 기본 웹 브라우저(CustomTabs)에 카카오계정 cookie 가 이미 있더라도 이를 무시하고 무조건 로그인 화면을 보여주도록 함
-  LOGIN,
+  login,
 
   /// @nodoc
-  CERT
+  cert
 }

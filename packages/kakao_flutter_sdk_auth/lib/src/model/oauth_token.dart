@@ -51,8 +51,8 @@ class OAuthToken {
     final atExpiresAt =
         DateTime.now().millisecondsSinceEpoch + response.expiresIn * 1000;
 
-    var refreshToken;
-    var rtExpiresAt;
+    String? refreshToken;
+    int? rtExpiresAt;
 
     if (response.refreshToken != null) {
       refreshToken = response.refreshToken;
@@ -68,7 +68,7 @@ class OAuthToken {
       rtExpiresAt = oldToken.refreshTokenExpiresAt.millisecondsSinceEpoch;
     }
 
-    var scopes;
+    List<String>? scopes;
     if (response.scope != null) {
       scopes = response.scope!.split(' ');
     } else {
@@ -77,8 +77,8 @@ class OAuthToken {
     return OAuthToken(
         response.accessToken,
         DateTime.fromMillisecondsSinceEpoch(atExpiresAt),
-        refreshToken,
-        DateTime.fromMillisecondsSinceEpoch(rtExpiresAt),
+        refreshToken!,
+        DateTime.fromMillisecondsSinceEpoch(rtExpiresAt!),
         scopes);
   }
 }
