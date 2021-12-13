@@ -13,6 +13,8 @@ scripts:
     run: flutter format .
     description: Reformat all codes
 
+  analyze:
+    run: flutter analyze --no-pub
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
