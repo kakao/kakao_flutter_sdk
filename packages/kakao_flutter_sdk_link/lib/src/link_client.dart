@@ -10,11 +10,11 @@ import 'package:kakao_flutter_sdk_template/kakao_flutter_sdk_template.dart';
 
 class LinkClient {
   LinkClient(this.api, {Platform? platform})
-      : _platform = platform ?? LocalPlatform();
+      : _platform = platform ?? const LocalPlatform();
   LinkApi api;
-  Platform _platform;
+  final Platform _platform;
 
-  static final MethodChannel _channel = MethodChannel("kakao_flutter_sdk");
+  static const MethodChannel _channel = MethodChannel("kakao_flutter_sdk");
 
   /// 간편한 API 호출을 위해 기본 제공되는 singleton 객체
   static final LinkClient instance = LinkClient(LinkApi.instance);
