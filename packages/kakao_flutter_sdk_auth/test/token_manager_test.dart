@@ -55,9 +55,12 @@ void main() {
     await oldTokenManager.setToken(OAuthToken.fromResponse(response!));
     final oldToken = await oldTokenManager.getToken();
     expect(true, oldToken != null);
+
+    // token migration
     final newToken = await tokenManager.getToken();
     expect(true, newToken != null);
 
+    // oldTokenManager can't get token after token migration
     try {
       final prevToken = await oldTokenManager.getToken();
       fail("should not reach here");
