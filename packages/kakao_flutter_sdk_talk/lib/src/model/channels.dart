@@ -1,4 +1,4 @@
-import 'package:kakao_flutter_sdk_auth/auth.dart';
+import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/channel.dart';
 
 part 'channels.g.dart';

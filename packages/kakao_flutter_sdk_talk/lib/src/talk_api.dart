@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:kakao_flutter_sdk_auth/auth.dart';
+import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/channels.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/friends.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/message_send_result.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/talk_profile.dart';
-import 'package:kakao_flutter_sdk_template/template.dart';
+import 'package:kakao_flutter_sdk_template/kakao_flutter_sdk_template.dart';
 
 /// 카카오톡 API 호출을 담당하는 클라이언트.
 class TalkApi {

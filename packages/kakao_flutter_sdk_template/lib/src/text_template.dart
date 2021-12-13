@@ -1,4 +1,4 @@
-import 'package:kakao_flutter_sdk_common/common.dart';
+import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:kakao_flutter_sdk_template/src/default_template.dart';
 import 'package:kakao_flutter_sdk_template/src/model/button.dart';
 import 'package:kakao_flutter_sdk_template/src/model/link.dart';

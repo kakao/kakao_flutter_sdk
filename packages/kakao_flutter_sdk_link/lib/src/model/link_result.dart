@@ -1,4 +1,4 @@
-import 'package:kakao_flutter_sdk_template/template.dart';
+import 'package:kakao_flutter_sdk_template/kakao_flutter_sdk_template.dart';
 
 part 'link_result.g.dart';
 

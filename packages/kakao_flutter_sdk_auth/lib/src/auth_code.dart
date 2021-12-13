@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:kakao_flutter_sdk_auth/src/auth_api.dart';
-import 'package:kakao_flutter_sdk_common/common.dart';
+import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 
 const MethodChannel _channel = MethodChannel("kakao_flutter_sdk");
 

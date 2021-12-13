@@ -1,4 +1,4 @@
-import 'package:kakao_flutter_sdk_auth/auth.dart';
+import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/friend.dart';
 
 part 'friends.g.dart';

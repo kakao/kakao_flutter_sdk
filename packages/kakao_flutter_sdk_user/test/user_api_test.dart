@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kakao_flutter_sdk_auth/auth.dart';
+import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_user/src/model/account.dart';
 import 'package:kakao_flutter_sdk_user/src/model/user.dart';
 import 'package:kakao_flutter_sdk_user/src/user_api.dart';

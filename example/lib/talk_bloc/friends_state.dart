@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:kakao_flutter_sdk_talk/talk.dart';
+import 'package:kakao_flutter_sdk_talk/kakao_flutter_sdk_talk.dart';
 import 'package:meta/meta.dart';
 
 @immutable

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:kakao_flutter_sdk_common/common.dart';
+import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 /// Kakao SDK의 싱글턴 Context

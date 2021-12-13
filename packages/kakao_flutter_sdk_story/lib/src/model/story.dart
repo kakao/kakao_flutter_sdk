@@ -1,4 +1,4 @@
-import 'package:kakao_flutter_sdk_auth/auth.dart';
+import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_story/src/model/story_comment.dart';
 import 'package:kakao_flutter_sdk_story/src/model/story_image.dart';
 import 'package:kakao_flutter_sdk_story/src/model/story_like.dart';

@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kakao_flutter_sdk_example/story_bloc/post_story_bloc.dart';
 import 'package:kakao_flutter_sdk_example/story_bloc/post_story_event.dart';
 import 'package:kakao_flutter_sdk_example/story_bloc/post_story_state.dart';
-import 'package:kakao_flutter_sdk_story/story.dart';
+import 'package:kakao_flutter_sdk_story/kakao_flutter_sdk_story.dart';
 
 class AddStoryScreen extends StatefulWidget {
   @override

@@ -1,4 +1,4 @@
-import 'package:kakao_flutter_sdk_common/common.dart';
+import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 
 part 'navi_option.g.dart';
 

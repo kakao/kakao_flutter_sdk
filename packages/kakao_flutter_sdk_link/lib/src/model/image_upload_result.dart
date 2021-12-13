@@ -1,5 +1,5 @@
 import 'package:kakao_flutter_sdk_link/src/model/image_infos.dart';
-import 'package:kakao_flutter_sdk_template/template.dart';
+import 'package:kakao_flutter_sdk_template/kakao_flutter_sdk_template.dart';
 
 part 'image_upload_result.g.dart';
 

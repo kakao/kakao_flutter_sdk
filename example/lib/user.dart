@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kakao_flutter_sdk_example/user_bloc/bloc.dart';
 import 'package:kakao_flutter_sdk_example/user_bloc/user_bloc.dart';
-import 'package:kakao_flutter_sdk_user/user.dart';
+import 'package:kakao_flutter_sdk_navi/kakao_flutter_sdk_navi.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
 class UserScreen extends StatefulWidget {
   @override
@@ -58,6 +59,28 @@ class _UserState extends State<UserScreen> {
                     RaisedButton(
                       child: Text("Unlink"),
                       onPressed: () => bloc.add(UserUnlink()),
+                      color: Colors.red,
+                      textColor: Colors.white,
+                    ),
+                    RaisedButton(
+                      child: Text("navi"),
+                      onPressed: () async {
+                        NaviApi.instance.navigate(
+                            destination: Location(
+                                "카카오 판교오피스", "127.108640", "37.402111"),
+                            option: NaviOption(coordType: NaviCoordType.WGS84));
+                      },
+                      color: Colors.red,
+                      textColor: Colors.white,
+                    ),
+                    RaisedButton(
+                      child: Text("share"),
+                      onPressed: () async {
+                        NaviApi.instance.shareDestination(
+                          destination:
+                              Location("카카오 판교오피스", "321286", "533707"),
+                        );
+                      },
                       color: Colors.red,
                       textColor: Colors.white,
                     ),

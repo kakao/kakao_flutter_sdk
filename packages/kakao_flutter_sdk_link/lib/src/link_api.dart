@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:kakao_flutter_sdk_link/src/model/image_upload_result.dart';
 import 'package:kakao_flutter_sdk_link/src/model/link_result.dart';
-import 'package:kakao_flutter_sdk_template/template.dart';
+import 'package:kakao_flutter_sdk_template/kakao_flutter_sdk_template.dart';
 
 class LinkApi {
   LinkApi(this.dio);

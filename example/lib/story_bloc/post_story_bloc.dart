@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:kakao_flutter_sdk_story/story.dart';
+import 'package:kakao_flutter_sdk_story/kakao_flutter_sdk_story.dart';
 
 import 'bloc.dart';
 

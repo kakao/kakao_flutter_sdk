@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:kakao_flutter_sdk_auth/auth.dart';
+import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_example/talk_bloc/bloc.dart';
 import 'package:kakao_flutter_sdk_example/talk_bloc/friends_event.dart';
-import 'package:kakao_flutter_sdk_talk/talk.dart';
-import 'package:kakao_flutter_sdk_user/user.dart';
+import 'package:kakao_flutter_sdk_talk/kakao_flutter_sdk_talk.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
 class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
   final TalkApi _api;

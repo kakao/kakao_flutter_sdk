@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
-import 'package:kakao_flutter_sdk_story/story.dart';
+import 'package:kakao_flutter_sdk_story/kakao_flutter_sdk_story.dart';
 import 'package:meta/meta.dart';
 
 @immutable

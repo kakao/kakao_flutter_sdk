@@ -1,4 +1,4 @@
-import 'package:kakao_flutter_sdk_auth/auth.dart';
+import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/message_failure_info.dart';
 
 part 'message_send_result.g.dart';

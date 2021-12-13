@@ -1,4 +1,4 @@
-import 'package:kakao_flutter_sdk_auth/auth.dart';
+import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 
 part 'user_id_response.g.dart';
 

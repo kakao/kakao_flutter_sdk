@@ -1,7 +1,7 @@
-import 'package:kakao_flutter_sdk_auth/auth.dart';
+import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_auth/src/auth_api.dart';
 import 'package:kakao_flutter_sdk_auth/src/token_manager.dart';
-import 'package:kakao_flutter_sdk_common/common.dart';
+import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 
 /// @nodoc
 /// API 요청에 AccessToken을 추가하는 인터셉터

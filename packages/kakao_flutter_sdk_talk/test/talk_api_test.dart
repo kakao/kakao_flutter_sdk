@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kakao_flutter_sdk_talk/talk.dart';
+import 'package:kakao_flutter_sdk_talk/kakao_flutter_sdk_talk.dart';
 
 import '../../kakao_flutter_sdk_common/test/helper.dart';
 import '../../kakao_flutter_sdk_common/test/mock_adapter.dart';

@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:kakao_flutter_sdk_example/talk_bloc/talk_event.dart';
-import 'package:kakao_flutter_sdk_talk/talk.dart';
+import 'package:kakao_flutter_sdk_talk/kakao_flutter_sdk_talk.dart';
 
 import 'bloc.dart';
 

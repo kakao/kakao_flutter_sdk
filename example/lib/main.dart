@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kakao_flutter_sdk_auth/auth.dart';
+import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_example/server_phase.dart';
 import 'package:kakao_flutter_sdk_example/story_bloc/bloc.dart';
 import 'package:kakao_flutter_sdk_example/talk_bloc/bloc.dart';
