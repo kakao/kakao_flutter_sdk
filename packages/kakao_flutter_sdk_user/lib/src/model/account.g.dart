@@ -22,16 +22,16 @@ Account _$AccountFromJson(Map<String, dynamic> json) {
     json['email'] as String?,
     json['age_range_needs_agreement'] as bool?,
     _$enumDecodeNullable(_$AgeRangeEnumMap, json['age_range'],
-        unknownValue: AgeRange.UNKNOWN),
+        unknownValue: AgeRange.unknown),
     json['birthyear_needs_agreement'] as bool?,
     json['birthyear'] as String?,
     json['birthday_needs_agreement'] as bool?,
     json['birthday'] as String?,
     _$enumDecodeNullable(_$BirthdayTypeEnumMap, json['birthday_type'],
-        unknownValue: BirthdayType.UNKNOWN),
+        unknownValue: BirthdayType.unknown),
     json['gender_needs_agreement'] as bool?,
     _$enumDecodeNullable(_$GenderEnumMap, json['gender'],
-        unknownValue: Gender.OTHER),
+        unknownValue: Gender.other),
     json['ci_needs_agreement'] as bool?,
     json['ci'] as String?,
     json['ci_authenticated_at'] == null
@@ -41,7 +41,7 @@ Account _$AccountFromJson(Map<String, dynamic> json) {
     json['legal_name'] as String?,
     json['legal_gender_needs_agreement'] as bool?,
     _$enumDecodeNullable(_$GenderEnumMap, json['legal_gender'],
-        unknownValue: Gender.OTHER),
+        unknownValue: Gender.other),
     json['legal_birth_date_needs_agreement'] as bool?,
     json['legal_birth_date'] as String?,
     json['phone_number_needs_agreement'] as bool?,
@@ -139,26 +139,26 @@ K? _$enumDecodeNullable<K, V>(
 }
 
 const _$AgeRangeEnumMap = {
-  AgeRange.TEEN: '15~19',
-  AgeRange.TWENTIES: '20~29',
-  AgeRange.THIRTIES: '30~39',
-  AgeRange.FORTIES: '40~49',
-  AgeRange.FIFTIES: '50~59',
-  AgeRange.SIXTIES: '60~69',
-  AgeRange.SEVENTIES: '70~79',
-  AgeRange.EIGHTEES: '80~89',
-  AgeRange.NINTIES_AND_ABOVE: '90~',
-  AgeRange.UNKNOWN: 'UNKNOWN',
+  AgeRange.age_15_19: '15~19',
+  AgeRange.age_20_29: '20~29',
+  AgeRange.age_30_39: '30~39',
+  AgeRange.age_40_49: '40~49',
+  AgeRange.age_50_59: '50~59',
+  AgeRange.age_60_69: '60~69',
+  AgeRange.age_70_79: '70~79',
+  AgeRange.age_80_89: '80~89',
+  AgeRange.age_90above: '90~',
+  AgeRange.unknown: 'UNKNOWN',
 };
 
 const _$BirthdayTypeEnumMap = {
-  BirthdayType.SOLAR: 'SOLAR',
-  BirthdayType.LUNAR: 'LUNAR',
-  BirthdayType.UNKNOWN: 'UNKNOWN',
+  BirthdayType.solar: 'SOLAR',
+  BirthdayType.lunar: 'LUNAR',
+  BirthdayType.unknown: 'UNKNOWN',
 };
 
 const _$GenderEnumMap = {
-  Gender.FEMALE: 'female',
-  Gender.MALE: 'male',
-  Gender.OTHER: 'other',
+  Gender.female: 'female',
+  Gender.male: 'male',
+  Gender.other: 'other',
 };

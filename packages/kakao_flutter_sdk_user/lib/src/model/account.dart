@@ -41,7 +41,7 @@ class Account {
   bool? ageRangeNeedsAgreement;
 
   /// 연령대
-  @JsonKey(unknownEnumValue: AgeRange.UNKNOWN)
+  @JsonKey(unknownEnumValue: AgeRange.unknown)
   AgeRange? ageRange;
 
   /// birthyear 제공에 대한 사용자 동의 필요 여부
@@ -57,14 +57,14 @@ class Account {
   String? birthday;
 
   /// 생일의 양력/음력
-  @JsonKey(unknownEnumValue: BirthdayType.UNKNOWN)
+  @JsonKey(unknownEnumValue: BirthdayType.unknown)
   BirthdayType? birthdayType;
 
   /// gender 제공에 대한 사용자의 동의 필요 여부
   bool? genderNeedsAgreement;
 
   /// 성별
-  @JsonKey(unknownEnumValue: Gender.OTHER)
+  @JsonKey(unknownEnumValue: Gender.other)
   Gender? gender;
 
   /// ci 제공에 대한 사용자의 동의 필요 여부
@@ -92,7 +92,7 @@ class Account {
   bool? legalGenderNeedsAgreement;
 
   /// 법정성별
-  @JsonKey(unknownEnumValue: Gender.OTHER)
+  @JsonKey(unknownEnumValue: Gender.other)
   Gender? legalGender;
 
   /// phoneNumber 제공에 대한 사용자 동의 필요 여부
@@ -155,36 +155,39 @@ class Account {
 
 /// 연령대 (한국 나이)
 enum AgeRange {
+  @JsonValue("0~9")
+  age_0_9,
+  @JsonValue("10~14")
+  age_10_14,
   @JsonValue("15~19")
-  TEEN,
+  age_15_19,
   @JsonValue("20~29")
-  TWENTIES,
+  age_20_29,
   @JsonValue("30~39")
-  THIRTIES,
+  age_30_39,
   @JsonValue("40~49")
-  FORTIES,
+  age_40_49,
   @JsonValue("50~59")
-  FIFTIES,
+  age_50_59,
   @JsonValue("60~69")
-  SIXTIES,
+  age_60_69,
   @JsonValue("70~79")
-  SEVENTIES,
+  age_70_79,
   @JsonValue("80~89")
-  EIGHTEES,
+  age_80_89,
   @JsonValue("90~")
-  NINTIES_AND_ABOVE,
-  UNKNOWN
+  age_90above,
+  unknown
 }
 
 /// 성별
-enum Gender {
-  @JsonValue("female")
-  FEMALE,
-  @JsonValue("male")
-  MALE,
-  @JsonValue("other")
-  OTHER
-}
+enum Gender { female, male, other }
 
 /// 생일의 양력/음력
-enum BirthdayType { SOLAR, LUNAR, UNKNOWN }
+enum BirthdayType {
+  @JsonValue("SOLAR")
+  solar,
+  @JsonValue("LUNAR")
+  lunar,
+  unknown
+}

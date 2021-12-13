@@ -65,6 +65,6 @@ K _$enumDecode<K, V>(
 }
 
 const _$ScopeTypeEnumMap = {
-  ScopeType.PRIVACY: 'PRIVACY',
-  ScopeType.SERVICE: 'SERVICE',
+  ScopeType.privacy: 'PRIVACY',
+  ScopeType.service: 'SERVICE',
 };

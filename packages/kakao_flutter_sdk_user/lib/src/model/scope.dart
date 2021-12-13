@@ -38,4 +38,9 @@ class Scope {
   Map<String, dynamic> toJson() => _$ScopeToJson(this);
 }
 
-enum ScopeType { PRIVACY, SERVICE }
+enum ScopeType {
+  @JsonValue("PRIVACY")
+  privacy,
+  @JsonValue("SERVICE")
+  service
+}

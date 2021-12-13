@@ -40,8 +40,8 @@ void main() {
         accountMap["phone_number_needs_agreement"]);
     expect(account?.phoneNumber, accountMap["phone_number"]);
 
-    expect(account?.ageRange, AgeRange.TWENTIES);
-    expect(account?.gender, Gender.FEMALE);
+    expect(account?.ageRange, AgeRange.age_20_29);
+    expect(account?.gender, Gender.female);
 
     final profileMap = accountMap["profile"];
     final profile = account?.profile;
@@ -50,8 +50,6 @@ void main() {
         profile?.thumbnailImageUrl.toString());
     expect(
         profileMap["profile_image_url"], profile?.profileImageUrl.toString());
-
-    expect(true, user.toJson() != null);
   });
 
   test("/v1/user/access_token_info 200", () async {

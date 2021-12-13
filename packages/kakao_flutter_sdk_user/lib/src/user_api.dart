@@ -153,18 +153,16 @@ class UserApi {
   /// 앱 연결 시 기본 저장되는 nickname, profile_image, thumbnail_image 값도 덮어쓰기 가능하며 새로운 컬럼을 추가하면 해당 키 이름으로 정보 저장 가능.
   Future<void> updateProfile(Map<String, String> properties) {
     return ApiFactory.handleApiError(() async {
-      Response response = await _dio.post('/v1/user/update_profile',
+      await _dio.post('/v1/user/update_profile',
           data: {'properties': jsonEncode(properties)});
-      print(response);
     });
   }
 
   /// 앱 연결 상태가 **PREREGISTER** 상태의 사용자에 대하여 앱 연결 요청. **자동연결** 설정을 비활성화한 앱에서 사용.
   Future<void> signup({Map<String, String>? properties}) {
     return ApiFactory.handleApiError(() async {
-      Response response = await _dio.post('/v1/user/signup',
+      await _dio.post('/v1/user/signup',
           data: {'properties': jsonEncode(properties)});
-      print(response);
     });
   }
 
