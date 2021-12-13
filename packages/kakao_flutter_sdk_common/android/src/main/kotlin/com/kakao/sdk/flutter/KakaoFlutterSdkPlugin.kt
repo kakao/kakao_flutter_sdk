@@ -149,7 +149,7 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
                 val extras = args["extras"]
                 val params = args["navi_params"]
                 val uri = naviBaseUriBuilder(appKey, extras, params).scheme(Constants.NAVI_SCHEME)
-                    .authority(Constants.SHARE_POI).build()
+                    .authority(Constants.NAVIGATE).build()
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 try {

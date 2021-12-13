@@ -67,12 +67,21 @@ class NaviApi {
       {required Location destination,
       NaviOption? option,
       List<Location>? viaList}) async {
+    final shareNaviOption = NaviOption(
+        coordType: option?.coordType,
+        vehicleType: option?.vehicleType,
+        rpOption: option?.rpOption,
+        routeInfo: true,
+        startX: option?.startX,
+        startY: option?.startY,
+        startAngle: option?.startAngle);
+
     final extras = await _getExtras();
     final arguments = {
       'app_key': KakaoSdk.nativeKey,
       'extras': jsonEncode(extras),
-      'navi_params': jsonEncode(
-          KakaoNaviParams(destination, option: option, viaList: viaList))
+      'navi_params': jsonEncode(KakaoNaviParams(destination,
+          option: shareNaviOption, viaList: viaList))
     };
     await _channel.invokeMethod<bool>("shareDestination", arguments);
   }
