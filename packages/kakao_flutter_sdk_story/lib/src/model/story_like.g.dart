@@ -9,7 +9,7 @@ part of 'story_like.dart';
 StoryLike _$StoryLikeFromJson(Map<String, dynamic> json) {
   return StoryLike(
     _$enumDecode(_$EmotionEnumMap, json['emotion'],
-        unknownValue: Emotion.UNKNOWN),
+        unknownValue: Emotion.unknown),
     StoryActor.fromJson(json['actor'] as Map<String, dynamic>),
   );
 }
@@ -46,10 +46,10 @@ K _$enumDecode<K, V>(
 }
 
 const _$EmotionEnumMap = {
-  Emotion.LIKE: 'LIKE',
-  Emotion.COOL: 'COOL',
-  Emotion.HAPPY: 'HAPPY',
-  Emotion.SAD: 'SAD',
-  Emotion.CHEER_UP: 'CHEER_UP',
-  Emotion.UNKNOWN: 'UNKNOWN',
+  Emotion.like: 'LIKE',
+  Emotion.cool: 'COOL',
+  Emotion.happy: 'HAPPY',
+  Emotion.sad: 'SAD',
+  Emotion.cheerUp: 'CHEER_UP',
+  Emotion.unknown: 'UNKNOWN',
 };

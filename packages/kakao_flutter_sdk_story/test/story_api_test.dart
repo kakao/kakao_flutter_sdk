@@ -52,10 +52,9 @@ void main() {
 
     var story = await _api.myStory("AAAAAAA.CCCCCCCCCCC");
     var likes = story.likes;
-    print('$likes');
-    expect(story.mediaType, StoryType.PHOTO);
-    expect(likes?[0].emotion, Emotion.COOL);
-    expect(story.permission, StoryPermission.PUBLIC);
+    expect(story.mediaType, StoryType.photo);
+    expect(likes?[0].emotion, Emotion.cool);
+    expect(story.permission, StoryPermission.public);
   });
 
   group("/v1/api/story/delete/mystory", () {
@@ -96,7 +95,7 @@ void main() {
   });
 
   group("/v1/api/story/post", () {
-    var map;
+    Map<String, String>? map;
     setUp(() async {
       map = {"id": "AAAAAAA.DDDDDDDDDDD"};
       _adapter.setResponseString(jsonEncode(map), 200);
@@ -110,7 +109,7 @@ void main() {
         expect(params.keys.length, 1);
       };
       var id = await _api.postNote(content);
-      expect(id, map["id"]);
+      expect(id, map!["id"]);
     });
 
     test("/photo", () async {
@@ -130,8 +129,8 @@ void main() {
         expect(urls.length, 3);
       };
       var story =
-          await _api.postPhotos(images, permission: StoryPermission.FRIEND);
-      expect(story, map["id"]);
+          await _api.postPhotos(images, permission: StoryPermission.friend);
+      expect(story, map!["id"]);
     });
 
     test("/link", () async {
@@ -145,7 +144,7 @@ void main() {
       };
       var storyId = await _api.postLink(linkInfo,
           enableShare: false, androidExecParams: "key1=value1&key2=value2");
-      expect(storyId, map["id"]);
+      expect(storyId, map!["id"]);
     });
   });
 

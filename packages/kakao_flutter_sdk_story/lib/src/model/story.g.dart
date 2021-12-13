@@ -13,7 +13,7 @@ Story _$StoryFromJson(Map<String, dynamic> json) {
     json['content'] as String,
     DateTime.parse(json['created_at'] as String),
     _$enumDecodeNullable(_$StoryTypeEnumMap, json['media_type'],
-        unknownValue: StoryType.NOT_SUPPORTED),
+        unknownValue: StoryType.notSupported),
     json['comment_count'] as int,
     json['like_count'] as int,
     (json['media'] as List<dynamic>?)
@@ -26,7 +26,7 @@ Story _$StoryFromJson(Map<String, dynamic> json) {
         ?.map((e) => StoryComment.fromJson(e as Map<String, dynamic>))
         .toList(),
     _$enumDecodeNullable(_$StoryPermissionEnumMap, json['permission'],
-        unknownValue: StoryPermission.UNKNOWN),
+        unknownValue: StoryPermission.unknown),
   );
 }
 
@@ -92,14 +92,14 @@ K? _$enumDecodeNullable<K, V>(
 }
 
 const _$StoryTypeEnumMap = {
-  StoryType.NOTE: 'NOTE',
-  StoryType.PHOTO: 'PHOTO',
-  StoryType.NOT_SUPPORTED: 'NOT_SUPPORTED',
+  StoryType.note: 'NOTE',
+  StoryType.photo: 'PHOTO',
+  StoryType.notSupported: 'NOT_SUPPORTED',
 };
 
 const _$StoryPermissionEnumMap = {
-  StoryPermission.PUBLIC: 'PUBLIC',
-  StoryPermission.FRIEND: 'FRIEND',
-  StoryPermission.ONLY_ME: 'ONLY_ME',
-  StoryPermission.UNKNOWN: 'UNKNOWN',
+  StoryPermission.public: 'PUBLIC',
+  StoryPermission.friend: 'FRIEND',
+  StoryPermission.onlyMe: 'ONLY_ME',
+  StoryPermission.unknown: 'UNKNOWN',
 };

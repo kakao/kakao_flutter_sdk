@@ -22,7 +22,7 @@ class Story {
   final DateTime createdAt;
 
   /// 미디어 형
-  @JsonKey(unknownEnumValue: StoryType.NOT_SUPPORTED)
+  @JsonKey(unknownEnumValue: StoryType.notSupported)
   final StoryType? mediaType;
 
   /// 댓글 수
@@ -35,7 +35,7 @@ class Story {
   final List<StoryImage>? media;
 
   /// 공개 범위
-  @JsonKey(unknownEnumValue: StoryPermission.UNKNOWN)
+  @JsonKey(unknownEnumValue: StoryPermission.unknown)
   final StoryPermission?
       permission; // TODO: unknownEnumValue should allow non-null type but it doesn't.
 
@@ -69,26 +69,35 @@ class Story {
   String toString() => toJson().toString();
 }
 
-enum StoryType { NOTE, PHOTO, NOT_SUPPORTED }
+enum StoryType {
+  @JsonValue("NOTE")
+  note,
+
+  @JsonValue("PHOTO")
+  photo,
+
+  @JsonValue("NOT_SUPPORTED")
+  notSupported
+}
 
 enum StoryPermission {
   /// 전체 공개
-  PUBLIC,
+  public,
 
   /// 친구 공개
-  FRIEND,
+  friend,
 
   /// 나만 보기
-  ONLY_ME,
-  UNKNOWN
+  onlyMe,
+  unknown
 }
 
 String? permissionToParams(StoryPermission? permission) {
-  return permission == StoryPermission.PUBLIC
+  return permission == StoryPermission.public
       ? "A"
-      : permission == StoryPermission.FRIEND
+      : permission == StoryPermission.friend
           ? "F"
-          : permission == StoryPermission.ONLY_ME
+          : permission == StoryPermission.onlyMe
               ? "M"
               : null;
 }

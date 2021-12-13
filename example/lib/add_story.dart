@@ -28,9 +28,9 @@ class AddStoryState extends State<AddStoryScreen> {
   void initState() {
     super.initState();
     _items = [
-      StoryPermission.PUBLIC,
-      StoryPermission.FRIEND,
-      StoryPermission.ONLY_ME
+      StoryPermission.public,
+      StoryPermission.friend,
+      StoryPermission.onlyMe
     ]
         .map((item) =>
             DropdownMenuItem(value: item, child: Text(item.toString())))

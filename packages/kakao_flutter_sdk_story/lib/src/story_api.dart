@@ -177,7 +177,7 @@ class StoryApi {
           data: FormData.fromMap(data));
       var urls = response.data;
       if (urls is List) return urls.map((url) => url as String).toList();
-      throw KakaoClientException("Resposne should be an array.");
+      throw KakaoClientException("Response should be an array.");
     });
   }
 }
