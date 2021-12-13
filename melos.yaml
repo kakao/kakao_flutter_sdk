@@ -14,7 +14,7 @@ scripts:
     description: Reformat all codes
 
   analyze:
-    run: flutter analyze --no-pub
+    run: melos exec --ignore="*example*" -- flutter analyze --no-pub
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
