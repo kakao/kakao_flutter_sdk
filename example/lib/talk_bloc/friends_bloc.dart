@@ -26,7 +26,7 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
         final friends = await _api.friends();
         yield FriendsFetched(friends.elements);
       } on KakaoApiException catch (e) {
-        if (e.code == ApiErrorCause.INSUFFICIENT_SCOPE) {
+        if (e.code == ApiErrorCause.insufficientScope) {
           yield FriendsPermissionRequired(e.requiredScopes);
           return;
         }

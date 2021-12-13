@@ -9,8 +9,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 class KakaoSdk {
   KakaoSdk._();
 
-  static const MethodChannel _channel =
-      const MethodChannel('kakao_flutter_sdk');
+  static const MethodChannel _channel = MethodChannel('kakao_flutter_sdk');
 
   /// Kakao Natvie App Key.
   /// SDK를 사용하기 전에 반드시 초기화 필요.

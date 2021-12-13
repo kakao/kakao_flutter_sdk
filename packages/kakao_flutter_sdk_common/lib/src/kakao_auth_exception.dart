@@ -11,7 +11,7 @@ class KakaoAuthException extends KakaoException {
       : super(errorDescription);
 
   /// invalid_grant 등 어떤 에러인지 나타내주는 스트링 값
-  @JsonKey(unknownEnumValue: AuthErrorCause.UNKNOWN)
+  @JsonKey(unknownEnumValue: AuthErrorCause.unknown)
   final AuthErrorCause error;
 
   /// 자세한 에러 설명
@@ -32,36 +32,36 @@ class KakaoAuthException extends KakaoException {
 enum AuthErrorCause {
   /// 요청 파라미터 오류
   @JsonValue("invalid_request")
-  INVALID_REQUEST,
+  invalidRequest,
 
   /// 유효하지 않은 앱
   @JsonValue("invalid_client")
-  INVALID_CLIENT,
+  invalidClient,
 
   /// 유효하지 않은 scope ID
   @JsonValue("invalid_scope")
-  INVALID_SCOPE,
+  invalidScope,
 
   /// 인증 수단이 유효하지 않아 인증할 수 없는 상태
   @JsonValue("invalid_grant")
-  INVALID_GRANT,
+  invalidGrant,
 
   /// 설정이 올바르지 않음 (android key hash 또는 redirect uri).
   @JsonValue("misconfigured")
-  MISCONFIGURED,
+  misconfigured,
 
   /// 앱이 요청 권한이 없음
   @JsonValue("unauthorized")
-  UNAUTHORIZED,
+  unauthorized,
 
   /// 접근이 거부 됨 (동의 취소)
   @JsonValue("access_denied")
-  ACCESS_DENIED,
+  accessDenied,
 
   /// 서버 내부 에러
   @JsonValue("server_error")
-  SERVER_ERROR,
+  serverError,
 
   /// 기타 에러
-  UNKNOWN
+  unknown
 }

@@ -9,7 +9,7 @@ part of 'kakao_auth_exception.dart';
 KakaoAuthException _$KakaoAuthExceptionFromJson(Map<String, dynamic> json) {
   return KakaoAuthException(
     _$enumDecode(_$AuthErrorCauseEnumMap, json['error'],
-        unknownValue: AuthErrorCause.UNKNOWN),
+        unknownValue: AuthErrorCause.unknown),
     json['error_description'] as String?,
   );
 }
@@ -56,12 +56,12 @@ K _$enumDecode<K, V>(
 }
 
 const _$AuthErrorCauseEnumMap = {
-  AuthErrorCause.INVALID_REQUEST: 'invalid_request',
-  AuthErrorCause.INVALID_SCOPE: 'invalid_scope',
-  AuthErrorCause.INVALID_GRANT: 'invalid_grant',
-  AuthErrorCause.MISCONFIGURED: 'misconfigured',
-  AuthErrorCause.UNAUTHORIZED: 'unauthorized',
-  AuthErrorCause.ACCESS_DENIED: 'access_denied',
-  AuthErrorCause.SERVER_ERROR: 'server_error',
-  AuthErrorCause.UNKNOWN: 'UNKNOWN',
+  AuthErrorCause.invalidRequest: 'invalid_request',
+  AuthErrorCause.invalidScope: 'invalid_scope',
+  AuthErrorCause.invalidGrant: 'invalid_grant',
+  AuthErrorCause.misconfigured: 'misconfigured',
+  AuthErrorCause.unauthorized: 'unauthorized',
+  AuthErrorCause.accessDenied: 'access_denied',
+  AuthErrorCause.serverError: 'server_error',
+  AuthErrorCause.unknown: 'UNKNOWN',
 };

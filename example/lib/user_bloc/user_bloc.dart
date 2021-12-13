@@ -24,7 +24,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         final user = await _userApi.me();
         yield UserFetched(user);
       } on KakaoApiException catch (e) {
-        if (e.code == ApiErrorCause.INVALID_TOKEN) {
+        if (e.code == ApiErrorCause.invalidToken) {
           yield UserLoggedOut();
         } else {
           yield UserFetchFailed(e);

@@ -54,7 +54,7 @@ class Util {
     if (params == null) {
       return null;
     }
-    var paramMap = Map<String, String>();
+    var paramMap = <String, String>{};
     params.split('&').forEach((element) {
       paramMap[element.split('=').first] = element.split('=').last;
     });

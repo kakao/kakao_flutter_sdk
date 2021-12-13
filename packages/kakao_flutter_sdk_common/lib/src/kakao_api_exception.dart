@@ -12,7 +12,7 @@ class KakaoApiException extends KakaoException {
       : super(msg);
 
   /// 에러 코드
-  @JsonKey(unknownEnumValue: ApiErrorCause.UNKNOWN)
+  @JsonKey(unknownEnumValue: ApiErrorCause.unknown)
   final ApiErrorCause code;
 
   /// 자세한 에러 설명
@@ -41,128 +41,128 @@ class KakaoApiException extends KakaoException {
 enum ApiErrorCause {
   /// 서버 내부에서 처리 중에 에러가 발생한 경우
   @JsonValue(-1)
-  INTERNAL_ERROR,
+  internalError,
 
   /// 필수 인자가 포함되지 않은 경우나 호출 인자값의 데이타 타입이 적절하지 않거나 허용된 범위를 벗어난 경우
   @JsonValue(-2)
-  ILLEGAL_PARAMS,
+  illegalParams,
 
   /// 해당 API를 사용하기 위해 필요한 기능(간편가입, 동의항목, 서비스 설정 등)이 활성화 되지 않은 경우
   @JsonValue(-3)
-  UNSUPPORTED_API,
+  unsupportedApi,
 
   /// 계정이 제재된 경우나 해당 계정에 제재된 행동을 하는 경우
   @JsonValue(-4)
-  BLOCKED_ACTION,
+  blockedAction,
 
   /// 해당 API에 대한 요청 권한이 없는 경우
   @JsonValue(-5)
-  ACCESS_DENIED,
+  accessDenied,
 
   /// 서비스가 종료된 API를 호출한 경우
   @JsonValue(-9)
-  DEPRECATED_API,
+  deprecatedApi,
 
   /// 허용된 요청 회수가 초과한 경우
   @JsonValue(-10)
-  API_LIMIT_EXCEEDED,
+  apiLimitExceeded,
 
   /// 해당 앱에 카카오계정 연결이 완료되지 않은 사용자가 호출한 경우
   @JsonValue(-101)
-  NOT_REGISTERED_USER,
+  notRegisteredUser,
 
   /// 이미 연결된 사용자에 대해 signup 시도
   @JsonValue(-102)
-  ALREADY_REGISTERD_USER,
+  alreadyRegisteredUser,
 
   /// 존재하지 않는 카카오계정으로 요청한 경우
   @JsonValue(-103)
-  ACCOUNT_DOES_NOT_EXIST,
+  accountDoesNotExist,
 
   /// 사용자 정보 요청 API나 사용자 정보 저장 API 호출 시 앱에 추가하지 않은 사용자 프로퍼티 키 값을 불러오거나 저장하려고 한 경우
   @JsonValue(-201)
-  PROPERTY_KEY_DOES_NOT_EXIST,
+  propertyKeyDoesNotExist,
 
   /// 등록되지 않은 앱키의 요청 또는 존재하지 않는 앱으로의 요청. (앱키가 인증에 사용되는 경우는 -401 참조)
   @JsonValue(-301)
-  APP_DOES_NOT_EXIST,
+  appDoesNotExist,
 
   /// 유효하지 않은 앱키나 액세스 토큰으로 요청한 경우, 등록된 앱 정보와 호출된 앱 정보가 불일치 하는 경우 ex) 토큰 만료
   @JsonValue(-401)
-  INVALID_TOKEN,
+  invalidToken,
 
   /// 해당 API에서 접근하는 리소스에 대해 사용자의 동의를 받지 않은 경우
   @JsonValue(-402)
-  INSUFFICIENT_SCOPE,
+  insufficientScope,
 
   /// TODO: add reference or remove value
   @JsonValue(-403)
-  INVALID_ORIGIN,
+  invalidOrigin,
 
   /// 앱의 연령제한에 대해 사용자 연령 인증 받지 않음
   @JsonValue(-405)
-  REQUIRED_AGE_VERIFICATION,
+  requiredAgeVerification,
 
   /// 앱의 연령제한보다 사용자의 연령이 낮음
   @JsonValue(-406)
-  UNDER_AGE_LIMIT,
+  underAgeLimit,
 
   /// 카카오톡 미가입 사용자가 카카오톡 API를 호출하였을 경우
   @JsonValue(-501)
-  NOT_TALK_USER,
+  notTalkUser,
 
   /// 받는 이가 보내는 이의 친구가 아닌 경우
   @JsonValue(-502)
-  NOT_FRIEND,
+  notFriend,
 
   /// 지원되지 않는 기기로 메시지 보내는 경우
   @JsonValue(-504)
-  USER_DEVICE_UNSUPPORTED,
+  userDeviceUnsupported,
 
   /// 받는 이가 메시지 수신 거부를 설정한 경우
   @JsonValue(-530)
-  TALK_MESSAGE_DISABLED,
+  talkMessageDisabled,
 
   /// 특정 앱에서 보내는 이가 특정인에게 하루 동안 보낼 수 있는 쿼터를 초과한 경우
   @JsonValue(-531)
-  TALK_SEND_MESSAGE_MONTHLY_LIMIT_EXCEED,
+  talkSendMessageMonthlyLimitExceed,
 
   /// 특정 앱에서 보내는 이가 받는 사람 관계없이 하루 동안 보낼 수 있는 쿼터를 초과한 경우
   @JsonValue(-532)
-  TALK_SEND_MESSAGE_DAILY_LIMIT_EXCEED,
+  talkSendMessageDailyLimitExceed,
 
   /// 카카오스토리 가입 사용자에게만 허용된 API에서 카카오스토리 미가입 사용자가 요청한 경우
   @JsonValue(-601)
-  NOT_STORY_USER,
+  notStoryUser,
 
   /// 카카오스토리 이미지 업로드 사이즈 제한 초과
   @JsonValue(-602)
-  STORY_IMAGE_UPOLOAD_SIZE_EXCEEDED,
+  storyImageUploadSizeExceeded,
 
   /// 업로드,스크랩 등 오래 걸리는 API의 타임아웃
   @JsonValue(-603)
-  TIME_OUT,
+  timeOut,
 
   /// 카카오스토리에서 스크랩이 실패하였을 경우
   @JsonValue(-604)
-  STORY_INVALID_SCRAP_URL,
+  storyInvalidScrapUrl,
 
   /// 카카오스토리에 존재하지 않는 내스토리를 요청했을 경우
   @JsonValue(-605)
-  STROY_INVALID_POST_ID,
+  storyInvalidPostId,
 
   /// 카카오스토리에서 업로드할 수 있는 최대 이미지 개수(현재 5개. 단, gif 파일은 1개)를 초과하였을 경우
   @JsonValue(-606)
-  STORY_MAX_UPLOAD_COUNT_EXCEED,
+  storyMaxUploadCountExceed,
 
   /// 등록되지 않은 개발자의 앱키나 등록되지 않은 개발자의 앱키로 구성된 액세스 토큰으로 요청한 경우
   @JsonValue(-903)
-  DEVELOPER_DOES_NOT_EXIST,
+  developerDoesNotExist,
 
   /// 서버 점검 중
   @JsonValue(-9798)
-  UNDER_MAINTENANCE,
+  underMaintenance,
 
   /// 기타 에러
-  UNKNOWN
+  unknown
 }

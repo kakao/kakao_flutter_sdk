@@ -92,7 +92,7 @@ void main() {
           redirectUri: "kakaosample_app_key://oauth", appKey: "sample_app_key");
       fail("Should not reach here");
     } on KakaoAuthException catch (e) {
-      expect(e.error, AuthErrorCause.MISCONFIGURED);
+      expect(e.error, AuthErrorCause.misconfigured);
     } catch (e) {
       expect(e, isInstanceOf<KakaoAuthException>());
     }
@@ -167,7 +167,7 @@ void main() {
           redirectUri: "kakaosample_app_key://oauth", appKey: "sample_app_key");
       fail("Should not reach here");
     } on KakaoAuthException catch (e) {
-      expect(e.error, AuthErrorCause.UNKNOWN);
+      expect(e.error, AuthErrorCause.unknown);
     } catch (e) {
       expect(e, isInstanceOf<KakaoAuthException>());
     }

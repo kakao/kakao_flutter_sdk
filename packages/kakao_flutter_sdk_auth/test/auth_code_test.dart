@@ -41,7 +41,7 @@ void main() {
             .request(clientId: appKey, redirectUri: redirectUri);
         fail("should not reach here");
       } on KakaoAuthException catch (e) {
-        expect(e.error, AuthErrorCause.ACCESS_DENIED);
+        expect(e.error, AuthErrorCause.accessDenied);
       }
     });
   });

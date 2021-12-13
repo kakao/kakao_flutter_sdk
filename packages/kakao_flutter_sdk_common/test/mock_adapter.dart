@@ -7,11 +7,11 @@ class MockAdapter extends HttpClientAdapter {
   void Function(RequestOptions options)? requestAssertions;
 
   void setResponse(ResponseBody responseBody) {
-    this._responseBody = responseBody;
+    _responseBody = responseBody;
   }
 
   void setResponseString(String body, int statusCode) {
-    this._responseBody = ResponseBody.fromString(body, statusCode, headers: {
+    _responseBody = ResponseBody.fromString(body, statusCode, headers: {
       HttpHeaders.contentTypeHeader: [ContentType.json.mimeType]
     });
   }

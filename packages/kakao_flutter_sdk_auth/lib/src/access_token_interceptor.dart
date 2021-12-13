@@ -82,7 +82,7 @@ class AccessTokenInterceptor extends Interceptor {
 
   bool _isTokenError(Object err) {
     if (err is KakaoAuthException ||
-        err is KakaoApiException && err.code == ApiErrorCause.INVALID_TOKEN) {
+        err is KakaoApiException && err.code == ApiErrorCause.invalidToken) {
       return true;
     }
     return false;

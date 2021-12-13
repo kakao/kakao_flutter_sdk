@@ -23,11 +23,11 @@ class RequiredScopesInterceptor extends Interceptor {
     }
 
     var requiredScopes = error.requiredScopes;
-    if (error.code == ApiErrorCause.INSUFFICIENT_SCOPE &&
+    if (error.code == ApiErrorCause.insufficientScope &&
         requiredScopes != null) {
       if (requiredScopes.isEmpty) {
         throw KakaoApiException(
-            ApiErrorCause.UNKNOWN, "requiredScopes not exist",
+            ApiErrorCause.unknown, "requiredScopes not exist",
             apiType: error.apiType,
             requiredScopes: error.requiredScopes,
             allowedScopes: error.allowedScopes);
