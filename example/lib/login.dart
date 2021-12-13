@@ -113,8 +113,10 @@ class _LoginState extends State<LoginScreen> {
       onTap: () async {
         var prefs = await SharedPreferences.getInstance();
         await prefs.setString('KakaoPhase', title);
-        KakaoContext.clientId = PhasedAppKey(phase).getAppKey();
-        KakaoContext.hosts = PhasedServerHosts(phase);
+        KakaoSdk.init(
+          nativeAppKey: PhasedAppKey(phase).getAppKey(),
+          serviceHosts: PhasedServerHosts(phase),
+        );
         Navigator.pop(context);
         setState(() {
           currentPhase = title;

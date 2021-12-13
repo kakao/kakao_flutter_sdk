@@ -41,8 +41,10 @@ void main() async {
 
 Future _initializeSdk() async {
   KakaoPhase phase = await _getKakaoPhase();
-  KakaoContext.hosts = PhasedServerHosts(phase);
-  KakaoContext.clientId = PhasedAppKey(phase).getAppKey();
+  KakaoSdk.init(
+    nativeAppKey: PhasedAppKey(phase).getAppKey(),
+    serviceHosts: PhasedServerHosts(phase),
+  );
 }
 
 Future<KakaoPhase> _getKakaoPhase() async {
