@@ -105,8 +105,14 @@ class UserApi {
   /// API 호출 결과와 관계 없이 [TokenManagerProvider]에 지정된 저장소에서 토큰을 자동으로 삭제함.
   Future<UserIdResponse> logout() async {
     return ApiFactory.handleApiError(() async {
-      Response response = await _dio.post("/v1/user/logout");
-      return UserIdResponse.fromJson(response.data);
+      try {
+        Response response = await _dio.post("/v1/user/logout");
+        return UserIdResponse.fromJson(response.data);
+      } catch (e) {
+        rethrow;
+      } finally {
+        await TokenManagerProvider.instance.manager.clear();
+      }
     });
   }
 
@@ -116,6 +122,7 @@ class UserApi {
   Future<UserIdResponse> unlink() async {
     return ApiFactory.handleApiError(() async {
       Response response = await _dio.post("/v1/user/unlink");
+      await TokenManagerProvider.instance.manager.clear();
       return UserIdResponse.fromJson(response.data);
     });
   }
