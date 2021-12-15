@@ -9,6 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'server_phase.dart';
 
+const String tag = "KakaoSdkSample";
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _initializeSdk();
@@ -92,10 +94,20 @@ class _MyPageState extends State<MyPage> {
         ],
       ),
       body: ListView.separated(
-          itemBuilder: (context, index) => ListTile(
-                title: Text(apiList[index].label),
-                onTap: apiList[index].apiFunction,
+          itemBuilder: (context, index) {
+            ApiItem item = apiList[index];
+            bool isHeader = item.apiFunction == null;
+            return ListTile(
+              title: Text(
+                item.label,
+                style: TextStyle(
+                    color: isHeader
+                        ? Theme.of(context).primaryColor
+                        : Colors.black),
               ),
+              onTap: apiList[index].apiFunction,
+            );
+          },
           separatorBuilder: (context, index) => const Divider(),
           itemCount: apiList.length),
     );

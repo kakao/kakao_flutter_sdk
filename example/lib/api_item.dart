@@ -1,6 +1,6 @@
 class ApiItem {
   String label;
-  Function() apiFunction;
+  Function()? apiFunction;
 
-  ApiItem(this.label, this.apiFunction);
+  ApiItem(this.label, [this.apiFunction]);
 }
