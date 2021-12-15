@@ -18,6 +18,8 @@ class KakaoSdk {
 
   static String sdkVersion = "0.9.0";
 
+  static bool logging = false;
+
   // ServerHosts used by SDK.
   //
   // You can explicitly set this to your custom ServerHosts. One example can be
@@ -83,10 +85,12 @@ class KakaoSdk {
     return KakaoSdk.nativeKey;
   }
 
-  static void init(
-      {String? nativeAppKey,
-      String? javaScriptAppKey,
-      ServerHosts? serviceHosts}) {
+  static void init({
+    String? nativeAppKey,
+    String? javaScriptAppKey,
+    ServerHosts? serviceHosts,
+    bool? loggingEnabled,
+  }) {
     if (nativeAppKey == null && javaScriptAppKey == null) {
       throw KakaoClientException(
           "Native App Key or JavaScript App Key is required");
@@ -95,6 +99,7 @@ class KakaoSdk {
     nativeKey = nativeAppKey ?? "";
     jsKey = javaScriptAppKey ?? "";
     hosts = serviceHosts ?? ServerHosts();
+    logging = loggingEnabled ?? false;
   }
 }
 
