@@ -48,11 +48,7 @@ class SdkLog {
   SdkLog._();
 
   static Future<String> get logs async {
-    return ''' 
-    ==== sdk version: ${KakaoSdk.sdkVersion}
-    ==== app version: ${await KakaoSdk.appVer}
-    '''
-            .trim() +
+    return '==== sdk version: ${KakaoSdk.sdkVersion}\n==== app version: ${await KakaoSdk.appVer}\n' +
         _logs.join("\n");
   }
 
@@ -73,7 +69,10 @@ class SdkLog {
       developer.log(log, level: logLevel.level);
     }
     if (_enabled && logLevel.level >= SdkLogLevel.i.level) {
-      _logs.add(LogData("${DateTime.now()} $log"));
+      String currentTime = DateTime.now().toString();
+      // format time to [MM-dd HH:mm:ss.SSS]
+      String loggingTime = currentTime.substring(0, currentTime.length - 3);
+      _logs.add(LogData("$loggingTime $log"));
       if (_logs.length > _maxSize) {
         _logs.remove(_logs.first);
       }
