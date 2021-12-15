@@ -38,7 +38,7 @@ class AccessTokenInterceptor extends Interceptor {
     try {
       if (request.headers["Authorization"] != "Bearer ${token.accessToken}") {
         // tokens were refreshed by another API request.
-        print(
+        SdkLog.i(
             "just retry ${options.path} since access token was already refreshed by another request.");
 
         var response = await _dio.fetch(options);
@@ -55,7 +55,7 @@ class AccessTokenInterceptor extends Interceptor {
       _dio.unlock();
       _dio.interceptors.errorLock.unlock();
 
-      print("retry ${options.path} after refreshing access token.");
+      SdkLog.i("retry ${options.path} after refreshing access token.");
       var response = await _dio.fetch(options);
       handler.resolve(response);
     } catch (error) {

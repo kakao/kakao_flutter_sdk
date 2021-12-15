@@ -94,7 +94,7 @@ class DefaultTokenManager implements TokenManager {
         refreshToken != null &&
         atExpiresAtMillis != null &&
         rtExpiresAtMillis != null) {
-      print("=== Migrate from old version token ===");
+      SdkLog.i("=== Migrate from old version token ===");
 
       var accessTokenExpiresAt =
           DateTime.fromMillisecondsSinceEpoch(atExpiresAtMillis);

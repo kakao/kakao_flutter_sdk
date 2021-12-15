@@ -51,8 +51,15 @@ class AuthCodeClient {
     };
     params.removeWhere((k, v) => v == null);
     final url = Uri.https(KakaoSdk.hosts.kauth, "/oauth/authorize", params);
-    final authCode = await launchBrowserTab(url, redirectUri: finalRedirectUri);
-    return _parseCode(authCode);
+    SdkLog.i(url);
+    try {
+      final authCode =
+          await launchBrowserTab(url, redirectUri: finalRedirectUri);
+      return _parseCode(authCode);
+    } catch (e) {
+      SdkLog.e(e);
+      rethrow;
+    }
   }
 
   // Requests authorization code via KakaoTalk.
@@ -66,12 +73,17 @@ class AuthCodeClient {
       List<Prompt>? prompts,
       String? state,
       String? codeVerifier}) async {
-    return _parseCode(await _openKakaoTalk(
-        clientId ?? _platformKey(),
-        redirectUri ?? "kakao${_platformKey()}://oauth",
-        codeVerifier,
-        prompts,
-        state));
+    try {
+      return _parseCode(await _openKakaoTalk(
+          clientId ?? _platformKey(),
+          redirectUri ?? "kakao${_platformKey()}://oauth",
+          codeVerifier,
+          prompts,
+          state));
+    } catch (e) {
+      SdkLog.e(e);
+      rethrow;
+    }
   }
 
   // Requests authorization code with current access token.

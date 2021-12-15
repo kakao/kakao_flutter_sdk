@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_auth/src/access_token_interceptor.dart';
 import 'package:kakao_flutter_sdk_auth/src/auth_api.dart';
@@ -15,7 +16,14 @@ class AuthApiFactory {
     var dio = Dio();
     dio.options.baseUrl = "https://${KakaoSdk.hosts.kauth}";
     dio.options.contentType = "application/x-www-form-urlencoded";
-    dio.interceptors.addAll([ApiFactory.kaInterceptor]);
+    dio.interceptors.addAll([
+      ApiFactory.kaInterceptor,
+      LogInterceptor(
+        logPrint: SdkLog.i,
+        requestBody: kDebugMode ? true : false,
+        responseBody: kDebugMode ? true : false,
+      )
+    ]);
     return dio;
   }
 
@@ -25,8 +33,16 @@ class AuthApiFactory {
     dio.options.contentType = "application/x-www-form-urlencoded";
     var tokenInterceptor = AccessTokenInterceptor(dio, AuthApi.instance);
     var scopeInterceptor = RequiredScopesInterceptor(dio);
-    dio.interceptors
-        .addAll([tokenInterceptor, scopeInterceptor, ApiFactory.kaInterceptor]);
+    dio.interceptors.addAll([
+      tokenInterceptor,
+      scopeInterceptor,
+      ApiFactory.kaInterceptor,
+      LogInterceptor(
+        logPrint: SdkLog.i,
+        requestBody: kDebugMode ? true : false,
+        responseBody: kDebugMode ? true : false,
+      )
+    ]);
     return dio;
   }
 }
