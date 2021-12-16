@@ -82,6 +82,7 @@ class MyPage extends StatefulWidget {
 
 class _MyPageState extends State<MyPage> {
   List<ApiItem> apiList = [];
+  Function(Friends?, Object?)? recursiveAppFriendsCompletion;
 
   @override
   void initState() {
@@ -474,7 +475,7 @@ class _MyPageState extends State<MyPage> {
         int templateId = templateIds['customMessage']!;
 
         try {
-          await TalkApi.instance.customMemo(templateId);
+          await TalkApi.instance.sendCustomMemo(templateId);
           Log.i(context, tag, '나에게 보내기 성공');
         } catch (e) {
           Log.e(context, tag, '나에게 보내기 실패', e);
@@ -483,7 +484,7 @@ class _MyPageState extends State<MyPage> {
       ApiItem('sendDefaultMemo()', () async {
         try {
           // 디폴트 템플릿으로 나에게 보내기 - Feed
-          await TalkApi.instance.defaultMemo(defaultFeed);
+          await TalkApi.instance.sendDefaultMemo(defaultFeed);
           Log.i(context, tag, '나에게 보내기 성공');
         } catch (e) {
           Log.e(context, tag, '나에게 보내기 실패', e);
@@ -497,7 +498,7 @@ class _MyPageState extends State<MyPage> {
         String url = 'https://developers.kakao.com';
 
         try {
-          await TalkApi.instance.scrapMemo(url);
+          await TalkApi.instance.sendScrapMemo(url);
           Log.i(context, tag, '나에게 보내기 성공');
         } catch (e) {
           Log.e(context, tag, '나에게 보내기 실패', e);
@@ -509,7 +510,7 @@ class _MyPageState extends State<MyPage> {
         try {
           Friends friends = await TalkApi.instance.friends();
           Log.i(context, tag,
-              '카카오톡 친구 목록 받기 성공\n${friends.elements?.join('\n')}');
+              '카카오톡 친구 목록 받기 성공\n${friends.elements?.map((e) => e.profileNickname).join('\n')}');
 
           // 친구의 UUID 로 메시지 보내기 가능
         } catch (e) {
@@ -521,9 +522,9 @@ class _MyPageState extends State<MyPage> {
 
         try {
           // 내림차순으로 받기
-          Friends friends = await TalkApi.instance.friends(order: "desc");
+          Friends friends = await TalkApi.instance.friends(order: Order.desc);
           Log.i(context, tag,
-              '카카오톡 친구 목록 받기 성공\n${friends.elements?.join('\n')}');
+              '카카오톡 친구 목록 받기 성공\n${friends.elements?.map((e) => e.profileNickname).join('\n')}');
 
           // 친구의 UUID 로 메시지 보내기 가능
         } catch (e) {
@@ -531,7 +532,40 @@ class _MyPageState extends State<MyPage> {
         }
       }),
       ApiItem('friends(context:) - recursive', () async {
-        // TODO: FriendContext 추가
+        FriendsContext nextFriendsContext = FriendsContext(
+            offset: 0,
+            limit: 3,
+            order: Order.desc,
+            friendOrder: FriendOrder.nickname);
+
+        recursiveAppFriendsCompletion = (friends, error) async {
+          if (error == null) {
+            if (friends != null) {
+              try {
+                if (friends.afterUrl == null) {
+                  return;
+                }
+
+                nextFriendsContext =
+                    FriendsContext.fromUrl(Uri.parse(friends.afterUrl!));
+              } catch (e) {
+                return;
+              }
+            }
+
+            try {
+              Friends friends =
+                  await TalkApi.instance.friends(context: nextFriendsContext);
+              Log.i(context, tag,
+                  '카카오톡 친구 목록 받기 성공\n${friends.elements?.map((e) => e.profileNickname).join('\n')}');
+              recursiveAppFriendsCompletion?.call(friends, null);
+            } catch (e) {
+              Log.e(context, tag, '카카오톡 친구 목록 받기 실패');
+            }
+          }
+        };
+
+        recursiveAppFriendsCompletion?.call(null, null);
       }),
       ApiItem('sendCustomMessage()', () async {
         // 커스텀 템플릿으로 친구에게 메시지 보내기
@@ -581,8 +615,8 @@ class _MyPageState extends State<MyPage> {
 
           try {
             // 메시지 보내기
-            MessageSendResult result =
-                await TalkApi.instance.customMessage(receiverUuids, templateId);
+            MessageSendResult result = await TalkApi.instance
+                .sendCustomMessage(receiverUuids, templateId);
             Log.i(context, tag, '메시지 보내기 성공 ${result.successfulReceiverUuids}');
 
             if (result.failureInfos != null) {
@@ -642,8 +676,8 @@ class _MyPageState extends State<MyPage> {
 
           try {
             // 메시지 보내기
-            MessageSendResult result =
-                await TalkApi.instance.customMessage(receiverUuids, templateId);
+            MessageSendResult result = await TalkApi.instance
+                .sendCustomMessage(receiverUuids, templateId);
             Log.i(context, tag, '메시지 보내기 성공 ${result.successfulReceiverUuids}');
 
             if (result.failureInfos != null) {
@@ -704,7 +738,7 @@ class _MyPageState extends State<MyPage> {
           try {
             // 메시지 보내기
             MessageSendResult result =
-                await TalkApi.instance.scrapMessage(receiverUuids, url);
+                await TalkApi.instance.sendScrapMessage(receiverUuids, url);
             Log.i(context, tag, '메시지 보내기 성공 ${result.successfulReceiverUuids}');
 
             if (result.failureInfos != null) {
@@ -720,7 +754,7 @@ class _MyPageState extends State<MyPage> {
         // 카카오톡 채널 관계 확인하기
 
         try {
-          Channels relations = await TalkApi.instance.plusFriends();
+          Channels relations = await TalkApi.instance.channels();
           Log.i(context, tag, '채널 관계 확인 성공\n${relations.channels}');
         } catch (e) {
           Log.e(context, tag, '채널 관계 확인 실패', e);
@@ -728,7 +762,7 @@ class _MyPageState extends State<MyPage> {
       }),
       ApiItem('addChannelUrl()', () async {
         // 카카오톡 채널 추가하기 URL
-        Uri url = await TalkApi.instance.channelAddUrl('_ZeUTxl');
+        Uri url = await TalkApi.instance.addChannelUrl('_ZeUTxl');
 
         try {
           // 디바이스 브라우저 열기
