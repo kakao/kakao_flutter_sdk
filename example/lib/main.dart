@@ -4,17 +4,26 @@ import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:kakao_flutter_sdk_example/api_item.dart';
 import 'package:kakao_flutter_sdk_example/debug_page.dart';
+import 'package:kakao_flutter_sdk_example/friend_page.dart';
 import 'package:kakao_flutter_sdk_example/log.dart';
+import 'package:kakao_flutter_sdk_example/message_template.dart';
+import 'package:kakao_flutter_sdk_example/picker_item.dart';
 import 'package:kakao_flutter_sdk_example/server_phase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'server_phase.dart';
 
 const String tag = "KakaoSdkSample";
+const Map<String, int> templateIds = {
+  "customMemo": 67020,
+  "customMessage": 67020,
+};
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _initializeSdk();
+
+  SdkLog.i("${await KakaoSdk.origin}");
 
   runApp(MyApp());
 }
@@ -56,7 +65,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       initialRoute: '/',
-      routes: {'/': (_) => MyPage(), '/debug': (_) => DebugPage()},
+      routes: {
+        '/': (_) => MyPage(),
+        '/debug': (_) => DebugPage(),
+      },
     );
   }
 }
@@ -124,8 +136,9 @@ class _MyPageState extends State<MyPage> {
         Log.i(context, tag, msg);
       }),
       ApiItem('loginWithKakaoTalk()', () async {
+        // 카카오톡으로 로그인
+
         try {
-          // 카카오톡으로 로그인
           OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
           Log.i(context, tag, '로그인 성공 ${token.accessToken}');
         } catch (e) {
@@ -133,8 +146,9 @@ class _MyPageState extends State<MyPage> {
         }
       }),
       ApiItem('certLoginWithKakaoTalk()', () async {
+        // 카카오톡으로 인증서 로그인
+
         try {
-          // 카카오톡으로 인증서 로그인
           CertTokenInfo certTokenInfo =
               await UserApi.instance.certLoginWithKakaoTalk(state: "test");
           Log.i(context, tag,
@@ -144,8 +158,9 @@ class _MyPageState extends State<MyPage> {
         }
       }),
       ApiItem('loginWithKakaoAccount()', () async {
+        // 카카오계정으로 로그인
+
         try {
-          // 카카오계정으로 로그인
           OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
           Log.i(context, tag, '로그인 성공 ${token.accessToken}');
         } catch (e) {
@@ -153,8 +168,9 @@ class _MyPageState extends State<MyPage> {
         }
       }),
       ApiItem('loginWithKakaoAccount()', () async {
+        // 카카오계정으로 로그인 - 재인증
+
         try {
-          // 카카오계정으로 로그인 - 재인증
           OAuthToken token = await UserApi.instance
               .loginWithKakaoAccount(prompts: [Prompt.login]);
           Log.i(context, tag, '로그인 성공 ${token.accessToken}');
@@ -163,8 +179,9 @@ class _MyPageState extends State<MyPage> {
         }
       }),
       ApiItem('certLoginWithKakaoAccount()', () async {
+        // 카카오계정으로 인증서 로그인
+
         try {
-          // 카카오계정으로 인증서 로그인
           CertTokenInfo certTokenInfo =
               await UserApi.instance.certLoginWithKakaoAccount(state: "test");
           Log.i(context, tag,
@@ -174,8 +191,9 @@ class _MyPageState extends State<MyPage> {
         }
       }),
       ApiItem('Combination Login', () async {
+        // 로그인 조합 예제
+
         try {
-          // 로그인 조합 예제
           bool talkInstalled = await isKakaoTalkInstalled();
 
           // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
@@ -205,8 +223,9 @@ class _MyPageState extends State<MyPage> {
         // }
       }),
       ApiItem('me()', () async {
+        // 사용자 정보 요청 (기본)
+
         try {
-          // 사용자 정보 요청 (기본)
           User user = await UserApi.instance.me();
           Log.i(
               context,
@@ -229,6 +248,7 @@ class _MyPageState extends State<MyPage> {
         //  * 주의: 선택 동의항목은 사용자가 거부하더라도 서비스 이용에 지장이 없어야 합니다.
 
         // 추가 권한 요청 시나리오 예제
+
         User user;
         try {
           user = await UserApi.instance.me();
@@ -307,6 +327,8 @@ class _MyPageState extends State<MyPage> {
         }
       }),
       ApiItem('scopes()', () async {
+        // 동의 항목 확인하기
+
         try {
           ScopeInfo scopeInfo = await UserApi.instance.scopes();
           Log.i(
@@ -316,8 +338,11 @@ class _MyPageState extends State<MyPage> {
         }
       }),
       ApiItem('scopes() - optional', () async {
+        // 특정 동의 항목 확인하기
+
+        List<String> scopes = ['account_email', 'friends'];
         try {
-          ScopeInfo scopeInfo = await UserApi.instance.scopes();
+          ScopeInfo scopeInfo = await UserApi.instance.scopes(scopes: scopes);
           Log.i(
               context, tag, '동의 정보 확인 성공\n현재 가지고 있는 동의 항목 ${scopeInfo.scopes}');
         } catch (e) {
@@ -334,8 +359,9 @@ class _MyPageState extends State<MyPage> {
         }
       }),
       ApiItem('accessTokenInfo()', () async {
+        // 토큰 정보 보기
+
         try {
-          // 토큰 정보 보기
           AccessTokenInfo tokenInfo = await UserApi.instance.accessTokenInfo();
           Log.i(context, tag,
               '토큰 정보 보기 성공\n회원정보: ${tokenInfo.id}\n만료시간: ${tokenInfo.expiresIn} 초');
@@ -344,9 +370,9 @@ class _MyPageState extends State<MyPage> {
         }
       }),
       ApiItem('updateProfile() - nickname', () async {
-        try {
-          // 사용자 정보 저장
+        // 사용자 정보 저장
 
+        try {
           // 변경할 내용
           Map<String, String> properties = {'nickname': "${DateTime.now()}"};
           await UserApi.instance.updateProfile(properties);
@@ -356,9 +382,10 @@ class _MyPageState extends State<MyPage> {
         }
       }),
       ApiItem('shippingAddresses()', () async {
+        // 배송지 조회 (추가 동의)
+
         UserShippingAddresses userShippingAddress;
         try {
-          // 배송지 조회 (추가 동의)
           userShippingAddress = await UserApi.instance.shippingAddresses();
         } catch (e) {
           Log.e(context, tag, '배송지 조회 실패', e);
@@ -396,8 +423,9 @@ class _MyPageState extends State<MyPage> {
         }
       }),
       ApiItem('serviceTerms()', () async {
+        // 동의한 약관 확인하기
+
         try {
-          // 동의한 약관 확인하기
           UserServiceTerms userServiceTerms =
               await UserApi.instance.serviceTerms();
           Log.i(context, tag,
@@ -406,18 +434,9 @@ class _MyPageState extends State<MyPage> {
           Log.e(context, tag, '동의한 약관 확인하기 실패', e);
         }
       }),
-      ApiItem('hasToken()', () async {
-        // 로그아웃
-        OAuthToken? token =
-            await TokenManagerProvider.instance.manager.getToken();
-        if (token == null) {
-          Log.e(context, tag, 'SDK에 저장된 토큰 없음');
-        } else {
-          Log.i(context, tag, 'SDK에 저장된 토큰 있음');
-        }
-      }),
       ApiItem('logout()', () async {
         // 로그아웃
+
         try {
           await UserApi.instance.logout();
           Log.i(context, tag, '로그아웃 성공. SDK에서 토큰 삭제 됨');
@@ -426,12 +445,307 @@ class _MyPageState extends State<MyPage> {
         }
       }),
       ApiItem('unlink()', () async {
+        // 연결 끊기
+
         try {
-          // 연결 끊기
           await UserApi.instance.unlink();
           Log.i(context, tag, '연결 끊기 성공. SDK에서 토큰 삭제 됨');
         } catch (e) {
           Log.e(context, tag, '연결 끊기 실패', e);
+        }
+      }),
+      ApiItem('KakaoTalk API'),
+      ApiItem('profile()', () async {
+        // 카카오톡 프로필 받기
+
+        try {
+          TalkProfile profile = await TalkApi.instance.profile();
+          Log.i(context, tag,
+              '카카오톡 프로필 받기 성공\n닉네임: ${profile.nickname}\n프로필사진: ${profile.thumbnailUrl}\n국가코드: ${profile.countryISO}');
+        } catch (e) {
+          Log.e(context, tag, '카카오톡 프로필 받기 실패', e);
+        }
+      }),
+      ApiItem('sendCustomMemo()', () async {
+        // 커스텀 템플릿으로 나에게 보내기
+
+        // 메시지 템플릿 아이디
+        // * 만들기 가이드: https://developers.kakao.com/docs/latest/ko/message/message-template
+        int templateId = templateIds['customMessage']!;
+
+        try {
+          await TalkApi.instance.customMemo(templateId);
+          Log.i(context, tag, '나에게 보내기 성공');
+        } catch (e) {
+          Log.e(context, tag, '나에게 보내기 실패', e);
+        }
+      }),
+      ApiItem('sendDefaultMemo()', () async {
+        try {
+          // 디폴트 템플릿으로 나에게 보내기 - Feed
+          await TalkApi.instance.defaultMemo(defaultFeed);
+          Log.i(context, tag, '나에게 보내기 성공');
+        } catch (e) {
+          Log.e(context, tag, '나에게 보내기 실패', e);
+        }
+      }),
+      ApiItem('sendScrapMemo()', () async {
+        // 스크랩 템플릿으로 나에게 보내기
+
+        // 공유할 웹페이지 URL
+        //  * 주의: 개발자사이트 Web 플랫폼 설정에 공유할 URL의 도메인이 등록되어 있어야 합니다.
+        String url = 'https://developers.kakao.com';
+
+        try {
+          await TalkApi.instance.scrapMemo(url);
+          Log.i(context, tag, '나에게 보내기 성공');
+        } catch (e) {
+          Log.e(context, tag, '나에게 보내기 실패', e);
+        }
+      }),
+      ApiItem('friends()', () async {
+        // 카카오톡 친구 목록 받기 (기본)
+
+        try {
+          Friends friends = await TalkApi.instance.friends();
+          Log.i(context, tag,
+              '카카오톡 친구 목록 받기 성공\n${friends.elements?.join('\n')}');
+
+          // 친구의 UUID 로 메시지 보내기 가능
+        } catch (e) {
+          Log.e(context, tag, '카카오톡 친구 목록 받기 실패', e);
+        }
+      }),
+      ApiItem("friends(order:) - desc", () async {
+        // 카카오톡 친구 목록 받기 (파라미터)
+
+        try {
+          // 내림차순으로 받기
+          Friends friends = await TalkApi.instance.friends(order: "desc");
+          Log.i(context, tag,
+              '카카오톡 친구 목록 받기 성공\n${friends.elements?.join('\n')}');
+
+          // 친구의 UUID 로 메시지 보내기 가능
+        } catch (e) {
+          Log.e(context, tag, '카카오톡 친구 목록 받기 실패', e);
+        }
+      }),
+      ApiItem('friends(context:) - recursive', () async {
+        // TODO: FriendContext 추가
+      }),
+      ApiItem('sendCustomMessage()', () async {
+        // 커스텀 템플릿으로 친구에게 메시지 보내기
+
+        Friends friends;
+        try {
+          // 카카오톡 친구 목록 받기
+          friends = await TalkApi.instance.friends();
+        } catch (e) {
+          Log.e(context, tag, '카카오톡 친구 목록 받기 실패', e);
+          return;
+        }
+
+        if (friends.elements == null) {
+          return;
+        }
+
+        if (friends.elements!.isEmpty) {
+          Log.e(context, tag, '메시지 보낼 친구가 없습니다');
+        } else {
+          // 서비스에 상황에 맞게 메시지 보낼 친구의 UUID 를 가져오세요.
+          // 이 샘플에서는 친구 목록을 화면에 보여주고 체크박스로 선택된 친구들의 UUID 를 수집하도록 구현했습니다.
+          List<String> selectedItems = await Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => FriendPage(
+                items: friends.elements!
+                    .map((friend) => PickerItem(
+                        friend.uuid,
+                        friend.profileNickname ?? '',
+                        friend.profileThumbnailImage))
+                    .toList(),
+              ),
+            ),
+          );
+
+          if (selectedItems.isEmpty) {
+            return;
+          }
+          Log.d(context, tag, '선택된 친구:\n${selectedItems.join('\n')}');
+
+          // 메시지 보낼 친구의 UUID 목록
+          List<String> receiverUuids = selectedItems;
+
+          // 메시지 템플릿 아이디
+          // * 만들기 가이드: https://developers.kakao.com/docs/latest/ko/message/message-template
+          int templateId = templateIds['customMessage']!;
+
+          try {
+            // 메시지 보내기
+            MessageSendResult result =
+                await TalkApi.instance.customMessage(receiverUuids, templateId);
+            Log.i(context, tag, '메시지 보내기 성공 ${result.successfulReceiverUuids}');
+
+            if (result.failureInfos != null) {
+              Log.d(context, tag,
+                  '메시지 보내기에 일부 성공했으나, 일부 대상에게는 실패 \n${result.failureInfos}');
+            }
+          } catch (e) {
+            Log.e(context, tag, '메시지 보내기 실패', e);
+          }
+        }
+      }),
+      ApiItem('sendDefaultMessage()', () async {
+        // 디폴트 템플릿으로 친구에게 메시지 보내기 - Feed
+
+        Friends friends;
+        try {
+          // 카카오톡 친구 목록 받기
+          friends = await TalkApi.instance.friends();
+        } catch (e) {
+          Log.e(context, tag, '카카오톡 친구 목록 받기 실패', e);
+          return;
+        }
+
+        if (friends.elements == null) {
+          return;
+        }
+
+        if (friends.elements!.isEmpty) {
+          Log.e(context, tag, '메시지 보낼 친구가 없습니다');
+        } else {
+          // 서비스에 상황에 맞게 메시지 보낼 친구의 UUID 를 가져오세요.
+          // 이 샘플에서는 친구 목록을 화면에 보여주고 체크박스로 선택된 친구들의 UUID 를 수집하도록 구현했습니다.
+          List<String> selectedItems = await Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => FriendPage(
+                items: friends.elements!
+                    .map((friend) => PickerItem(
+                        friend.uuid,
+                        friend.profileNickname ?? '',
+                        friend.profileThumbnailImage))
+                    .toList(),
+              ),
+            ),
+          );
+
+          if (selectedItems.isEmpty) {
+            return;
+          }
+          Log.d(context, tag, '선택된 친구:\n${selectedItems.join('\n')}');
+
+          // 메시지 보낼 친구의 UUID 목록
+          List<String> receiverUuids = selectedItems;
+
+          // 메시지 템플릿 아이디
+          // * 만들기 가이드: https://developers.kakao.com/docs/latest/ko/message/message-template
+          int templateId = templateIds['customMessage']!;
+
+          try {
+            // 메시지 보내기
+            MessageSendResult result =
+                await TalkApi.instance.customMessage(receiverUuids, templateId);
+            Log.i(context, tag, '메시지 보내기 성공 ${result.successfulReceiverUuids}');
+
+            if (result.failureInfos != null) {
+              Log.d(context, tag,
+                  '메시지 보내기에 일부 성공했으나, 일부 대상에게는 실패 \n${result.failureInfos}');
+            }
+          } catch (e) {
+            Log.e(context, tag, '메시지 보내기 실패', e);
+          }
+        }
+      }),
+      ApiItem('sendScrapMessage()', () async {
+        // 스크랩 템플릿으로 친구에게 메시지 보내기
+
+        Friends friends;
+        try {
+          // 카카오톡 친구 목록 받기
+          friends = await TalkApi.instance.friends();
+        } catch (e) {
+          Log.e(context, tag, '카카오톡 친구 목록 받기 실패', e);
+          return;
+        }
+
+        if (friends.elements == null) {
+          return;
+        }
+
+        if (friends.elements!.isEmpty) {
+          Log.e(context, tag, '메시지 보낼 친구가 없습니다');
+        } else {
+          // 서비스에 상황에 맞게 메시지 보낼 친구의 UUID 를 가져오세요.
+          // 이 샘플에서는 친구 목록을 화면에 보여주고 체크박스로 선택된 친구들의 UUID 를 수집하도록 구현했습니다.
+          List<String> selectedItems = await Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => FriendPage(
+                items: friends.elements!
+                    .map((friend) => PickerItem(
+                        friend.uuid,
+                        friend.profileNickname ?? '',
+                        friend.profileThumbnailImage))
+                    .toList(),
+              ),
+            ),
+          );
+
+          if (selectedItems.isEmpty) {
+            return;
+          }
+          Log.d(context, tag, '선택된 친구:\n${selectedItems.join('\n')}');
+
+          // 메시지 보낼 친구의 UUID 목록
+          List<String> receiverUuids = selectedItems;
+
+          // 공유할 웹페이지 URL
+          //  * 주의: 개발자사이트 Web 플랫폼 설정에 공유할 URL의 도메인이 등록되어 있어야 합니다.
+          String url = "https://developers.kakao.com";
+
+          try {
+            // 메시지 보내기
+            MessageSendResult result =
+                await TalkApi.instance.scrapMessage(receiverUuids, url);
+            Log.i(context, tag, '메시지 보내기 성공 ${result.successfulReceiverUuids}');
+
+            if (result.failureInfos != null) {
+              Log.d(context, tag,
+                  '메시지 보내기에 일부 성공했으나, 일부 대상에게는 실패 \n${result.failureInfos}');
+            }
+          } catch (e) {
+            Log.e(context, tag, '메시지 보내기 실패', e);
+          }
+        }
+      }),
+      ApiItem('channels()', () async {
+        // 카카오톡 채널 관계 확인하기
+
+        try {
+          Channels relations = await TalkApi.instance.plusFriends();
+          Log.i(context, tag, '채널 관계 확인 성공\n${relations.channels}');
+        } catch (e) {
+          Log.e(context, tag, '채널 관계 확인 실패', e);
+        }
+      }),
+      ApiItem('addChannelUrl()', () async {
+        // 카카오톡 채널 추가하기 URL
+        Uri url = await TalkApi.instance.channelAddUrl('_ZeUTxl');
+
+        try {
+          // 디바이스 브라우저 열기
+          await launchBrowserTab(url);
+        } catch (e) {
+          Log.e(context, tag, 'Error', e);
+        }
+      }),
+      ApiItem('channelChatUrl()', () async {
+        // 카카오톡 채널 채팅 URL
+        Uri url = await TalkApi.instance.channelChatUrl('_ZeUTxl');
+
+        try {
+          // 디바이스 브라우저 열기
+          await launchBrowserTab(url);
+        } catch (e) {
+          Log.e(context, tag, '인터넷 브라우저 미설치: 인터넷 브라우저를 설치해주세요', e);
         }
       }),
     ];
