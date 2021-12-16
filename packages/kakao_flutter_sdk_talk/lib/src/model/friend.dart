@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 
 part 'friend.g.dart';
@@ -32,4 +33,52 @@ class Friend {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$FriendToJson(this);
+}
+
+class FriendsContext {
+  int? offset;
+  int? limit;
+
+  Order? order;
+  FriendOrder? friendOrder;
+  Uri url;
+
+  FriendsContext(this.url) {
+    offset = int.parse(url.queryParameters['offset']!);
+    limit = int.parse(url.queryParameters['limit']!);
+
+    if (url.queryParameters['order'] == describeEnum(Order.asc)) {
+      order = Order.asc;
+    } else if (url.queryParameters['order'] == describeEnum(Order.desc)) {
+      order = Order.desc;
+    } else {
+      order = null;
+    }
+
+    if (url.queryParameters['friend_order'] ==
+        describeEnum(FriendOrder.nickname)) {
+      friendOrder = FriendOrder.nickname;
+    } else if (url.queryParameters['friend_order'] ==
+        describeEnum(FriendOrder.favorite)) {
+      friendOrder = FriendOrder.favorite;
+    } else if (url.queryParameters['friend_order'] ==
+        describeEnum(FriendOrder.age)) {
+      friendOrder = FriendOrder.age;
+    } else {
+      friendOrder = null;
+    }
+  }
+}
+
+enum Order { asc, desc }
+
+enum FriendOrder {
+  /// 이름 순 정렬
+  nickname,
+
+  /// 즐겨찾기 순 정렬
+  favorite,
+
+  /// 나이 순 정렬
+  age
 }

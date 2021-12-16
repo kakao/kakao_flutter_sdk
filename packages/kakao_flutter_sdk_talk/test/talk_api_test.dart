@@ -67,7 +67,7 @@ void main() {
         expect(params["template_id"], 1234);
         expect(false, params.containsKey("template_args"));
       };
-      await _api.customMemo(1234);
+      await _api.sendCustomMemo(1234);
     });
 
     test("/custom with args", () async {
@@ -78,7 +78,7 @@ void main() {
         expect(params["template_id"], 1234);
         expect(params["template_args"], jsonEncode(args));
       };
-      await _api.customMemo(1234, templateArgs: args);
+      await _api.sendCustomMemo(1234, templateArgs: args);
     });
 
     group("/default", () {
@@ -99,7 +99,7 @@ void main() {
           expect(params["template_object"], jsonEncode(template));
         };
 
-        await _api.defaultMemo(template);
+        await _api.sendDefaultMemo(template);
       });
 
       test("commerce", () async {
@@ -113,7 +113,7 @@ void main() {
         _adapter.requestAssertions = (RequestOptions options) {
           expect(options.data["template_object"], jsonEncode(template));
         };
-        await _api.defaultMemo(template);
+        await _api.sendDefaultMemo(template);
       });
     });
 
@@ -125,7 +125,7 @@ void main() {
           Map<String, dynamic> params = options.data;
           expect(params["request_url"], url);
         };
-        await _api.scrapMemo(url);
+        await _api.sendScrapMemo(url);
       });
 
       test("with args", () async {
@@ -139,7 +139,7 @@ void main() {
           expect(params["template_id"], templateId);
           expect(params["template_args"], jsonEncode(args));
         };
-        await _api.scrapMemo(url, templateId: 1234, templateArgs: args);
+        await _api.sendScrapMemo(url, templateId: 1234, templateArgs: args);
       });
     });
   });
@@ -151,7 +151,7 @@ void main() {
       final body = await loadJson("talk/message/success.json");
       map = jsonDecode(body);
       _adapter.setResponseString(body, 200);
-      final res = await _api.customMessage(["1234"], 1234);
+      final res = await _api.sendCustomMessage(["1234"], 1234);
       final expectedUuids = map["successful_receiver_uuids"];
       final uuids = res.successfulReceiverUuids;
       uuids!.asMap().forEach((idx, uuid) {
@@ -163,7 +163,7 @@ void main() {
       final body = await loadJson("talk/message/partial_success.json");
       map = jsonDecode(body);
       _adapter.setResponseString(body, 200);
-      final res = await _api.customMessage(["1234"], 1234);
+      final res = await _api.sendCustomMessage(["1234"], 1234);
 
       final expectedInfos = map["failure_info"];
       final infos = res.failureInfos;
@@ -197,7 +197,7 @@ void main() {
     });
 
     test("with no parameter", () async {
-      res = await _api.plusFriends();
+      res = await _api.channels();
     });
 
     test("with public ids", () async {
@@ -206,7 +206,7 @@ void main() {
         var params = options.queryParameters;
         expect(params["channel_public_ids"], jsonEncode([publicId]));
       };
-      res = await _api.plusFriends([publicId]);
+      res = await _api.channels([publicId]);
     });
   });
 }
