@@ -85,11 +85,11 @@ class TalkApi {
       final params = {
         "offset": context != null ? context.offset : offset,
         "limit": context != null ? context.limit : limit,
-        "friend_order": context != null
-            ? context.friendOrder
+        "friend_order": context != null && context.friendOrder != null
+            ? describeEnum(context.friendOrder!)
             : (friendOrder == null ? null : describeEnum(friendOrder)),
-        "order": context != null
-            ? context.order
+        "order": context != null && context.order != null
+            ? describeEnum(context.order!)
             : (order == null ? null : describeEnum(order)),
         "secure_resource": true
       };

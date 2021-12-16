@@ -38,12 +38,14 @@ class Friend {
 class FriendsContext {
   int? offset;
   int? limit;
-
   Order? order;
   FriendOrder? friendOrder;
   Uri url;
 
-  FriendsContext(this.url) {
+  FriendsContext({this.offset, this.limit, this.order, this.friendOrder})
+      : url = Uri.parse('');
+
+  FriendsContext.fromUrl(this.url) {
     offset = int.parse(url.queryParameters['offset']!);
     limit = int.parse(url.queryParameters['limit']!);
 
