@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
+import 'package:kakao_flutter_sdk_talk/kakao_flutter_sdk_talk.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/channels.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/friends.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/message_send_result.dart';
@@ -30,7 +31,7 @@ class TalkApi {
   /// 카카오 디벨로퍼스에서 생성한 서비스만의 커스텀 메시지 템플릿을 사용하여, 카카오톡의 나와의 채팅방으로 메시지 전송.
   ///
   /// 템플릿을 생성하는 방법은 [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/ko/message/message-template) 참고.
-  Future<void> customMemo(int templateId,
+  Future<void> sendCustomMemo(int templateId,
       {Map<String, String>? templateArgs}) async {
     final params = {
       "template_id": templateId,
@@ -40,12 +41,12 @@ class TalkApi {
   }
 
   /// 기본 템플릿을 이용하여, 카카오톡의 나와의 채팅방으로 메시지 전송.
-  Future<void> defaultMemo(DefaultTemplate template) async {
+  Future<void> sendDefaultMemo(DefaultTemplate template) async {
     return _memo("default/", {"template_object": jsonEncode(template)});
   }
 
   /// 지정된 URL 을 스크랩하여, 카카오톡의 나와의 채팅방으로 메시지 전송.
-  Future<void> scrapMemo(String url,
+  Future<void> sendScrapMemo(String url,
       {int? templateId, Map<String, String>? templateArgs}) async {
     final params = {
       "request_url": url,
@@ -63,7 +64,7 @@ class TalkApi {
   }
 
   /// 사용자가 특정 카카오톡 채널을 추가했는지 확인.
-  Future<Channels> plusFriends([List<String>? publicIds]) async {
+  Future<Channels> channels([List<String>? publicIds]) async {
     return ApiFactory.handleApiError(() async {
       Response response = await _dio.get("/v1/api/talk/channels",
           queryParameters: publicIds == null
@@ -78,15 +79,18 @@ class TalkApi {
       {int? offset,
       int? limit,
       FriendOrder? friendOrder,
-      String? order}) async {
+      Order? order,
+      FriendsContext? context}) async {
     return ApiFactory.handleApiError(() async {
       final params = {
-        "offset": offset,
-        "limit": limit,
-        "friend_order": friendOrder == null
-            ? null
-            : describeEnum(friendOrder).toLowerCase(),
-        "order": order,
+        "offset": context != null ? context.offset : offset,
+        "limit": context != null ? context.limit : limit,
+        "friend_order": context != null
+            ? context.friendOrder
+            : (friendOrder == null ? null : describeEnum(friendOrder)),
+        "order": context != null
+            ? context.order
+            : (order == null ? null : describeEnum(order)),
         "secure_resource": true
       };
       params.removeWhere((k, v) => v == null);
@@ -99,7 +103,7 @@ class TalkApi {
   /// 카카오 디벨로퍼스에서 생성한 서비스만의 커스텀 메시지 템플릿을 사용하여, 카카오톡의 나와의 채팅방으로 메시지 전송.
   ///
   /// 템플릿을 생성하는 방법은 [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/ko/message/message-template) 참고.
-  Future<MessageSendResult> customMessage(
+  Future<MessageSendResult> sendCustomMessage(
       List<String> receiverUuids, int templateId,
       {Map<String, String>? templateArgs}) async {
     final params = {
@@ -111,7 +115,7 @@ class TalkApi {
   }
 
   /// 기본 템플릿을 이용하여, 카카오톡의 나와의 채팅방으로 메시지 전송.
-  Future<MessageSendResult> defaultMessage(
+  Future<MessageSendResult> sendDefaultMessage(
       List<String> receiverUuids, DefaultTemplate template) async {
     final params = {
       "receiver_uuids": jsonEncode(receiverUuids),
@@ -121,7 +125,8 @@ class TalkApi {
   }
 
   /// 지정된 URL 을 스크랩하여, 카카오톡의 나와의 채팅방으로 메시지 전송.
-  Future<MessageSendResult> scrapMessage(List<String> receiverUuids, String url,
+  Future<MessageSendResult> sendScrapMessage(
+      List<String> receiverUuids, String url,
       {int? templateId, Map<String, String>? templateArgs}) async {
     final params = {
       "receiver_uuids": jsonEncode(receiverUuids),
@@ -137,7 +142,7 @@ class TalkApi {
   /// [channelId]는 카카오톡 채널 홈 URL 에 들어간 {_영문}으로 구성된 고유 아이디.
   /// 홈 URL 은 카카오톡 채널 관리자센터 > 관리 > 상세설정 페이지에서 확인.
   ///
-  Future<Uri> channelAddUrl(final String channelId) async {
+  Future<Uri> addChannelUrl(final String channelId) async {
     return Uri(
         scheme: "https",
         host: KakaoSdk.hosts.pf,
@@ -174,15 +179,4 @@ class TalkApi {
       "api_ver": "1.0"
     };
   }
-}
-
-enum FriendOrder {
-  /// 이름 순 정렬
-  nickname,
-
-  /// 즐겨찾기 순 정렬
-  favorite,
-
-  /// 나이 순 정렬
-  age
 }
