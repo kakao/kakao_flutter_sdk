@@ -9,7 +9,7 @@ class Log {
     developer.log(msg, name: tag, level: 1);
   }
 
-  static void d(BuildContext context, String tag, String msg, [Object? error]) {
+  static void d(BuildContext context, String tag, String msg) {
     developer.log(msg, name: tag, level: 2);
   }
 
