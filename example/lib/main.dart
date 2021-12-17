@@ -1,6 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:kakao_flutter_sdk_example/api_item.dart';
 import 'package:kakao_flutter_sdk_example/debug_page.dart';
@@ -9,6 +11,7 @@ import 'package:kakao_flutter_sdk_example/log.dart';
 import 'package:kakao_flutter_sdk_example/message_template.dart';
 import 'package:kakao_flutter_sdk_example/picker_item.dart';
 import 'package:kakao_flutter_sdk_example/server_phase.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'server_phase.dart';
@@ -132,6 +135,7 @@ class _MyPageState extends State<MyPage> {
       ApiItem('User API'),
       ApiItem('isKakaoTalkLoginAvailable()', () async {
         // 카카오톡 설치여부 확인
+
         bool result = await isKakaoTalkInstalled();
         String msg = result ? '카카오톡으로 로그인 가능' : '카카오톡 미설치: 카카오계정으로 로그인 사용 권장';
         Log.i(context, tag, msg);
@@ -303,8 +307,8 @@ class _MyPageState extends State<MyPage> {
             return;
           }
 
+          // 사용자 정보 재요청
           try {
-            // 사용자 정보 재요청
             User user = await UserApi.instance.me();
             Log.i(
                 context,
@@ -404,9 +408,9 @@ class _MyPageState extends State<MyPage> {
 
           List<String> scopes = ['shipping_address'];
 
+          // 사용자에게 배송지 제공 동의 요청
           OAuthToken token;
           try {
-            // 사용자에게 배송지 제공 동의 요청
             token = await UserApi.instance.loginWithNewScopes(scopes);
             Log.d(context, tag, 'allowed scopes: ${token.scopes}');
           } catch (e) {
@@ -482,8 +486,9 @@ class _MyPageState extends State<MyPage> {
         }
       }),
       ApiItem('sendDefaultMemo()', () async {
+        // 디폴트 템플릿으로 나에게 보내기 - Feed
+
         try {
-          // 디폴트 템플릿으로 나에게 보내기 - Feed
           await TalkApi.instance.sendDefaultMemo(defaultFeed);
           Log.i(context, tag, '나에게 보내기 성공');
         } catch (e) {
@@ -570,9 +575,9 @@ class _MyPageState extends State<MyPage> {
       ApiItem('sendCustomMessage()', () async {
         // 커스텀 템플릿으로 친구에게 메시지 보내기
 
+        // 카카오톡 친구 목록 받기
         Friends friends;
         try {
-          // 카카오톡 친구 목록 받기
           friends = await TalkApi.instance.friends();
         } catch (e) {
           Log.e(context, tag, '카카오톡 친구 목록 받기 실패', e);
@@ -613,8 +618,8 @@ class _MyPageState extends State<MyPage> {
           // * 만들기 가이드: https://developers.kakao.com/docs/latest/ko/message/message-template
           int templateId = templateIds['customMessage']!;
 
+          // 메시지 보내기
           try {
-            // 메시지 보내기
             MessageSendResult result = await TalkApi.instance
                 .sendCustomMessage(receiverUuids, templateId);
             Log.i(context, tag, '메시지 보내기 성공 ${result.successfulReceiverUuids}');
@@ -631,9 +636,9 @@ class _MyPageState extends State<MyPage> {
       ApiItem('sendDefaultMessage()', () async {
         // 디폴트 템플릿으로 친구에게 메시지 보내기 - Feed
 
+        // 카카오톡 친구 목록 받기
         Friends friends;
         try {
-          // 카카오톡 친구 목록 받기
           friends = await TalkApi.instance.friends();
         } catch (e) {
           Log.e(context, tag, '카카오톡 친구 목록 받기 실패', e);
@@ -674,8 +679,8 @@ class _MyPageState extends State<MyPage> {
           // * 만들기 가이드: https://developers.kakao.com/docs/latest/ko/message/message-template
           int templateId = templateIds['customMessage']!;
 
+          // 메시지 보내기
           try {
-            // 메시지 보내기
             MessageSendResult result = await TalkApi.instance
                 .sendCustomMessage(receiverUuids, templateId);
             Log.i(context, tag, '메시지 보내기 성공 ${result.successfulReceiverUuids}');
@@ -692,9 +697,9 @@ class _MyPageState extends State<MyPage> {
       ApiItem('sendScrapMessage()', () async {
         // 스크랩 템플릿으로 친구에게 메시지 보내기
 
+        // 카카오톡 친구 목록 받기
         Friends friends;
         try {
-          // 카카오톡 친구 목록 받기
           friends = await TalkApi.instance.friends();
         } catch (e) {
           Log.e(context, tag, '카카오톡 친구 목록 받기 실패', e);
@@ -735,8 +740,8 @@ class _MyPageState extends State<MyPage> {
           //  * 주의: 개발자사이트 Web 플랫폼 설정에 공유할 URL의 도메인이 등록되어 있어야 합니다.
           String url = "https://developers.kakao.com";
 
+          // 메시지 보내기
           try {
-            // 메시지 보내기
             MessageSendResult result =
                 await TalkApi.instance.sendScrapMessage(receiverUuids, url);
             Log.i(context, tag, '메시지 보내기 성공 ${result.successfulReceiverUuids}');
@@ -764,22 +769,178 @@ class _MyPageState extends State<MyPage> {
         // 카카오톡 채널 추가하기 URL
         Uri url = await TalkApi.instance.addChannelUrl('_ZeUTxl');
 
+        // 디바이스 브라우저 열기
         try {
-          // 디바이스 브라우저 열기
           await launchBrowserTab(url);
         } catch (e) {
-          Log.e(context, tag, 'Error', e);
+          Log.e(context, tag, '인터넷 브라우저 미설치: 인터넷 브라우저를 설치해주세요', e);
         }
       }),
       ApiItem('channelChatUrl()', () async {
         // 카카오톡 채널 채팅 URL
         Uri url = await TalkApi.instance.channelChatUrl('_ZeUTxl');
 
+        // 디바이스 브라우저 열기
         try {
-          // 디바이스 브라우저 열기
           await launchBrowserTab(url);
         } catch (e) {
           Log.e(context, tag, '인터넷 브라우저 미설치: 인터넷 브라우저를 설치해주세요', e);
+        }
+      }),
+      ApiItem('KakaoStory API'),
+      ApiItem('isStoryUser()', () async {
+        // 카카오스토리 사용자 확인하기
+
+        try {
+          bool isStoryUser = await StoryApi.instance.isStoryUser();
+          Log.i(context, tag, '카카오스토리 가입 여부: $isStoryUser');
+        } catch (e) {
+          Log.e(context, tag, '카카오스토리 사용자 확인 실패', e);
+        }
+      }),
+      ApiItem('profile()', () async {
+        // 카카오스토리 프로필 받기
+
+        try {
+          StoryProfile profile = await StoryApi.instance.profile();
+          Log.i(context, tag,
+              '카카오스토리 프로필 받기 성공\n닉네임: ${profile.nickname}\n프로필사진: ${profile.thumbnailUrl}\n생일: ${profile.birthday}');
+        } catch (e) {
+          Log.e(context, tag, '카카오스토리 프로필 받기 실패', e);
+        }
+      }),
+      ApiItem('stories()', () async {
+        // 여러 개의 스토리 받기
+
+        try {
+          List<Story> stories = await StoryApi.instance.stories();
+          Log.i(context, tag, '스토리 받기 성공\n$stories');
+        } catch (e) {
+          Log.e(context, tag, '스토리 받기 실패', e);
+        }
+      }),
+      ApiItem('story(id:) - first of stories', () async {
+        // 지정 스토리 받기
+
+        // 이 샘플에서는 받고자 하는 스토리 아이디를 얻기 위해 전체 목록을 조회하고 첫번째 스토리 아이디를 사용했습니다.
+        List<Story> stories;
+        try {
+          stories = await StoryApi.instance.stories();
+        } catch (e) {
+          return;
+        }
+
+        if (stories.isEmpty) {
+          Log.e(context, tag, '내 스토리가 하나도 없습니다');
+          return;
+        }
+
+        // 정보를 원하는 스토리 아이디
+        String storyId = stories.first.id;
+
+        // 지정 스토리 받기
+        try {
+          Story story = await StoryApi.instance.story(storyId);
+          Log.i(context, tag,
+              '스토리 받기 성공\n아이디: ${story.id}\n미디어 형식: ${story.mediaType}\n작성일자: ${story.createdAt}\n내용: ${story.content}');
+        } catch (e) {
+          Log.e(context, tag, '스토리 받기 실패', e);
+        }
+      }),
+      ApiItem('delete(id:) - first of stories', () async {
+        // 내 스토리 삭제하기
+
+        // 이 샘플에서는 삭제하고자 하는 스토리 아이디를 얻기 위해 전체 목록을 조회하고 첫번째 스토리 아이디를 사용했습니다.
+        List<Story> stories;
+
+        try {
+          stories = await StoryApi.instance.stories();
+        } catch (e) {
+          Log.e(context, tag, '스토리 받기 실패', e);
+          return;
+        }
+
+        if (stories.isEmpty) {
+          Log.e(context, tag, '내 스토리가 하나도 없습니다');
+          return;
+        }
+
+        // 삭제를 원하는 스토리 아이디
+        String storyId = stories.first.id;
+
+        // 스토리 삭제하기
+        try {
+          await StoryApi.instance.delete(storyId);
+          Log.i(context, tag, '스토리 삭제 성공 [$storyId]');
+        } catch (e) {
+          Log.e(context, tag, '스토리 삭제 실패', e);
+        }
+      }),
+      ApiItem('postNote()', () async {
+        // 글 스토리 쓰기
+
+        try {
+          String content = "Posting note from Kakao SDK Sample";
+          StoryPostResult storyPostResult =
+              await StoryApi.instance.postNote(content);
+          Log.i(context, tag, '스토리 쓰기 성공 [${storyPostResult.id}]');
+        } catch (e) {
+          Log.e(context, tag, '스토리 쓰기 실패', e);
+        }
+      }),
+      ApiItem('postLink()', () async {
+        // 링크 스토리 쓰기
+
+        LinkInfo linkInfo;
+        try {
+          linkInfo =
+              await StoryApi.instance.linkInfo('https://www.kakaocorp.com');
+          Log.d(context, tag, '링크 만들기 성공 ${linkInfo.title}');
+        } catch (e) {
+          Log.e(context, tag, '링크 만들기 실패', e);
+          return;
+        }
+
+        String content = 'Posting link from Kakao SDK Sample.';
+
+        try {
+          StoryPostResult storyPostResult = await StoryApi.instance
+              .postLink(linkInfo: linkInfo, content: content);
+          Log.i(context, tag, '스토리 쓰기 성공 [${storyPostResult.id}]');
+        } catch (e) {
+          Log.e(context, tag, '스토리 쓰기 실패', e);
+        }
+      }),
+      ApiItem('postPhoto', () async {
+        // 사진 스토리 쓰기
+
+        // 이 샘플에서는 프로젝트 리소스로 추가한 이미지 파일을 사용했습니다. 갤러리 등 서비스 니즈에 맞는 사진 파일을 준비하세요.
+        // 업로드할 사진 파일
+        ByteData byteData = await rootBundle.load('assets/images/cat1.png');
+        File tempFile =
+            File('${(await getTemporaryDirectory()).path}/cat1.png');
+        File file = await tempFile.writeAsBytes(byteData.buffer
+            .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+
+        List<String> images;
+
+        // 사진 업로드
+        try {
+          images = await StoryApi.instance.upload([file]);
+          Log.d(context, tag, '사진 업로드 성공 $images');
+        } catch (e) {
+          Log.e(context, tag, '사진 업로드 실패', e);
+          return;
+        }
+
+        // 사진 스토리 쓰기
+        try {
+          String content = 'Posting photo from Kakao SDK Sample.';
+          StoryPostResult storyPostResult = await StoryApi.instance
+              .postPhoto(images: images, content: content);
+          Log.i(context, tag, '스토리 쓰기 성공 [${storyPostResult.id}]');
+        } catch (e) {
+          Log.e(context, tag, '스토리 쓰기 실패', e);
         }
       }),
     ];
