@@ -82,13 +82,18 @@ enum StoryType {
 
 enum StoryPermission {
   /// 전체 공개
+  @JsonValue('PUBLIC')
   public,
 
   /// 친구 공개
+  @JsonValue('FRIEND')
   friend,
 
   /// 나만 보기
+  @JsonValue('ONLY_ME')
   onlyMe,
+
+  @JsonValue('UNKNOWN')
   unknown
 }
 

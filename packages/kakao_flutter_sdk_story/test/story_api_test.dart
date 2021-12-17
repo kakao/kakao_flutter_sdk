@@ -42,7 +42,7 @@ void main() {
   test("/v1/api/story/mystories 200", () async {
     String body = await loadJson("story/stories.json");
     _adapter.setResponseString(body, 200);
-    var stories = await _api.myStories();
+    var stories = await _api.stories();
     expect(stories.length, 3);
   });
 
@@ -50,8 +50,9 @@ void main() {
     String body = await loadJson("story/story.json");
     _adapter.setResponseString(body, 200);
 
-    var story = await _api.myStory("AAAAAAA.CCCCCCCCCCC");
+    var story = await _api.story("AAAAAAA.CCCCCCCCCCC");
     var likes = story.likes;
+    print("${story}");
     expect(story.mediaType, StoryType.photo);
     expect(likes?[0].emotion, Emotion.cool);
     expect(story.permission, StoryPermission.public);
@@ -67,7 +68,7 @@ void main() {
         var params = options.queryParameters;
         expect(params["id"], storyId);
       };
-      await _api.deleteStory(storyId);
+      await _api.delete(storyId);
     });
   });
 
@@ -83,7 +84,7 @@ void main() {
       var params = options.queryParameters;
       expect(params["url"], url);
     };
-    var info = await _api.scrapLink(url);
+    var info = await _api.linkInfo(url);
 
     expect(info.url.toString(), map["url"]);
     expect(info.requestedUrl.toString(), map["requested_url"]);
@@ -108,8 +109,8 @@ void main() {
         Map<String, dynamic> params = options.data;
         expect(params.keys.length, 1);
       };
-      var id = await _api.postNote(content);
-      expect(id, map!["id"]);
+      var storyPostResult = await _api.postNote(content);
+      expect(storyPostResult.id, map!["id"]);
     });
 
     test("/photo", () async {
@@ -128,9 +129,9 @@ void main() {
         var urls = jsonDecode(params["image_url_list"]) as List<dynamic>;
         expect(urls.length, 3);
       };
-      var story =
-          await _api.postPhotos(images, permission: StoryPermission.friend);
-      expect(story, map!["id"]);
+      var storyPostResult = await _api.postPhoto(
+          images: images, permission: StoryPermission.friend);
+      expect(storyPostResult.id, map!["id"]);
     });
 
     test("/link", () async {
@@ -142,9 +143,12 @@ void main() {
         Map<String, dynamic> params = options.data;
         expect(params.length, 3);
       };
-      var storyId = await _api.postLink(linkInfo,
-          enableShare: false, androidExecParams: "key1=value1&key2=value2");
-      expect(storyId, map!["id"]);
+      var storyPostResult = await _api.postLink(
+        linkInfo: linkInfo,
+        enableShare: false,
+        androidExecParams: "key1=value1&key2=value2",
+      );
+      expect(storyPostResult.id, map!["id"]);
     });
   });
 
@@ -163,7 +167,7 @@ void main() {
         File("../../test_resources/images/cat2.png")
       ];
 
-      var res = await _api.scrapImages(files);
+      var res = await _api.upload(files);
       expect(res, urls);
     });
   });
