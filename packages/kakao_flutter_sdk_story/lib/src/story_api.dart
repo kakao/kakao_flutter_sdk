@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
+import 'package:kakao_flutter_sdk_story/kakao_flutter_sdk_story.dart';
 import 'package:kakao_flutter_sdk_story/src/model/link_info.dart';
 import 'package:kakao_flutter_sdk_story/src/model/story.dart';
 import 'package:kakao_flutter_sdk_story/src/model/story_profile.dart';
@@ -34,7 +35,7 @@ class StoryApi {
   }
 
   /// 카카오스토리의 특정 내 스토리 가져오기. comments, likes 등 각종 상세정보 포함.
-  Future<Story> myStory(String storyId) async {
+  Future<Story> story(String storyId) async {
     return ApiFactory.handleApiError(() async {
       final response = await _dio
           .get("/v1/api/story/mystory", queryParameters: {"id": storyId});
@@ -43,8 +44,8 @@ class StoryApi {
   }
 
   /// 카카오스토리의 내 스토리 여러 개 가져오기.
-  /// 단, comments, likes 등의 상세정보는 없으며 이는 내스토리 정보 요청 [myStory] 통해 획득 가능.
-  Future<List<Story>> myStories([String? lastId]) async {
+  /// 단, comments, likes 등의 상세정보는 없으며 이는 내스토리 정보 요청 [story] 통해 획득 가능.
+  Future<List<Story>> stories([String? lastId]) async {
     return ApiFactory.handleApiError(() async {
       final response = await _dio.get("/v1/api/story/mystories",
           queryParameters: lastId == null ? {} : {"last_id": lastId});
@@ -57,7 +58,7 @@ class StoryApi {
   }
 
   /// 카카오스토리에 글 스토리 쓰기.
-  Future<String> postNote(String content,
+  Future<StoryPostResult> postNote(String content,
           {StoryPermission? permission,
           bool? enableShare,
           String? androidExecParams,
@@ -76,14 +77,16 @@ class StoryApi {
   /// 카카오스토리에 사진 스토리 쓰기.
   ///
   /// 먼저 올리고자 하는 사진 파일을 [upload]로 카카오 서버에 업로드하고 반환되는 path 목록을 파라미터로 사용.
-  Future<String> postPhotos(List<String> images,
-          {String? content,
-          StoryPermission? permission,
-          bool? enableShare,
-          String? androidExecParams,
-          String? iosExecParams,
-          String? androidMarketParams,
-          String? iosMarketParams}) =>
+  Future<StoryPostResult> postPhoto({
+    required List<String> images,
+    String? content,
+    StoryPermission? permission,
+    bool? enableShare,
+    String? androidExecParams,
+    String? iosExecParams,
+    String? androidMarketParams,
+    String? iosMarketParams,
+  }) =>
       _post(
           images: images,
           permission: permission,
@@ -95,15 +98,17 @@ class StoryApi {
 
   /// 카카오스토리에 링크 스토리 쓰기
   ///
-  /// 먼저 포스팅하고자 하는 URL로 [scrapLink]를 호출하고 반환된 링크 정보를 파라미터로 사용.
-  Future<String> postLink(LinkInfo linkInfo,
-          {String? content,
-          StoryPermission? permission,
-          bool? enableShare,
-          String? androidExecParams,
-          String? iosExecParams,
-          String? androidMarketParams,
-          String? iosMarketParams}) =>
+  /// 먼저 포스팅하고자 하는 URL로 [linkInfo]를 호출하고 반환된 링크 정보를 파라미터로 사용.
+  Future<StoryPostResult> postLink({
+    required LinkInfo linkInfo,
+    String? content,
+    StoryPermission? permission,
+    bool? enableShare,
+    String? androidExecParams,
+    String? iosExecParams,
+    String? androidMarketParams,
+    String? iosMarketParams,
+  }) =>
       _post(
           linkInfo: linkInfo,
           permission: permission,
@@ -113,7 +118,7 @@ class StoryApi {
           androidMarketParams: androidMarketParams,
           iosMarketParams: iosMarketParams);
 
-  Future<String> _post(
+  Future<StoryPostResult> _post(
       {String? content,
       List<String>? images,
       LinkInfo? linkInfo,
@@ -135,6 +140,7 @@ class StoryApi {
             images == null || images.isEmpty ? null : jsonEncode(images),
         "link_info": linkInfo == null ? null : jsonEncode(linkInfo),
         "permission": permissionToParams(permission),
+        // "permission": permission == null ? null : describeEnum(permission),
         "enable_share": enableShare,
         "android_exec_param": androidExecParams,
         "ios_exec_param": iosExecParams,
@@ -143,12 +149,12 @@ class StoryApi {
       };
       data.removeWhere((k, v) => v == null);
       var response = await _dio.post("/v1/api/story/post/$postfix", data: data);
-      return response.data["id"];
+      return StoryPostResult.fromJson(response.data);
     });
   }
 
   /// 카카오스토리의 특정 내 스토리 삭제.
-  Future<void> deleteStory(String storyId) async {
+  Future<void> delete(String storyId) async {
     return ApiFactory.handleApiError(() async {
       await _dio.delete("/v1/api/story/delete/mystory",
           queryParameters: {"id": storyId});
@@ -156,7 +162,7 @@ class StoryApi {
   }
 
   /// 포스팅하고자 하는 URL 을 스크랩하여 링크 정보 생성
-  Future<LinkInfo> scrapLink(String url) async {
+  Future<LinkInfo> linkInfo(String url) async {
     return ApiFactory.handleApiError(() async {
       final response = await _dio
           .get("/v1/api/story/linkinfo", queryParameters: {"url": url});
@@ -165,7 +171,7 @@ class StoryApi {
   }
 
   /// 로컬 이미지 파일 여러장을 카카오스토리에 업로드
-  Future<List<String>> scrapImages(List<File> images) async {
+  Future<List<String>> upload(List<File> images) async {
     return ApiFactory.handleApiError(() async {
       List<MultipartFile> files = await Future.wait(images.map((image) async =>
           await MultipartFile.fromFile(image.path,
