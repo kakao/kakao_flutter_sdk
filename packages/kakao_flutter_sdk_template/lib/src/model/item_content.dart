@@ -11,13 +11,13 @@ class ItemContent {
   String? profileText;
 
   /// 프로필 영역에 출력될 이미지. 작은 원형의 프로필 사진 형태로 출력됨
-  String? profileImageUrl;
+  Uri? profileImageUrl;
 
   /// 이미지 아이템의 제목. 최대 2줄, 최대 24자까지 출력
   String? titleImageText;
 
   /// 이미지 아이템의 이미지. iOS 108*108, Android 98*98 크기 1:1 비율이 아닌 이미지는 센터 크롭(Center crop) 방식으로 재조정됨
-  String? titleImageUrl;
+  Uri? titleImageUrl;
 
   /// 이미지 아이템의 제목 아래에 회색 글씨로 출력되는 카테고리 정보. 최대 한 줄, 최대 14자까지 출력
   String? titleImageCategory;
@@ -32,15 +32,16 @@ class ItemContent {
   String? sumOp;
 
   /// @nodoc
-  ItemContent(
-      {this.profileText,
-      this.profileImageUrl,
-      this.titleImageText,
-      this.titleImageUrl,
-      this.titleImageCategory,
-      this.items,
-      this.sum,
-      this.sumOp});
+  ItemContent({
+    this.profileText,
+    this.profileImageUrl,
+    this.titleImageText,
+    this.titleImageUrl,
+    this.titleImageCategory,
+    this.items,
+    this.sum,
+    this.sumOp,
+  });
 
   /// @nodoc
   factory ItemContent.fromJson(Map<String, dynamic> json) =>

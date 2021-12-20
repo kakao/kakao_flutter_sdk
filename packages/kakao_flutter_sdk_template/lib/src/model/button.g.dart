@@ -8,8 +8,8 @@ part of 'button.dart';
 
 Button _$ButtonFromJson(Map<String, dynamic> json) {
   return Button(
-    json['title'] as String,
-    Link.fromJson(json['link'] as Map<String, dynamic>),
+    title: json['title'] as String,
+    link: Link.fromJson(json['link'] as Map<String, dynamic>),
   );
 }
 

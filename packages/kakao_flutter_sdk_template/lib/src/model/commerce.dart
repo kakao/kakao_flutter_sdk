@@ -27,13 +27,15 @@ class Commerce {
   final int? currencyUnitPosition;
 
   /// @nodoc
-  Commerce(this.regularPrice,
-      {this.discountPrice,
-      this.fixedDiscountPrice,
-      this.discountRate,
-      this.productName,
-      this.currencyUnit,
-      this.currencyUnitPosition});
+  Commerce({
+    required this.regularPrice,
+    this.discountPrice,
+    this.fixedDiscountPrice,
+    this.discountRate,
+    this.productName,
+    this.currencyUnit,
+    this.currencyUnitPosition,
+  });
 
   /// @nodoc
   factory Commerce.fromJson(Map<String, dynamic> json) =>

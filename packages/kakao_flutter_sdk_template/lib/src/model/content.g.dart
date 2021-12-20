@@ -8,9 +8,9 @@ part of 'content.dart';
 
 Content _$ContentFromJson(Map<String, dynamic> json) {
   return Content(
-    json['title'] as String,
-    Uri.parse(json['image_url'] as String),
-    Link.fromJson(json['link'] as Map<String, dynamic>),
+    title: json['title'] as String,
+    imageUrl: Uri.parse(json['image_url'] as String),
+    link: Link.fromJson(json['link'] as Map<String, dynamic>),
     description: json['description'] as String?,
     imageWidth: json['image_width'] as int?,
     imageHeight: json['image_height'] as int?,

@@ -9,9 +9,13 @@ part of 'item_content.dart';
 ItemContent _$ItemContentFromJson(Map<String, dynamic> json) {
   return ItemContent(
     profileText: json['profile_text'] as String?,
-    profileImageUrl: json['profile_image_url'] as String?,
+    profileImageUrl: json['profile_image_url'] == null
+        ? null
+        : Uri.parse(json['profile_image_url'] as String),
     titleImageText: json['title_image_text'] as String?,
-    titleImageUrl: json['title_image_url'] as String?,
+    titleImageUrl: json['title_image_url'] == null
+        ? null
+        : Uri.parse(json['title_image_url'] as String),
     titleImageCategory: json['title_image_category'] as String?,
     items: (json['items'] as List<dynamic>?)
         ?.map((e) => ItemInfo.fromJson(e as Map<String, dynamic>))
@@ -31,9 +35,9 @@ Map<String, dynamic> _$ItemContentToJson(ItemContent instance) {
   }
 
   writeNotNull('profile_text', instance.profileText);
-  writeNotNull('profile_image_url', instance.profileImageUrl);
+  writeNotNull('profile_image_url', instance.profileImageUrl?.toString());
   writeNotNull('title_image_text', instance.titleImageText);
-  writeNotNull('title_image_url', instance.titleImageUrl);
+  writeNotNull('title_image_url', instance.titleImageUrl?.toString());
   writeNotNull('title_image_category', instance.titleImageCategory);
   writeNotNull('items', instance.items);
   writeNotNull('sum', instance.sum);

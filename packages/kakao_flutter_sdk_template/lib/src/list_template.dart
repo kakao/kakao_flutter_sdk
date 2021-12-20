@@ -29,8 +29,14 @@ class ListTemplate extends DefaultTemplate {
   final String objectType;
 
   /// @nodoc
-  ListTemplate(this.headerTitle, this.headerLink, this.contents,
-      {this.buttons, this.buttonTitle, this.objectType = "list"});
+  ListTemplate({
+    required this.headerTitle,
+    required this.headerLink,
+    required this.contents,
+    this.buttons,
+    this.buttonTitle,
+    this.objectType = "list",
+  });
 
   /// @nodoc
   factory ListTemplate.fromJson(Map<String, dynamic> json) =>

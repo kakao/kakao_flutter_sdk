@@ -26,8 +26,13 @@ class CommerceTemplate extends DefaultTemplate {
   final String objectType;
 
   /// @nodoc
-  CommerceTemplate(this.content, this.commerce,
-      {this.buttons, this.buttonTitle, this.objectType = "commerce"});
+  CommerceTemplate({
+    required this.content,
+    required this.commerce,
+    this.buttons,
+    this.buttonTitle,
+    this.objectType = "commerce",
+  });
 
   /// @nodoc
   factory CommerceTemplate.fromJson(Map<String, dynamic> json) =>

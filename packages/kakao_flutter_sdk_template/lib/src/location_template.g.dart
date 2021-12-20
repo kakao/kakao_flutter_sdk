@@ -8,8 +8,8 @@ part of 'location_template.dart';
 
 LocationTemplate _$LocationTemplateFromJson(Map<String, dynamic> json) {
   return LocationTemplate(
-    json['address'] as String,
-    Content.fromJson(json['content'] as Map<String, dynamic>),
+    address: json['address'] as String,
+    content: Content.fromJson(json['content'] as Map<String, dynamic>),
     addressTitle: json['address_title'] as String?,
     social: json['social'] == null
         ? null
