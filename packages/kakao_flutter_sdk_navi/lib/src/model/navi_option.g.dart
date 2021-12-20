@@ -78,8 +78,8 @@ K? _$enumDecodeNullable<K, V>(
 }
 
 const _$NaviCoordTypeEnumMap = {
-  NaviCoordType.wgs84: 'wgs84',
-  NaviCoordType.katec: 'katec',
+  CoordType.wgs84: 'wgs84',
+  CoordType.katec: 'katec',
 };
 
 const _$VehicleTypeEnumMap = {

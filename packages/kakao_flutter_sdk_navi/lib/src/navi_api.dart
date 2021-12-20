@@ -13,6 +13,8 @@ class NaviApi {
   final Platform _platform;
   static const MethodChannel _channel = MethodChannel("kakao_flutter_sdk");
   static const String naviHosts = "kakaonavi-wguide.kakao.com";
+  static const String webNaviInstall =
+      'https://kakaonavi.kakao.com/launch/index.do';
 
   /// 간편한 API 호출을 위해 기본 제공되는 singleton 객체
   static final NaviApi instance = NaviApi();
@@ -36,7 +38,12 @@ class NaviApi {
       'app_key': KakaoSdk.nativeKey,
       'extras': jsonEncode(extras),
       'navi_params': jsonEncode(
-          KakaoNaviParams(destination, option: option, viaList: viaList))
+        KakaoNaviParams(
+          destination: destination,
+          option: option,
+          viaList: viaList,
+        ),
+      )
     };
     await _channel.invokeMethod<bool>("navigate", arguments);
   }
@@ -61,8 +68,13 @@ class NaviApi {
     final arguments = {
       'app_key': KakaoSdk.nativeKey,
       'extras': jsonEncode(extras),
-      'navi_params': jsonEncode(KakaoNaviParams(destination,
-          option: shareNaviOption, viaList: viaList))
+      'navi_params': jsonEncode(
+        KakaoNaviParams(
+          destination: destination,
+          option: shareNaviOption,
+          viaList: viaList,
+        ),
+      )
     };
     await _channel.invokeMethod<bool>("shareDestination", arguments);
   }

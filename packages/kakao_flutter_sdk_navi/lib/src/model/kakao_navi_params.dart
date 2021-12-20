@@ -12,7 +12,7 @@ class KakaoNaviParams {
   final NaviOption? option;
   final List<Location>? viaList;
 
-  KakaoNaviParams(this.destination, {this.option, this.viaList});
+  KakaoNaviParams({required this.destination, this.option, this.viaList});
 
   Map<String, dynamic> toJson() => _$KakaoNaviParamsToJson(this);
 

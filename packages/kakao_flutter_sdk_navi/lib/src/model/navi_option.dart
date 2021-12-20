@@ -6,7 +6,7 @@ part 'navi_option.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class NaviOption {
   /// 사용할 좌표계
-  final NaviCoordType? coordType;
+  final CoordType? coordType;
 
   /// 차종
   final VehicleType? vehicleType;
@@ -33,15 +33,16 @@ class NaviOption {
   final String? returnUri;
 
   /// @nodoc
-  NaviOption(
-      {this.coordType,
-      this.vehicleType,
-      this.rpOption,
-      this.routeInfo,
-      this.startX,
-      this.startY,
-      this.startAngle,
-      this.returnUri});
+  NaviOption({
+    this.coordType,
+    this.vehicleType,
+    this.rpOption,
+    this.routeInfo,
+    this.startX,
+    this.startY,
+    this.startAngle,
+    this.returnUri,
+  });
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$NaviOptionToJson(this);
@@ -52,7 +53,7 @@ class NaviOption {
 }
 
 /// 좌표계 타입을 선택합니다.
-enum NaviCoordType {
+enum CoordType {
   /// World Geodetic System 84 좌표계
   wgs84,
 
