@@ -1115,8 +1115,68 @@ class _MyPageState extends State<MyPage> {
           Log.e(context, tag, '이미지 스크랩 실패', e);
         }
       }),
-      ApiItem('', () async {
-        try {} catch (e) {}
+      ApiItem('KakaoNavi API'),
+      ApiItem('isKakaoNaviInstalled()', () async {
+        // 카카오내비 설치여부 확인
+        bool result = await NaviApi.instance.isKakaoNaviInstalled();
+        if (result) {
+          Log.i(context, tag, '카카오내비 앱으로 길안내 가능');
+        } else {
+          Log.i(context, tag, '카카오내비 미설치');
+        }
+      }),
+      ApiItem('shareDestinationIntent() - KATEC', () async {
+        if (await NaviApi.instance.isKakaoNaviInstalled()) {
+          // 카카오내비 앱으로 목적지 공유하기 - KATEC
+          await NaviApi.instance.shareDestination(
+            destination: Location(name: '카카오 판교오피스', x: '321286', y: '533707'),
+          );
+        } else {
+          // 카카오내비 설치 페이지로 이동
+          launchBrowserTab(Uri.parse(NaviApi.webNaviInstall));
+        }
+      }),
+      ApiItem('shareDestinationIntent() - WGS84', () async {
+        if (await NaviApi.instance.isKakaoNaviInstalled()) {
+          // 카카오내비 앱으로 목적지 공유하기 - WGS84
+          await NaviApi.instance.shareDestination(
+            destination:
+                Location(name: '카카오 판교오피스', x: '127.108640', y: '37.402111'),
+            option: NaviOption(coordType: CoordType.wgs84),
+          );
+        } else {
+          // 카카오내비 설치 페이지로 이동
+          launchBrowserTab(Uri.parse(NaviApi.webNaviInstall));
+        }
+      }),
+      ApiItem('navigateIntent() - KATEC - viaList', () async {
+        if (await NaviApi.instance.isKakaoNaviInstalled()) {
+          // 카카오내비 앱으로 목적지 공유하기 - KATEC - 경유지 추가
+          await NaviApi.instance.navigate(
+            destination: Location(name: '카카오 판교오피스', x: '321286', y: '533707'),
+            viaList: [
+              Location(name: '판교역 1번출구', x: '321525', y: '532951'),
+            ],
+          );
+        } else {
+          // 카카오내비 설치 페이지로 이동
+          launchBrowserTab(Uri.parse(NaviApi.webNaviInstall));
+        }
+      }),
+      ApiItem('navigateIntent() - WGS84 - viaList', () async {
+        if (await NaviApi.instance.isKakaoNaviInstalled()) {
+          // 카카오내비 앱으로 목적지 공유하기 - WGS84 - 경유지 추가
+          await NaviApi.instance.navigate(
+            destination:
+                Location(name: '카카오 판교오피스', x: '127.108640', y: '37.402111'),
+            viaList: [
+              Location(name: '판교역 1번출구', x: '127.111492', y: '37.395225'),
+            ],
+          );
+        } else {
+          // 카카오내비 설치 페이지로 이동
+          launchBrowserTab(Uri.parse(NaviApi.webNaviInstall));
+        }
       }),
     ];
   }
