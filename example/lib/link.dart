@@ -22,7 +22,7 @@ class LinkScreen extends StatelessWidget {
       var template = defaultFeed;
       final isTalkInstalled = await isKakaoTalkInstalled();
       if (isTalkInstalled) {
-        var uri = await LinkClient.instance.defaultWithTalk(template);
+        var uri = await LinkClient.instance.defaultTemplate(template);
         await LinkClient.instance.launchKakaoTalk(uri);
       } else {
         var uri = await LinkClient.instance.defaultWithWeb(template);
@@ -38,7 +38,7 @@ class LinkScreen extends StatelessWidget {
       var template = defaultList;
       final isTalkInstalled = await isKakaoTalkInstalled();
       if (isTalkInstalled) {
-        var uri = await LinkClient.instance.defaultWithTalk(template);
+        var uri = await LinkClient.instance.defaultTemplate(template);
         await LinkClient.instance.launchKakaoTalk(uri);
       } else {
         var uri = await LinkClient.instance.defaultWithWeb(template);
@@ -54,7 +54,7 @@ class LinkScreen extends StatelessWidget {
       var template = defaultLocation;
       final isTalkInstalled = await isKakaoTalkInstalled();
       if (isTalkInstalled) {
-        var uri = await LinkClient.instance.defaultWithTalk(template);
+        var uri = await LinkClient.instance.defaultTemplate(template);
         await LinkClient.instance.launchKakaoTalk(uri);
       } else {
         var uri = await LinkClient.instance.defaultWithWeb(template);
@@ -70,7 +70,7 @@ class LinkScreen extends StatelessWidget {
       final template = defaultCommerce;
       final isTalkInstalled = await isKakaoTalkInstalled();
       if (isTalkInstalled) {
-        var uri = await LinkClient.instance.defaultWithTalk(template);
+        var uri = await LinkClient.instance.defaultTemplate(template);
         await LinkClient.instance.launchKakaoTalk(uri);
       } else {
         var uri = await LinkClient.instance.defaultWithWeb(template);
@@ -86,7 +86,7 @@ class LinkScreen extends StatelessWidget {
       var template = defaultText;
       final isTalkInstalled = await isKakaoTalkInstalled();
       if (isTalkInstalled) {
-        var uri = await LinkClient.instance.defaultWithTalk(template);
+        var uri = await LinkClient.instance.defaultTemplate(template);
         await LinkClient.instance.launchKakaoTalk(uri);
       } else {
         var uri = await LinkClient.instance.defaultWithWeb(template);
@@ -102,7 +102,7 @@ class LinkScreen extends StatelessWidget {
       final isTalkInstalled = await isKakaoTalkInstalled();
       if (isTalkInstalled) {
         var uri = await LinkClient.instance
-            .customWithTalk(16761, templateArgs: {"key1": "value1"});
+            .customTemplate(16761, templateArgs: {"key1": "value1"});
         await LinkClient.instance.launchKakaoTalk(uri);
         return;
       }
@@ -119,7 +119,7 @@ class LinkScreen extends StatelessWidget {
       final isTalkInstalled = await isKakaoTalkInstalled();
       if (isTalkInstalled) {
         var uri = await LinkClient.instance
-            .scrapWithTalk("https://developers.kakao.com");
+            .scrapTemplate("https://developers.kakao.com");
         await LinkClient.instance.launchKakaoTalk(uri);
         return;
       }
