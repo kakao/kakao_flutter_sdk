@@ -79,12 +79,7 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
                         serviceTerms?.let { putString(Constants.SERVICE_TERMS, it) }
                         approvalType?.let { putString(Constants.APPROVAL_TYPE, it) }
                         codeVerifier?.let {
-                            putString(
-                                Constants.CODE_CHALLENGE,
-                                codeChallenge(it.toByteArray())
-                            )
-                        }
-                        codeVerifier?.let {
+                            putString(Constants.CODE_CHALLENGE, codeChallenge(it.toByteArray()))
                             putString(
                                 Constants.CODE_CHALLENGE_METHOD,
                                 Constants.CODE_CHALLENGE_METHOD_VALUE

@@ -22,25 +22,30 @@ class AuthCodeClient {
   static final AuthCodeClient instance = AuthCodeClient();
 
   // Requests authorization code via `Chrome Custom Tabs` (on Android) and `ASWebAuthenticationSession` (on iOS).
-  Future<String> request(
-      {String? clientId,
-      String? redirectUri,
-      String? codeVerifier,
-      List<Prompt>? prompts,
-      List<String>? scopes,
-      String? state}) async {
+  Future<String> request({
+    String? clientId,
+    String? redirectUri,
+    List<String>? scopes,
+    String? agt,
+    List<String>? channelPublicIds,
+    List<String>? serviceTerms,
+    List<Prompt>? prompts,
+    String? state,
+    String? codeVerifier,
+  }) async {
     final finalRedirectUri = redirectUri ?? "kakao${_platformKey()}://oauth";
-    String? codeChallenge;
-    if (codeVerifier != null) {
-      codeChallenge =
-          base64.encode(sha256.convert(utf8.encode(codeVerifier)).bytes);
-    }
+    String? codeChallenge = codeVerifier != null
+        ? base64.encode(sha256.convert(utf8.encode(codeVerifier)).bytes)
+        : null;
     final params = {
       "client_id": clientId ?? _platformKey(),
       "redirect_uri": finalRedirectUri,
       "response_type": "code",
       // "approval_type": "individual",
       "scope": scopes?.join(" "),
+      "agt": agt,
+      "channel_public_id": channelPublicIds?.join(','),
+      "service_terms": serviceTerms?.join(','),
       "prompt": state == null
           ? (prompts == null ? null : parsePrompts(prompts))
           : parsePrompts(_makeCertPrompts(prompts)),
@@ -66,17 +71,21 @@ class AuthCodeClient {
   //
   // This will only work on devices where KakaoTalk is installed.
   // You MUST check if KakaoTalk is installed before calling this method with [isKakaoTalkInstalled].
-  Future<String> requestWithTalk(
-      {String? clientId,
-      String? redirectUri,
-      List<String>? scopes,
-      List<Prompt>? prompts,
-      String? state,
-      String? codeVerifier}) async {
+  Future<String> requestWithTalk({
+    String? clientId,
+    String? redirectUri,
+    List<Prompt>? prompts,
+    List<String>? channelPublicId,
+    List<String>? serviceTerms,
+    String? state,
+    String? codeVerifier,
+  }) async {
     try {
       return _parseCode(await _openKakaoTalk(
           clientId ?? _platformKey(),
           redirectUri ?? "kakao${_platformKey()}://oauth",
+          channelPublicId,
+          serviceTerms,
           codeVerifier,
           prompts,
           state));
@@ -89,22 +98,24 @@ class AuthCodeClient {
   // Requests authorization code with current access token.
   //
   // User should be logged in in order to call this method.
-  Future<String> requestWithAgt(List<String> scopes,
-      {String? clientId, String? redirectUri}) async {
+  Future<String> requestWithAgt(
+    List<String> scopes, {
+    String? clientId,
+    String? redirectUri,
+    String? codeVerifier,
+  }) async {
     final agt = await _kauthApi.agt();
-    final finalRedirectUri = redirectUri ?? "kakao${_platformKey()}://oauth";
-    final params = {
-      "client_id": clientId ?? _platformKey(),
-      "redirect_uri": finalRedirectUri,
-      "response_type": "code",
-      "agt": agt,
-      "scope": scopes.isEmpty ? null : scopes.join(" "),
-      "ka": await KakaoSdk.kaHeader
-    };
-    params.removeWhere((k, v) => v == null);
-    final url = Uri.https(KakaoSdk.hosts.kauth, "/oauth/authorize", params);
-    return _parseCode(
-        await launchBrowserTab(url, redirectUri: finalRedirectUri));
+    try {
+      return request(
+        clientId: clientId,
+        redirectUri: redirectUri,
+        scopes: scopes,
+        agt: agt,
+        codeVerifier: codeVerifier,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   // Retreives auth code in web environment. (This method is web specific. Use after checking the platform)
@@ -119,13 +130,22 @@ class AuthCodeClient {
     throw KakaoAuthException.fromJson(queryParams);
   }
 
-  Future<String> _openKakaoTalk(String clientId, String redirectUri,
-      String? codeVerifier, List<Prompt>? prompts, String? state) async {
+  Future<String> _openKakaoTalk(
+    String clientId,
+    String redirectUri,
+    List<String>? channelPublicId,
+    List<String>? serviceTerms,
+    String? codeVerifier,
+    List<Prompt>? prompts,
+    String? state,
+  ) async {
     var arguments = {
       "sdk_version": "sdk/${KakaoSdk.sdkVersion} sdk_type/flutter",
       "client_id": clientId,
       "redirect_uri": redirectUri,
       "code_verifier": codeVerifier,
+      "channel_public_id": channelPublicId?.join(','),
+      "service_terms": serviceTerms?.join(','),
       "prompt": state == null
           ? (prompts == null ? null : parsePrompts(prompts))
           : parsePrompts(_makeCertPrompts(prompts)),
