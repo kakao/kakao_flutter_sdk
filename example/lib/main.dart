@@ -26,8 +26,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _initializeSdk();
 
-  SdkLog.i("${await KakaoSdk.origin}");
-
   runApp(MyApp());
 }
 
@@ -942,6 +940,183 @@ class _MyPageState extends State<MyPage> {
         } catch (e) {
           Log.e(context, tag, '스토리 쓰기 실패', e);
         }
+      }),
+      ApiItem('KakaoLink API'),
+      ApiItem('isKakaoLinkAvailable()', () async {
+        // 카카오톡 설치여부 확인
+        bool result = await LinkClient.instance.isKakaoLinkAvailable();
+        if (result) {
+          Log.i(context, tag, '카카오톡으로 카카오링크 공유 가능');
+        } else {
+          Log.i(context, tag, '카카오톡 미설치: 웹 공유 사용 권장');
+        }
+      }),
+      ApiItem('customTemplate()', () async {
+        // 커스텀 템플릿으로 카카오링크 보내기
+        //  * 만들기 가이드: https://developers.kakao.com/docs/latest/ko/message/message-template
+        int templateId = templateIds['customMemo']!;
+
+        try {
+          Uri uri =
+              await LinkClient.instance.customTemplate(templateId: templateId);
+          await LinkClient.instance.launchKakaoTalk(uri);
+          Log.d(context, tag, '카카오링크 보내기 성공');
+        } catch (e) {
+          Log.e(context, tag, '카카오링크 보내기 실패', e);
+        }
+      }),
+      ApiItem('scrapTemplate()', () async {
+        // 스크랩 템플릿으로 카카오링크 보내기
+
+        // 공유할 웹페이지 URL
+        // * 주의: 개발자사이트 Web 플랫폼 설정에 공유할 URL의 도메인이 등록되어 있어야 합니다.
+        String url = "https://developers.kakao.com";
+
+        try {
+          Uri uri = await LinkClient.instance.scrapTemplate(url: url);
+          await LinkClient.instance.launchKakaoTalk(uri);
+          Log.d(context, tag, '카카오링크 보내기 성공');
+        } catch (e) {
+          Log.e(context, tag, '카카오링크 보내기 실패', e);
+        }
+      }),
+      ApiItem('defaultTemplate() - feed', () async {
+        // 디폴트 템플릿으로 카카오링크 보내기 - Feed
+
+        try {
+          Uri uri =
+              await LinkClient.instance.defaultTemplate(template: defaultFeed);
+          await LinkClient.instance.launchKakaoTalk(uri);
+          Log.d(context, tag, '카카오링크 보내기 성공');
+        } catch (e) {
+          Log.e(context, tag, '카카오링크 보내기 실패', e);
+        }
+      }),
+      ApiItem('defaultTemplate() - list', () async {
+        // 디폴트 템플릿으로 카카오링크 보내기 - List
+
+        try {
+          Uri uri =
+              await LinkClient.instance.defaultTemplate(template: defaultList);
+          await LinkClient.instance.launchKakaoTalk(uri);
+          Log.d(context, tag, '카카오링크 보내기 성공');
+        } catch (e) {
+          Log.e(context, tag, '카카오링크 보내기 실패', e);
+        }
+      }),
+      ApiItem('defaultTemplate() - location', () async {
+        // 디폴트 템플릿으로 카카오링크 보내기 - List
+
+        try {
+          Uri uri = await LinkClient.instance
+              .defaultTemplate(template: defaultLocation);
+          await LinkClient.instance.launchKakaoTalk(uri);
+          Log.d(context, tag, '카카오링크 보내기 성공');
+        } catch (e) {
+          Log.e(context, tag, '카카오링크 보내기 실패', e);
+        }
+      }),
+      ApiItem('defaultTemplate() - commerce', () async {
+        // 디폴트 템플릿으로 카카오링크 보내기 - List
+
+        try {
+          Uri uri = await LinkClient.instance
+              .defaultTemplate(template: defaultCommerce);
+          await LinkClient.instance.launchKakaoTalk(uri);
+          Log.d(context, tag, '카카오링크 보내기 성공');
+        } catch (e) {
+          Log.e(context, tag, '카카오링크 보내기 실패', e);
+        }
+      }),
+      ApiItem('defaultTemplate() - text', () async {
+        // 디폴트 템플릿으로 카카오링크 보내기 - List
+
+        try {
+          Uri uri =
+              await LinkClient.instance.defaultTemplate(template: defaultText);
+          await LinkClient.instance.launchKakaoTalk(uri);
+          Log.d(context, tag, '카카오링크 보내기 성공');
+        } catch (e) {
+          Log.e(context, tag, '카카오링크 보내기 실패', e);
+        }
+      }),
+      ApiItem('customTemplateUri() - web sharer', () async {
+        // 커스텀 템플릿으로 웹에서 카카오링크 보내기
+
+        // 메시지 템플릿 아이디
+        // * 주의: 개발자사이트 Web 플랫폼 설정에 공유할 URL의 도메인이 등록되어 있어야 합니다.
+        String url = "https://developers.kakao.com";
+
+        try {
+          Uri shareUrl = await WebSharerClient.instance
+              .scrapTemplateUri(url: url, templateArgs: {'key1': 'value1'});
+          await launchBrowserTab(shareUrl);
+        } catch (e) {
+          Log.e(context, tag, '인터넷 브라우저 미설치: 인터넷 브라우저를 설치해주세요');
+        }
+      }),
+      ApiItem('defaultTemplateUri() - web sharer - feed', () async {
+        // 커스텀 템플릿으로 웹에서 카카오링크 보내기 - Feed
+
+        try {
+          Uri shareUrl = await WebSharerClient.instance
+              .defaultTemplateUri(template: defaultFeed);
+          await launchBrowserTab(shareUrl);
+        } catch (e) {
+          Log.e(context, tag, '인터넷 브라우저 미설치: 인터넷 브라우저를 설치해주세요');
+        }
+      }),
+      ApiItem('defaultTemplateUri() - web sharer - location', () async {
+        // 커스텀 템플릿으로 웹에서 카카오링크 보내기 - Location
+
+        try {
+          Uri shareUrl = await WebSharerClient.instance
+              .defaultTemplateUri(template: defaultLocation);
+          await launchBrowserTab(shareUrl);
+        } catch (e) {
+          Log.e(context, tag, '인터넷 브라우저 미설치: 인터넷 브라우저를 설치해주세요');
+        }
+      }),
+      ApiItem('uploadImage', () async {
+        // 이미지 업로드
+
+        // 로컬 이미지 파일
+        // 이 샘플에서는 프로젝트 리소스로 추가한 이미지 파일을 사용했습니다. 갤러리 등 서비스 니즈에 맞는 사진 파일을 준비하세요.
+        ByteData byteData = await rootBundle.load('assets/images/cat1.png');
+        File tempFile =
+            File('${(await getTemporaryDirectory()).path}/cat1.png');
+        File file = await tempFile.writeAsBytes(byteData.buffer
+            .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+
+        try {
+          // 카카오 이미지 서버로 업로드
+          ImageUploadResult imageUploadResult =
+              await LinkClient.instance.uploadImage(image: file);
+          Log.i(
+              context, tag, '이미지 업로드 성공\n${imageUploadResult.infos.original}');
+        } catch (e) {
+          Log.e(context, tag, '이미지 업로드 실패', e);
+        }
+      }),
+      ApiItem('scrapImage()', () async {
+        // 이미지 스크랩
+
+        // 원본 원격 이미지 URL
+        String url =
+            'https://t1.kakaocdn.net/kakaocorp/Service/KakaoTalk/pc/slide/talkpc_theme_01.jpg';
+
+        try {
+          // 카카오 이미지 서버로 업로드
+          ImageUploadResult imageUploadResult =
+              await LinkClient.instance.scrapImage(imageUrl: url);
+          Log.i(
+              context, tag, '이미지 스크랩 성공\n${imageUploadResult.infos.original}');
+        } catch (e) {
+          Log.e(context, tag, '이미지 스크랩 실패', e);
+        }
+      }),
+      ApiItem('', () async {
+        try {} catch (e) {}
       }),
     ];
   }
