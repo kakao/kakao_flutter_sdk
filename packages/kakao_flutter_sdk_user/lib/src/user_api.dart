@@ -21,12 +21,18 @@ class UserApi {
 
   /// 카카오톡으로 로그인. 카카오톡에 연결된 카카오계정으로 사용자를 인증하고 [OAuthToken] 발급.
   /// 발급된 토큰은 [TokenManagerProvider]에 지정된 토큰 저장소에 자동으로 저장됨.
-  ///
-  /// 동의 화면 요청 시 추가 상호작용을 요청하고자 할 때는 [prompts]를 전달.
-  Future<OAuthToken> loginWithKakaoTalk({List<Prompt>? prompts}) async {
-    final authCode =
-        await AuthCodeClient.instance.requestWithTalk(prompts: prompts);
-    final token = await AuthApi.instance.issueAccessToken(authCode);
+  Future<OAuthToken> loginWithKakaoTalk({
+    List<String>? channelPublicIds,
+    List<String>? serviceTerms,
+  }) async {
+    var codeVerifier = AuthCodeClient.codeVerifier();
+    final authCode = await AuthCodeClient.instance.requestWithTalk(
+      channelPublicId: channelPublicIds,
+      serviceTerms: serviceTerms,
+      codeVerifier: codeVerifier,
+    );
+    final token = await AuthApi.instance
+        .issueAccessToken(authCode, codeVerifier: codeVerifier);
     await TokenManagerProvider.instance.manager.setToken(token);
     return token;
   }
@@ -37,11 +43,20 @@ class UserApi {
   ///
   /// 동의 화면 요청 시 추가 상호작용을 요청하고자 할 때는 [prompts] 전달, 사용할 수 있는 옵션의 종류는 [Prompt] 참고
   /// 전자서명 원문은 [state]로 전달
-  Future<CertTokenInfo> certLoginWithKakaoTalk(
-      {List<Prompt>? prompts, required String state}) async {
+  Future<CertTokenInfo> certLoginWithKakaoTalk({
+    List<Prompt>? prompts,
+    required String state,
+    List<String>? channelPublicIds,
+    List<String>? serviceTerms,
+  }) async {
     var codeVerifier = AuthCodeClient.codeVerifier();
     final authCode = await AuthCodeClient.instance.requestWithTalk(
-        prompts: prompts, state: state, codeVerifier: codeVerifier);
+      prompts: prompts,
+      state: state,
+      channelPublicId: channelPublicIds,
+      serviceTerms: serviceTerms,
+      codeVerifier: codeVerifier,
+    );
     final certTokenInfo = await AuthApi.instance
         .issueAccessTokenWithCert(authCode, codeVerifier: codeVerifier);
     await TokenManagerProvider.instance.manager.setToken(certTokenInfo.token);
@@ -53,22 +68,19 @@ class UserApi {
   /// 발급된 토큰은 [TokenManagerProvider]에 지정된 토큰 저장소에 자동으로 저장됨.
   ///
   /// 동의 화면 요청 시 추가 상호작용을 요청하고자 할 때는 [prompts]를 전달.
-  Future<OAuthToken> loginWithKakaoAccount({List<Prompt>? prompts}) async {
-    final authCode = await AuthCodeClient.instance.request(prompts: prompts);
-    final token = await AuthApi.instance.issueAccessToken(authCode);
-    await TokenManagerProvider.instance.manager.setToken(token);
-    return token;
-  }
-
-  /// 사용자가 아직 동의하지 않은 개인정보 및 접근권한 동의 항목에 대하여 동의를 요청하는 동의 화면을 출력하고, 사용자 동의 시 동의항목이 업데이트 된 [OAuthToken] 발급.
-  ///
-  /// 발급된 토큰은 [TokenManagerProvider]에 지정된 토큰 저장소에 자동으로 저장됨.
-  ///
-  /// [scopes]로 추가로 동의 받고자 하는 동의 항목 ID 목록을 전달함. 카카오 디벨로퍼스 동의 항목 설정 화면에서 확인 가능.
-  ///
-  Future<OAuthToken> loginWithNewScopes(List<String> scopes) async {
-    final authCode = await AuthCodeClient.instance.requestWithAgt(scopes);
-    final token = await AuthApi.instance.issueAccessToken(authCode);
+  Future<OAuthToken> loginWithKakaoAccount({
+    List<Prompt>? prompts,
+    List<String>? channelPublicIds,
+    List<String>? serviceTerms,
+  }) async {
+    String codeVerifier = AuthCodeClient.codeVerifier();
+    final authCode = await AuthCodeClient.instance.request(
+        prompts: prompts,
+        channelPublicIds: channelPublicIds,
+        serviceTerms: serviceTerms,
+        codeVerifier: codeVerifier);
+    final token = await AuthApi.instance
+        .issueAccessToken(authCode, codeVerifier: codeVerifier);
     await TokenManagerProvider.instance.manager.setToken(token);
     return token;
   }
@@ -80,22 +92,47 @@ class UserApi {
   ///
   /// 동의 화면 요청 시 추가 상호작용을 요청하고자 할 때는 [prompts] 전달, 사용할 수 있는 옵션의 종류는 [Prompt] 참고
   /// 전자서명 원문은 [state]로 전달
-  Future<CertTokenInfo> certLoginWithKakaoAccount(
-      {List<Prompt>? prompts, required String state}) async {
+  Future<CertTokenInfo> certLoginWithKakaoAccount({
+    List<Prompt>? prompts,
+    List<String>? channelPublicIds,
+    List<String>? serviceTerms,
+    required String state,
+  }) async {
     var codeVerifier = AuthCodeClient.codeVerifier();
-    final authCode = await AuthCodeClient.instance
-        .request(prompts: prompts, state: state, codeVerifier: codeVerifier);
+    final authCode = await AuthCodeClient.instance.request(
+      prompts: prompts,
+      state: state,
+      channelPublicIds: channelPublicIds,
+      serviceTerms: serviceTerms,
+      codeVerifier: codeVerifier,
+    );
     final certTokenInfo = await AuthApi.instance
         .issueAccessTokenWithCert(authCode, codeVerifier: codeVerifier);
     await TokenManagerProvider.instance.manager.setToken(certTokenInfo.token);
     return certTokenInfo;
   }
 
+  /// 사용자가 아직 동의하지 않은 개인정보 및 접근권한 동의 항목에 대하여 동의를 요청하는 동의 화면을 출력하고, 사용자 동의 시 동의항목이 업데이트 된 [OAuthToken] 발급.
+  ///
+  /// 발급된 토큰은 [TokenManagerProvider]에 지정된 토큰 저장소에 자동으로 저장됨.
+  ///
+  /// [scopes]로 추가로 동의 받고자 하는 동의 항목 ID 목록을 전달함. 카카오 디벨로퍼스 동의 항목 설정 화면에서 확인 가능.
+  ///
+  Future<OAuthToken> loginWithNewScopes(List<String> scopes) async {
+    String codeVerifier = AuthCodeClient.codeVerifier();
+    final authCode = await AuthCodeClient.instance
+        .requestWithAgt(scopes, codeVerifier: codeVerifier);
+    final token = await AuthApi.instance
+        .issueAccessToken(authCode, codeVerifier: codeVerifier);
+    await TokenManagerProvider.instance.manager.setToken(token);
+    return token;
+  }
+
   /// 사용자 정보 요청.
-  Future<User> me() async {
+  Future<User> me({bool secureResource = true}) async {
     return ApiFactory.handleApiError(() async {
-      Response response = await _dio
-          .get("/v2/user/me", queryParameters: {"secure_resource": true});
+      Response response = await _dio.get("/v2/user/me",
+          queryParameters: {"secure_resource": secureResource});
       return User.fromJson(response.data);
     });
   }
@@ -139,17 +176,29 @@ class UserApi {
   }
 
   /// 사용자의 배송지 정보 획득.
-  Future<UserShippingAddresses> shippingAddresses() async {
+  Future<UserShippingAddresses> shippingAddresses({
+    int? fromUpdateAt,
+    int? pageSize,
+  }) async {
+    Map<String, dynamic> params = {
+      'from_updated_at': fromUpdateAt,
+      'page_size': pageSize,
+    };
+    params.removeWhere((k, v) => v == null);
     return ApiFactory.handleApiError(() async {
-      Response response = await _dio.get("/v1/user/shipping_address");
+      Response response =
+          await _dio.get("/v1/user/shipping_address", queryParameters: params);
       return UserShippingAddresses.fromJson(response.data);
     });
   }
 
   /// 사용자가 카카오 간편가입을 통해 동의한 서비스 약관 내역 반환.
-  Future<UserServiceTerms> serviceTerms() async {
+  Future<UserServiceTerms> serviceTerms({String? extra}) async {
+    Map<String, dynamic> param = {'extra': extra};
+    param.removeWhere((k, v) => v == null);
     return ApiFactory.handleApiError(() async {
-      Response response = await _dio.get("/v1/user/service/terms");
+      Response response =
+          await _dio.get("/v1/user/service/terms", queryParameters: param);
       return UserServiceTerms.fromJson(response.data);
     });
   }
@@ -185,7 +234,7 @@ class UserApi {
   /// 사용자의 특정 동의 항목에 대한 동의를 철회하고, 남은 사용자 동의 항목의 상세 정보 목록 반환.
   ///
   /// [scopes]로 동의를 철회할 동의 항목 ID 목록 전달
-  Future<ScopeInfo> revokeScopes(List<String> scopes) {
+  Future<ScopeInfo> revokeScopes({required List<String> scopes}) {
     return ApiFactory.handleApiError(() async {
       Response response = await _dio
           .post('/v2/user/revoke/scopes', data: {'scopes': jsonEncode(scopes)});
