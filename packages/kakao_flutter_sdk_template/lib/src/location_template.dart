@@ -32,12 +32,15 @@ class LocationTemplate extends DefaultTemplate {
   final String objectType;
 
   /// @nodoc
-  LocationTemplate(this.address, this.content,
-      {this.addressTitle,
-      this.social,
-      this.buttons,
-      this.buttonTitle,
-      this.objectType = "location"});
+  LocationTemplate({
+    required this.address,
+    required this.content,
+    this.addressTitle,
+    this.social,
+    this.buttons,
+    this.buttonTitle,
+    this.objectType = "location",
+  });
 
   /// @nodoc
   factory LocationTemplate.fromJson(Map<String, dynamic> json) =>

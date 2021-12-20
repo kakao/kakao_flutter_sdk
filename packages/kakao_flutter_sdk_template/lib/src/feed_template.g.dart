@@ -8,7 +8,7 @@ part of 'feed_template.dart';
 
 FeedTemplate _$FeedTemplateFromJson(Map<String, dynamic> json) {
   return FeedTemplate(
-    Content.fromJson(json['content'] as Map<String, dynamic>),
+    content: Content.fromJson(json['content'] as Map<String, dynamic>),
     itemContent: json['item_content'] == null
         ? null
         : ItemContent.fromJson(json['item_content'] as Map<String, dynamic>),

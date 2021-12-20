@@ -26,11 +26,12 @@ class Link {
   final Map<String, String>? iosExecutionParams;
 
   /// @nodoc
-  Link(
-      {this.webUrl,
-      this.mobileWebUrl,
-      this.androidExecutionParams,
-      this.iosExecutionParams});
+  Link({
+    this.webUrl,
+    this.mobileWebUrl,
+    this.androidExecutionParams,
+    this.iosExecutionParams,
+  });
 
   /// @nodoc
   factory Link.fromJson(Map<String, dynamic> json) => _$LinkFromJson(json);

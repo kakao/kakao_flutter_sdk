@@ -25,8 +25,13 @@ class TextTemplate extends DefaultTemplate {
   final String objectType;
 
   /// @nodoc
-  TextTemplate(this.text, this.link,
-      {this.buttons, this.buttonTitle, this.objectType = "text"});
+  TextTemplate({
+    required this.text,
+    required this.link,
+    this.buttons,
+    this.buttonTitle,
+    this.objectType = "text",
+  });
 
   /// @nodoc
   factory TextTemplate.fromJson(Map<String, dynamic> json) =>

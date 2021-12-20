@@ -8,9 +8,9 @@ part of 'list_template.dart';
 
 ListTemplate _$ListTemplateFromJson(Map<String, dynamic> json) {
   return ListTemplate(
-    json['header_title'] as String,
-    Link.fromJson(json['header_link'] as Map<String, dynamic>),
-    (json['contents'] as List<dynamic>)
+    headerTitle: json['header_title'] as String,
+    headerLink: Link.fromJson(json['header_link'] as Map<String, dynamic>),
+    contents: (json['contents'] as List<dynamic>)
         .map((e) => Content.fromJson(e as Map<String, dynamic>))
         .toList(),
     buttons: (json['buttons'] as List<dynamic>?)

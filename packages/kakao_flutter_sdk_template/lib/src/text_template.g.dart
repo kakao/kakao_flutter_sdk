@@ -8,8 +8,8 @@ part of 'text_template.dart';
 
 TextTemplate _$TextTemplateFromJson(Map<String, dynamic> json) {
   return TextTemplate(
-    json['text'] as String,
-    Link.fromJson(json['link'] as Map<String, dynamic>),
+    text: json['text'] as String,
+    link: Link.fromJson(json['link'] as Map<String, dynamic>),
     buttons: (json['buttons'] as List<dynamic>?)
         ?.map((e) => Button.fromJson(e as Map<String, dynamic>))
         .toList(),

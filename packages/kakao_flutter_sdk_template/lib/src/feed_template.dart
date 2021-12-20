@@ -31,12 +31,14 @@ class FeedTemplate extends DefaultTemplate {
   final String objectType;
 
   /// @nodoc
-  FeedTemplate(this.content,
-      {this.itemContent,
-      this.social,
-      this.buttons,
-      this.buttonTitle,
-      this.objectType = "feed"});
+  FeedTemplate({
+    required this.content,
+    this.itemContent,
+    this.social,
+    this.buttons,
+    this.buttonTitle,
+    this.objectType = "feed",
+  });
 
   /// @nodoc
   factory FeedTemplate.fromJson(Map<String, dynamic> json) =>

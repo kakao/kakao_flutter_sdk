@@ -21,12 +21,13 @@ class Social {
   final int? subscriberCount;
 
   /// @nodoc
-  Social(
-      {this.likeCount,
-      this.commentCount,
-      this.sharedCount,
-      this.viewCount,
-      this.subscriberCount});
+  Social({
+    this.likeCount,
+    this.commentCount,
+    this.sharedCount,
+    this.viewCount,
+    this.subscriberCount,
+  });
 
   /// @nodoc
   factory Social.fromJson(Map<String, dynamic> json) => _$SocialFromJson(json);

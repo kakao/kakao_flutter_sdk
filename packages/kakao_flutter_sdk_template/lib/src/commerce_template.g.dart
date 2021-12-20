@@ -8,8 +8,8 @@ part of 'commerce_template.dart';
 
 CommerceTemplate _$CommerceTemplateFromJson(Map<String, dynamic> json) {
   return CommerceTemplate(
-    Content.fromJson(json['content'] as Map<String, dynamic>),
-    Commerce.fromJson(json['commerce'] as Map<String, dynamic>),
+    content: Content.fromJson(json['content'] as Map<String, dynamic>),
+    commerce: Commerce.fromJson(json['commerce'] as Map<String, dynamic>),
     buttons: (json['buttons'] as List<dynamic>?)
         ?.map((e) => Button.fromJson(e as Map<String, dynamic>))
         .toList(),

@@ -24,8 +24,14 @@ class Content {
   final int? imageHeight;
 
   /// @nodoc
-  Content(this.title, this.imageUrl, this.link,
-      {this.description, this.imageWidth, this.imageHeight});
+  Content({
+    required this.title,
+    required this.imageUrl,
+    required this.link,
+    this.description,
+    this.imageWidth,
+    this.imageHeight,
+  });
 
   /// @nodoc
   factory Content.fromJson(Map<String, dynamic> json) =>

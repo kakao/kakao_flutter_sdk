@@ -84,8 +84,13 @@ void main() {
     group("/default", () {
       test("feed", () async {
         var template = FeedTemplate(
-            Content("title", Uri.parse("https://example.com/image.png"),
-                Link(webUrl: Uri.parse("https://example.com"))),
+            content: Content(
+              title: "title",
+              imageUrl: Uri.parse("https://example.com/image.png"),
+              link: Link(
+                webUrl: Uri.parse("https://example.com"),
+              ),
+            ),
             social: Social(
                 likeCount: 1,
                 commentCount: 2,
@@ -104,11 +109,14 @@ void main() {
 
       test("commerce", () async {
         var template = CommerceTemplate(
-            Content(
-                "title",
-                Uri.parse("https://developers.kakao.com/image.png"),
-                Link(webUrl: Uri.parse("https://developers.kakao.com"))),
-            Commerce(15000));
+            content: Content(
+              title: "title",
+              imageUrl: Uri.parse("https://developers.kakao.com/image.png"),
+              link: Link(
+                webUrl: Uri.parse("https://developers.kakao.com"),
+              ),
+            ),
+            commerce: Commerce(regularPrice: 15000));
 
         _adapter.requestAssertions = (RequestOptions options) {
           expect(options.data["template_object"], jsonEncode(template));

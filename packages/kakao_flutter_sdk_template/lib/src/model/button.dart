@@ -14,7 +14,7 @@ class Button {
   final Link link;
 
   /// @nodoc
-  Button(this.title, this.link);
+  Button({required this.title, required this.link});
 
   /// @nodoc
   factory Button.fromJson(Map<String, dynamic> json) => _$ButtonFromJson(json);
