@@ -17,7 +17,7 @@ class Location {
   final String? rpFlag;
 
   /// @nodoc
-  Location(this.name, this.x, this.y, {this.rpFlag});
+  Location({required this.name, required this.x, required this.y, this.rpFlag});
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$LocationToJson(this);

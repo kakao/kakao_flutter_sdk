@@ -8,9 +8,9 @@ part of 'location.dart';
 
 Location _$LocationFromJson(Map<String, dynamic> json) {
   return Location(
-    json['name'] as String,
-    json['x'] as String,
-    json['y'] as String,
+    name: json['name'] as String,
+    x: json['x'] as String,
+    y: json['y'] as String,
     rpFlag: json['rpflag'] as String?,
   );
 }
