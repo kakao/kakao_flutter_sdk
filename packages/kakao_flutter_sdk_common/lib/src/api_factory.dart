@@ -41,7 +41,15 @@ class ApiFactory {
     var response = e.response;
     var request = e.requestOptions;
 
-    if (response == null) return KakaoClientException(e.message);
+    if (response == null) {
+      // interceptor reject the error when the error cannot be handled
+      // but the error must be DioError, so the error received from the server cannot be transmitted as it is.
+      // so the error received from the server is put in the DioError.error
+      if (e.error is KakaoAuthException || e.error is KakaoApiException) {
+        return e.error;
+      }
+      return KakaoClientException(e.message);
+    }
     if (response.statusCode == 404) {
       return KakaoClientException(e.message);
     }
