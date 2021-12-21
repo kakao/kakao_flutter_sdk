@@ -30,7 +30,7 @@ class AuthApi {
   /// 주의: 기존 토큰 존재 여부를 확인하는 기능으로, 사용자가 현재도 로그인 상태임을 보장하지 않습니다.
   Future<bool> hasToken() async {
     final token = await _tokenManagerProvider.manager.getToken();
-    return token == null;
+    return token != null;
   }
 
   /// 사용자 인증코드([authCode])를 이용하여 신규 토큰 발급을 요청합니다.
