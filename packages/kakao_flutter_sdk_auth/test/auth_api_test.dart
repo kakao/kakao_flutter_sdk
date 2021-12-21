@@ -61,8 +61,10 @@ void main() {
       // before checking token, clear tokenManager
       await _tokenManager.clear();
 
-      token = await _authApi.issueAccessToken("auth_code",
-          redirectUri: "kakaosample_app_key://oauth", appKey: "sample_app_key");
+      token = await _authApi.issueAccessToken(
+          authCode: "auth_code",
+          redirectUri: "kakaosample_app_key://oauth",
+          appKey: "sample_app_key");
       await _tokenManager.setToken(token);
       final newToken = await _tokenManager.getToken();
       expect(true, newToken != null);
@@ -88,8 +90,10 @@ void main() {
     String body = await loadJson("errors/misconfigured.json");
     _adapter.setResponseString(body, 401);
     try {
-      await _authApi.issueAccessToken("authCode",
-          redirectUri: "kakaosample_app_key://oauth", appKey: "sample_app_key");
+      await _authApi.issueAccessToken(
+          authCode: "authCode",
+          redirectUri: "kakaosample_app_key://oauth",
+          appKey: "sample_app_key");
       fail("Should not reach here");
     } on KakaoAuthException catch (e) {
       expect(e.error, AuthErrorCause.misconfigured);
@@ -116,8 +120,8 @@ void main() {
 
       expect(true, oldToken != null);
 
-      var newToken = await _authApi.refreshAccessToken(oldToken!,
-          redirectUri: redirectUri, appKey: appKey);
+      var newToken = await _authApi.refreshAccessToken(
+          oldToken: oldToken!, redirectUri: redirectUri, appKey: appKey);
       expect(true, oldToken.accessToken != newToken.accessToken);
       expect(
           true, oldToken.accessTokenExpiresAt != newToken.accessTokenExpiresAt);
@@ -163,8 +167,10 @@ void main() {
     String body = jsonEncode({"error": "invalid_credentials"});
     _adapter.setResponseString(body, 401);
     try {
-      await _authApi.issueAccessToken("authCode",
-          redirectUri: "kakaosample_app_key://oauth", appKey: "sample_app_key");
+      await _authApi.issueAccessToken(
+          authCode: "authCode",
+          redirectUri: "kakaosample_app_key://oauth",
+          appKey: "sample_app_key");
       fail("Should not reach here");
     } on KakaoAuthException catch (e) {
       expect(e.error, AuthErrorCause.unknown);
@@ -193,8 +199,8 @@ void main() {
 
       expect(true, oldToken != null);
 
-      newToken = await _authApi.refreshAccessToken(oldToken!,
-          redirectUri: redirectUri, appKey: clientId);
+      newToken = await _authApi.refreshAccessToken(
+          oldToken: oldToken!, redirectUri: redirectUri, appKey: clientId);
 
       expect(true, newToken != null);
       expect(true, oldToken.accessToken != newToken!.accessToken);

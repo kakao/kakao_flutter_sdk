@@ -31,8 +31,10 @@ class TalkApi {
   /// 카카오 디벨로퍼스에서 생성한 서비스만의 커스텀 메시지 템플릿을 사용하여, 카카오톡의 나와의 채팅방으로 메시지 전송.
   ///
   /// 템플릿을 생성하는 방법은 [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/ko/message/message-template) 참고.
-  Future<void> sendCustomMemo(int templateId,
-      {Map<String, String>? templateArgs}) async {
+  Future<void> sendCustomMemo({
+    required int templateId,
+    Map<String, String>? templateArgs,
+  }) async {
     final params = {
       "template_id": templateId,
       "template_args": templateArgs == null ? null : jsonEncode(templateArgs)
@@ -46,8 +48,11 @@ class TalkApi {
   }
 
   /// 지정된 URL 을 스크랩하여, 카카오톡의 나와의 채팅방으로 메시지 전송.
-  Future<void> sendScrapMemo(String url,
-      {int? templateId, Map<String, String>? templateArgs}) async {
+  Future<void> sendScrapMemo({
+    required String url,
+    int? templateId,
+    Map<String, String>? templateArgs,
+  }) async {
     final params = {
       "request_url": url,
       "template_id": templateId,
@@ -75,12 +80,13 @@ class TalkApi {
   }
 
   /// 카카오톡 친구 목록 가져오기.
-  Future<Friends> friends(
-      {int? offset,
-      int? limit,
-      FriendOrder? friendOrder,
-      Order? order,
-      FriendsContext? context}) async {
+  Future<Friends> friends({
+    int? offset,
+    int? limit,
+    FriendOrder? friendOrder,
+    Order? order,
+    FriendsContext? context,
+  }) async {
     return ApiFactory.handleApiError(() async {
       final params = {
         "offset": context != null ? context.offset : offset,
@@ -103,9 +109,11 @@ class TalkApi {
   /// 카카오 디벨로퍼스에서 생성한 서비스만의 커스텀 메시지 템플릿을 사용하여, 카카오톡의 나와의 채팅방으로 메시지 전송.
   ///
   /// 템플릿을 생성하는 방법은 [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/ko/message/message-template) 참고.
-  Future<MessageSendResult> sendCustomMessage(
-      List<String> receiverUuids, int templateId,
-      {Map<String, String>? templateArgs}) async {
+  Future<MessageSendResult> sendCustomMessage({
+    required List<String> receiverUuids,
+    required int templateId,
+    Map<String, String>? templateArgs,
+  }) async {
     final params = {
       "receiver_uuids": jsonEncode(receiverUuids),
       "template_id": templateId,
@@ -115,8 +123,10 @@ class TalkApi {
   }
 
   /// 기본 템플릿을 이용하여, 카카오톡의 나와의 채팅방으로 메시지 전송.
-  Future<MessageSendResult> sendDefaultMessage(
-      List<String> receiverUuids, DefaultTemplate template) async {
+  Future<MessageSendResult> sendDefaultMessage({
+    required List<String> receiverUuids,
+    required DefaultTemplate template,
+  }) async {
     final params = {
       "receiver_uuids": jsonEncode(receiverUuids),
       "template_object": jsonEncode(template)
@@ -125,9 +135,12 @@ class TalkApi {
   }
 
   /// 지정된 URL 을 스크랩하여, 카카오톡의 나와의 채팅방으로 메시지 전송.
-  Future<MessageSendResult> sendScrapMessage(
-      List<String> receiverUuids, String url,
-      {int? templateId, Map<String, String>? templateArgs}) async {
+  Future<MessageSendResult> sendScrapMessage({
+    required List<String> receiverUuids,
+    required String url,
+    int? templateId,
+    Map<String, String>? templateArgs,
+  }) async {
     final params = {
       "receiver_uuids": jsonEncode(receiverUuids),
       "request_url": url,
@@ -163,7 +176,9 @@ class TalkApi {
   }
 
   Future<MessageSendResult> _message(
-      String pathPart, Map<String, dynamic> params) async {
+    String pathPart,
+    Map<String, dynamic> params,
+  ) async {
     return ApiFactory.handleApiError(() async {
       params.removeWhere((k, v) => v == null);
       final response = await _dio

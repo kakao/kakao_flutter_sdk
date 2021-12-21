@@ -35,8 +35,12 @@ class AuthApi {
 
   /// 사용자 인증코드([authCode])를 이용하여 신규 토큰 발급을 요청합니다.
   /// [codeVerifier]는 사용자 인증 코드 verifier로 사용합니다.
-  Future<OAuthToken> issueAccessToken(String authCode,
-      {String? redirectUri, String? appKey, String? codeVerifier}) async {
+  Future<OAuthToken> issueAccessToken({
+    required String authCode,
+    String? redirectUri,
+    String? appKey,
+    String? codeVerifier,
+  }) async {
     final data = {
       "code": authCode,
       "grant_type": "authorization_code",
@@ -50,8 +54,12 @@ class AuthApi {
 
   /// @nodoc
   /// Internal Only
-  Future<CertTokenInfo> issueAccessTokenWithCert(String authCode,
-      {String? redirectUri, String? appKey, String? codeVerifier}) async {
+  Future<CertTokenInfo> issueAccessTokenWithCert({
+    required String authCode,
+    String? redirectUri,
+    String? appKey,
+    String? codeVerifier,
+  }) async {
     final data = {
       "code": authCode,
       "grant_type": "authorization_code",
@@ -64,8 +72,11 @@ class AuthApi {
   }
 
   /// 기존 토큰([oldToken])을 갱신합니다
-  Future<OAuthToken> refreshAccessToken(OAuthToken oldToken,
-      {String? redirectUri, String? appKey}) async {
+  Future<OAuthToken> refreshAccessToken({
+    required OAuthToken oldToken,
+    String? redirectUri,
+    String? appKey,
+  }) async {
     final data = {
       "refresh_token": oldToken.refreshToken,
       "grant_type": "refresh_token",

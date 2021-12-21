@@ -109,7 +109,7 @@ void main() {
         Map<String, dynamic> params = options.data;
         expect(params.keys.length, 1);
       };
-      var storyPostResult = await _api.postNote(content);
+      var storyPostResult = await _api.postNote(content: content);
       expect(storyPostResult.id, map!["id"]);
     });
 
