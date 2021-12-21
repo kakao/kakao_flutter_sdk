@@ -140,6 +140,7 @@ class _MyPageState extends State<MyPage> {
             ApiItem item = apiList[index];
             bool isHeader = item.apiFunction == null;
             return ListTile(
+              dense: isHeader,
               title: Text(
                 item.label,
                 style: TextStyle(
@@ -150,7 +151,7 @@ class _MyPageState extends State<MyPage> {
               onTap: apiList[index].apiFunction,
             );
           },
-          separatorBuilder: (context, index) => const Divider(),
+          separatorBuilder: (context, index) => const Divider(height: 1.0),
           itemCount: apiList.length),
     );
   }
@@ -197,7 +198,7 @@ class _MyPageState extends State<MyPage> {
   _initApiList() {
     apiList = [
       ApiItem('User API'),
-      ApiItem('isKakaoTalkLoginAvailable()', () async {
+      ApiItem('isKakaoTalkInstalled()', () async {
         // 카카오톡 설치여부 확인
 
         bool result = await isKakaoTalkInstalled();
