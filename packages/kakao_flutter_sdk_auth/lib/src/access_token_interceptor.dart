@@ -49,7 +49,7 @@ class AccessTokenInterceptor extends Interceptor {
       _dio.lock();
       _dio.interceptors.errorLock.lock();
 
-      final newToken = await _kauthApi.refreshAccessToken(token);
+      final newToken = await _kauthApi.refreshAccessToken(oldToken: token);
       options.headers["Authorization"] = "Bearer ${newToken.accessToken}";
 
       _dio.unlock();

@@ -20,4 +20,8 @@ class ServiceTerms {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$ServiceTermsToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }

@@ -19,6 +19,10 @@ class StoryLike {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$StoryLikeToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }
 
 enum Emotion {

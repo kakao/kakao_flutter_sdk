@@ -29,4 +29,8 @@ class StoryImage {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$StoryImageToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }

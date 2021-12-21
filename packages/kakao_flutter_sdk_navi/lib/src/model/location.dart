@@ -25,4 +25,8 @@ class Location {
   /// @nodoc
   factory Location.fromJson(Map<String, dynamic> json) =>
       _$LocationFromJson(json);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }

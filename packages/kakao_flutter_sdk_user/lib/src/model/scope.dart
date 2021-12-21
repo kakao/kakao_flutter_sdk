@@ -36,6 +36,10 @@ class Scope {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$ScopeToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }
 
 enum ScopeType {

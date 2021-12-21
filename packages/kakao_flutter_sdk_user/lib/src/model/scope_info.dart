@@ -21,4 +21,8 @@ class ScopeInfo {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$ScopeInfoToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }

@@ -18,4 +18,8 @@ class ImageUploadResult {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$ImageUploadResultToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }

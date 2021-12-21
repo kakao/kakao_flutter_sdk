@@ -31,8 +31,7 @@ class LinkResult {
   /// @nodoc
   Map<String, dynamic> toJson() => _$LinkResultToJson(this);
 
+  /// @nodoc
   @override
-  String toString() {
-    return toJson().toString();
-  }
+  String toString() => toJson().toString();
 }

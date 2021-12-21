@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:kakao_flutter_sdk_auth/src/model/access_token_response.dart';
 import 'package:kakao_flutter_sdk_auth/src/token_manager.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
@@ -28,21 +26,16 @@ class OAuthToken {
   OAuthToken(this.accessToken, this.accessTokenExpiresAt, this.refreshToken,
       this.refreshTokenExpiresAt, this.scopes);
 
-  @override
-  String toString() {
-    return jsonEncode({
-      "access_token": accessToken,
-      "refresh_token": refreshToken,
-      "scopes": scopes
-    });
-  }
-
   /// @nodoc
   factory OAuthToken.fromJson(Map<String, dynamic> json) =>
       _$OAuthTokenFromJson(json);
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$OAuthTokenToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 
   /// @nodoc
   /// [AccessTokenResponse] 객체로부터 OAuthToken 객체 생성.

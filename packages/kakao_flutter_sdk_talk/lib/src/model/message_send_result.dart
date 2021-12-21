@@ -23,4 +23,8 @@ class MessageSendResult {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$MessageSendResultToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }

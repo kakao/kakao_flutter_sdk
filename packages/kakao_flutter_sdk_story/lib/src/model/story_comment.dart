@@ -19,6 +19,7 @@ class StoryComment {
   /// @nodoc
   Map<String, dynamic> toJson() => _$StoryCommentToJson(this);
 
+  /// @nodoc
   @override
   String toString() => toJson().toString();
 }

@@ -25,4 +25,8 @@ class AccessTokenInfo {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$AccessTokenInfoToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }

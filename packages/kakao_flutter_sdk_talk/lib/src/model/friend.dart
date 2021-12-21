@@ -33,8 +33,13 @@ class Friend {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$FriendToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }
 
+/// 친구 목록 조회 Context
 class FriendsContext {
   int? offset;
   int? limit;

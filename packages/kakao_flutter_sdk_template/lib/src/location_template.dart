@@ -48,4 +48,8 @@ class LocationTemplate extends DefaultTemplate {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$LocationTemplateToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }

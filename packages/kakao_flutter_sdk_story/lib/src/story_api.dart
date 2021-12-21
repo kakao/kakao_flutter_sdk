@@ -58,13 +58,15 @@ class StoryApi {
   }
 
   /// 카카오스토리에 글 스토리 쓰기.
-  Future<StoryPostResult> postNote(String content,
-          {StoryPermission? permission,
-          bool? enableShare,
-          String? androidExecParams,
-          String? iosExecParams,
-          String? androidMarketParams,
-          String? iosMarketParams}) =>
+  Future<StoryPostResult> postNote({
+    required String content,
+    StoryPermission? permission,
+    bool? enableShare,
+    String? androidExecParams,
+    String? iosExecParams,
+    String? androidMarketParams,
+    String? iosMarketParams,
+  }) =>
       _post(
           content: content,
           permission: permission,
@@ -118,16 +120,17 @@ class StoryApi {
           androidMarketParams: androidMarketParams,
           iosMarketParams: iosMarketParams);
 
-  Future<StoryPostResult> _post(
-      {String? content,
-      List<String>? images,
-      LinkInfo? linkInfo,
-      StoryPermission? permission,
-      bool? enableShare,
-      String? androidExecParams,
-      String? iosExecParams,
-      String? androidMarketParams,
-      String? iosMarketParams}) async {
+  Future<StoryPostResult> _post({
+    String? content,
+    List<String>? images,
+    LinkInfo? linkInfo,
+    StoryPermission? permission,
+    bool? enableShare,
+    String? androidExecParams,
+    String? iosExecParams,
+    String? androidMarketParams,
+    String? iosMarketParams,
+  }) async {
     return ApiFactory.handleApiError(() async {
       var postfix = images != null && images.isNotEmpty
           ? "photo"

@@ -47,8 +47,8 @@ class AuthCodeClient {
       "channel_public_id": channelPublicIds?.join(','),
       "service_terms": serviceTerms?.join(','),
       "prompt": state == null
-          ? (prompts == null ? null : parsePrompts(prompts))
-          : parsePrompts(_makeCertPrompts(prompts)),
+          ? (prompts == null ? null : _parsePrompts(prompts))
+          : _parsePrompts(_makeCertPrompts(prompts)),
       "state": state,
       "codeChallenge": codeChallenge,
       "codeChallengeMethod": codeChallenge != null ? "S256" : null,
@@ -98,8 +98,8 @@ class AuthCodeClient {
   // Requests authorization code with current access token.
   //
   // User should be logged in in order to call this method.
-  Future<String> requestWithAgt(
-    List<String> scopes, {
+  Future<String> requestWithAgt({
+    required List<String> scopes,
     String? clientId,
     String? redirectUri,
     String? codeVerifier,
@@ -147,8 +147,8 @@ class AuthCodeClient {
       "channel_public_id": channelPublicId?.join(','),
       "service_terms": serviceTerms?.join(','),
       "prompt": state == null
-          ? (prompts == null ? null : parsePrompts(prompts))
-          : parsePrompts(_makeCertPrompts(prompts)),
+          ? (prompts == null ? null : _parsePrompts(prompts))
+          : _parsePrompts(_makeCertPrompts(prompts)),
       "state": state,
     };
     arguments.removeWhere((k, v) => v == null);
@@ -167,7 +167,7 @@ class AuthCodeClient {
     return prompts;
   }
 
-  String parsePrompts(List<Prompt> prompts) {
+  String _parsePrompts(List<Prompt> prompts) {
     var parsedPrompt = '';
     for (var element in prompts) {
       parsedPrompt += '${describeEnum(element).toLowerCase()} ';

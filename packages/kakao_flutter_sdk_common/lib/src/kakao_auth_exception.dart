@@ -24,6 +24,7 @@ class KakaoAuthException extends KakaoException {
   /// @nodoc
   Map<String, dynamic> toJson() => _$KakaoAuthExceptionToJson(this);
 
+  /// @nodoc
   @override
   String toString() => toJson().toString();
 }

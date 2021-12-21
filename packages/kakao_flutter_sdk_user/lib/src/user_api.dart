@@ -32,7 +32,7 @@ class UserApi {
       codeVerifier: codeVerifier,
     );
     final token = await AuthApi.instance
-        .issueAccessToken(authCode, codeVerifier: codeVerifier);
+        .issueAccessToken(authCode: authCode, codeVerifier: codeVerifier);
     await TokenManagerProvider.instance.manager.setToken(token);
     return token;
   }
@@ -57,8 +57,8 @@ class UserApi {
       serviceTerms: serviceTerms,
       codeVerifier: codeVerifier,
     );
-    final certTokenInfo = await AuthApi.instance
-        .issueAccessTokenWithCert(authCode, codeVerifier: codeVerifier);
+    final certTokenInfo = await AuthApi.instance.issueAccessTokenWithCert(
+        authCode: authCode, codeVerifier: codeVerifier);
     await TokenManagerProvider.instance.manager.setToken(certTokenInfo.token);
     return certTokenInfo;
   }
@@ -80,7 +80,7 @@ class UserApi {
         serviceTerms: serviceTerms,
         codeVerifier: codeVerifier);
     final token = await AuthApi.instance
-        .issueAccessToken(authCode, codeVerifier: codeVerifier);
+        .issueAccessToken(authCode: authCode, codeVerifier: codeVerifier);
     await TokenManagerProvider.instance.manager.setToken(token);
     return token;
   }
@@ -106,8 +106,8 @@ class UserApi {
       serviceTerms: serviceTerms,
       codeVerifier: codeVerifier,
     );
-    final certTokenInfo = await AuthApi.instance
-        .issueAccessTokenWithCert(authCode, codeVerifier: codeVerifier);
+    final certTokenInfo = await AuthApi.instance.issueAccessTokenWithCert(
+        authCode: authCode, codeVerifier: codeVerifier);
     await TokenManagerProvider.instance.manager.setToken(certTokenInfo.token);
     return certTokenInfo;
   }
@@ -121,9 +121,9 @@ class UserApi {
   Future<OAuthToken> loginWithNewScopes(List<String> scopes) async {
     String codeVerifier = AuthCodeClient.codeVerifier();
     final authCode = await AuthCodeClient.instance
-        .requestWithAgt(scopes, codeVerifier: codeVerifier);
+        .requestWithAgt(scopes: scopes, codeVerifier: codeVerifier);
     final token = await AuthApi.instance
-        .issueAccessToken(authCode, codeVerifier: codeVerifier);
+        .issueAccessToken(authCode: authCode, codeVerifier: codeVerifier);
     await TokenManagerProvider.instance.manager.setToken(token);
     return token;
   }

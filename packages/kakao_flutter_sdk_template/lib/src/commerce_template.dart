@@ -40,4 +40,8 @@ class CommerceTemplate extends DefaultTemplate {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$CommerceTemplateToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }
