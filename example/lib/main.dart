@@ -42,7 +42,6 @@ Future _initializeSdk() async {
 Future<KakaoPhase> _getKakaoPhase() async {
   var prefs = await SharedPreferences.getInstance();
   var prevPhase = prefs.getString('KakaoPhase');
-  print('$prevPhase');
   KakaoPhase phase;
   if (prevPhase == null) {
     phase = KakaoPhase.PRODUCTION;
@@ -83,12 +82,15 @@ class MyPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<MyPage> {
+  static final _platform = const MethodChannel('kakao.flutter.sdk.sample');
+  String currentPhase = '';
   List<ApiItem> apiList = [];
   Function(Friends?, Object?)? recursiveAppFriendsCompletion;
 
   @override
   void initState() {
     super.initState();
+    _getCurrentPhase();
     _initApiList();
   }
 
@@ -99,14 +101,38 @@ class _MyPageState extends State<MyPage> {
         title: Text('SDK Sample'),
         actions: [
           GestureDetector(
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(currentPhase),
+              ),
+            ),
+            onTap: () => showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return SizedBox(
+                  height: 300,
+                  child: Column(
+                    children: [
+                      _renderPhaseTile(context, KakaoPhase.DEV),
+                      _renderPhaseTile(context, KakaoPhase.SANDBOX),
+                      _renderPhaseTile(context, KakaoPhase.CBT),
+                      _renderPhaseTile(context, KakaoPhase.PRODUCTION),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          GestureDetector(
             child: const Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(8.0),
               child: Center(
                 child: Text('DEBUG'),
               ),
             ),
             onTap: () => Navigator.of(context).pushNamed('/debug'),
-          )
+          ),
         ],
       ),
       body: ListView.separated(
@@ -126,6 +152,45 @@ class _MyPageState extends State<MyPage> {
           },
           separatorBuilder: (context, index) => const Divider(),
           itemCount: apiList.length),
+    );
+  }
+
+  _getCurrentPhase() async {
+    var prefs = await SharedPreferences.getInstance();
+    var phase = prefs.getString('KakaoPhase');
+    setState(() {
+      if (phase == null) {
+        currentPhase = "PRODUCTION";
+      } else {
+        currentPhase = phase;
+      }
+    });
+  }
+
+  Widget _renderPhaseTile(BuildContext context, KakaoPhase phase) {
+    var title;
+    if (phase == KakaoPhase.DEV) {
+      title = "DEV";
+    } else if (phase == KakaoPhase.SANDBOX) {
+      title = "SANDBOX";
+    } else if (phase == KakaoPhase.CBT) {
+      title = "CBT";
+    } else {
+      title = "PRODUCTION";
+    }
+    return ListTile(
+      title: Text(title),
+      onTap: () async {
+        var prefs = await SharedPreferences.getInstance();
+        await prefs.setString('KakaoPhase', title);
+        KakaoSdk.nativeKey = PhasedAppKey(phase).getAppKey();
+        KakaoSdk.hosts = PhasedServerHosts(phase);
+        Navigator.pop(context);
+        setState(() {
+          currentPhase = title;
+        });
+        await _platform.invokeMethod('changePhase');
+      },
     );
   }
 
