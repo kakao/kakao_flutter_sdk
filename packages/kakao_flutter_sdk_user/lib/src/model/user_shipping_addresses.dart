@@ -29,4 +29,8 @@ class UserShippingAddresses {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$UserShippingAddressesToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }

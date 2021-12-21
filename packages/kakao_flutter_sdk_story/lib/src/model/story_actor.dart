@@ -17,4 +17,8 @@ class StoryActor {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$StoryActorToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }

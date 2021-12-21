@@ -50,6 +50,10 @@ class NaviOption {
   /// @nodoc
   factory NaviOption.fromJson(Map<String, dynamic> json) =>
       _$NaviOptionFromJson(json);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }
 
 /// 좌표계 타입을 선택합니다.

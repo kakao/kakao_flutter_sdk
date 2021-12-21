@@ -46,4 +46,8 @@ class FeedTemplate extends DefaultTemplate {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$FeedTemplateToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }

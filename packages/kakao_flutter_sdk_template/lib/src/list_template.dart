@@ -44,4 +44,8 @@ class ListTemplate extends DefaultTemplate {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$ListTemplateToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }

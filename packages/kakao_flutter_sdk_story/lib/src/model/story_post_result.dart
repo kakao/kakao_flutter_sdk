@@ -13,4 +13,7 @@ class StoryPostResult {
       _$StoryPostResultFromJson(json);
 
   Map<String, dynamic> toJson() => _$StoryPostResultToJson(this);
+
+  @override
+  String toString() => toJson().toString();
 }

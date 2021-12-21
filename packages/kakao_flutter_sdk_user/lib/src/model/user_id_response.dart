@@ -16,4 +16,8 @@ class UserIdResponse {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$UserIdResponseToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }

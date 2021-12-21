@@ -33,6 +33,7 @@ class KakaoApiException extends KakaoException {
   /// @nodoc
   Map<String, dynamic> toJson() => _$KakaoApiExceptionToJson(this);
 
+  /// @nodoc
   @override
   String toString() => toJson().toString();
 }

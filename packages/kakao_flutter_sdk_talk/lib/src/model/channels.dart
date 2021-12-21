@@ -22,4 +22,8 @@ class Channels {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$ChannelsToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }

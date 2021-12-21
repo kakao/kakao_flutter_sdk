@@ -21,4 +21,7 @@ class AccessTokenResponse {
       _$AccessTokenResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$AccessTokenResponseToJson(this);
+
+  @override
+  String toString() => toJson().toString();
 }

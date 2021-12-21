@@ -30,4 +30,8 @@ class TalkProfile {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$TalkProfileToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }

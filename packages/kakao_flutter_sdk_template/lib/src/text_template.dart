@@ -39,4 +39,8 @@ class TextTemplate extends DefaultTemplate {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$TextTemplateToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }

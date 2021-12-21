@@ -37,6 +37,7 @@ class StoryProfile {
   /// @nodoc
   Map<String, dynamic> toJson() => _$StoryProfileToJson(this);
 
+  /// @nodoc
   @override
   String toString() => toJson().toString();
 }

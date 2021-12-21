@@ -63,4 +63,8 @@ class ShippingAddress {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$ShippingAddressToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }

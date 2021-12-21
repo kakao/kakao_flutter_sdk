@@ -21,4 +21,8 @@ class MessageFailureInfo {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$MessageFailureInfoToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }

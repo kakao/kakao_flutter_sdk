@@ -22,4 +22,8 @@ class CertTokenInfo {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$CertTokenInfoToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }

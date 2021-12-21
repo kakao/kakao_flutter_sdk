@@ -23,6 +23,7 @@ class KakaoClientException extends KakaoException {
   KakaoClientException(this.msg) : super(msg);
   final String msg;
 
+  /// @nodoc
   @override
   String toString() {
     return "KakaoClientException: $msg";

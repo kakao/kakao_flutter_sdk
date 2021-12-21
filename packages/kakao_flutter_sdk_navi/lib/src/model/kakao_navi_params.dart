@@ -18,4 +18,7 @@ class KakaoNaviParams {
 
   factory KakaoNaviParams.fromJson(Map<String, dynamic> json) =>
       _$KakaoNaviParamsFromJson(json);
+
+  @override
+  String toString() => toJson().toString();
 }

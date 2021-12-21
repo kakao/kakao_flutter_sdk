@@ -41,4 +41,8 @@ class LinkInfo {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$LinkInfoToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }

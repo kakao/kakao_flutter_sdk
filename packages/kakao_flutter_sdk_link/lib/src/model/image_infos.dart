@@ -18,4 +18,8 @@ class ImageInfos {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$ImageInfosToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }

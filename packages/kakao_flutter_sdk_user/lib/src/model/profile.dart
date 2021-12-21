@@ -27,4 +27,8 @@ class Profile {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$ProfileToJson(this);
+
+  /// @nodoc
+  @override
+  String toString() => toJson().toString();
 }

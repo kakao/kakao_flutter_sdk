@@ -38,6 +38,7 @@ class User {
   /// @nodoc
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
+  /// @nodoc
   @override
   String toString() => toJson().toString();
 }
