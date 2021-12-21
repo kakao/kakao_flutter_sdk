@@ -490,7 +490,7 @@ class _MyPageState extends State<MyPage> {
         int templateId = templateIds['customMessage']!;
 
         try {
-          await TalkApi.instance.sendCustomMemo(templateId);
+          await TalkApi.instance.sendCustomMemo(templateId: templateId);
           Log.i(context, tag, '나에게 보내기 성공');
         } catch (e) {
           Log.e(context, tag, '나에게 보내기 실패', e);
@@ -514,7 +514,7 @@ class _MyPageState extends State<MyPage> {
         String url = 'https://developers.kakao.com';
 
         try {
-          await TalkApi.instance.sendScrapMemo(url);
+          await TalkApi.instance.sendScrapMemo(url: url);
           Log.i(context, tag, '나에게 보내기 성공');
         } catch (e) {
           Log.e(context, tag, '나에게 보내기 실패', e);
@@ -631,8 +631,10 @@ class _MyPageState extends State<MyPage> {
 
           // 메시지 보내기
           try {
-            MessageSendResult result = await TalkApi.instance
-                .sendCustomMessage(receiverUuids, templateId);
+            MessageSendResult result = await TalkApi.instance.sendCustomMessage(
+              receiverUuids: receiverUuids,
+              templateId: templateId,
+            );
             Log.i(context, tag, '메시지 보내기 성공 ${result.successfulReceiverUuids}');
 
             if (result.failureInfos != null) {
@@ -692,8 +694,10 @@ class _MyPageState extends State<MyPage> {
 
           // 메시지 보내기
           try {
-            MessageSendResult result = await TalkApi.instance
-                .sendCustomMessage(receiverUuids, templateId);
+            MessageSendResult result = await TalkApi.instance.sendCustomMessage(
+              receiverUuids: receiverUuids,
+              templateId: templateId,
+            );
             Log.i(context, tag, '메시지 보내기 성공 ${result.successfulReceiverUuids}');
 
             if (result.failureInfos != null) {
@@ -753,8 +757,10 @@ class _MyPageState extends State<MyPage> {
 
           // 메시지 보내기
           try {
-            MessageSendResult result =
-                await TalkApi.instance.sendScrapMessage(receiverUuids, url);
+            MessageSendResult result = await TalkApi.instance.sendScrapMessage(
+              receiverUuids: receiverUuids,
+              url: url,
+            );
             Log.i(context, tag, '메시지 보내기 성공 ${result.successfulReceiverUuids}');
 
             if (result.failureInfos != null) {
@@ -893,7 +899,7 @@ class _MyPageState extends State<MyPage> {
         try {
           String content = "Posting note from Kakao SDK Sample";
           StoryPostResult storyPostResult =
-              await StoryApi.instance.postNote(content);
+              await StoryApi.instance.postNote(content: content);
           Log.i(context, tag, '스토리 쓰기 성공 [${storyPostResult.id}]');
         } catch (e) {
           Log.e(context, tag, '스토리 쓰기 실패', e);
