@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:kakao_flutter_sdk_example/api_item.dart';
+import 'package:kakao_flutter_sdk_example/custom_token_manager.dart';
 import 'package:kakao_flutter_sdk_example/debug_page.dart';
 import 'package:kakao_flutter_sdk_example/friend_page.dart';
 import 'package:kakao_flutter_sdk_example/log.dart';
@@ -210,20 +211,31 @@ class _MyPageState extends State<MyPage> {
       }),
       ApiItem('Combination Login (Verbose)', () async {
         // 로그인 조합 예제 + 상세한 에러처리 콜백
-        // TODO: exception 정리
-        // try {
-        //   bool talkInstalled = await isKakaoTalkInstalled();
-        //   카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
-        //   OAuthToken token = talkInstalled
-        //       ? await UserApi.instance.loginWithKakaoTalk()
-        //       : await UserApi.instance.loginWithKakaoAccount();
-        //   Log.i(context, tag, '로그인 성공 ${token.accessToken}');
-        // } on KakaoClientException catch (error) {
-        //   switch(error.) {
-        //     is KakaoClient
-        //   }
-        //   Log.e(context, tag, '로그인 실패', error);
-        // }
+        try {
+          bool talkInstalled = await isKakaoTalkInstalled();
+          //   카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
+          OAuthToken token = talkInstalled
+              ? await UserApi.instance.loginWithKakaoTalk()
+              : await UserApi.instance.loginWithKakaoAccount();
+          Log.i(context, tag, '로그인 성공 ${token.accessToken}');
+        } on KakaoClientException catch (e) {
+          Log.e(context, tag, '클라이언트 에러', e);
+        } on KakaoAuthException catch (e) {
+          if (e.error == AuthErrorCause.accessDenied) {
+            Log.e(context, tag, '취소됨 (동의 취소)', e);
+          } else if (e.error == AuthErrorCause.misconfigured) {
+            Log.e(
+                context,
+                tag,
+                '개발자사이트 앱 설정에 키 해시 또는 번들 ID를 등록하세요. 현재 값: ${await KakaoSdk.origin}',
+                e);
+          } else {
+            Log.e(context, tag, '기타 인증 에러', e);
+          }
+        } catch (e) {
+          // 에러처리에 대한 개선사항이 필요하면 데브톡(https://devtalk.kakao.com)으로 문의해주세요.
+          Log.e(context, tag, '기타 에러 (네트워크 장애 등..)', e);
+        }
       }),
       ApiItem('me()', () async {
         // 사용자 정보 요청 (기본)
@@ -355,7 +367,8 @@ class _MyPageState extends State<MyPage> {
       ApiItem('revokeScopes()', () async {
         List<String> scopes = ['account_email', 'legal_birth_date', 'friends'];
         try {
-          ScopeInfo scopeInfo = await UserApi.instance.revokeScopes(scopes);
+          ScopeInfo scopeInfo =
+              await UserApi.instance.revokeScopes(scopes: scopes);
           Log.i(context, tag, '동의 철회 성공\n현재 가지고 있는 동의 항목 ${scopeInfo.scopes}');
         } catch (e) {
           Log.e(context, tag, '동의 철회 실패', e);
@@ -920,9 +933,9 @@ class _MyPageState extends State<MyPage> {
         File file = await tempFile.writeAsBytes(byteData.buffer
             .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
 
+        // 사진 업로드
         List<String> images;
 
-        // 사진 업로드
         try {
           images = await StoryApi.instance.upload([file]);
           Log.d(context, tag, '사진 업로드 성공 $images');
@@ -1176,6 +1189,81 @@ class _MyPageState extends State<MyPage> {
         } else {
           // 카카오내비 설치 페이지로 이동
           launchBrowserTab(Uri.parse(NaviApi.webNaviInstall));
+        }
+      }),
+      ApiItem('Kakao Sync'),
+      ApiItem('login(serviceTerms:) - select one', () async {
+        // 약관 선택해 동의 받기
+
+        // 개발자사이트 간편가입 설정에 등록한 약관 목록 중, 동의 받기를 원하는 약관의 태그 값을 지정합니다.
+        List<String> serviceTerms = ['service'];
+
+        try {
+          OAuthToken token = await UserApi.instance
+              .loginWithKakaoTalk(serviceTerms: serviceTerms);
+          Log.i(context, tag, '로그인 성공 ${token.accessToken}');
+        } catch (e) {
+          Log.e(context, tag, '로그인 실패', e);
+        }
+      }),
+      ApiItem('login(serviceTerms:) - empty', () async {
+        // 약관 동의 받지 않기
+
+        try {
+          // serviceTerms 파라미터에 empty list 전달해서 카카오톡으로 로그인 요청 (카카오계정으로 로그인도 사용법 동일)
+          OAuthToken token =
+              await UserApi.instance.loginWithKakaoTalk(serviceTerms: []);
+          Log.i(context, tag, '로그인 성공 ${token.accessToken}');
+        } catch (e) {
+          Log.e(context, tag, '로그인 실패', e);
+        }
+      }),
+      ApiItem('ETC'),
+      ApiItem('Get Current Token', () async {
+        // 현재 토큰 저장소에서 토큰 가져오기
+        Log.i(context, tag,
+            '${await TokenManagerProvider.instance.manager.getToken()}');
+      }),
+      ApiItem('Set Custom TokenManager', () async {
+        // 커스텀 토큰 저장소 설정
+        TokenManagerProvider.instance.manager = CustomTokenManager();
+        Log.i(context, tag, '커스텀 토큰 저장소 사용');
+      }),
+      ApiItem('Set Default TokenManager', () async {
+        // 기본 저장소 재설정
+        TokenManagerProvider.instance.manager = DefaultTokenManager();
+        Log.i(context, tag, '기본 토큰 저장소 설정');
+      }),
+      ApiItem('hasToken() usage', () async {
+        if (await AuthApi.instance.hasToken()) {
+          try {
+            AccessTokenInfo tokenInfo =
+                await UserApi.instance.accessTokenInfo();
+            Log.i(context, tag,
+                '토큰 유효성 체크 성공 ${tokenInfo.id} ${tokenInfo.expiresIn}');
+          } catch (e) {
+            if (e is KakaoException && e.isInvalidTokenError()) {
+              Log.e(context, tag, '토큰이 만료되었습니다.', e);
+            } else {
+              Log.e(context, tag, '토큰 정보를 가져오는데 실패했습니다', e);
+            }
+
+            try {
+              // 카카오 계정으로 로그인
+              OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
+              Log.i(context, tag, '로그인 성공 ${token.accessToken}');
+            } catch (e) {
+              Log.e(context, tag, '로그인 실패', e);
+            }
+          }
+        } else {
+          Log.i(context, tag, '토큰이 없습니다.');
+          try {
+            OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
+            Log.i(context, tag, '로그인 성공 ${token.accessToken}');
+          } catch (e) {
+            Log.e(context, tag, '로그인 실패', e);
+          }
         }
       }),
     ];
