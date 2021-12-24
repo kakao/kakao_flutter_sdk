@@ -237,7 +237,7 @@ class _MyPageState extends State<MyPage> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('loginWithKakaoAccount()', () async {
+      ApiItem('loginWithKakaoAccount(prompts:login)', () async {
         // 카카오계정으로 로그인 - 재인증
 
         try {
@@ -615,10 +615,10 @@ class _MyPageState extends State<MyPage> {
       }),
       ApiItem('friends(context:) - recursive', () async {
         FriendsContext nextFriendsContext = FriendsContext(
-            offset: 0,
-            limit: 3,
-            order: Order.desc,
-            friendOrder: FriendOrder.nickname);
+          offset: 0,
+          limit: 3,
+          order: Order.desc,
+        );
 
         recursiveAppFriendsCompletion = (friends, error) async {
           if (error == null) {
@@ -648,6 +648,16 @@ class _MyPageState extends State<MyPage> {
         };
 
         recursiveAppFriendsCompletion?.call(null, null);
+      }),
+      ApiItem('friends(context:) - FriendContext', () async {
+        try {
+          Friends friends = await TalkApi.instance.friends(
+              context: FriendsContext(offset: 0, limit: 1, order: Order.desc));
+          Log.i(context, tag,
+              '카카오톡 친구 목록 받기 성공\n${friends.elements?.join('\n')}');
+        } catch (e) {
+          Log.e(context, tag, '카카오톡 친구 목록 받기 실패', e);
+        }
       }),
       ApiItem('sendCustomMessage()', () async {
         // 커스텀 템플릿으로 친구에게 메시지 보내기
@@ -994,7 +1004,7 @@ class _MyPageState extends State<MyPage> {
           Log.e(context, tag, '스토리 쓰기 실패', e);
         }
       }),
-      ApiItem('postPhoto', () async {
+      ApiItem('postPhoto()', () async {
         // 사진 스토리 쓰기
 
         // 이 샘플에서는 프로젝트 리소스로 추가한 이미지 파일을 사용했습니다. 갤러리 등 서비스 니즈에 맞는 사진 파일을 준비하세요.
@@ -1162,7 +1172,7 @@ class _MyPageState extends State<MyPage> {
           Log.e(context, tag, '인터넷 브라우저 미설치: 인터넷 브라우저를 설치해주세요');
         }
       }),
-      ApiItem('uploadImage', () async {
+      ApiItem('uploadImage()', () async {
         // 이미지 업로드
 
         // 로컬 이미지 파일
