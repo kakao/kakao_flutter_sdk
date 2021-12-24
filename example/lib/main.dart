@@ -8,14 +8,10 @@ import 'package:kakao_flutter_sdk_example/custom_token_manager.dart';
 import 'package:kakao_flutter_sdk_example/message_template.dart';
 import 'package:kakao_flutter_sdk_example/model/api_item.dart';
 import 'package:kakao_flutter_sdk_example/model/picker_item.dart';
-import 'package:kakao_flutter_sdk_example/server_phase.dart';
 import 'package:kakao_flutter_sdk_example/ui/debug_page.dart';
 import 'package:kakao_flutter_sdk_example/ui/friend_page.dart';
 import 'package:kakao_flutter_sdk_example/util/log.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'server_phase.dart';
 
 const String tag = "KakaoSdkSample";
 const Map<String, int> templateIds = {
@@ -24,39 +20,11 @@ const Map<String, int> templateIds = {
 };
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await _initializeSdk();
-
-  runApp(MyApp());
-}
-
-Future _initializeSdk() async {
-  KakaoPhase phase = await _getKakaoPhase();
   KakaoSdk.init(
-    nativeAppKey: PhasedAppKey(phase).getAppKey(),
-    serviceHosts: PhasedServerHosts(phase),
+    nativeAppKey: '030ba7c59137629e86e8721eb1a22fd6',
     loggingEnabled: true,
   );
-}
-
-Future<KakaoPhase> _getKakaoPhase() async {
-  var prefs = await SharedPreferences.getInstance();
-  var prevPhase = prefs.getString('KakaoPhase');
-  KakaoPhase phase;
-  if (prevPhase == null) {
-    phase = KakaoPhase.PRODUCTION;
-  } else {
-    if (prevPhase == "DEV") {
-      phase = KakaoPhase.DEV;
-    } else if (prevPhase == "SANDBOX") {
-      phase = KakaoPhase.SANDBOX;
-    } else if (prevPhase == "CBT") {
-      phase = KakaoPhase.CBT;
-    } else {
-      phase = KakaoPhase.PRODUCTION;
-    }
-  }
-  return phase;
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -82,15 +50,12 @@ class MyPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<MyPage> {
-  static final _platform = const MethodChannel('kakao.flutter.sdk.sample');
-  String currentPhase = '';
   List<ApiItem> apiList = [];
   Function(Friends?, Object?)? recursiveAppFriendsCompletion;
 
   @override
   void initState() {
     super.initState();
-    _getCurrentPhase();
     _initApiList();
   }
 
@@ -100,30 +65,6 @@ class _MyPageState extends State<MyPage> {
       appBar: AppBar(
         title: Text('SDK Sample'),
         actions: [
-          GestureDetector(
-            child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Center(
-                child: Text(currentPhase),
-              ),
-            ),
-            onTap: () => showModalBottomSheet(
-              context: context,
-              builder: (context) {
-                return SizedBox(
-                  height: 300,
-                  child: Column(
-                    children: [
-                      _renderPhaseTile(context, KakaoPhase.DEV),
-                      _renderPhaseTile(context, KakaoPhase.SANDBOX),
-                      _renderPhaseTile(context, KakaoPhase.CBT),
-                      _renderPhaseTile(context, KakaoPhase.PRODUCTION),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
           GestureDetector(
             child: const Padding(
               padding: EdgeInsets.all(8.0),
@@ -153,45 +94,6 @@ class _MyPageState extends State<MyPage> {
           },
           separatorBuilder: (context, index) => const Divider(height: 1.0),
           itemCount: apiList.length),
-    );
-  }
-
-  _getCurrentPhase() async {
-    var prefs = await SharedPreferences.getInstance();
-    var phase = prefs.getString('KakaoPhase');
-    setState(() {
-      if (phase == null) {
-        currentPhase = "PRODUCTION";
-      } else {
-        currentPhase = phase;
-      }
-    });
-  }
-
-  Widget _renderPhaseTile(BuildContext context, KakaoPhase phase) {
-    var title;
-    if (phase == KakaoPhase.DEV) {
-      title = "DEV";
-    } else if (phase == KakaoPhase.SANDBOX) {
-      title = "SANDBOX";
-    } else if (phase == KakaoPhase.CBT) {
-      title = "CBT";
-    } else {
-      title = "PRODUCTION";
-    }
-    return ListTile(
-      title: Text(title),
-      onTap: () async {
-        var prefs = await SharedPreferences.getInstance();
-        await prefs.setString('KakaoPhase', title);
-        KakaoSdk.nativeKey = PhasedAppKey(phase).getAppKey();
-        KakaoSdk.hosts = PhasedServerHosts(phase);
-        Navigator.pop(context);
-        setState(() {
-          currentPhase = title;
-        });
-        await _platform.invokeMethod('changePhase');
-      },
     );
   }
 
