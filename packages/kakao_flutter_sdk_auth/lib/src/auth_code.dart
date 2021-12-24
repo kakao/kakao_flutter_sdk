@@ -30,6 +30,7 @@ class AuthCodeClient {
     List<String>? channelPublicIds,
     List<String>? serviceTerms,
     List<Prompt>? prompts,
+    String? loginHint,
     String? state,
     String? codeVerifier,
   }) async {
@@ -49,6 +50,7 @@ class AuthCodeClient {
       "prompt": state == null
           ? (prompts == null ? null : _parsePrompts(prompts))
           : _parsePrompts(_makeCertPrompts(prompts)),
+      "login_hint": loginHint,
       "state": state,
       "codeChallenge": codeChallenge,
       "codeChallengeMethod": codeChallenge != null ? "S256" : null,

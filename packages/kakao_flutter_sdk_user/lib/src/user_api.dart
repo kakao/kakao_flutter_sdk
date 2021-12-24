@@ -72,13 +72,16 @@ class UserApi {
     List<Prompt>? prompts,
     List<String>? channelPublicIds,
     List<String>? serviceTerms,
+    String? loginHint,
   }) async {
     String codeVerifier = AuthCodeClient.codeVerifier();
     final authCode = await AuthCodeClient.instance.request(
-        prompts: prompts,
-        channelPublicIds: channelPublicIds,
-        serviceTerms: serviceTerms,
-        codeVerifier: codeVerifier);
+      prompts: prompts,
+      channelPublicIds: channelPublicIds,
+      serviceTerms: serviceTerms,
+      codeVerifier: codeVerifier,
+      loginHint: loginHint,
+    );
     final token = await AuthApi.instance
         .issueAccessToken(authCode: authCode, codeVerifier: codeVerifier);
     await TokenManagerProvider.instance.manager.setToken(token);
@@ -96,6 +99,7 @@ class UserApi {
     List<Prompt>? prompts,
     List<String>? channelPublicIds,
     List<String>? serviceTerms,
+    String? loginHint,
     required String state,
   }) async {
     var codeVerifier = AuthCodeClient.codeVerifier();
@@ -105,6 +109,7 @@ class UserApi {
       channelPublicIds: channelPublicIds,
       serviceTerms: serviceTerms,
       codeVerifier: codeVerifier,
+      loginHint: loginHint,
     );
     final certTokenInfo = await AuthApi.instance.issueAccessTokenWithCert(
         authCode: authCode, codeVerifier: codeVerifier);
