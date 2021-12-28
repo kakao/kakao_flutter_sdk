@@ -12,13 +12,13 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_bloc: ^7.0.0-nullsafety.5
   equatable: ^0.3.0
+  path_provider: ^2.0.8
   kakao_flutter_sdk:
     path: ../packages/kakao_flutter_sdk
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  path_provider: ^2.0.8
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
