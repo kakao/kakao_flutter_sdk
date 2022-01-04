@@ -871,6 +871,8 @@ class _ApiListState extends State<ApiList> {
         // 이 샘플에서는 프로젝트 리소스로 추가한 이미지 파일을 사용했습니다. 갤러리 등 서비스 니즈에 맞는 사진 파일을 준비하세요.
         // 업로드할 사진 파일
         ByteData byteData = await rootBundle.load('assets/images/cat1.png');
+
+        // 이 샘플에서는 path_provider를 사용해 프로젝트 리소스를 이미지 파일로 저장했습니다.
         File tempFile =
             File('${(await getTemporaryDirectory()).path}/cat1.png');
         File file = await tempFile.writeAsBytes(byteData.buffer
@@ -1039,6 +1041,8 @@ class _ApiListState extends State<ApiList> {
         // 로컬 이미지 파일
         // 이 샘플에서는 프로젝트 리소스로 추가한 이미지 파일을 사용했습니다. 갤러리 등 서비스 니즈에 맞는 사진 파일을 준비하세요.
         ByteData byteData = await rootBundle.load('assets/images/cat1.png');
+
+        // 이 샘플에서는 path_provider를 사용해 프로젝트 리소스를 이미지 파일로 저장했습니다.
         File tempFile =
             File('${(await getTemporaryDirectory()).path}/cat1.png');
         File file = await tempFile.writeAsBytes(byteData.buffer
