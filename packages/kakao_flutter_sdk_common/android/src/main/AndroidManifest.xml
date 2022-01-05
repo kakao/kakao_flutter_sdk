@@ -16,11 +16,14 @@
     <queries>
         <package android:name="com.kakao.talk" />
         <package android:name="com.kakao.onetalk" />
-        <package android:name="com.android.chrome" />
-        <package android:name="com.chrome.beta" />
-        <package android:name="com.chrome.dev" />
         <package android:name="com.locnall.KimGiSa" />
         <package android:name="com.lguplus.navi" />
+
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
     </queries>
 </manifest>
 
