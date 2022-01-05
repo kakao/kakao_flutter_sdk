@@ -12,9 +12,6 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.browser.customtabs.CustomTabsService
 import androidx.browser.customtabs.CustomTabsServiceConnection
 
-/**
- * @author kevin.kang. Created on 2019-06-12..
- */
 object CustomTabsCommonClient {
     @Throws(UnsupportedOperationException::class)
     fun openWithDefault(context: Context, uri: Uri): ServiceConnection? {

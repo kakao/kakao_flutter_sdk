@@ -1,8 +1,5 @@
 package com.kakao.sdk.flutter
 
-/**
- * @author kevin.kang. Created on 2019-06-07..
- */
 object Constants {
     const val SCHEME = "https"
     const val META_APP_KEY = "com.kakao.sdk.AppKey"

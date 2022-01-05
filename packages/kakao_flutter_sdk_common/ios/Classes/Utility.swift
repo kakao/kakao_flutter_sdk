@@ -1,10 +1,3 @@
-//
-//  Utility.swift
-//  kakao_flutter_sdk
-//
-//  Created by Hara Kang on 10/08/2019.
-//
-
 import Foundation
 
 class Utility {

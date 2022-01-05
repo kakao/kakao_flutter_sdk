@@ -13,9 +13,6 @@ import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.*
 
-/**
- * @author kevin.kang. Created on 2019-06-07..
- */
 object Utility {
     @TargetApi(Build.VERSION_CODES.P)
     fun getKeyHash(context: Context): String {

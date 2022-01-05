@@ -9,9 +9,6 @@ import android.os.Bundle
 import java.lang.Exception
 import androidx.browser.customtabs.CustomTabsIntent
 
-/**
- * @author kevin.kang. Created on 2019-06-13..
- */
 class AuthCodeCustomTabsActivity : Activity() {
     private lateinit var fullUri: Uri
     private var customTabsConnection: ServiceConnection? = null
