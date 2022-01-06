@@ -727,7 +727,7 @@ class _ApiListState extends State<ApiList> {
         try {
           await launchBrowserTab(url);
         } catch (e) {
-          Log.e(context, tag, '인터넷 브라우저 미설치: 인터넷 브라우저를 설치해주세요', e);
+          Log.e(context, tag, '카카오톡 채널 추가 실패', e);
         }
       }),
       ApiItem('channelChatUrl()', () async {
@@ -738,7 +738,7 @@ class _ApiListState extends State<ApiList> {
         try {
           await launchBrowserTab(url);
         } catch (e) {
-          Log.e(context, tag, '인터넷 브라우저 미설치: 인터넷 브라우저를 설치해주세요', e);
+          Log.e(context, tag, '카카오톡 채널 채팅 실패', e);
         }
       }),
       ApiItem('KakaoStory API'),
@@ -1010,7 +1010,7 @@ class _ApiListState extends State<ApiList> {
               .scrapTemplateUri(url: url, templateArgs: {'key1': 'value1'});
           await launchBrowserTab(shareUrl);
         } catch (e) {
-          Log.e(context, tag, '인터넷 브라우저 미설치: 인터넷 브라우저를 설치해주세요');
+          Log.e(context, tag, '카카오링크 보내기 실패', e);
         }
       }),
       ApiItem('defaultTemplateUri() - web sharer - feed', () async {
@@ -1021,7 +1021,7 @@ class _ApiListState extends State<ApiList> {
               .defaultTemplateUri(template: defaultFeed);
           await launchBrowserTab(shareUrl);
         } catch (e) {
-          Log.e(context, tag, '인터넷 브라우저 미설치: 인터넷 브라우저를 설치해주세요');
+          Log.e(context, tag, '카카오링크 보내기 실패', e);
         }
       }),
       ApiItem('defaultTemplateUri() - web sharer - location', () async {
@@ -1032,7 +1032,7 @@ class _ApiListState extends State<ApiList> {
               .defaultTemplateUri(template: defaultLocation);
           await launchBrowserTab(shareUrl);
         } catch (e) {
-          Log.e(context, tag, '인터넷 브라우저 미설치: 인터넷 브라우저를 설치해주세요');
+          Log.e(context, tag, '카카오링크 보내기 실패', e);
         }
       }),
       ApiItem('uploadImage()', () async {
