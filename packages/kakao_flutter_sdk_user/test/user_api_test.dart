@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_user/src/model/account.dart';
@@ -13,6 +14,19 @@ void main() {
   late Dio _dio;
   late MockAdapter _adapter;
   late UserApi _api;
+
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  const MethodChannel('plugins.flutter.io/shared_preferences')
+      .setMockMethodCallHandler((MethodCall methodCall) async {
+    if (methodCall.method == 'getAll') {
+      return <String, dynamic>{}; // set initial values here if desired
+    }
+    if (methodCall.method.startsWith("set") || methodCall.method == 'remove') {
+      return true;
+    }
+    return null;
+  });
 
   setUp(() {
     _dio = Dio();
