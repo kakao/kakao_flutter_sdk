@@ -625,15 +625,15 @@ class _ApiListState extends State<ApiList> {
           // 메시지 보낼 친구의 UUID 목록
           List<String> receiverUuids = selectedItems;
 
-          // 메시지 템플릿 아이디
-          // * 만들기 가이드: https://developers.kakao.com/docs/latest/ko/message/message-template
-          int templateId = templateIds['customMessage']!;
+          // Feed 메시지
+          FeedTemplate template = defaultFeed;
 
           // 메시지 보내기
           try {
-            MessageSendResult result = await TalkApi.instance.sendCustomMessage(
+            MessageSendResult result =
+                await TalkApi.instance.sendDefaultMessage(
               receiverUuids: receiverUuids,
-              templateId: templateId,
+              template: template,
             );
             Log.i(context, tag, '메시지 보내기 성공 ${result.successfulReceiverUuids}');
 
