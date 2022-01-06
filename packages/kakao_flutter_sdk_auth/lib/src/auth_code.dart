@@ -4,9 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:kakao_flutter_sdk_auth/src/auth_api.dart';
+import 'package:kakao_flutter_sdk_auth/src/constants.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 
-const MethodChannel _channel = MethodChannel("kakao_flutter_sdk");
+const MethodChannel _channel = MethodChannel(CommonConstants.methodChannel);
 
 /// @nodoc
 // Provides OAuth authorization process.
@@ -39,25 +40,27 @@ class AuthCodeClient {
         ? base64.encode(sha256.convert(utf8.encode(codeVerifier)).bytes)
         : null;
     final params = {
-      "client_id": clientId ?? _platformKey(),
-      "redirect_uri": finalRedirectUri,
-      "response_type": "code",
+      Constants.clientId: clientId ?? _platformKey(),
+      Constants.redirectUri: finalRedirectUri,
+      Constants.responseType: Constants.code,
       // "approval_type": "individual",
-      "scope": scopes?.join(" "),
-      "agt": agt,
-      "channel_public_id": channelPublicIds?.join(','),
-      "service_terms": serviceTerms?.join(','),
-      "prompt": state == null
+      Constants.scope: scopes?.join(" "),
+      Constants.agt: agt,
+      Constants.channelPublicId: channelPublicIds?.join(','),
+      Constants.serviceTerms: serviceTerms?.join(','),
+      Constants.prompt: state == null
           ? (prompts == null ? null : _parsePrompts(prompts))
           : _parsePrompts(_makeCertPrompts(prompts)),
-      "login_hint": loginHint,
-      "state": state,
-      "codeChallenge": codeChallenge,
-      "codeChallengeMethod": codeChallenge != null ? "S256" : null,
-      "ka": await KakaoSdk.kaHeader
+      Constants.loginHint: loginHint,
+      Constants.state: state,
+      Constants.codeChallenge: codeChallenge,
+      Constants.codeChallengeMethod:
+          codeChallenge != null ? Constants.codeChallengeMethodValue : null,
+      Constants.kaHeader: await KakaoSdk.kaHeader
     };
     params.removeWhere((k, v) => v == null);
-    final url = Uri.https(KakaoSdk.hosts.kauth, "/oauth/authorize", params);
+    final url =
+        Uri.https(KakaoSdk.hosts.kauth, Constants.authorizePath, params);
     SdkLog.i(url);
     try {
       final authCode =
@@ -127,7 +130,7 @@ class AuthCodeClient {
 
   String _parseCode(String redirectedUri) {
     final queryParams = Uri.parse(redirectedUri).queryParameters;
-    final code = queryParams["code"];
+    final code = queryParams[Constants.code];
     if (code != null) return code;
     throw KakaoAuthException.fromJson(queryParams);
   }
@@ -142,20 +145,20 @@ class AuthCodeClient {
     String? state,
   ) async {
     var arguments = {
-      "sdk_version": "sdk/${KakaoSdk.sdkVersion} sdk_type/flutter",
-      "client_id": clientId,
-      "redirect_uri": redirectUri,
-      "code_verifier": codeVerifier,
-      "channel_public_id": channelPublicId?.join(','),
-      "service_terms": serviceTerms?.join(','),
-      "prompt": state == null
+      Constants.sdkVersion: "sdk/${KakaoSdk.sdkVersion} sdk_type/flutter",
+      Constants.clientId: clientId,
+      Constants.redirectUri: redirectUri,
+      Constants.codeVerifier: codeVerifier,
+      Constants.channelPublicId: channelPublicId?.join(','),
+      Constants.serviceTerms: serviceTerms?.join(','),
+      Constants.prompt: state == null
           ? (prompts == null ? null : _parsePrompts(prompts))
           : _parsePrompts(_makeCertPrompts(prompts)),
-      "state": state,
+      Constants.state: state,
     };
     arguments.removeWhere((k, v) => v == null);
-    final redirectUriWithParams =
-        await _channel.invokeMethod<String>("authorizeWithTalk", arguments);
+    final redirectUriWithParams = await _channel.invokeMethod<String>(
+        CommonConstants.authorizeWithTalk, arguments);
     if (redirectUriWithParams != null) return redirectUriWithParams;
     throw KakaoClientException(
         "OAuth 2.0 redirect uri was null, which should not happen.");

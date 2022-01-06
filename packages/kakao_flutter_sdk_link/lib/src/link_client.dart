@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:kakao_flutter_sdk_link/src/constants.dart';
 import 'package:kakao_flutter_sdk_link/src/link_api.dart';
 import 'package:kakao_flutter_sdk_link/src/model/image_upload_result.dart';
 import 'package:kakao_flutter_sdk_link/src/model/link_result.dart';
@@ -14,13 +15,15 @@ class LinkClient {
   LinkApi api;
   final Platform _platform;
 
-  static const MethodChannel _channel = MethodChannel("kakao_flutter_sdk");
+  static const MethodChannel _channel =
+      MethodChannel(CommonConstants.methodChannel);
 
   /// 간편한 API 호출을 위해 기본 제공되는 singleton 객체
   static final LinkClient instance = LinkClient(LinkApi.instance);
 
   Future<bool> isKakaoLinkAvailable() async {
-    return await _channel.invokeMethod('isKakaoLinkAvailable') ?? false;
+    return await _channel.invokeMethod(CommonConstants.isKakaoLinkAvailable) ??
+        false;
   }
 
   /// 카카오 디벨로퍼스에서 생성한 메시지 템플릿을 카카오톡으로 공유.
@@ -73,7 +76,8 @@ class LinkClient {
   }
 
   Future<void> launchKakaoTalk(Uri uri) {
-    return _channel.invokeMethod("launchKakaoTalk", {"uri": uri.toString()});
+    return _channel.invokeMethod(
+        CommonConstants.launchKakaoTalk, {Constants.uri: uri.toString()});
   }
 
   Future<Uri> _talkWithResponse(LinkResult response,
@@ -85,15 +89,18 @@ class LinkClient {
           "Exceeded message template v2 size limit (${attachmentSize / 1024}kb > 10kb).");
     }
     Map<String, String> params = {
-      "linkver": "4.0",
-      "appkey": appKey ?? KakaoSdk.nativeKey,
-      "appver": await KakaoSdk.appVer,
-      "template_id": response.templateId.toString(),
-      "template_args": jsonEncode(response.templateArgs),
-      "template_json": jsonEncode(response.templateMsg),
-      "extras": jsonEncode(await _extras(serverCallbackArgs))
+      Constants.linkVer: Constants.linkVersion_40,
+      Constants.appKey: appKey ?? KakaoSdk.nativeKey,
+      Constants.appVer: await KakaoSdk.appVer,
+      Constants.templateId: response.templateId.toString(),
+      Constants.templateArgs: jsonEncode(response.templateArgs),
+      Constants.templateJson: jsonEncode(response.templateMsg),
+      Constants.extras: jsonEncode(await _extras(serverCallbackArgs))
     };
-    var uri = Uri(scheme: "kakaolink", host: "send", queryParameters: params);
+    var uri = Uri(
+        scheme: Constants.linkScheme,
+        host: Constants.linkAuthority,
+        queryParameters: params);
     var linkUri = Uri.parse(uri.toString().replaceAll('+', '%20'));
     SdkLog.i(linkUri);
     return linkUri;
@@ -102,16 +109,16 @@ class LinkClient {
   Future<Map<String, String?>> _extras(
       [Map<String, String>? serverCallbackArgs]) async {
     Map<String, String?> extras = {
-      "KA": await KakaoSdk.kaHeader,
-      "lcba":
+      Constants.ka: await KakaoSdk.kaHeader,
+      Constants.lcba:
           serverCallbackArgs == null ? null : jsonEncode(serverCallbackArgs),
       ...(_platform.isAndroid
           ? {
-              "appPkg": await KakaoSdk.packageName,
-              "keyHash": await KakaoSdk.origin
+              Constants.ka: await KakaoSdk.packageName,
+              Constants.keyHash: await KakaoSdk.origin
             }
           : _platform.isIOS
-              ? {"iosBundleId": await KakaoSdk.origin}
+              ? {Constants.iosBundleId: await KakaoSdk.origin}
               : {}),
     };
     extras.removeWhere((k, v) => v == null);
@@ -122,14 +129,14 @@ class LinkClient {
       {String? appKey, Map<String, String>? serverCallbackArgs}) async {
     final templateMsg = response.templateMsg;
     final attachment = {
-      "lv": "4.0",
-      "av": "4.0",
-      "ak": appKey ?? KakaoSdk.nativeKey,
-      "P": templateMsg["P"],
-      "C": templateMsg["C"],
-      "template_id": response.templateId,
-      "template_args": response.templateArgs,
-      "extras": jsonEncode(await _extras(serverCallbackArgs))
+      Constants.lv: Constants.linkVersion_40,
+      Constants.av: Constants.linkVersion_40,
+      Constants.ak: appKey ?? KakaoSdk.nativeKey,
+      Constants.P: templateMsg[Constants.P],
+      Constants.C: templateMsg[Constants.C],
+      Constants.templateId: response.templateId,
+      Constants.templateArgs: response.templateArgs,
+      Constants.extras: jsonEncode(await _extras(serverCallbackArgs))
     };
     return utf8.encode(jsonEncode(attachment)).length;
   }

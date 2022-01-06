@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_talk/kakao_flutter_sdk_talk.dart';
+import 'package:kakao_flutter_sdk_talk/src/constants.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/channels.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/friends.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/message_send_result.dart';
@@ -22,8 +23,8 @@ class TalkApi {
   /// 카카오톡 프로필 가져오기.
   Future<TalkProfile> profile() async {
     return ApiFactory.handleApiError(() async {
-      Response response = await _dio.get("/v1/api/talk/profile",
-          queryParameters: {"secure_resource": true});
+      Response response = await _dio.get(Constants.profilePath,
+          queryParameters: {Constants.secureResource: true});
       return TalkProfile.fromJson(response.data);
     });
   }
@@ -36,7 +37,7 @@ class TalkApi {
     Map<String, String>? templateArgs,
   }) async {
     final params = {
-      "template_id": templateId,
+      Constants.templateId: templateId,
       "template_args": templateArgs == null ? null : jsonEncode(templateArgs)
     };
     return _memo("", params);
@@ -44,7 +45,8 @@ class TalkApi {
 
   /// 기본 템플릿을 이용하여, 카카오톡의 나와의 채팅방으로 메시지 전송.
   Future<void> sendDefaultMemo(DefaultTemplate template) async {
-    return _memo("default/", {"template_object": jsonEncode(template)});
+    return _memo(Constants.defaultPath,
+        {Constants.templateObject: jsonEncode(template)});
   }
 
   /// 지정된 URL 을 스크랩하여, 카카오톡의 나와의 채팅방으로 메시지 전송.
@@ -54,27 +56,29 @@ class TalkApi {
     Map<String, String>? templateArgs,
   }) async {
     final params = {
-      "request_url": url,
-      "template_id": templateId,
-      "template_args": templateArgs == null ? null : jsonEncode(templateArgs)
+      Constants.requestUrl: url,
+      Constants.templateId: templateId,
+      Constants.templateArgs:
+          templateArgs == null ? null : jsonEncode(templateArgs)
     };
-    return _memo("scrap/", params);
+    return _memo(Constants.scrapPath, params);
   }
 
   Future<void> _memo(String pathPart, Map<String, dynamic> params) async {
     params.removeWhere((k, v) => v == null);
     return ApiFactory.handleApiError(() async {
-      await _dio.post("/v2/api/talk/memo/${pathPart}send", data: params);
+      await _dio.post("${Constants.v2MemoPath}$pathPart${Constants.send}",
+          data: params);
     });
   }
 
   /// 사용자가 특정 카카오톡 채널을 추가했는지 확인.
   Future<Channels> channels([List<String>? publicIds]) async {
     return ApiFactory.handleApiError(() async {
-      Response response = await _dio.get("/v1/api/talk/channels",
+      Response response = await _dio.get(Constants.v1ChannelsPath,
           queryParameters: publicIds == null
               ? {}
-              : {"channel_public_ids": jsonEncode(publicIds)});
+              : {Constants.channelPublicIds: jsonEncode(publicIds)});
       return Channels.fromJson(response.data);
     });
   }
@@ -89,19 +93,19 @@ class TalkApi {
   }) async {
     return ApiFactory.handleApiError(() async {
       final params = {
-        "offset": context != null ? context.offset : offset,
-        "limit": context != null ? context.limit : limit,
-        "friend_order": context != null && context.friendOrder != null
+        Constants.offset: context != null ? context.offset : offset,
+        Constants.limit: context != null ? context.limit : limit,
+        Constants.friendOrder: context != null && context.friendOrder != null
             ? describeEnum(context.friendOrder!)
             : (friendOrder == null ? null : describeEnum(friendOrder)),
-        "order": context != null && context.order != null
+        Constants.order: context != null && context.order != null
             ? describeEnum(context.order!)
             : (order == null ? null : describeEnum(order)),
-        "secure_resource": true
+        Constants.secureResource: true
       };
       params.removeWhere((k, v) => v == null);
       final response =
-          await _dio.get("/v1/api/talk/friends", queryParameters: params);
+          await _dio.get(Constants.v1FriendsPath, queryParameters: params);
       return Friends.fromJson(response.data);
     });
   }
@@ -115,9 +119,10 @@ class TalkApi {
     Map<String, String>? templateArgs,
   }) async {
     final params = {
-      "receiver_uuids": jsonEncode(receiverUuids),
-      "template_id": templateId,
-      "template_args": templateArgs == null ? null : jsonEncode(templateArgs)
+      Constants.receiverUuids: jsonEncode(receiverUuids),
+      Constants.templateId: templateId,
+      Constants.templateArgs:
+          templateArgs == null ? null : jsonEncode(templateArgs)
     };
     return _message("", params);
   }
@@ -128,10 +133,10 @@ class TalkApi {
     required DefaultTemplate template,
   }) async {
     final params = {
-      "receiver_uuids": jsonEncode(receiverUuids),
-      "template_object": jsonEncode(template)
+      Constants.receiverUuids: jsonEncode(receiverUuids),
+      Constants.templateObject: jsonEncode(template)
     };
-    return _message("default/", params);
+    return _message(Constants.defaultPath, params);
   }
 
   /// 지정된 URL 을 스크랩하여, 카카오톡의 나와의 채팅방으로 메시지 전송.
@@ -142,12 +147,13 @@ class TalkApi {
     Map<String, String>? templateArgs,
   }) async {
     final params = {
-      "receiver_uuids": jsonEncode(receiverUuids),
-      "request_url": url,
-      "template_id": templateId,
-      "template_args": templateArgs == null ? null : jsonEncode(templateArgs)
+      Constants.receiverUuids: jsonEncode(receiverUuids),
+      Constants.requestUrl: url,
+      Constants.templateId: templateId,
+      Constants.templateArgs:
+          templateArgs == null ? null : jsonEncode(templateArgs)
     };
-    return _message("scrap/", params);
+    return _message(Constants.scrapPath, params);
   }
 
   /// 카카오톡 채널을 추가하기 위한 URL 반환. URL 을 브라우저나 웹뷰에서 로드하면 브릿지 웹페이지를 통해 카카오톡 실행.
@@ -157,9 +163,9 @@ class TalkApi {
   ///
   Future<Uri> addChannelUrl(final String channelId) async {
     return Uri(
-        scheme: "https",
+        scheme: Constants.scheme,
         host: KakaoSdk.hosts.pf,
-        path: "/$channelId/friend",
+        path: "/$channelId/${Constants.friend}",
         queryParameters: await _channelBaseParams());
   }
 
@@ -169,9 +175,9 @@ class TalkApi {
   /// 홈 URL 은 카카오톡 채널 관리자센터 > 관리 > 상세설정 페이지에서 확인.
   Future<Uri> channelChatUrl(final String channelId) async {
     return Uri(
-        scheme: "https",
+        scheme: Constants.scheme,
         host: KakaoSdk.hosts.pf,
-        path: "/$channelId/chat",
+        path: "/$channelId/${Constants.chat}",
         queryParameters: await _channelBaseParams());
   }
 
@@ -181,17 +187,18 @@ class TalkApi {
   ) async {
     return ApiFactory.handleApiError(() async {
       params.removeWhere((k, v) => v == null);
-      final response = await _dio
-          .post("/v1/api/talk/friends/message/${pathPart}send", data: params);
+      final response = await _dio.post(
+          "${Constants.v1OpenTalkMessagePath}$pathPart${Constants.send}",
+          data: params);
       return MessageSendResult.fromJson(response.data);
     });
   }
 
   Future<Map<String, String>> _channelBaseParams() async {
     return {
-      "app_key": KakaoSdk.nativeKey,
-      "kakao_agent": await KakaoSdk.kaHeader,
-      "api_ver": "1.0"
+      Constants.appKey: KakaoSdk.nativeKey,
+      Constants.kakaoAgent: await KakaoSdk.kaHeader,
+      Constants.apiVersion: Constants.apiVersion_10
     };
   }
 }

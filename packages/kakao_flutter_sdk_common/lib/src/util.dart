@@ -1,22 +1,27 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:kakao_flutter_sdk_common/src/constans.dart';
 import 'package:kakao_flutter_sdk_common/src/kakao_error.dart';
 
-const MethodChannel _channel = MethodChannel("kakao_flutter_sdk");
+const MethodChannel _channel = MethodChannel(CommonConstants.methodChannel);
 
 /// @nodoc
 /// Launches a given url with platform-specific default browser tab.
 Future<String> launchBrowserTab(Uri uri, {String? redirectUri}) async {
-  if (uri.scheme != 'http' && uri.scheme != 'https') {
+  if (uri.scheme != CommonConstants.http &&
+      uri.scheme != CommonConstants.scheme) {
     throw KakaoClientException(
       'Default browsers only supports URL of http or https scheme.',
     );
   }
-  var args = {"url": uri.toString(), "redirect_uri": redirectUri};
+  var args = {
+    CommonConstants.url: uri.toString(),
+    CommonConstants.redirectUri: redirectUri
+  };
   args.removeWhere((k, v) => v == null);
-  final redirectUriWithParams =
-      await _channel.invokeMethod<String>("launchBrowserTab", args);
+  final redirectUriWithParams = await _channel.invokeMethod<String>(
+      CommonConstants.launchBrowserTab, args);
 
   if (redirectUriWithParams != null) return redirectUriWithParams;
   throw KakaoClientException(
@@ -27,7 +32,8 @@ Future<String> launchBrowserTab(Uri uri, {String? redirectUri}) async {
 /// Determines whether KakaoTalk is installed on this device.
 Future<bool> isKakaoTalkInstalled() async {
   final isInstalled =
-      await _channel.invokeMethod<bool>("isKakaoTalkInstalled") ?? false;
+      await _channel.invokeMethod<bool>(CommonConstants.isKakaoTalkInstalled) ??
+          false;
   return isInstalled;
 }
 

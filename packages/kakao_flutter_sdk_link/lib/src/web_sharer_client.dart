@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:kakao_flutter_sdk_link/src/constants.dart';
 import 'package:kakao_flutter_sdk_link/src/link_api.dart';
 import 'package:kakao_flutter_sdk_link/src/model/image_upload_result.dart';
 import 'package:kakao_flutter_sdk_link/src/model/link_result.dart';
@@ -70,19 +71,19 @@ class WebSharerClient {
   Future<Uri> _sharerWithResponse(LinkResult response,
       {Map<String, String>? serverCallbackArgs}) async {
     final params = {
-      "app_key": KakaoSdk.nativeKey,
-      "ka": await KakaoSdk.kaHeader,
-      "validation_action": "custom",
-      "validation_params": jsonEncode({
-        "template_id": response.templateId,
-        "template_args": response.templateArgs,
-        "link_ver": "4.0"
+      Constants.sharerAppKey: KakaoSdk.nativeKey,
+      Constants.sharerKa: await KakaoSdk.kaHeader,
+      Constants.validationAction: Constants.custom,
+      Constants.validationParams: jsonEncode({
+        Constants.templateId: response.templateId,
+        Constants.templateArgs: response.templateArgs,
+        Constants.linkVersion: Constants.linkVersion_40
       }),
-      "lcba": serverCallbackArgs == null ? null : jsonEncode(serverCallbackArgs)
+      Constants.lcba:
+          serverCallbackArgs == null ? null : jsonEncode(serverCallbackArgs)
     };
 
     params.removeWhere((k, v) => v == null);
-    return Uri.https(
-        KakaoSdk.hosts.sharer, "talk/friends/picker/easylink", params);
+    return Uri.https(KakaoSdk.hosts.sharer, Constants.sharerPath, params);
   }
 }

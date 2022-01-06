@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
+import 'package:kakao_flutter_sdk_common/src/constans.dart';
 import 'package:kakao_flutter_sdk_common/src/kakao_api_exception.dart';
 import 'package:kakao_flutter_sdk_common/src/kakao_auth_exception.dart';
 import 'package:kakao_flutter_sdk_common/src/sdk_log.dart';
@@ -13,8 +14,8 @@ class ApiFactory {
 
   static Dio _appKeyApiInstance() {
     var dio = Dio();
-    dio.options.baseUrl = "https://${KakaoSdk.hosts.kapi}";
-    dio.options.contentType = "application/x-www-form-urlencoded";
+    dio.options.baseUrl = "${CommonConstants.scheme}://${KakaoSdk.hosts.kapi}";
+    dio.options.contentType = CommonConstants.contentType;
     dio.interceptors.addAll([
       appKeyInterceptor,
       kaInterceptor,
@@ -64,7 +65,8 @@ class ApiFactory {
   static Interceptor appKeyInterceptor = InterceptorsWrapper(onRequest:
       (RequestOptions options, RequestInterceptorHandler handler) async {
     var appKey = KakaoSdk.nativeKey;
-    options.headers["Authorization"] = "KakaoAK $appKey";
+    options.headers[CommonConstants.authorization] =
+        "${CommonConstants.kakaoAk} $appKey";
     handler.next(options);
   });
 
@@ -72,7 +74,7 @@ class ApiFactory {
   static Interceptor kaInterceptor = InterceptorsWrapper(onRequest:
       (RequestOptions options, RequestInterceptorHandler handler) async {
     var kaHeader = await KakaoSdk.kaHeader;
-    options.headers["KA"] = kaHeader;
+    options.headers[CommonConstants.ka] = kaHeader;
     handler.next(options);
   });
 }

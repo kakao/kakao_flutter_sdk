@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
+import 'package:kakao_flutter_sdk_user/src/constants.dart';
 
 import 'model/access_token_info.dart';
 import 'model/scope_info.dart';
@@ -136,8 +137,8 @@ class UserApi {
   /// 사용자 정보 요청.
   Future<User> me({bool secureResource = true}) async {
     return ApiFactory.handleApiError(() async {
-      Response response = await _dio.get("/v2/user/me",
-          queryParameters: {"secure_resource": secureResource});
+      Response response = await _dio.get(Constants.v2MePath,
+          queryParameters: {Constants.secureResource: secureResource});
       return User.fromJson(response.data);
     });
   }
@@ -148,7 +149,7 @@ class UserApi {
   Future<UserIdResponse> logout() async {
     return ApiFactory.handleApiError(() async {
       try {
-        Response response = await _dio.post("/v1/user/logout");
+        Response response = await _dio.post(Constants.v1LogoutPath);
         return UserIdResponse.fromJson(response.data);
       } catch (e) {
         rethrow;
@@ -163,7 +164,7 @@ class UserApi {
   /// API 호출에 성공하면 [TokenManagerProvider]에 지정된 저장소에서 토큰을 자동으로 삭제함.
   Future<UserIdResponse> unlink() async {
     return ApiFactory.handleApiError(() async {
-      Response response = await _dio.post("/v1/user/unlink");
+      Response response = await _dio.post(Constants.v1UnlinkPath);
       await TokenManagerProvider.instance.manager.clear();
       return UserIdResponse.fromJson(response.data);
     });
@@ -175,7 +176,7 @@ class UserApi {
   /// 액세스 토큰이 만료된 경우 자동으로 갱신된 새로운 액세스 토큰 정보 반환.
   Future<AccessTokenInfo> accessTokenInfo() async {
     return ApiFactory.handleApiError(() async {
-      Response response = await _dio.get("/v1/user/access_token_info");
+      Response response = await _dio.get(Constants.v1AccessTokenInfoPath);
       return AccessTokenInfo.fromJson(response.data);
     });
   }
@@ -186,24 +187,24 @@ class UserApi {
     int? pageSize,
   }) async {
     Map<String, dynamic> params = {
-      'from_updated_at': fromUpdateAt,
-      'page_size': pageSize,
+      Constants.fromUpdatedAt: fromUpdateAt,
+      Constants.pageSize: pageSize,
     };
     params.removeWhere((k, v) => v == null);
     return ApiFactory.handleApiError(() async {
-      Response response =
-          await _dio.get("/v1/user/shipping_address", queryParameters: params);
+      Response response = await _dio.get(Constants.v1ShippingAddressesPath,
+          queryParameters: params);
       return UserShippingAddresses.fromJson(response.data);
     });
   }
 
   /// 사용자가 카카오 간편가입을 통해 동의한 서비스 약관 내역 반환.
   Future<UserServiceTerms> serviceTerms({String? extra}) async {
-    Map<String, dynamic> param = {'extra': extra};
+    Map<String, dynamic> param = {Constants.extra: extra};
     param.removeWhere((k, v) => v == null);
     return ApiFactory.handleApiError(() async {
       Response response =
-          await _dio.get("/v1/user/service/terms", queryParameters: param);
+          await _dio.get(Constants.v1ServiceTermsPath, queryParameters: param);
       return UserServiceTerms.fromJson(response.data);
     });
   }
@@ -214,24 +215,24 @@ class UserApi {
   /// 앱 연결 시 기본 저장되는 nickname, profile_image, thumbnail_image 값도 덮어쓰기 가능하며 새로운 컬럼을 추가하면 해당 키 이름으로 정보 저장 가능.
   Future<void> updateProfile(Map<String, String> properties) {
     return ApiFactory.handleApiError(() async {
-      await _dio.post('/v1/user/update_profile',
-          data: {'properties': jsonEncode(properties)});
+      await _dio.post(Constants.v1UpdateProfilePath,
+          data: {Constants.properties: jsonEncode(properties)});
     });
   }
 
   /// 앱 연결 상태가 **PREREGISTER** 상태의 사용자에 대하여 앱 연결 요청. **자동연결** 설정을 비활성화한 앱에서 사용.
   Future<void> signup({Map<String, String>? properties}) {
     return ApiFactory.handleApiError(() async {
-      await _dio.post('/v1/user/signup',
-          data: {'properties': jsonEncode(properties)});
+      await _dio.post(Constants.v1SignupPath,
+          data: {Constants.properties: jsonEncode(properties)});
     });
   }
 
   /// 사용자 동의 항목의 상세 정보 목록 반환.
   Future<ScopeInfo> scopes({List<String>? scopes}) {
     return ApiFactory.handleApiError(() async {
-      Response response = await _dio.get('/v2/user/scopes',
-          queryParameters: {'scopes': jsonEncode(scopes)});
+      Response response = await _dio.get(Constants.v2ScopesPath,
+          queryParameters: {Constants.scopes: jsonEncode(scopes)});
       return ScopeInfo.fromJson(response.data);
     });
   }
@@ -241,8 +242,8 @@ class UserApi {
   /// [scopes]로 동의를 철회할 동의 항목 ID 목록 전달
   Future<ScopeInfo> revokeScopes({required List<String> scopes}) {
     return ApiFactory.handleApiError(() async {
-      Response response = await _dio
-          .post('/v2/user/revoke/scopes', data: {'scopes': jsonEncode(scopes)});
+      Response response = await _dio.post(Constants.v2RevokeScopesPath,
+          data: {Constants.scopes: jsonEncode(scopes)});
       return ScopeInfo.fromJson(response.data);
     });
   }

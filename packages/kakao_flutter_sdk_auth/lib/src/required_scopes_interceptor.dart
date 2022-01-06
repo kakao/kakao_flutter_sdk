@@ -50,7 +50,8 @@ class RequiredScopesInterceptor extends Interceptor {
         final token =
             await AuthApi.instance.issueAccessToken(authCode: authCode);
         await _tokenManagerProvider.manager.setToken(token);
-        options.headers["Authorization"] = "Bearer ${token.accessToken}";
+        options.headers[CommonConstants.authorization] =
+            "${CommonConstants.bearer} ${token.accessToken}";
 
         _dio.unlock();
         _dio.interceptors.errorLock.unlock();

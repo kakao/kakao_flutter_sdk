@@ -14,8 +14,8 @@ class AuthApiFactory {
 
   static Dio _kauthApiInstance() {
     var dio = Dio();
-    dio.options.baseUrl = "https://${KakaoSdk.hosts.kauth}";
-    dio.options.contentType = "application/x-www-form-urlencoded";
+    dio.options.baseUrl = "${CommonConstants.scheme}://${KakaoSdk.hosts.kauth}";
+    dio.options.contentType = CommonConstants.contentType;
     dio.interceptors.addAll([
       ApiFactory.kaInterceptor,
       LogInterceptor(
@@ -29,8 +29,8 @@ class AuthApiFactory {
 
   static Dio _authApiInstance() {
     var dio = Dio();
-    dio.options.baseUrl = "https://${KakaoSdk.hosts.kapi}";
-    dio.options.contentType = "application/x-www-form-urlencoded";
+    dio.options.baseUrl = "${CommonConstants.scheme}://${KakaoSdk.hosts.kapi}";
+    dio.options.contentType = CommonConstants.contentType;
     var tokenInterceptor = AccessTokenInterceptor(dio, AuthApi.instance);
     var scopeInterceptor = RequiredScopesInterceptor(dio);
     dio.interceptors.addAll([
