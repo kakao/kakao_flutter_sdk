@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
+import 'package:kakao_flutter_sdk_navi/src/constants.dart';
 import 'package:kakao_flutter_sdk_navi/src/model/kakao_navi_params.dart';
 import 'package:kakao_flutter_sdk_navi/src/model/location.dart';
 import 'package:kakao_flutter_sdk_navi/src/model/navi_option.dart';
@@ -11,8 +12,9 @@ class NaviApi {
   NaviApi({Platform? platform}) : _platform = platform ?? const LocalPlatform();
 
   final Platform _platform;
-  static const MethodChannel _channel = MethodChannel("kakao_flutter_sdk");
-  static const String naviHosts = "kakaonavi-wguide.kakao.com";
+  static const MethodChannel _channel =
+      MethodChannel(CommonConstants.methodChannel);
+
   static const String webNaviInstall =
       'https://kakaonavi.kakao.com/launch/index.do';
 
@@ -35,9 +37,9 @@ class NaviApi {
       List<Location>? viaList}) async {
     final extras = await _getExtras();
     final arguments = {
-      'app_key': KakaoSdk.nativeKey,
-      'extras': jsonEncode(extras),
-      'navi_params': jsonEncode(
+      Constants.appKey: KakaoSdk.nativeKey,
+      Constants.extras: jsonEncode(extras),
+      Constants.naviParams: jsonEncode(
         KakaoNaviParams(
           destination: destination,
           option: option,
@@ -45,7 +47,7 @@ class NaviApi {
         ),
       )
     };
-    await _channel.invokeMethod<bool>("navigate", arguments);
+    await _channel.invokeMethod<bool>(CommonConstants.navigate, arguments);
   }
 
   /// 카카오내비 앱으로 목적지를 공유.
@@ -66,9 +68,9 @@ class NaviApi {
 
     final extras = await _getExtras();
     final arguments = {
-      'app_key': KakaoSdk.nativeKey,
-      'extras': jsonEncode(extras),
-      'navi_params': jsonEncode(
+      Constants.appKey: KakaoSdk.nativeKey,
+      Constants.extras: jsonEncode(extras),
+      Constants.naviParams: jsonEncode(
         KakaoNaviParams(
           destination: destination,
           option: shareNaviOption,
@@ -76,19 +78,20 @@ class NaviApi {
         ),
       )
     };
-    await _channel.invokeMethod<bool>("shareDestination", arguments);
+    await _channel.invokeMethod<bool>(
+        CommonConstants.shareDestination, arguments);
   }
 
   Future<Map<String, String>> _getExtras() async {
     return {
-      'KA': await KakaoSdk.kaHeader,
+      Constants.ka: await KakaoSdk.kaHeader,
       ...(_platform.isAndroid
           ? {
-              "appPkg": await KakaoSdk.packageName,
-              "keyHash": await KakaoSdk.origin
+              Constants.appPkg: await KakaoSdk.packageName,
+              Constants.keyHash: await KakaoSdk.origin
             }
           : _platform.isIOS
-              ? {"appPkg": await KakaoSdk.origin}
+              ? {Constants.appPkg: await KakaoSdk.origin}
               : {})
     };
   }

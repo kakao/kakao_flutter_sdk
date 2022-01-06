@@ -9,7 +9,8 @@ import 'package:package_info_plus/package_info_plus.dart';
 class KakaoSdk {
   KakaoSdk._();
 
-  static const MethodChannel _channel = MethodChannel('kakao_flutter_sdk');
+  static const MethodChannel _channel =
+      MethodChannel(CommonConstants.methodChannel);
 
   /// Kakao Natvie App Key.
   /// SDK를 사용하기 전에 반드시 초기화 필요.
@@ -42,7 +43,8 @@ class KakaoSdk {
   //
   // Bundle id and Android keyhash for iOS and Android platform, respectively.
   static Future<String> get origin async {
-    final String origin = await _channel.invokeMethod("getOrigin");
+    final String origin =
+        await _channel.invokeMethod(CommonConstants.getOrigin);
     return origin;
   }
 
@@ -61,7 +63,8 @@ class KakaoSdk {
   // sdk/0.1.0 sdk_type/flutter os/ios-12.4 lang/en res/414.0x896.0 device/iPhone origin/com.kakao.sdk.KakaoSample app_ver/0.1.0
   // ```
   static Future<String> get kaHeader async {
-    final String kaHeader = await _channel.invokeMethod("getKaHeader");
+    final String kaHeader =
+        await _channel.invokeMethod(CommonConstants.getKaHeader);
     return "sdk/$sdkVersion sdk_type/flutter $kaHeader";
   }
 

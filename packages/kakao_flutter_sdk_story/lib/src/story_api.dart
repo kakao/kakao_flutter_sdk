@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_story/kakao_flutter_sdk_story.dart';
+import 'package:kakao_flutter_sdk_story/src/constants.dart';
 import 'package:kakao_flutter_sdk_story/src/model/link_info.dart';
 import 'package:kakao_flutter_sdk_story/src/model/story.dart';
 import 'package:kakao_flutter_sdk_story/src/model/story_profile.dart';
@@ -20,16 +21,16 @@ class StoryApi {
   /// 카카오스토리 사용자인지 확인하기.
   Future<bool> isStoryUser() async {
     return ApiFactory.handleApiError(() async {
-      final response = await _dio.get("/v1/api/story/isstoryuser");
-      return response.data["isStoryUser"];
+      final response = await _dio.get(Constants.isStoryUserPath);
+      return response.data[Constants.isStoryUser];
     });
   }
 
   /// 카카오스토리 프로필 가져오기.
   Future<StoryProfile> profile() async {
     return ApiFactory.handleApiError(() async {
-      final response = await _dio.get("/v1/api/story/profile",
-          queryParameters: {"secure_resource": "true"});
+      final response = await _dio.get(Constants.storyProfilePath,
+          queryParameters: {Constants.secureResource: "true"});
       return StoryProfile.fromJson(response.data);
     });
   }
@@ -37,8 +38,8 @@ class StoryApi {
   /// 카카오스토리의 특정 내 스토리 가져오기. comments, likes 등 각종 상세정보 포함.
   Future<Story> story(String storyId) async {
     return ApiFactory.handleApiError(() async {
-      final response = await _dio
-          .get("/v1/api/story/mystory", queryParameters: {"id": storyId});
+      final response = await _dio.get(Constants.getStoryPath,
+          queryParameters: {Constants.id: storyId});
       return Story.fromJson(response.data);
     });
   }
@@ -47,8 +48,8 @@ class StoryApi {
   /// 단, comments, likes 등의 상세정보는 없으며 이는 내스토리 정보 요청 [story] 통해 획득 가능.
   Future<List<Story>> stories([String? lastId]) async {
     return ApiFactory.handleApiError(() async {
-      final response = await _dio.get("/v1/api/story/mystories",
-          queryParameters: lastId == null ? {} : {"last_id": lastId});
+      final response = await _dio.get(Constants.getStoriesPath,
+          queryParameters: lastId == null ? {} : {Constants.lastId: lastId});
       final data = response.data;
       if (data is List) {
         return data.map((entry) => Story.fromJson(entry)).toList();
@@ -133,25 +134,25 @@ class StoryApi {
   }) async {
     return ApiFactory.handleApiError(() async {
       var postfix = images != null && images.isNotEmpty
-          ? "photo"
+          ? Constants.photo
           : linkInfo != null
-              ? "link"
-              : "note";
+              ? Constants.link
+              : Constants.note;
       var data = {
-        "content": content,
-        "image_url_list":
+        Constants.content: content,
+        Constants.imageUrlList:
             images == null || images.isEmpty ? null : jsonEncode(images),
-        "link_info": linkInfo == null ? null : jsonEncode(linkInfo),
-        "permission": permissionToParams(permission),
-        // "permission": permission == null ? null : describeEnum(permission),
-        "enable_share": enableShare,
-        "android_exec_param": androidExecParams,
-        "ios_exec_param": iosExecParams,
-        "android_market_param": androidMarketParams,
-        "ios_market_param": iosMarketParams
+        Constants.linkInfo: linkInfo == null ? null : jsonEncode(linkInfo),
+        Constants.permission: permissionToParams(permission),
+        Constants.enableShare: enableShare,
+        Constants.androidExecParam: androidExecParams,
+        Constants.iosExecParam: iosExecParams,
+        Constants.androidMarketParam: androidMarketParams,
+        Constants.iosMarketParam: iosMarketParams
       };
       data.removeWhere((k, v) => v == null);
-      var response = await _dio.post("/v1/api/story/post/$postfix", data: data);
+      var response =
+          await _dio.post("${Constants.postPath}/$postfix", data: data);
       return StoryPostResult.fromJson(response.data);
     });
   }
@@ -159,8 +160,8 @@ class StoryApi {
   /// 카카오스토리의 특정 내 스토리 삭제.
   Future<void> delete(String storyId) async {
     return ApiFactory.handleApiError(() async {
-      await _dio.delete("/v1/api/story/delete/mystory",
-          queryParameters: {"id": storyId});
+      await _dio.delete(Constants.deleteStoryPath,
+          queryParameters: {Constants.id: storyId});
     });
   }
 
@@ -168,7 +169,7 @@ class StoryApi {
   Future<LinkInfo> linkInfo(String url) async {
     return ApiFactory.handleApiError(() async {
       final response = await _dio
-          .get("/v1/api/story/linkinfo", queryParameters: {"url": url});
+          .get(Constants.scrapLinkPath, queryParameters: {Constants.url: url});
       return LinkInfo.fromJson(response.data);
     });
   }
@@ -180,9 +181,9 @@ class StoryApi {
           await MultipartFile.fromFile(image.path,
               filename: image.path.split("/").last)));
       Map<String, MultipartFile> data = files.asMap().map((index, file) {
-        return MapEntry("file_${index + 1}", file);
+        return MapEntry("${Constants.file}_${index + 1}", file);
       });
-      final response = await _dio.post("/v1/api/story/upload/multi",
+      final response = await _dio.post(Constants.scrapImagesPath,
           data: FormData.fromMap(data));
       var urls = response.data;
       if (urls is List) return urls.map((url) => url as String).toList();
