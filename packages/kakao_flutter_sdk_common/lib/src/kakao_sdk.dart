@@ -107,6 +107,7 @@ class KakaoSdk {
 }
 
 // List of hosts used by Kakao API.
+/// @nodoc
 class ServerHosts {
   final String kapi = "kapi.kakao.com";
   final String kauth = "kauth.kakao.com";

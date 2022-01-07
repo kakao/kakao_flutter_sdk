@@ -1,4 +1,4 @@
-import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:kakao_flutter_sdk_story/src/model/story_comment.dart';
 import 'package:kakao_flutter_sdk_story/src/model/story_image.dart';
 import 'package:kakao_flutter_sdk_story/src/model/story_like.dart';
@@ -98,6 +98,7 @@ enum StoryPermission {
   unknown
 }
 
+/// @nodoc
 String? permissionToParams(StoryPermission? permission) {
   return permission == StoryPermission.public
       ? "A"

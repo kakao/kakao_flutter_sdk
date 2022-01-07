@@ -1,3 +1,4 @@
+/// @nodoc
 class Constants {
   static const String uploadImagePath = '/v2/api/talk/message/image/upload';
   static const String scrapImagePath = '/v2/api/talk/message/image/scrap';

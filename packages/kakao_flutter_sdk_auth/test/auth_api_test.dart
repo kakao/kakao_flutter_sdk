@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_auth/src/model/access_token_response.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
+import 'package:platform/platform.dart';
 
 import '../../kakao_flutter_sdk_common/test/helper.dart';
 import '../../kakao_flutter_sdk_common/test/mock_adapter.dart';

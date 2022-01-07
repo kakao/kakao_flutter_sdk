@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk_link/src/constants.dart';
 import 'package:kakao_flutter_sdk_link/src/model/image_upload_result.dart';
 import 'package:kakao_flutter_sdk_link/src/model/link_result.dart';

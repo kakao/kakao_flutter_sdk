@@ -1,4 +1,4 @@
-import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:kakao_flutter_sdk_template/src/default_template.dart';
 import 'package:kakao_flutter_sdk_template/src/model/button.dart';
 import 'package:kakao_flutter_sdk_template/src/model/content.dart';

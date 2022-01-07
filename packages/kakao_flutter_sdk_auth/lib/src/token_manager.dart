@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:kakao_flutter_sdk_auth/src/model/oauth_token.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Kakao SDK가 사용하게 될 토큰 저장소 제공자.
 ///

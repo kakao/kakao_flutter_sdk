@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_auth/src/access_token_interceptor.dart';
@@ -5,6 +6,7 @@ import 'package:kakao_flutter_sdk_auth/src/auth_api.dart';
 import 'package:kakao_flutter_sdk_auth/src/required_scopes_interceptor.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 
+/// @nodoc
 class AuthApiFactory {
   /// [Dio] instance for Kakao OAuth server.
   static final Dio kauthApi = _kauthApiInstance();
