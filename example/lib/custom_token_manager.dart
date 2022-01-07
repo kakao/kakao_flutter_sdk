@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomTokenManager extends TokenManager {
   static const tokenKey = "test_token_key";
