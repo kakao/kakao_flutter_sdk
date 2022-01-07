@@ -1,4 +1,4 @@
-import 'package:kakao_flutter_sdk_template/kakao_flutter_sdk_template.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'link_result.g.dart';
 

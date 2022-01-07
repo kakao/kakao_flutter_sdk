@@ -1,4 +1,4 @@
-import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'message_failure_info.g.dart';
 

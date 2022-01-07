@@ -6,6 +6,7 @@ import 'package:kakao_flutter_sdk_navi/src/constants.dart';
 import 'package:kakao_flutter_sdk_navi/src/model/kakao_navi_params.dart';
 import 'package:kakao_flutter_sdk_navi/src/model/location.dart';
 import 'package:kakao_flutter_sdk_navi/src/model/navi_option.dart';
+import 'package:platform/platform.dart';
 
 /// 카카오내비 API 호출을 담당하는 클래스
 class NaviApi {
