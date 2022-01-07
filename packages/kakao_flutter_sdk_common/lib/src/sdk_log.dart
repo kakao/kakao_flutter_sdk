@@ -4,8 +4,10 @@ import 'dart:developer' as developer;
 import 'package:flutter/foundation.dart';
 import 'package:kakao_flutter_sdk_common/src/kakao_sdk.dart';
 
+/// @nodoc
 enum SdkLogLevel { v, d, i, w, e }
 
+/// @nodoc
 extension SdkLogLevelExtension on SdkLogLevel {
   int get level {
     switch (this) {
@@ -38,6 +40,7 @@ extension SdkLogLevelExtension on SdkLogLevel {
   }
 }
 
+/// @nodoc
 class SdkLog {
   static final bool _enabled = KakaoSdk.logging;
 
@@ -80,6 +83,7 @@ class SdkLog {
   }
 }
 
+/// @nodoc
 class LogData extends LinkedListEntry<LogData> {
   String log;
 

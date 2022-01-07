@@ -98,6 +98,7 @@ enum StoryPermission {
   unknown
 }
 
+/// @nodoc
 String? permissionToParams(StoryPermission? permission) {
   return permission == StoryPermission.public
       ? "A"
