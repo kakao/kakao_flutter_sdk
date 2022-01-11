@@ -70,6 +70,7 @@ class UserApi {
   /// 발급된 토큰은 [TokenManagerProvider]에 지정된 토큰 저장소에 자동으로 저장됨.
   ///
   /// 동의 화면 요청 시 추가 상호작용을 요청하고자 할 때는 [prompts]를 전달.
+  /// 카카오계정 로그인 페이지의 ID에 자동 입력할 이메일 또는 전화번호(+82 00-0000-0000 형식)는 [loginHint]에 전달.
   Future<OAuthToken> loginWithKakaoAccount({
     List<Prompt>? prompts,
     List<String>? channelPublicIds,
@@ -96,6 +97,7 @@ class UserApi {
   /// 카카오톡의 채널 메시지를 통해 동의 및 전자서명을 거쳐 [CertTokenInfo] 반환
   ///
   /// 동의 화면 요청 시 추가 상호작용을 요청하고자 할 때는 [prompts] 전달, 사용할 수 있는 옵션의 종류는 [Prompt] 참고
+  /// 카카오계정 로그인 페이지의 ID에 자동 입력할 이메일 또는 전화번호(+82 00-0000-0000 형식)는 [loginHint]에 전달.
   /// 전자서명 원문은 [state]로 전달
   Future<CertTokenInfo> certLoginWithKakaoAccount({
     List<Prompt>? prompts,
