@@ -124,16 +124,36 @@ class _ApiListState extends State<ApiList> {
       ApiItem('Combination Login', () async {
         // 로그인 조합 예제
 
-        try {
-          bool talkInstalled = await isKakaoTalkInstalled();
+        bool talkInstalled = await isKakaoTalkInstalled();
 
-          // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
-          OAuthToken token = talkInstalled
-              ? await UserApi.instance.loginWithKakaoTalk()
-              : await UserApi.instance.loginWithKakaoAccount();
-          Log.i(context, tag, '로그인 성공 ${token.accessToken}');
-        } catch (e) {
-          Log.e(context, tag, '로그인 실패', e);
+        // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
+        if (talkInstalled) {
+          try {
+            OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
+            Log.i(context, tag, '카카오톡으로 로그인 성공 ${token.accessToken}');
+          } catch (e) {
+            Log.e(context, tag, '카카오톡으로 로그인 실패', e);
+
+            // 유저에 의해서 카카오톡으로 로그인이 취소된 경우 카카오계정으로 로그인 생략 (ex 뒤로가기)
+            if (e is PlatformException && e.code == 'CANCELED') {
+              return;
+            }
+
+            // 카카오톡에 로그인이 안되어있는 경우 카카오계정으로 로그인
+            try {
+              OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
+              Log.i(context, tag, '카카오계정으로 로그인 성공 ${token.accessToken}');
+            } catch (e) {
+              Log.e(context, tag, '카카오계정으로 로그인 실패', e);
+            }
+          }
+        } else {
+          try {
+            OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
+            Log.i(context, tag, '카카오계정으로 로그인 성공 ${token.accessToken}');
+          } catch (e) {
+            Log.e(context, tag, '카카오계정으로 로그인 실패', e);
+          }
         }
       }),
       ApiItem('Combination Login (Verbose)', () async {
@@ -1214,5 +1234,39 @@ class _ApiListState extends State<ApiList> {
         }
       }),
     ];
+  }
+}
+
+void login() async {
+  bool talkInstalled = await isKakaoTalkInstalled();
+
+  // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
+  if (talkInstalled) {
+    try {
+      OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
+      print('카카오톡으로 로그인 성공 ${token.accessToken}');
+    } catch (e) {
+      print('카카오톡으로 로그인 실패 $e');
+
+      // 유저에 의해서 카카오톡으로 로그인이 취소된 경우 카카오계정으로 로그인 생략 (ex 뒤로가기)
+      if (e is PlatformException && e.code == 'CANCELED') {
+        return;
+      }
+
+      // 카카오톡에 로그인이 안되어있는 경우 카카오계정으로 로그인
+      try {
+        OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
+        print('카카오계정으로 로그인 성공 ${token.accessToken}');
+      } catch (e) {
+        print('카카오계정으로 로그인 실패 $e');
+      }
+    }
+  } else {
+    try {
+      OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
+      print('카카오계정으로 로그인 성공 ${token.accessToken}');
+    } catch (e) {
+      print('카카오계정으로 로그인 실패 $e');
+    }
   }
 }
