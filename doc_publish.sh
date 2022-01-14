@@ -23,6 +23,9 @@ else
   exit
 fi
 
+# README 파일 복사
+cp "./README.md" packages/kakao_flutter_sdk/
+
 # 레퍼런스 생성
 cd ./packages/kakao_flutter_sdk || exit
 dartdoc
@@ -36,5 +39,6 @@ cd ../../../../
 mvn deploy:deploy-file -e -DgroupId=com.kakao.sdk -DartifactId=kakao-flutter-sdk-doc -Dversion="$VERSION" -Dpackaging=zip -DrepositoryId=kakaodev-"$REPOSITORY" -Durl=https://devrepo.kakao.com/nexus/content/repositories/kakaodev-"$REPOSITORY" -Dfile=kakao-flutter-sdk-doc-"$1".zip
 
 # 파일 삭제
+rm ./packages/kakao_flutter_sdk/README.md
 rm -rf ./packages/kakao_flutter_sdk/doc
 rm kakao-flutter-sdk-doc-"$1".zip
