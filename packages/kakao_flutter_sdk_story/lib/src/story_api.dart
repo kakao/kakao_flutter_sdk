@@ -62,12 +62,12 @@ class StoryApi {
   /// 카카오스토리에 글 스토리 쓰기.
   Future<StoryPostResult> postNote({
     required String content,
-    StoryPermission? permission,
-    bool? enableShare,
-    String? androidExecParams,
-    String? iosExecParams,
-    String? androidMarketParams,
-    String? iosMarketParams,
+    StoryPermission? permission = StoryPermission.public,
+    bool? enableShare = true,
+    Map<String, String>? androidExecParams,
+    Map<String, String>? iosExecParams,
+    Map<String, String>? androidMarketParams,
+    Map<String, String>? iosMarketParams,
   }) =>
       _post(
           content: content,
@@ -86,10 +86,10 @@ class StoryApi {
     String? content,
     StoryPermission? permission,
     bool? enableShare,
-    String? androidExecParams,
-    String? iosExecParams,
-    String? androidMarketParams,
-    String? iosMarketParams,
+    Map<String, String>? androidExecParams,
+    Map<String, String>? iosExecParams,
+    Map<String, String>? androidMarketParams,
+    Map<String, String>? iosMarketParams,
   }) =>
       _post(
           images: images,
@@ -108,10 +108,10 @@ class StoryApi {
     String? content,
     StoryPermission? permission,
     bool? enableShare,
-    String? androidExecParams,
-    String? iosExecParams,
-    String? androidMarketParams,
-    String? iosMarketParams,
+    Map<String, String>? androidExecParams,
+    Map<String, String>? iosExecParams,
+    Map<String, String>? androidMarketParams,
+    Map<String, String>? iosMarketParams,
   }) =>
       _post(
           linkInfo: linkInfo,
@@ -128,10 +128,10 @@ class StoryApi {
     LinkInfo? linkInfo,
     StoryPermission? permission,
     bool? enableShare,
-    String? androidExecParams,
-    String? iosExecParams,
-    String? androidMarketParams,
-    String? iosMarketParams,
+    Map<String, String>? androidExecParams,
+    Map<String, String>? iosExecParams,
+    Map<String, String>? androidMarketParams,
+    Map<String, String>? iosMarketParams,
   }) async {
     return ApiFactory.handleApiError(() async {
       var postfix = images != null && images.isNotEmpty
@@ -146,10 +146,10 @@ class StoryApi {
         Constants.linkInfo: linkInfo == null ? null : jsonEncode(linkInfo),
         Constants.permission: permissionToParams(permission),
         Constants.enableShare: enableShare,
-        Constants.androidExecParam: androidExecParams,
-        Constants.iosExecParam: iosExecParams,
-        Constants.androidMarketParam: androidMarketParams,
-        Constants.iosMarketParam: iosMarketParams
+        Constants.androidExecParam: _mapToString(androidExecParams),
+        Constants.iosExecParam: _mapToString(iosExecParams),
+        Constants.androidMarketParam: _mapToString(androidMarketParams),
+        Constants.iosMarketParam: _mapToString(iosMarketParams)
       };
       data.removeWhere((k, v) => v == null);
       var response =
@@ -190,5 +190,13 @@ class StoryApi {
       if (urls is List) return urls.map((url) => url as String).toList();
       throw KakaoClientException("Response should be an array.");
     });
+  }
+
+  String _mapToString(Map<String, String>? params) {
+    String data = '';
+    params?.forEach((key, value) {
+      data += '&$key=$value';
+    });
+    return data.isEmpty ? data : data.substring(1);
   }
 }
