@@ -30,6 +30,9 @@
                 <data
                     android:host="kakaolink"
                     android:scheme="kakao030ba7c59137629e86e8721eb1a22fd6" />
+                <data
+                    android:host="kakaostory"
+                    android:scheme="kakao030ba7c59137629e86e8721eb1a22fd6" />
             </intent-filter>
         </activity>
 
