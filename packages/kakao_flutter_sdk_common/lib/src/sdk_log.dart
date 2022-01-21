@@ -81,6 +81,8 @@ class SdkLog {
       }
     }
   }
+
+  static void clear() => _logs.clear();
 }
 
 /// @nodoc
