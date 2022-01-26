@@ -159,26 +159,26 @@ class TalkApi {
 
   /// 카카오톡 채널을 추가하기 위한 URL 반환. URL 을 브라우저나 웹뷰에서 로드하면 브릿지 웹페이지를 통해 카카오톡 실행.
   ///
-  /// [channelId]는 카카오톡 채널 홈 URL 에 들어간 {_영문}으로 구성된 고유 아이디.
+  /// [channelPublicId]는 카카오톡 채널 홈 URL 에 들어간 {_영문}으로 구성된 고유 아이디.
   /// 홈 URL 은 카카오톡 채널 관리자센터 > 관리 > 상세설정 페이지에서 확인.
   ///
-  Future<Uri> addChannelUrl(final String channelId) async {
+  Future<Uri> addChannelUrl(final String channelPublicId) async {
     return Uri(
         scheme: Constants.scheme,
         host: KakaoSdk.hosts.pf,
-        path: "/$channelId/${Constants.friend}",
+        path: "/$channelPublicId/${Constants.friend}",
         queryParameters: await _channelBaseParams());
   }
 
   /// 카카오톡 채널 1:1 대화방 실행을 위한 URL 반환. URL 을 브라우저나 웹뷰에서 로드하면 브릿지 웹페이지를 통해 카카오톡 실행.
   ///
-  /// [channelId]는 카카오톡 채널 홈 URL 에 들어간 {_영문}으로 구성된 고유 아이디.
+  /// [channelPublicId]는 카카오톡 채널 홈 URL 에 들어간 {_영문}으로 구성된 고유 아이디.
   /// 홈 URL 은 카카오톡 채널 관리자센터 > 관리 > 상세설정 페이지에서 확인.
-  Future<Uri> channelChatUrl(final String channelId) async {
+  Future<Uri> channelChatUrl(final String channelPublicId) async {
     return Uri(
         scheme: Constants.scheme,
         host: KakaoSdk.hosts.pf,
-        path: "/$channelId/${Constants.chat}",
+        path: "/$channelPublicId/${Constants.chat}",
         queryParameters: await _channelBaseParams());
   }
 

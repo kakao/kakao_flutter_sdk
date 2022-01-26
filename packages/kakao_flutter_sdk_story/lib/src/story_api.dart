@@ -64,19 +64,19 @@ class StoryApi {
     required String content,
     StoryPermission? permission = StoryPermission.public,
     bool? enableShare = true,
-    Map<String, String>? androidExecParams,
-    Map<String, String>? iosExecParams,
-    Map<String, String>? androidMarketParams,
-    Map<String, String>? iosMarketParams,
+    Map<String, String>? androidExecParam,
+    Map<String, String>? iosExecParam,
+    Map<String, String>? androidMarketParam,
+    Map<String, String>? iosMarketParam,
   }) =>
       _post(
           content: content,
           permission: permission,
           enableShare: enableShare,
-          androidExecParams: androidExecParams,
-          iosExecParams: iosExecParams,
-          androidMarketParams: androidMarketParams,
-          iosMarketParams: iosMarketParams);
+          androidExecParam: androidExecParam,
+          iosExecParam: iosExecParam,
+          androidMarketParam: androidMarketParam,
+          iosMarketParam: iosMarketParam);
 
   /// 카카오스토리에 사진 스토리 쓰기.
   ///
@@ -86,19 +86,19 @@ class StoryApi {
     String? content,
     StoryPermission? permission,
     bool? enableShare,
-    Map<String, String>? androidExecParams,
-    Map<String, String>? iosExecParams,
-    Map<String, String>? androidMarketParams,
-    Map<String, String>? iosMarketParams,
+    Map<String, String>? androidExecParam,
+    Map<String, String>? iosExecParam,
+    Map<String, String>? androidMarketParam,
+    Map<String, String>? iosMarketParam,
   }) =>
       _post(
           images: images,
           permission: permission,
           enableShare: enableShare,
-          androidExecParams: androidExecParams,
-          iosExecParams: iosExecParams,
-          androidMarketParams: androidMarketParams,
-          iosMarketParams: iosMarketParams);
+          androidExecParam: androidExecParam,
+          iosExecParam: iosExecParam,
+          androidMarketParam: androidMarketParam,
+          iosMarketParam: iosMarketParam);
 
   /// 카카오스토리에 링크 스토리 쓰기
   ///
@@ -108,19 +108,19 @@ class StoryApi {
     String? content,
     StoryPermission? permission,
     bool? enableShare,
-    Map<String, String>? androidExecParams,
-    Map<String, String>? iosExecParams,
-    Map<String, String>? androidMarketParams,
-    Map<String, String>? iosMarketParams,
+    Map<String, String>? androidExecParam,
+    Map<String, String>? iosExecParam,
+    Map<String, String>? androidMarketParam,
+    Map<String, String>? iosMarketParam,
   }) =>
       _post(
           linkInfo: linkInfo,
           permission: permission,
           enableShare: enableShare,
-          androidExecParams: androidExecParams,
-          iosExecParams: iosExecParams,
-          androidMarketParams: androidMarketParams,
-          iosMarketParams: iosMarketParams);
+          androidExecParam: androidExecParam,
+          iosExecParam: iosExecParam,
+          androidMarketParam: androidMarketParam,
+          iosMarketParam: iosMarketParam);
 
   Future<StoryPostResult> _post({
     String? content,
@@ -128,10 +128,10 @@ class StoryApi {
     LinkInfo? linkInfo,
     StoryPermission? permission,
     bool? enableShare,
-    Map<String, String>? androidExecParams,
-    Map<String, String>? iosExecParams,
-    Map<String, String>? androidMarketParams,
-    Map<String, String>? iosMarketParams,
+    Map<String, String>? androidExecParam,
+    Map<String, String>? iosExecParam,
+    Map<String, String>? androidMarketParam,
+    Map<String, String>? iosMarketParam,
   }) async {
     return ApiFactory.handleApiError(() async {
       var postfix = images != null && images.isNotEmpty
@@ -146,10 +146,10 @@ class StoryApi {
         Constants.linkInfo: linkInfo == null ? null : jsonEncode(linkInfo),
         Constants.permission: permissionToParams(permission),
         Constants.enableShare: enableShare,
-        Constants.androidExecParam: _mapToString(androidExecParams),
-        Constants.iosExecParam: _mapToString(iosExecParams),
-        Constants.androidMarketParam: _mapToString(androidMarketParams),
-        Constants.iosMarketParam: _mapToString(iosMarketParams)
+        Constants.androidExecParam: _mapToString(androidExecParam),
+        Constants.iosExecParam: _mapToString(iosExecParam),
+        Constants.androidMarketParam: _mapToString(androidMarketParam),
+        Constants.iosMarketParam: _mapToString(iosMarketParam)
       };
       data.removeWhere((k, v) => v == null);
       var response =
