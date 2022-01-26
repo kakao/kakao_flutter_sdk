@@ -146,7 +146,7 @@ void main() {
       var storyPostResult = await _api.postLink(
         linkInfo: linkInfo,
         enableShare: false,
-        androidExecParams: {"key1": "value1", "key2": "value2"},
+        androidExecParam: {"key1": "value1", "key2": "value2"},
       );
       expect(storyPostResult.id, map!["id"]);
     });
