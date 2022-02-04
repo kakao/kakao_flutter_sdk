@@ -6,8 +6,7 @@ import 'package:kakao_flutter_sdk_common/src/kakao_error.dart';
 
 const MethodChannel _channel = MethodChannel(CommonConstants.methodChannel);
 
-/// @nodoc
-/// Launches a given url with platform-specific default browser tab.
+/// 플랫폼별 기본 브라우저로 URL 실행
 Future<String> launchBrowserTab(Uri uri, {String? redirectUri}) async {
   if (uri.scheme != CommonConstants.http &&
       uri.scheme != CommonConstants.scheme) {
@@ -28,8 +27,7 @@ Future<String> launchBrowserTab(Uri uri, {String? redirectUri}) async {
       "OAuth 2.0 redirect uri was null, which should not happen.");
 }
 
-/// @nodoc
-/// Determines whether KakaoTalk is installed on this device.
+/// 카카오톡이 설치되어 있는지 여부 확인
 Future<bool> isKakaoTalkInstalled() async {
   final isInstalled =
       await _channel.invokeMethod<bool>(CommonConstants.isKakaoTalkInstalled) ??
