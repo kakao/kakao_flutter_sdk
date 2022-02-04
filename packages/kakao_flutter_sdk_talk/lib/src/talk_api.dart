@@ -111,7 +111,7 @@ class TalkApi {
     });
   }
 
-  /// 카카오 디벨로퍼스에서 생성한 서비스만의 커스텀 메시지 템플릿을 사용하여, 카카오톡의 나와의 채팅방으로 메시지 전송.
+  /// 카카오 디벨로퍼스에서 생성한 서비스만의 커스텀 메시지 템플릿을 사용하여, 조회한 친구를 대상으로 카카오톡으로 메시지 전송.
   ///
   /// 템플릿을 생성하는 방법은 [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/ko/message/message-template) 참고.
   Future<MessageSendResult> sendCustomMessage({
@@ -128,7 +128,7 @@ class TalkApi {
     return _message("", params);
   }
 
-  /// 기본 템플릿을 이용하여, 카카오톡의 나와의 채팅방으로 메시지 전송.
+  /// 기본 템플릿을 이용하여, 조회한 친구를 대상으로 카카오톡으로 메시지 전송.
   Future<MessageSendResult> sendDefaultMessage({
     required List<String> receiverUuids,
     required DefaultTemplate template,
@@ -140,7 +140,9 @@ class TalkApi {
     return _message(Constants.defaultPath, params);
   }
 
-  /// 지정된 URL 을 스크랩하여, 카카오톡의 나와의 채팅방으로 메시지 전송.
+  /// 지정된 URL 을 스크랩하여, 조회한 친구를 대상으로 카카오톡으로 메시지 전송.
+  ///
+  /// 스크랩 커스텀 템플릿 가이드를 참고하여 템플릿을 직접 만들고 스크랩 메시지 전송에 이용 가능.
   Future<MessageSendResult> sendScrapMessage({
     required List<String> receiverUuids,
     required String url,
