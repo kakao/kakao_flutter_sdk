@@ -1,4 +1,3 @@
-import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:kakao_flutter_sdk_template/kakao_flutter_sdk_template.dart';
 
 final FeedTemplate defaultFeed = FeedTemplate(
