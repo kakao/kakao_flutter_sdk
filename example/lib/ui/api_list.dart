@@ -1022,6 +1022,21 @@ class _ApiListState extends State<ApiList> {
         // 커스텀 템플릿으로 웹에서 카카오링크 보내기
 
         // 메시지 템플릿 아이디
+        // * 만들기 가이드: https://developers.kakao.com/docs/latest/ko/message/message-template
+        int templateId = templateIds['customMemo']!;
+
+        try {
+          Uri shareUrl = await WebSharerClient.instance.customTemplateUri(
+              templateId: templateId, templateArgs: {'key1': 'value1'});
+          await launchBrowserTab(shareUrl);
+        } catch (e) {
+          Log.e(context, tag, '카카오링크 보내기 실패', e);
+        }
+      }),
+      ApiItem('scrapTemplateUri() - web sharer', () async {
+        // 스크랩 템플릿으로 웹에서 카카오링크 보내기
+
+        // 공유할 웹페이지 URL
         // * 주의: 개발자사이트 Web 플랫폼 설정에 공유할 URL의 도메인이 등록되어 있어야 합니다.
         String url = "https://developers.kakao.com";
 
