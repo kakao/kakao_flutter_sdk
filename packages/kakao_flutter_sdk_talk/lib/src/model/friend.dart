@@ -68,9 +68,6 @@ class FriendsContext {
     } else if (url.queryParameters['friend_order'] ==
         describeEnum(FriendOrder.favorite)) {
       friendOrder = FriendOrder.favorite;
-    } else if (url.queryParameters['friend_order'] ==
-        describeEnum(FriendOrder.age)) {
-      friendOrder = FriendOrder.age;
     } else {
       friendOrder = null;
     }
@@ -84,8 +81,5 @@ enum FriendOrder {
   nickname,
 
   /// 즐겨찾기 순 정렬
-  favorite,
-
-  /// 나이 순 정렬
-  age
+  favorite
 }
