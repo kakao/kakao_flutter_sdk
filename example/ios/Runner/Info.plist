@@ -24,30 +24,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>beta-real</string>
+			<string></string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>kakao030ba7c59137629e86e8721eb1a22fd6</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>alpha</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>kakao01a5e3755dee69871faf55fe79d47c42</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>sandbox</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>kakao148b7d8c3c52e3421f7a13a8fc236b19</string>
 			</array>
 		</dict>
 	</array>
