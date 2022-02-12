@@ -28,7 +28,7 @@ class Link {
   /// "kakao${kakao_app_key}://kakaolink?key1=value1&key2=value"
   /// ```
   ///
-  /// These query paramters can then be parsed to direct users to appropriate screen.
+  /// These query parameters can then be parsed to direct users to appropriate screen.
   ///
   @JsonKey(
       name: "android_execution_params",
@@ -52,7 +52,7 @@ class Link {
   /// "kakao${kakao_app_key}://kakaolink?key1=value1&key2=value"
   /// ```
   ///
-  /// These query paramters can then be parsed to direct users to appropriate screen.
+  /// These query parameters can then be parsed to direct users to appropriate screen.
   ///
   @JsonKey(
       name: "ios_execution_params",
