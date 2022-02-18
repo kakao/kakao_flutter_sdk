@@ -292,8 +292,8 @@ void loginButtonClicked() async {
   try {
     String authCode = await AuthCodeClient.instance.request(); // via browser
     // String authCode = await AuthCodeClient.instance.requestWithTalk() // or with KakaoTalk
-    AccessTokenResponse token = await AuthApi.instance.issueAccessToken(authCode);
-    TokenManager.instance.setToken(token); // Store access token in TokenManager for future API requests.
+    OAuthToken token = await AuthApi.instance.issueAccessToken(authCode);
+    TokenManagerProvider.instance.manager.setToken(token); // Store access token in TokenManager for future API requests.
   } catch (e) {
     // some error happened during the course of user login... deal with it.
   }
@@ -375,8 +375,8 @@ Future<void> requestFriends() async {
 Future<void> retryAfterUserAgrees(List<String> requiredScopes) async {
     // Getting a new access token with current access token and required scopes.
     String authCode = await AuthCodeClient.instance.requestWithAgt(e.requiredScopes);
-    AccessTokenResponse token = await AuthApi.instance.issueAccessToken(authCode);
-    TokenManager.instance.setToken(token); // Store access token in TokenManager for future API requests.
+    OAuthToken token = await AuthApi.instance.issueAccessToken(authCode);
+    TokenManagerProvider.instance.manager.setToken(token);  // Store access token in TokenManager for future API requests.
     await requestFriends();
 }
 
@@ -412,8 +412,8 @@ void requestMe() async {
 Future<void> retryAfterUserAgrees(List<String> requiredScopes) async {
     // Getting a new access token with current access token and required scopes.
     String authCode = await AuthCodeClient.instance.requestWithAgt(requiredScopes);
-    AccessTokenResponse token = await AuthApi.instance.issueAccessToken(authCode);
-    TokenManager.instance.setToken(token); // Store access token in TokenManager for future API requests.
+    OAuthToken token = await AuthApi.instance.issueAccessToken(authCode);
+    TokenManagerProvider.instance.manager.setToken(token);  // Store access token in TokenManager for future API requests.
     await requestMe();
 }
 ```
