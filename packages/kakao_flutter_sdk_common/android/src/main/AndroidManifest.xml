@@ -4,8 +4,9 @@
     <application>
         <activity
             android:name=".TalkAuthCodeActivity"
+            android:exported="true"
             android:launchMode="singleTask"
-            android:theme="@style/TransparentCompat"></activity>
+            android:theme="@style/TransparentCompat" />
         <activity
             android:name=".AuthCodeCustomTabsActivity"
             android:exported="true"
