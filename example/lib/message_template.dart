@@ -5,7 +5,7 @@ final FeedTemplate defaultFeed = FeedTemplate(
     title: '딸기 치즈 케익',
     description: '#케익 #딸기 #삼평동 #카페 #분위기 #소개팅',
     imageUrl: Uri.parse(
-        'http://mud-kage.kakao.co.kr/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png'),
+        'https://mud-kage.kakao.com/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png'),
     link: Link(
         webUrl: Uri.parse('https://developers.kakao.com'),
         mobileWebUrl: Uri.parse('https://developers.kakao.com')),
@@ -13,9 +13,9 @@ final FeedTemplate defaultFeed = FeedTemplate(
   itemContent: ItemContent(
     profileText: 'Kakao',
     profileImageUrl: Uri.parse(
-        'http://mud-kage.kakao.co.kr/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png'),
+        'https://mud-kage.kakao.com/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png'),
     titleImageUrl: Uri.parse(
-        'http://mud-kage.kakao.co.kr/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png'),
+        'https://mud-kage.kakao.com/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png'),
     titleImageText: 'Cheese cake',
     titleImageCategory: 'cake',
     items: [
@@ -33,8 +33,8 @@ final FeedTemplate defaultFeed = FeedTemplate(
     Button(
       title: '웹으로 보기',
       link: Link(
-        webUrl: Uri.parse('https: //developers.kakao.com'),
-        mobileWebUrl: Uri.parse('https: //developers.kakao.com'),
+        webUrl: Uri.parse('https://developers.kakao.com'),
+        mobileWebUrl: Uri.parse('https://developers.kakao.com'),
       ),
     ),
     Button(
@@ -58,7 +58,7 @@ final ListTemplate defaultList = ListTemplate(
       title: '취미의 특징, 탁구',
       description: '스포츠',
       imageUrl: Uri.parse(
-          'http://mud-kage.kakao.co.kr/dn/bDPMIb/btqgeoTRQvd/49BuF1gNo6UXkdbKecx600/kakaolink40_original.png'),
+          'https://mud-kage.kakao.com/dn/bDPMIb/btqgeoTRQvd/49BuF1gNo6UXkdbKecx600/kakaolink40_original.png'),
       link: Link(
         webUrl: Uri.parse('https://developers.kakao.com'),
         mobileWebUrl: Uri.parse('https://developers.kakao.com'),
@@ -68,7 +68,7 @@ final ListTemplate defaultList = ListTemplate(
       title: '크림으로 이해하는 커피이야기',
       description: '음식',
       imageUrl: Uri.parse(
-          'http://mud-kage.kakao.co.kr/dn/QPeNt/btqgeSfSsCR/0QJIRuWTtkg4cYc57n8H80/kakaolink40_original.png'),
+          'https://mud-kage.kakao.com/dn/QPeNt/btqgeSfSsCR/0QJIRuWTtkg4cYc57n8H80/kakaolink40_original.png'),
       link: Link(
         webUrl: Uri.parse('https://developers.kakao.com'),
         mobileWebUrl: Uri.parse('https://developers.kakao.com'),
@@ -78,7 +78,7 @@ final ListTemplate defaultList = ListTemplate(
       title: '감성이 가득한 분위기',
       description: '사진',
       imageUrl: Uri.parse(
-          'http://mud-kage.kakao.co.kr/dn/c7MBX4/btqgeRgWhBy/ZMLnndJFAqyUAnqu4sQHS0/kakaolink40_original.png'),
+          'https://mud-kage.kakao.com/dn/c7MBX4/btqgeRgWhBy/ZMLnndJFAqyUAnqu4sQHS0/kakaolink40_original.png'),
       link: Link(
         webUrl: Uri.parse('https://developers.kakao.com'),
         mobileWebUrl: Uri.parse('https://developers.kakao.com'),
@@ -109,7 +109,7 @@ final LocationTemplate defaultLocation = LocationTemplate(
     title: '신메뉴 출시❤️ 체리블라썸라떼',
     description: '이번 주는 체리블라썸라떼 1+1',
     imageUrl: Uri.parse(
-        'http://mud-kage.kakao.co.kr/dn/bSbH9w/btqgegaEDfW/vD9KKV0hEintg6bZT4v4WK/kakaolink40_original.png'),
+        'https://mud-kage.kakao.com/dn/bSbH9w/btqgegaEDfW/vD9KKV0hEintg6bZT4v4WK/kakaolink40_original.png'),
     link: Link(
       webUrl: Uri.parse('https://developers.kakao.com'),
       mobileWebUrl: Uri.parse('https://developers.kakao.com'),
@@ -122,7 +122,7 @@ final CommerceTemplate defaultCommerce = CommerceTemplate(
   content: Content(
     title: 'Ivory long dress (4 Color)',
     imageUrl: Uri.parse(
-        'http://mud-kage.kakao.co.kr/dn/RY8ZN/btqgOGzITp3/uCM1x2xu7GNfr7NS9QvEs0/kakaolink40_original.png'),
+        'https://mud-kage.kakao.com/dn/RY8ZN/btqgOGzITp3/uCM1x2xu7GNfr7NS9QvEs0/kakaolink40_original.png'),
     link: Link(
       webUrl: Uri.parse('https://developers.kakao.com'),
       mobileWebUrl: Uri.parse('https://developers.kakao.com'),
@@ -158,7 +158,7 @@ final TextTemplate defaultText = TextTemplate(
   text:
       '카카오링크는 카카오 플랫폼 서비스의 대표 기능으로써 사용자의 모바일 기기에 설치된 카카오 플랫폼과 연동하여 다양한 기능을 실행할 수 있습니다.\n현재 이용할 수 있는 카카오링크는 다음과 같습니다.\n카카오톡링크\n카카오톡을 실행하여 사용자가 선택한 채팅방으로 메시지를 전송합니다.\n카카오스토리링크\n카카오스토리 글쓰기 화면으로 연결합니다.',
   link: Link(
-    webUrl: Uri.parse('https: //developers.kakao.com'),
-    mobileWebUrl: Uri.parse('https: //developers.kakao.com'),
+    webUrl: Uri.parse('https://developers.kakao.com'),
+    mobileWebUrl: Uri.parse('https://developers.kakao.com'),
   ),
 );
