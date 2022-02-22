@@ -1,3 +1,4 @@
+/// @nodoc
 class Constants {
   static const String profilePath = '/v1/api/talk/profile';
   static const String v2MemoPath = '/v2/api/talk/memo/';

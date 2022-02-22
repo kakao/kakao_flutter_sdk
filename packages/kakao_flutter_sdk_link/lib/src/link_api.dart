@@ -8,6 +8,7 @@ import 'package:kakao_flutter_sdk_link/src/model/image_upload_result.dart';
 import 'package:kakao_flutter_sdk_link/src/model/link_result.dart';
 import 'package:kakao_flutter_sdk_template/kakao_flutter_sdk_template.dart';
 
+/// Kakao SDK의 카카오링크 내부 동작에 사용되는 클라이언트
 class LinkApi {
   LinkApi(this.dio);
 
@@ -16,7 +17,7 @@ class LinkApi {
 
   static final LinkApi instance = LinkApi(ApiFactory.appKeyApi);
 
-  /// 카카오 디벨로퍼스에서 생성한 메시지 템플릿을 카카오 링크 메시지로 공유.
+  /// 카카오 디벨로퍼스에서 생성한 메시지 템플릿을 카카오 링크 메시지로 공유
   Future<LinkResult> custom(int templateId,
       {Map<String, String>? templateArgs}) async {
     return _validate(Constants.validate, {
@@ -26,13 +27,13 @@ class LinkApi {
     });
   }
 
-  /// 기본 템플릿을 카카오 링크 메시지로 공유.
+  /// 기본 템플릿을 카카오 링크 메시지로 공유
   Future<LinkResult> defaultTemplate(DefaultTemplate template) async {
     return _validate(Constants.defaultTemplate,
         {Constants.templateObject: jsonEncode(template)});
   }
 
-  /// 지정된 URL을 스크랩하여 만들어진 템플릿을 카카오 링크 메시지로 공유.
+  /// 지정된 URL을 스크랩하여 만들어진 템플릿을 카카오 링크 메시지로 공유
   Future<LinkResult> scrap(String url,
       {int? templateId, Map<String, String>? templateArgs}) async {
     var params = {
@@ -45,7 +46,7 @@ class LinkApi {
     return _validate(Constants.scrap, params);
   }
 
-  /// 카카오링크 컨텐츠 이미지로 활용하기 위해 로컬 이미지를 카카오 이미지 서버로 업로드.
+  /// 카카오링크 컨텐츠 이미지로 활용하기 위해 로컬 이미지를 카카오 이미지 서버로 업로드
   Future<ImageUploadResult> uploadImage(File image,
       {bool secureResource = true}) {
     return ApiFactory.handleApiError(() async {
@@ -61,7 +62,7 @@ class LinkApi {
     });
   }
 
-  /// 카카오링크 컨텐츠 이미지로 활용하기 위해 원격 이미지를 카카오 이미지 서버로 업로드.
+  /// 카카오링크 컨텐츠 이미지로 활용하기 위해 원격 이미지를 카카오 이미지 서버로 업로드
   Future<ImageUploadResult> scrapImage(String imageUrl,
       {bool secureResource = true}) {
     return ApiFactory.handleApiError(() async {

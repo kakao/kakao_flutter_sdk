@@ -1,3 +1,4 @@
+/// @nodoc
 class CommonConstants {
   static const String scheme = 'https';
   static const String bearer = 'Bearer';

@@ -3,7 +3,7 @@ import 'package:kakao_flutter_sdk_user/src/model/profile.dart';
 
 part 'account.g.dart';
 
-/// 카카오계정에 등록된 사용자 개인정보.
+/// 카카오계정에 등록된 사용자 개인정보
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class Account {

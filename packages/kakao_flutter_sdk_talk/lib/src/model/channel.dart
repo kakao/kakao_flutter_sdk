@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'channel.g.dart';
 
-/// 카카오톡 채널 추가상태 정보.
+/// 카카오톡 채널 추가상태 정보
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class Channel {
   /// 채널의 uuid

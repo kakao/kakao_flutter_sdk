@@ -1,3 +1,4 @@
+/// @nodoc
 class Constants {
   static const String agtPath = '/api/agt';
   static const String tokenPath = '/oauth/token';

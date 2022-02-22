@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
-import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 
 /// @nodoc
-/// -402 에러 시 자동 추가 동의
+// -402 에러 시 자동 추가 동의
 class RequiredScopesInterceptor extends Interceptor {
   final Dio _dio;
   final AuthCodeClient _authCodeClient;

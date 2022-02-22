@@ -3,7 +3,7 @@ import 'package:kakao_flutter_sdk_template/src/model/link.dart';
 
 part 'content.g.dart';
 
-/// 콘텐츠의 내용을 담고 있는 오브젝트.
+/// 콘텐츠의 내용을 담고 있는 오브젝트
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class Content {

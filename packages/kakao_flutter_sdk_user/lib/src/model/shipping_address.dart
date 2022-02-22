@@ -19,7 +19,9 @@ class ShippingAddress {
   @JsonKey(fromJson: Util.fromTimeStamp, toJson: Util.fromDateTime)
   DateTime? updatedAt;
 
-  /// 배송지 타입. 구주소(지번,번지 주소) 또는 신주소(도로명 주소). "OLD" or "NEW"
+  /// 배송지 타입
+  /// 구주소(지번,번지 주소) 또는 신주소(도로명 주소)
+  /// "OLD" or "NEW"
   String? type;
 
   /// 우편번호 검색시 채워지는 기본 주소
@@ -40,7 +42,8 @@ class ShippingAddress {
   /// 신주소 우편번호. 신주소인 경우에 반드시 존재함.
   String? zoneNumber;
 
-  /// 구주소 우편번호. 우편번호를 소유하지 않는 구주소도 존재하여, 구주소인 경우도 해당값이 없을 수 있음.
+  /// 구주소 우편번호
+  /// 우편번호를 소유하지 않는 구주소도 존재하여, 구주소인 경우도 해당값이 없을 수 있음
   String? zipCode;
 
   /// @nodoc

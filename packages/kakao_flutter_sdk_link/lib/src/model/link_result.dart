@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'link_result.g.dart';
 
-/// 카카오링크 API 호출 결과.
+/// 카카오링크 API 호출 결과
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class LinkResult {
   /// 메시지 템플릿 도구에서 구성한 사용자 정의 템플릿의 ID

@@ -10,6 +10,7 @@ import 'package:kakao_flutter_sdk_link/src/model/link_result.dart';
 import 'package:kakao_flutter_sdk_template/kakao_flutter_sdk_template.dart';
 import 'package:platform/platform.dart';
 
+/// 카카오링크 API 호출을 담당하는 클라이언트
 class LinkClient {
   LinkClient(this.api, {Platform? platform})
       : _platform = platform ?? const LocalPlatform();
@@ -27,8 +28,8 @@ class LinkClient {
         false;
   }
 
-  /// 카카오 디벨로퍼스에서 생성한 메시지 템플릿을 카카오톡으로 공유.
-  /// 템플릿을 생성하는 방법은 [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/ko/message/message-template) 참고.
+  /// 카카오 디벨로퍼스에서 생성한 메시지 템플릿을 카카오톡으로 공유
+  /// 템플릿을 생성하는 방법은 [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/ko/message/message-template) 참고
   Future<Uri> customTemplate({
     required int templateId,
     Map<String, String>? templateArgs,
@@ -38,7 +39,7 @@ class LinkClient {
     return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
-  /// 기본 템플릿을 카카오톡으로 공유.
+  /// 기본 템플릿을 카카오톡으로 공유
   Future<Uri> defaultTemplate({
     required DefaultTemplate template,
     Map<String, String>? serverCallbackArgs,
@@ -47,8 +48,8 @@ class LinkClient {
     return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
-  /// 카카오링크 컨텐츠 이미지로 활용하기 위해 원격 이미지를 카카오 이미지 서버로 업로드.
-  /// 지정된 URL 을 스크랩하여 만들어진 템플릿을 카카오톡으로 공유.
+  /// 카카오링크 컨텐츠 이미지로 활용하기 위해 원격 이미지를 카카오 이미지 서버로 업로드
+  /// 지정된 URL 을 스크랩하여 만들어진 템플릿을 카카오톡으로 공유
   Future<Uri> scrapTemplate({
     required String url,
     int? templateId,
@@ -60,7 +61,7 @@ class LinkClient {
     return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
-  /// 카카오링크 컨텐츠 이미지로 활용하기 위해 로컬 이미지를 카카오 이미지 서버로 업로드.
+  /// 카카오링크 컨텐츠 이미지로 활용하기 위해 로컬 이미지를 카카오 이미지 서버로 업로드
   Future<ImageUploadResult> uploadImage({
     required File image,
     bool secureResource = true,
@@ -68,7 +69,7 @@ class LinkClient {
     return await api.uploadImage(image, secureResource: secureResource);
   }
 
-  /// 카카오링크 컨텐츠 이미지로 활용하기 위해 원격 이미지를 카카오 이미지 서버로 업로드.
+  /// 카카오링크 컨텐츠 이미지로 활용하기 위해 원격 이미지를 카카오 이미지 서버로 업로드
   Future<ImageUploadResult> scrapImage({
     required String imageUrl,
     bool secureResource = true,

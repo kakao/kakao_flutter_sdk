@@ -1,4 +1,4 @@
-/// Oauth 관련 API 클라이언트를 제공하는 패키지.
+/// Oauth 관련 API 클라이언트를 제공하는 패키지
 library kakao_flutter_sdk_auth;
 
 export 'package:kakao_flutter_sdk_auth/src/access_token_interceptor.dart';
