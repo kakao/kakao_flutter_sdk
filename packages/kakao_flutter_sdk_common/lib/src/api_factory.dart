@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:kakao_flutter_sdk_common/src/constants.dart';
 import 'package:kakao_flutter_sdk_common/src/kakao_api_exception.dart';
 import 'package:kakao_flutter_sdk_common/src/kakao_auth_exception.dart';
+import 'package:kakao_flutter_sdk_common/src/kakao_error.dart';
+import 'package:kakao_flutter_sdk_common/src/kakao_sdk.dart';
 import 'package:kakao_flutter_sdk_common/src/sdk_log.dart';
 
 /// @nodoc
