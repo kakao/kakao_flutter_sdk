@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'profile.g.dart';
 
-/// 카카오계정에 등록된 사용자의 프로필 정보를 제공합니다.
+/// 카카오계정에 등록된 사용자의 프로필 정보 제공
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class Profile {
   /// 사용자의 닉네임

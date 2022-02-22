@@ -1,3 +1,4 @@
+/// @nodoc
 class Constants {
   static const String v2MePath = '/v2/user/me';
   static const String v1LogoutPath = '/v1/user/logout';

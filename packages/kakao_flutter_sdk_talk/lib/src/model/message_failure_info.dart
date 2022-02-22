@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'message_failure_info.g.dart';
 
-/// 여러 친구를 대상으로 메시지 전송 API 호출 시 대상 중 일부가 실패한 경우 오류 정보.
+/// 여러 친구를 대상으로 메시지 전송 API 호출 시 대상 중 일부가 실패한 경우 오류 정보
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class MessageFailureInfo {
   /// 오류 코드

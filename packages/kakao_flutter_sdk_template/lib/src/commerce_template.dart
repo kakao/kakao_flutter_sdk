@@ -10,16 +10,17 @@ part 'commerce_template.g.dart';
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class CommerceTemplate extends DefaultTemplate {
-  /// 메시지의 내용. 텍스트 및 이미지, 링크 정보 포함.
+  /// 메시지의 내용. 텍스트 및 이미지, 링크 정보 포함
   final Content content;
 
   /// 컨텐츠에 대한 가격 정보
   final Commerce commerce;
 
-  /// 버튼 목록. 버튼 타이틀과 링크를 변경하고 싶을때, 버튼 두개를 사용하고 싶을때 사용. (최대 2개)
+  /// 버튼 목록. 버튼 타이틀과 링크를 변경하고 싶을때, 버튼 두개를 사용하고 싶을때 사용 (최대 2개)
   final List<Button>? buttons;
 
-  /// 기본 버튼 타이틀(자세히 보기)을 변경하고 싶을 때 설정. 이 값을 사용하면 클릭 시 이동할 링크는 content 에 입력된 값이 사용됨.
+  /// 기본 버튼 타이틀(자세히 보기)을 변경하고 싶을 때 설정
+  /// 이 값을 사용하면 클릭 시 이동할 링크는 content 에 입력된 값이 사용됨
   final String? buttonTitle;
 
   /// "commerce" 고정 값

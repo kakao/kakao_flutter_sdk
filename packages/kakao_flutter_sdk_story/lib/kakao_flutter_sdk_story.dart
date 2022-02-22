@@ -1,4 +1,4 @@
-/// Provides KakaoStory API.
+/// 카카오스토리 API 클라이언트를 제공하는 패키지
 library kakao_flutter_sdk_story;
 
 export 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';

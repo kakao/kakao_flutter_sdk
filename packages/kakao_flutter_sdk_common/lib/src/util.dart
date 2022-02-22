@@ -36,7 +36,7 @@ Future<bool> isKakaoTalkInstalled() async {
 }
 
 /// @nodoc
-/// Collection of utility methods, usually for converting data types.
+// Collection of utility methods, usually for converting data types
 class Util {
   static DateTime? fromTimeStamp(int? timestamp) => timestamp == null
       ? null

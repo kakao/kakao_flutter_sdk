@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'commerce.g.dart';
 
-/// 가격 정보를 표현하기 위해 사용되는 오브젝트.
+/// 가격 정보를 표현하기 위해 사용되는 오브젝트
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class Commerce {
   /// 정상가격

@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'image_info.g.dart';
 
+/// 업로드된 개별 이미지 정보
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class ImageInfo {
   /// 업로드 된 이미지의 URL

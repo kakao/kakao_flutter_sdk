@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'social.g.dart';
 
-/// 좋아요 수, 댓글 수 등의 소셜 정보를 표현하기 위해 사용되는 오브젝트.
+/// 좋아요 수, 댓글 수 등의 소셜 정보를 표현하기 위해 사용되는 오브젝트
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class Social {
   /// 콘텐츠의 좋아요 수

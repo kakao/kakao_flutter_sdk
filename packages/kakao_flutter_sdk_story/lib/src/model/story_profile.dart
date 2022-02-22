@@ -21,7 +21,8 @@ class StoryProfile {
   @JsonKey(name: "bgImageURL")
   String? bgImageUrl;
 
-  /// 카카오스토리 permanent link. 내 스토리를 방문할 수 있는 웹 page 의 URL
+  /// 카카오스토리 permanent link
+  /// 내 스토리를 방문할 수 있는 웹 page 의 URL
   String? permalink;
   String? birthday;
   String? birthdayType;

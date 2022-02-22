@@ -22,16 +22,16 @@ class NaviApi {
   /// 간편한 API 호출을 위해 기본 제공되는 singleton 객체
   static final NaviApi instance = NaviApi();
 
-  /// 카카오내비 앱 설치 여부 검사.
+  /// 카카오내비 앱 설치 여부 검사
   Future<bool> isKakaoNaviInstalled() async {
     final isInstalled =
         await _channel.invokeMethod<bool>("isKakaoNaviInstalled") ?? false;
     return isInstalled;
   }
 
-  /// 카카오내비 앱으로 길안내를 실행.
-  /// [location]로 목적지를 입력받고 [option]를 통해 길안내 옵션을 입력받음.
-  /// 경유지 목록은 최대 3개까지 등록 가능하고 [viaList]로 입력받음.
+  /// 카카오내비 앱으로 길안내를 실행
+  /// [location]로 목적지를 입력받고 [option]를 통해 길안내 옵션을 입력받음
+  /// 경유지 목록은 최대 3개까지 등록 가능하고 [viaList]로 입력받음
   Future navigate(
       {required Location destination,
       NaviOption? option,
@@ -51,9 +51,9 @@ class NaviApi {
     await _channel.invokeMethod<bool>(CommonConstants.navigate, arguments);
   }
 
-  /// 카카오내비 앱으로 목적지를 공유.
-  /// [location]로 목적지를 입력받고 [option]를 통해 길안내 옵션을 입력받음.
-  /// 경유지 목록은 최대 3개까지 등록 가능하고 [viaList]로 입력받음.
+  /// 카카오내비 앱으로 목적지를 공유
+  /// [location]로 목적지를 입력받고 [option]를 통해 길안내 옵션을 입력받음
+  /// 경유지 목록은 최대 3개까지 등록 가능하고 [viaList]로 입력받음
   Future shareDestination(
       {required Location destination,
       NaviOption? option,

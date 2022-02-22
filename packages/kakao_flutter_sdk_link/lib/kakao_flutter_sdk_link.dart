@@ -1,4 +1,4 @@
-/// 카카오링크 API 클라이언트를 제공하는 패키지.
+/// 카카오링크 API 클라이언트를 제공하는 패키지
 library kakao_flutter_sdk_link;
 
 export 'package:kakao_flutter_sdk_link/src/link_api.dart';

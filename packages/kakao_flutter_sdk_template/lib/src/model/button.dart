@@ -3,7 +3,7 @@ import 'package:kakao_flutter_sdk_template/src/model/link.dart';
 
 part 'button.g.dart';
 
-/// 메시지 하단에 추가되는 버튼 오브젝트.
+/// 메시지 하단에 추가되는 버튼 오브젝트
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class Button {

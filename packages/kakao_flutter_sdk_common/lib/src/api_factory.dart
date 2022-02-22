@@ -7,9 +7,9 @@ import 'package:kakao_flutter_sdk_common/src/kakao_auth_exception.dart';
 import 'package:kakao_flutter_sdk_common/src/sdk_log.dart';
 
 /// @nodoc
-/// Factory for network clients, interceptors, and error transformers used by other libraries.
+// Factory for network clients, interceptors, and error transformers used by other libraries
 class ApiFactory {
-  /// [Dio] instance for appkey-based Kakao API.
+  // Dio instance for appkey-based Kakao API.
   static final Dio appKeyApi = _appKeyApiInstance();
 
   static Dio _appKeyApiInstance() {
@@ -61,7 +61,7 @@ class ApiFactory {
     return KakaoApiException.fromJson(response.data);
   }
 
-  /// DIO interceptor for App-key based API (Link, Local, Search, etc).
+  // DIO interceptor for App-key based API (Link, Local, Search, etc).
   static Interceptor appKeyInterceptor = InterceptorsWrapper(onRequest:
       (RequestOptions options, RequestInterceptorHandler handler) async {
     var appKey = KakaoSdk.nativeKey;
@@ -70,7 +70,7 @@ class ApiFactory {
     handler.next(options);
   });
 
-  /// DIO interceptor for all Kakao API that requires KA header.
+  // DIO interceptor for all Kakao API that requires KA header
   static Interceptor kaInterceptor = InterceptorsWrapper(onRequest:
       (RequestOptions options, RequestInterceptorHandler handler) async {
     var kaHeader = await KakaoSdk.kaHeader;

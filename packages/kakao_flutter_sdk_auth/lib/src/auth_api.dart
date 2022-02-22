@@ -11,6 +11,7 @@ import 'package:kakao_flutter_sdk_auth/src/token_manager.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:platform/platform.dart';
 
+/// Kakao SDK의 카카오 로그인 내부 동작에 사용되는 클라이언트
 class AuthApi {
   AuthApi(
       {Dio? dio,
@@ -56,7 +57,7 @@ class AuthApi {
   }
 
   /// @nodoc
-  /// Internal Only
+  // Internal Only
   Future<CertTokenInfo> issueAccessTokenWithCert({
     required String authCode,
     String? redirectUri,
@@ -74,7 +75,7 @@ class AuthApi {
     return await _issueAccessTokenWithCert(data);
   }
 
-  /// 기존 토큰([oldToken])을 갱신합니다
+  /// 기존 토큰([oldToken])을 갱신합니다.
   Future<OAuthToken> refreshAccessToken({
     required OAuthToken oldToken,
     String? redirectUri,

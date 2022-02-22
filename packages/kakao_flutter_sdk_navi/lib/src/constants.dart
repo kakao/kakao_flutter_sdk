@@ -1,3 +1,4 @@
+/// @nodoc
 class Constants {
   static const String naviHosts = 'kakaonavi-wguide.kakao.com';
 

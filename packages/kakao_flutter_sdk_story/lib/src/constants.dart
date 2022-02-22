@@ -1,3 +1,4 @@
+/// @nodoc
 class Constants {
   static const String isStoryUserPath = '/v1/api/story/isstoryuser';
   static const String storyProfilePath = '/v1/api/story/profile';

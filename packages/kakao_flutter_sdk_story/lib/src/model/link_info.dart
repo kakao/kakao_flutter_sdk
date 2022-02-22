@@ -6,10 +6,12 @@ part 'link_info.g.dart';
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class LinkInfo {
-  /// 스크랩 한 주소의 URL. shorten URL 의 경우 resolution 한 실제 URL
+  /// 스크랩 한 주소의 URL
+  /// shorten URL 의 경우 resolution 한 실제 URL
   final String? url;
 
-  /// 요청시의 URL 원본. resolution 을 하기 전의 URL
+  /// 요청시의 URL 원본
+  /// resolution 을 하기 전의 URL
   final String? requestedUrl;
 
   /// 스크랩한 호스트 도메인
@@ -18,7 +20,8 @@ class LinkInfo {
   /// 웹 페이지의 제목
   final String? title;
 
-  /// 웹 페이지의 대표 이미지 주소의 url array. 최대 3개.
+  /// 웹 페이지의 대표 이미지 주소의 url array
+  /// 최대 3개
   @JsonKey(name: "image")
   final List<String>? images;
 
@@ -28,7 +31,8 @@ class LinkInfo {
   /// 웹 페이지의 섹션 정보
   final String? section;
 
-  /// 웹 페이지의 콘텐츠 타입. 예) video, music, book, article, profile, website 등.
+  /// 웹 페이지의 콘텐츠 타입
+  /// 예) video, music, book, article, profile, website 등
   final String? type;
 
   /// @nodoc

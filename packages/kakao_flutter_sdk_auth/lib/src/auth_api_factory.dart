@@ -8,10 +8,10 @@ import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 
 /// @nodoc
 class AuthApiFactory {
-  /// [Dio] instance for Kakao OAuth server.
+  // Dio instance for Kakao OAuth server.
   static final Dio kauthApi = _kauthApiInstance();
 
-  /// [Dio] instance for token-based Kakao API.
+  // Dio instance for token-based Kakao API.
   static final Dio authApi = _authApiInstance();
 
   static Dio _kauthApiInstance() {
