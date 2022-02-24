@@ -1,7 +1,6 @@
 import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class Log {
   static void v(BuildContext context, String tag, String msg,
