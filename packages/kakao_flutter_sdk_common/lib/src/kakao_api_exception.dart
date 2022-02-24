@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk_common/src/kakao_error.dart';
+import 'package:kakao_flutter_sdk_common/src/kakao_exception.dart';
 
 part 'kakao_api_exception.g.dart';
 

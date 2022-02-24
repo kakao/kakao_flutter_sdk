@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_common/src/constants.dart';
-import 'package:kakao_flutter_sdk_common/src/kakao_error.dart';
+import 'package:kakao_flutter_sdk_common/src/kakao_exception.dart';
 
 const MethodChannel _channel = MethodChannel(CommonConstants.methodChannel);
 

@@ -6,7 +6,7 @@ export 'package:kakao_flutter_sdk_common/src/api_factory.dart';
 export 'package:kakao_flutter_sdk_common/src/constants.dart';
 export 'package:kakao_flutter_sdk_common/src/kakao_api_exception.dart';
 export 'package:kakao_flutter_sdk_common/src/kakao_auth_exception.dart';
-export 'package:kakao_flutter_sdk_common/src/kakao_error.dart';
+export 'package:kakao_flutter_sdk_common/src/kakao_exception.dart';
 export 'package:kakao_flutter_sdk_common/src/kakao_sdk.dart';
 export 'package:kakao_flutter_sdk_common/src/sdk_log.dart';
 export 'package:kakao_flutter_sdk_common/src/util.dart';
