@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kakao_flutter_sdk_auth/src/model/access_token_response.dart';
@@ -14,6 +16,17 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUp(() async {
+    const MethodChannel("kakao_flutter_sdk")
+        .setMockMethodCallHandler((MethodCall methodCall) async {
+      if (methodCall.method == 'getOrigin') {
+        return '';
+      }
+      if (methodCall.method == 'platformId') {
+        return Uint8List.fromList([1, 2, 3, 4, 5]);
+      }
+      return null;
+    });
+
     const MethodChannel('plugins.flutter.io/shared_preferences')
         .setMockMethodCallHandler((MethodCall methodCall) async {
       if (methodCall.method == 'getAll') {
@@ -50,7 +63,7 @@ void main() {
     expect(null, newToken);
   });
 
-  test("token migration test", () async {
+  test("token migration test ( ~ 0.9.0)", () async {
     var oldTokenManager = OldTokenManager();
     await oldTokenManager.setToken(OAuthToken.fromResponse(response!));
     final oldToken = await oldTokenManager.getToken();

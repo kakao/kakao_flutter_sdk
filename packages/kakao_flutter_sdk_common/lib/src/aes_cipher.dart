@@ -41,11 +41,15 @@ class AESCipher implements Cipher {
     -55,
   ]);
 
+  static final _instance = AESCipher._();
+
   AESCipher._();
 
-  static Future<AESCipher> create() async {
-    final cipher = AESCipher._();
+  factory AESCipher() {
+    return _instance;
+  }
 
+  static Future<AESCipher> create() async {
     final keyValue = await KakaoSdk.origin;
     var salt = await platformId();
 
@@ -55,7 +59,7 @@ class AESCipher implements Cipher {
         iterationCount: _iterationCount, salt: salt);
 
     _encryptor = Encrypter(AES(key, mode: AESMode.cbc));
-    return cipher;
+    return _instance;
   }
 
   @override

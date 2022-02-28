@@ -38,9 +38,7 @@ Future<bool> isKakaoTalkInstalled() async {
 
 /// @nodoc
 Future<Uint8List> platformId() async {
-  final result = await _channel.invokeMethod("platformId");
-  print(result);
-  return result;
+  return await _channel.invokeMethod("platformId");
 }
 
 /// @nodoc

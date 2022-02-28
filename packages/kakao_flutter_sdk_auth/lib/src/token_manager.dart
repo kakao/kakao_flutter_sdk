@@ -18,11 +18,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// ```
 class TokenManagerProvider {
   /// 현재 지정된 토큰 저장소
-  /// 기본 값 [DefaultTokenManager._instance]
+  /// 기본 값 [DefaultTokenManager]
   TokenManager manager = DefaultTokenManager();
 
+  TokenManagerProvider._();
+
   /// singleton 객체
-  static final instance = TokenManagerProvider();
+  static final instance = TokenManagerProvider._();
 }
 
 /// 카카오 API에 사용되는 액세스 토큰, 리프레시 토큰을 관리하는 추상 클래스
@@ -43,14 +45,19 @@ abstract class TokenManager {
 /// (Android는 SharedPreferences, iOS는 UserDefaults에 저장함)
 class DefaultTokenManager implements TokenManager {
   static const tokenKey = "com.kakao.token.OAuthToken";
+
   static const atKey = "com.kakao.token.AccessToken";
   static const atExpiresAtKey = "com.kakao.token.AccessToken.ExpiresAt";
   static const rtKey = "com.kakao.token.RefreshToken";
   static const rtExpiresAtKey = "com.kakao.token.RefreshToken.ExpiresAt";
   static const secureModeKey = "com.kakao.token.KakaoSecureMode";
   static const scopesKey = "com.kakao.token.Scopes";
+  static const versionKey = "com.kakao.token.version";
 
   static final _instance = DefaultTokenManager._();
+
+  Cipher? _encryptor;
+  SharedPreferences? _preferences;
 
   DefaultTokenManager._();
 
@@ -60,36 +67,41 @@ class DefaultTokenManager implements TokenManager {
 
   @override
   Future<void> clear() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.remove(tokenKey);
+    _preferences ??= await SharedPreferences.getInstance();
+    await _preferences!.remove(tokenKey);
   }
 
   @override
   Future<void> setToken(OAuthToken token) async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.setString(tokenKey, jsonEncode(token));
+    _encryptor ??= await AESCipher.create();
+    _preferences ??= await SharedPreferences.getInstance();
+    _preferences!.setString(versionKey, KakaoSdk.sdkVersion);
+    await _preferences!
+        .setString(tokenKey, _encryptor!.encrypt(jsonEncode(token)));
   }
 
   @override
   Future<OAuthToken?> getToken() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    var jsonToken = preferences.getString(tokenKey);
+    _encryptor ??= await AESCipher.create();
+    _preferences ??= await SharedPreferences.getInstance();
+    var version = _preferences!.getString(versionKey);
+    var jsonToken = _preferences!.getString(tokenKey);
 
-    if (jsonToken == null) {
+    if (jsonToken == null || version == null) {
       return await _migrateOldToken();
     }
-    return OAuthToken.fromJson(jsonDecode(jsonToken));
+    return OAuthToken.fromJson(jsonDecode(_encryptor!.decrypt(jsonToken)));
   }
 
   // Token management logic has been changed from 0.9.0 version.
   // This code has been added for compatibility with previous versions.
   Future<OAuthToken?> _migrateOldToken() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    var accessToken = preferences.getString(atKey);
-    var refreshToken = preferences.getString(rtKey);
-    var atExpiresAtMillis = preferences.getInt(atExpiresAtKey);
-    var rtExpiresAtMillis = preferences.getInt(rtExpiresAtKey);
-    List<String>? scopes = preferences.getStringList(scopesKey);
+    _preferences ??= await SharedPreferences.getInstance();
+    var accessToken = _preferences!.getString(atKey);
+    var refreshToken = _preferences!.getString(rtKey);
+    var atExpiresAtMillis = _preferences!.getInt(atExpiresAtKey);
+    var rtExpiresAtMillis = _preferences!.getInt(rtExpiresAtKey);
+    List<String>? scopes = _preferences!.getStringList(scopesKey);
 
     // If token that issued before 0.9.0 version are loaded, then return OAuthToken.
     if (accessToken != null &&
@@ -107,14 +119,22 @@ class DefaultTokenManager implements TokenManager {
           refreshTokenExpiresAt, scopes);
 
       // Remove all token properties that saved before 0.9.0 version and save migrated token.
-      await preferences.remove(atKey);
-      await preferences.remove(atExpiresAtKey);
-      await preferences.remove(rtKey);
-      await preferences.remove(rtExpiresAtKey);
-      await preferences.remove(secureModeKey);
-      await preferences.remove(scopesKey);
-      await preferences.setString(tokenKey, jsonEncode(token));
+      await _preferences!.remove(atKey);
+      await _preferences!.remove(atExpiresAtKey);
+      await _preferences!.remove(rtKey);
+      await _preferences!.remove(rtExpiresAtKey);
+      await _preferences!.remove(secureModeKey);
+      await _preferences!.remove(scopesKey);
+      await _preferences!.setString(tokenKey, jsonEncode(token));
+      await _preferences!.setString(versionKey, KakaoSdk.sdkVersion);
       return token;
+    }
+
+    // if a token is issued between version 0.9.0 and version 1.0.0, save the versionKey
+    var jsonToken = _preferences!.getString(tokenKey);
+    if (jsonToken != null) {
+      await _preferences!.setString(versionKey, KakaoSdk.sdkVersion);
+      return OAuthToken.fromJson(jsonDecode(jsonToken));
     }
     return null;
   }
