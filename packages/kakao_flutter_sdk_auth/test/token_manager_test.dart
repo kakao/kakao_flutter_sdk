@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
@@ -79,6 +80,27 @@ void main() {
       fail("should not reach here");
     } catch (e) {}
   });
+  test("token migration test (0.9.0 <= version < 1.0.0)", () async {
+    // Remove token and version key
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove(DefaultTokenManager.versionKey);
+    await tokenManager.clear();
+
+    var oldTokenManager = BetaTokenManager();
+    await oldTokenManager.setToken(OAuthToken.fromResponse(response!));
+    final oldToken = await oldTokenManager.getToken();
+    expect(true, oldToken != null);
+
+    // token migration
+    final newToken = await tokenManager.getToken();
+    expect(true, newToken != null);
+
+    // oldTokenManager can't get token after token migration
+    try {
+      final prevToken = await oldTokenManager.getToken();
+      fail("should not reach here");
+    } catch (e) {}
+  });
 }
 
 const tokenKey = "com.kakao.token.OAuthToken";
@@ -132,5 +154,67 @@ class OldTokenManager implements TokenManager {
     await preferences.setInt(
         rtExpiresAtKey, token.refreshTokenExpiresAt.millisecondsSinceEpoch);
     await preferences.setStringList(scopesKey, token.scopes!);
+  }
+}
+
+// old version token manager (0.9.0 <= version < 1.0.0)
+class BetaTokenManager implements TokenManager {
+  @override
+  Future<void> clear() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.remove(tokenKey);
+  }
+
+  @override
+  Future<void> setToken(OAuthToken token) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.setString(tokenKey, jsonEncode(token));
+  }
+
+  @override
+  Future<OAuthToken?> getToken() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var jsonToken = preferences.getString(tokenKey);
+
+    if (jsonToken == null) {
+      return await _migrateOldToken();
+    }
+    return OAuthToken.fromJson(jsonDecode(jsonToken));
+  }
+
+  // Token management logic has been changed from 0.9.0 version.
+  // This code has been added for compatibility with previous versions.
+  Future<OAuthToken?> _migrateOldToken() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var accessToken = preferences.getString(atKey);
+    var refreshToken = preferences.getString(rtKey);
+    var atExpiresAtMillis = preferences.getInt(atExpiresAtKey);
+    var rtExpiresAtMillis = preferences.getInt(rtExpiresAtKey);
+    List<String>? scopes = preferences.getStringList(scopesKey);
+
+    // If token that issued before 0.9.0 version are loaded, then return OAuthToken.
+    if (accessToken != null &&
+        refreshToken != null &&
+        atExpiresAtMillis != null &&
+        rtExpiresAtMillis != null) {
+      var accessTokenExpiresAt =
+          DateTime.fromMillisecondsSinceEpoch(atExpiresAtMillis);
+      var refreshTokenExpiresAt =
+          DateTime.fromMillisecondsSinceEpoch(rtExpiresAtMillis);
+
+      final token = OAuthToken(accessToken, accessTokenExpiresAt, refreshToken,
+          refreshTokenExpiresAt, scopes);
+
+      // Remove all token properties that saved before 0.9.0 version and save migrated token.
+      await preferences.remove(atKey);
+      await preferences.remove(atExpiresAtKey);
+      await preferences.remove(rtKey);
+      await preferences.remove(rtExpiresAtKey);
+      await preferences.remove(secureModeKey);
+      await preferences.remove(scopesKey);
+      await preferences.setString(tokenKey, jsonEncode(token));
+      return token;
+    }
+    return null;
   }
 }
