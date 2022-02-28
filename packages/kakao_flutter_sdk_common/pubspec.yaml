@@ -16,6 +16,7 @@ dependencies:
   platform: ^3.0.0
   package_info_plus: ^1.0.4
   crypto: ^3.0.1
+  encrypt: ^5.0.1
 
 dev_dependencies:
   flutter_test:

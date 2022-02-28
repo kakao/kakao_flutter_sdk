@@ -70,6 +70,13 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
             let params = args["navi_params"]
             let url = Utility.makeUrlWithParameters("kakaonavi-sdk://navigate", parameters: ["extras": extras!, "param": params!, "appkey": appKey!, "apiver": "1.0"])
             UIApplication.shared.open(url!, options: [:], completionHandler: nil)
+        case "platformId":
+            guard let venderId = UIDevice.current.identifierForVendor?.uuidString else {
+                result(FlutterError(code: "Error", message: "Can't get venderId", details: nil))
+                return
+            }
+            let data = "SDK-\(venderId)".data(using: .utf8)
+            result(data)
         default:
             result(FlutterMethodNotImplemented)
         }

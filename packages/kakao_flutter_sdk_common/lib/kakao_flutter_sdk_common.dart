@@ -2,6 +2,7 @@
 /// 주요 설정 및 초기화 함수 제공
 library kakao_flutter_sdk_common;
 
+export 'package:kakao_flutter_sdk_common/src/aes_cipher.dart';
 export 'package:kakao_flutter_sdk_common/src/api_factory.dart';
 export 'package:kakao_flutter_sdk_common/src/constants.dart';
 export 'package:kakao_flutter_sdk_common/src/kakao_api_exception.dart';

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_common/src/constants.dart';
@@ -33,6 +34,13 @@ Future<bool> isKakaoTalkInstalled() async {
       await _channel.invokeMethod<bool>(CommonConstants.isKakaoTalkInstalled) ??
           false;
   return isInstalled;
+}
+
+/// @nodoc
+Future<Uint8List> platformId() async {
+  final result = await _channel.invokeMethod("platformId");
+  print(result);
+  return result;
 }
 
 /// @nodoc

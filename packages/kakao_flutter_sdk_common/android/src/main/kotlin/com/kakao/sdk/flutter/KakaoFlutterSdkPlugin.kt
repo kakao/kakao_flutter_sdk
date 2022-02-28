@@ -5,7 +5,9 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Base64
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -152,6 +154,22 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
                     result.success(true)
                 } catch (e: ActivityNotFoundException) {
                     result.error("Error", "KakaoNavi not installed", null)
+                }
+            }
+            "platformId" -> {
+                try {
+                    val androidId = Settings.Secure.getString(
+                        applicationContext.contentResolver,
+                        Settings.Secure.ANDROID_ID
+                    )
+                    val stripped = androidId.replace("[0\\s]".toRegex(), "")
+                    val md = MessageDigest.getInstance("SHA-256")
+                    md.reset()
+                    md.update("SDK-$stripped".toByteArray())
+                    result.success(md.digest())
+                } catch (e: Exception) {
+                    ("xxxx" + Build.PRODUCT + "a23456789012345bcdefg").toByteArray()
+                    result.error("Error", "Can't get androidId", null)
                 }
             }
             else -> result.notImplemented()
