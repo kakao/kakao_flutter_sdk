@@ -501,7 +501,7 @@ If you want to contribute to this repository, Please read [Development Guide](ht
 
 ## License
 
-This software is licensed under the [Apache 2 license](LICENSE), quoted below.
+This software is licensed under the [Apache 2 license](packages/kakao_flutter_sdk/LICENSE), quoted below.
 
 Copyright 2019 Kakao Corp. <https://www.kakaocorp.com>
 
