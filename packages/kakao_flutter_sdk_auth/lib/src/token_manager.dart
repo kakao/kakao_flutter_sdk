@@ -59,6 +59,8 @@ class DefaultTokenManager implements TokenManager {
   Cipher? _encryptor;
   SharedPreferences? _preferences;
 
+  OAuthToken? _currentToken;
+
   DefaultTokenManager._();
 
   factory DefaultTokenManager() {
@@ -67,6 +69,7 @@ class DefaultTokenManager implements TokenManager {
 
   @override
   Future<void> clear() async {
+    _currentToken = null;
     _preferences ??= await SharedPreferences.getInstance();
     await _preferences!.remove(tokenKey);
   }
@@ -78,19 +81,27 @@ class DefaultTokenManager implements TokenManager {
     _preferences!.setString(versionKey, KakaoSdk.sdkVersion);
     await _preferences!
         .setString(tokenKey, _encryptor!.encrypt(jsonEncode(token)));
+    _currentToken = token;
   }
 
   @override
   Future<OAuthToken?> getToken() async {
+    if (_currentToken != null) {
+      return _currentToken;
+    }
+
     _encryptor ??= await AESCipher.create();
     _preferences ??= await SharedPreferences.getInstance();
     var version = _preferences!.getString(versionKey);
     var jsonToken = _preferences!.getString(tokenKey);
 
     if (jsonToken == null || version == null) {
-      return await _migrateOldToken();
+      _currentToken = await _migrateOldToken();
+    } else {
+      _currentToken =
+          OAuthToken.fromJson(jsonDecode(_encryptor!.decrypt(jsonToken)));
     }
-    return OAuthToken.fromJson(jsonDecode(_encryptor!.decrypt(jsonToken)));
+    return _currentToken;
   }
 
   // Token management logic has been changed from 0.9.0 version.
