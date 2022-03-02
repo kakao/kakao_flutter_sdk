@@ -60,6 +60,14 @@ Copyright 2018 wendux
 
 MIT License
 
+**encrypt**
+
+https://github.com/leocavalcante/encrypt
+
+Copyright 2018, Leo Cavalcante
+
+BSD 3-Clause "New" or "Revised" License
+
 **Flutter**
 
 https://github.com/flutter/flutter
