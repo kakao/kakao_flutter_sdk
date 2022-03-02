@@ -6,14 +6,10 @@ import 'package:kakao_flutter_sdk_common/src/kakao_sdk.dart';
 import 'package:kakao_flutter_sdk_common/src/util.dart';
 
 /// @nodoc
-class Cipher {
-  String encrypt(String value) {
-    return '';
-  }
+abstract class Cipher {
+  String encrypt(String value);
 
-  String decrypt(String encrypted) {
-    return '';
-  }
+  String decrypt(String encrypted);
 }
 
 /// @nodoc
