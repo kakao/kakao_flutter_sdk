@@ -13,8 +13,11 @@ class CertTokenInfo {
   /// txId 전자서명 접수번호
   String txId;
 
+  /// OpenID Connect 확장 기능을 통해 발급되는 ID 토큰, Base64 인코딩된 사용자 인증 정보 포함
+  String? idToken;
+
   /// @nodoc
-  CertTokenInfo(this.token, this.txId);
+  CertTokenInfo(this.token, this.txId, {this.idToken});
 
   /// @nodoc
   factory CertTokenInfo.fromJson(Map<String, dynamic> json) =>

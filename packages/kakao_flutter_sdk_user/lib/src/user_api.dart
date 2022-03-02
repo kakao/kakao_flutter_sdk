@@ -24,15 +24,18 @@ class UserApi {
   /// 카카오톡으로 로그인
   /// 카카오톡에 연결된 카카오계정으로 사용자를 인증하고 [OAuthToken] 발급
   /// 발급된 토큰은 [TokenManagerProvider]에 지정된 토큰 저장소에 자동으로 저장됨
+  /// ID 토큰 재생 공격 방지를 위한 검증 값은 [nonce]로 전달. 임의의 문자열, ID 토큰 검증 시 사용
   Future<OAuthToken> loginWithKakaoTalk({
     List<String>? channelPublicIds,
     List<String>? serviceTerms,
+    String? nonce,
   }) async {
     var codeVerifier = AuthCodeClient.codeVerifier();
     final authCode = await AuthCodeClient.instance.requestWithTalk(
       channelPublicId: channelPublicIds,
       serviceTerms: serviceTerms,
       codeVerifier: codeVerifier,
+      nonce: nonce,
     );
     final token = await AuthApi.instance
         .issueAccessToken(authCode: authCode, codeVerifier: codeVerifier);
@@ -45,12 +48,14 @@ class UserApi {
   /// 카카오톡을 실행하고, 카카오톡에 연결된 카카오계정으로 사용자 인증 후 동의 및 전자서명을 거쳐 [CertTokenInfo] 반환
   ///
   /// 동의 화면 요청 시 추가 상호작용을 요청하고자 할 때는 [prompts] 전달, 사용할 수 있는 옵션의 종류는 [Prompt] 참고
+  /// ID 토큰 재생 공격 방지를 위한 검증 값은 [nonce] 전달. 임의의 문자열, ID 토큰 검증 시 사용
   /// 전자서명 원문은 [state]로 전달
   Future<CertTokenInfo> certLoginWithKakaoTalk({
     List<Prompt>? prompts,
     required String state,
     List<String>? channelPublicIds,
     List<String>? serviceTerms,
+    String? nonce,
   }) async {
     var codeVerifier = AuthCodeClient.codeVerifier();
     final authCode = await AuthCodeClient.instance.requestWithTalk(
@@ -59,6 +64,7 @@ class UserApi {
       channelPublicId: channelPublicIds,
       serviceTerms: serviceTerms,
       codeVerifier: codeVerifier,
+      nonce: nonce,
     );
     final certTokenInfo = await AuthApi.instance.issueAccessTokenWithCert(
         authCode: authCode, codeVerifier: codeVerifier);
@@ -72,11 +78,13 @@ class UserApi {
   ///
   /// 동의 화면 요청 시 추가 상호작용을 요청하고자 할 때는 [prompts]를 전달
   /// 카카오계정 로그인 페이지의 ID에 자동 입력할 이메일 또는 전화번호(+82 00-0000-0000 형식)는 [loginHint]에 전달
+  /// ID 토큰 재생 공격 방지를 위한 검증 값은 [nonce]로 전달. 임의의 문자열, ID 토큰 검증 시 사용
   Future<OAuthToken> loginWithKakaoAccount({
     List<Prompt>? prompts,
     List<String>? channelPublicIds,
     List<String>? serviceTerms,
     String? loginHint,
+    String? nonce,
   }) async {
     String codeVerifier = AuthCodeClient.codeVerifier();
     final authCode = await AuthCodeClient.instance.request(
@@ -85,6 +93,7 @@ class UserApi {
       serviceTerms: serviceTerms,
       codeVerifier: codeVerifier,
       loginHint: loginHint,
+      nonce: nonce,
     );
     final token = await AuthApi.instance
         .issueAccessToken(authCode: authCode, codeVerifier: codeVerifier);
@@ -99,6 +108,7 @@ class UserApi {
   ///
   /// 동의 화면 요청 시 추가 상호작용을 요청하고자 할 때는 [prompts] 전달, 사용할 수 있는 옵션의 종류는 [Prompt] 참고
   /// 카카오계정 로그인 페이지의 ID에 자동 입력할 이메일 또는 전화번호(+82 00-0000-0000 형식)는 [loginHint]에 전달
+  /// ID 토큰 재생 공격 방지를 위한 검증 값은 [nonce]로 전달. 임의의 문자열, ID 토큰 검증 시 사용
   /// 전자서명 원문은 [state]로 전달
   Future<CertTokenInfo> certLoginWithKakaoAccount({
     List<Prompt>? prompts,
@@ -106,6 +116,7 @@ class UserApi {
     List<String>? serviceTerms,
     String? loginHint,
     required String state,
+    String? nonce,
   }) async {
     var codeVerifier = AuthCodeClient.codeVerifier();
     final authCode = await AuthCodeClient.instance.request(
@@ -115,6 +126,7 @@ class UserApi {
       serviceTerms: serviceTerms,
       codeVerifier: codeVerifier,
       loginHint: loginHint,
+      nonce: nonce,
     );
     final certTokenInfo = await AuthApi.instance.issueAccessTokenWithCert(
         authCode: authCode, codeVerifier: codeVerifier);
@@ -128,7 +140,6 @@ class UserApi {
   ///
   /// [scopes]로 추가로 동의 받고자 하는 동의 항목 ID 목록을 전달함
   /// 카카오 디벨로퍼스 동의 항목 설정 화면에서 확인 가능
-  ///
   Future<OAuthToken> loginWithNewScopes(List<String> scopes) async {
     String codeVerifier = AuthCodeClient.codeVerifier();
     final authCode = await AuthCodeClient.instance

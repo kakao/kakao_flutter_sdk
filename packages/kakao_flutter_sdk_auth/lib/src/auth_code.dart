@@ -36,6 +36,7 @@ class AuthCodeClient {
     String? loginHint,
     String? state,
     String? codeVerifier,
+    String? nonce,
   }) async {
     final finalRedirectUri = redirectUri ?? "kakao${_platformKey()}://oauth";
     String? codeChallenge = codeVerifier != null
@@ -58,7 +59,8 @@ class AuthCodeClient {
       Constants.codeChallenge: codeChallenge,
       Constants.codeChallengeMethod:
           codeChallenge != null ? Constants.codeChallengeMethodValue : null,
-      Constants.kaHeader: await KakaoSdk.kaHeader
+      Constants.kaHeader: await KakaoSdk.kaHeader,
+      Constants.nonce: nonce,
     };
     params.removeWhere((k, v) => v == null);
     final url =
@@ -86,16 +88,19 @@ class AuthCodeClient {
     List<String>? serviceTerms,
     String? state,
     String? codeVerifier,
+    String? nonce,
   }) async {
     try {
       return _parseCode(await _openKakaoTalk(
-          clientId ?? _platformKey(),
-          redirectUri ?? "kakao${_platformKey()}://oauth",
-          channelPublicId,
-          serviceTerms,
-          codeVerifier,
-          prompts,
-          state));
+        clientId ?? _platformKey(),
+        redirectUri ?? "kakao${_platformKey()}://oauth",
+        channelPublicId,
+        serviceTerms,
+        codeVerifier,
+        prompts,
+        state,
+        nonce,
+      ));
     } catch (e) {
       SdkLog.e(e);
       rethrow;
@@ -145,6 +150,7 @@ class AuthCodeClient {
     String? codeVerifier,
     List<Prompt>? prompts,
     String? state,
+    String? nonce,
   ) async {
     var arguments = {
       Constants.sdkVersion: "sdk/${KakaoSdk.sdkVersion} sdk_type/flutter",
@@ -157,6 +163,7 @@ class AuthCodeClient {
           ? (prompts == null ? null : _parsePrompts(prompts))
           : _parsePrompts(_makeCertPrompts(prompts)),
       Constants.state: state,
+      Constants.nonce: nonce,
     };
     arguments.removeWhere((k, v) => v == null);
     final redirectUriWithParams = await _channel.invokeMethod<String>(

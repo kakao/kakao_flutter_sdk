@@ -23,9 +23,13 @@ class OAuthToken {
   /// 이 토큰에 부여된 scope 목록
   List<String>? scopes;
 
+  /// OpenID Connect 확장 기능을 통해 발급되는 ID 토큰, Base64 인코딩된 사용자 인증 정보 포함
+  String? idToken;
+
   /// @nodoc
   OAuthToken(this.accessToken, this.accessTokenExpiresAt, this.refreshToken,
-      this.refreshTokenExpiresAt, this.scopes);
+      this.refreshTokenExpiresAt, this.scopes,
+      {this.idToken});
 
   /// @nodoc
   factory OAuthToken.fromJson(Map<String, dynamic> json) =>
@@ -69,10 +73,12 @@ class OAuthToken {
       scopes = oldToken?.scopes;
     }
     return OAuthToken(
-        response.accessToken,
-        DateTime.fromMillisecondsSinceEpoch(atExpiresAt),
-        refreshToken!,
-        DateTime.fromMillisecondsSinceEpoch(rtExpiresAt!),
-        scopes);
+      response.accessToken,
+      DateTime.fromMillisecondsSinceEpoch(atExpiresAt),
+      refreshToken!,
+      DateTime.fromMillisecondsSinceEpoch(rtExpiresAt!),
+      scopes,
+      idToken: response.idToken,
+    );
   }
 }

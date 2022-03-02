@@ -16,6 +16,7 @@ class Constants {
   static const String grantType = 'grant_type';
   static const String kaHeader = 'ka';
   static const String authorizationCode = 'authorization_code';
+  static const String nonce = 'nonce';
   static const String clientId = 'client_id';
   static const String redirectUri = 'redirect_uri';
   static const String codeVerifier = 'code_verifier';
