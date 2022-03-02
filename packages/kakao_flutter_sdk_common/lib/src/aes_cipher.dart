@@ -14,7 +14,7 @@ abstract class Cipher {
 
 /// @nodoc
 class AESCipher implements Cipher {
-  static const _iterationCount = 10000;
+  static const _iterationCount = 100;
   static const _keyLength = 32; // 256 bits
   static late Encrypter _encryptor;
   final IV _iv = IV(_initVector);
