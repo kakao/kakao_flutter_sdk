@@ -70,17 +70,22 @@ class Story {
   String toString() => toJson().toString();
 }
 
+/// 스토리의 미디어 형식 열거형
 enum StoryType {
+  /// 텍스트 형식
   @JsonValue("NOTE")
   note,
 
+  /// 이미지 형식
   @JsonValue("PHOTO")
   photo,
 
+  /// 지원되지 않는 미디어 형식
   @JsonValue("NOT_SUPPORTED")
   notSupported
 }
 
+/// 스토리의 공개 범위
 enum StoryPermission {
   /// 전체 공개
   @JsonValue('PUBLIC')

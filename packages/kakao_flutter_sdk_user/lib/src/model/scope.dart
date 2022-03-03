@@ -43,9 +43,13 @@ class Scope {
   String toString() => toJson().toString();
 }
 
+/// 동의 항목 타입
 enum ScopeType {
+  /// 개인정보 보호 동의 항목
   @JsonValue("PRIVACY")
   privacy,
+
+  /// 접근권한 관리 동의 항목
   @JsonValue("SERVICE")
   service
 }

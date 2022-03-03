@@ -77,8 +77,10 @@ class FriendsContext {
   }
 }
 
+/// 목록 조회에 사용되는 정렬 방식
 enum Order { asc, desc }
 
+/// 친구 목록 정렬 기준
 enum FriendOrder {
   /// 이름 순 정렬
   nickname,

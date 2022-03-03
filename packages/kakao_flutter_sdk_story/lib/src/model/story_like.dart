@@ -25,6 +25,7 @@ class StoryLike {
   String toString() => toJson().toString();
 }
 
+/// 느낌(이모티콘)에 대한 정의
 enum Emotion {
   /// 좋아요
   @JsonValue("LIKE")
