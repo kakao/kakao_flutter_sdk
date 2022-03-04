@@ -64,7 +64,7 @@ for package in "${PACKAGE_LIST[@]}"; do
 
   # 각 패키지로 이동해서 배포
   cd "${SDK_NAME}$package" || exit
-  flutter packages pub publish -n || exit
+  flutter packages pub publish -f || exit
   cd ..
 
   # 백업한 pubspec.yaml을 다시 복구
