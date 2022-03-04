@@ -107,7 +107,7 @@ void main() {
         expect(options.method, "POST");
         expect(options.path, "/v1/api/story/post/note");
         Map<String, dynamic> params = options.data;
-        expect(params.keys.length, 1);
+        expect(params.keys.length, 3);
       };
       var storyPostResult = await _api.postNote(content: content);
       expect(storyPostResult.id, map!["id"]);
