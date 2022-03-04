@@ -193,11 +193,11 @@ class StoryApi {
     });
   }
 
-  String _mapToString(Map<String, String>? params) {
+  String? _mapToString(Map<String, String>? params) {
     String data = '';
     params?.forEach((key, value) {
       data += '&$key=$value';
     });
-    return data.isEmpty ? data : data.substring(1);
+    return data.isEmpty ? null : data.substring(1);
   }
 }
