@@ -1,3 +1,8 @@
+## 1.0.0
+
+- Released the official Kakao SDK for Flutter.
+- For more detailed changes, refer to [What's new in Flutter SDK 1.0](https://developers.kakao.com/docs/latest/getting-started/sdk-flutter-migration).
+
 ## 0.9.0
 
 - Modify nullability of `OAuthToken` field
@@ -7,7 +12,7 @@
 - Add `TokenManagerProvider` for custom token storage
 - Add `navigate()` and `shareDestination()` in `NaviApi`
 - Rename model classes and field based on `Kakao Developers's Android/iOS v2 SDK`
-- Add @Deprecate annotaion to push, search and local API
+- Add @Deprecate annotation to push, search and local API
 
 ## 0.8.2
 

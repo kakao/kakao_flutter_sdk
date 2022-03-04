@@ -1,0 +1,21 @@
+name: kakao_flutter_sdk
+
+packages:
+  - packages/**
+  - example/**
+
+scripts:
+  test:
+    run: melos exec --fail-fast --ignore="*example*" --dir-exists="test" -- flutter test
+    description: Run all test codes
+
+  format:
+    run: flutter format .
+    description: Reformat all codes
+
+  analyze:
+    run: melos exec --ignore="*example*" -- flutter analyze --no-pub
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: '>=1.10.0'

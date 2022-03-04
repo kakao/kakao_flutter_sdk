@@ -1,121 +1,136 @@
-
 # OSS Notice | Kakao\_flutter\_sdk #
 
 This application is Copyright © Kakao Corp. All rights reserved.
 
 The following sets forth attribution notices for third party software that may be contained in this application.
 
-If you have any questions or concerns, please contact us at [opensource@kakaocorp.com][opensource_kakaocorp.com]
-
- **Android - platform - frameworks - support**
+**Android - platform - frameworks - support**
 
 https://android.googlesource.com/platform/frameworks/support
 
 Copyright 2014 The Android Open Source Project
 
+Apache License 2.0
 
-Apache License 2.0 
-
-
- **Android - platform - frameworks - testing**
+**Android - platform - frameworks - testing**
 
 https://android.googlesource.com/platform/frameworks/testing/
 
 Copyright 2012 The Android Open Source Project
 
+Apache License 2.0
 
-Apache License 2.0 
-
-
- **Android Constraint Layout Library**
+**Android Constraint Layout Library**
 
 https://developer.android.com/reference/android/support/constraint/packages
 
 Copyright 2017 The Android Open Source Project
 
+Apache License 2.0
 
-Apache License 2.0 
+**Apple Frameworks**
 
+https://developer.apple.com/documentation
 
- **build\_runner**
+Copyright 2018 Apple Inc.
 
-https://github.com/dart-lang/build
+Apple MIT License
+
+**build\_runner**
+
+[https://github.com/dart-lang/build/tree/master/build\_runner][https_github.com_dart-lang_build_tree_master_build_runner]
 
 Copyright 2016, the Dart project authors.
 
+BSD 3-Clause "New" or "Revised" License
 
-BSD 3-Clause "New" or "Revised" License 
+**Cryptographic hashing functions for Dart**
 
+https://github.com/dart-lang/crypto
 
- **dio**
+Copyright 2015, the Dart project authors.
+
+BSD 3-Clause "New" or "Revised" License
+
+**dio**
 
 https://github.com/flutterchina/dio
 
 Copyright 2018 wendux
 
+MIT License
 
-MIT License 
+**encrypt**
 
+https://github.com/leocavalcante/encrypt
 
- **Flutter**
+Copyright 2018, Leo Cavalcante
+
+BSD 3-Clause "New" or "Revised" License
+
+**Flutter**
 
 https://github.com/flutter/flutter
 
 Copyright 2014 The Flutter Authors.
 
+BSD 3-Clause "New" or "Revised" License
 
-BSD 3-Clause "New" or "Revised" License 
-
-
- **Flutter plugins**
-
-https://github.com/flutter/plugins
-
-Copyright 2017 The Chromium Authors.
-
-
-BSD 3-Clause "New" or "Revised" License 
-
-
- **Google Platform**
+**Google Platform**
 
 https://github.com/google/platform.dart
 
 Copyright 2017, the Dart project authors
 
+BSD 3-Clause "New" or "Revised" License
 
-BSD 3-Clause "New" or "Revised" License 
+**Gradle**
 
+https://github.com/gradle/gradle/
 
- **json\_serializable**
+Copyright 2016 the original author or authors.
+
+Apache License 2.0
+
+**json\_serializable**
 
 [https://github.com/dart-lang/json\_serializable][https_github.com_dart-lang_json_serializable]
 
 Copyright 2017, the Dart project authors.
 
+BSD 3-Clause "New" or "Revised" License
 
-BSD 3-Clause "New" or "Revised" License 
-
-
- **JUnit 4**
+**JUnit 4**
 
 https://github.com/junit-team/junit4
 
 Copyright 2002-2016 JUnit.
 
+Eclipse Public License 1.0
 
-Eclipse Public License 1.0 
-
-
- **Kotlin**
+**Kotlin**
 
 https://github.com/jetbrains/kotlin
 
 Copyright 2010-2017 JetBrains s.r.o.
 
+Apache License 2.0
 
-Apache License 2.0 
+**PackageInfoPlus**
 
+[https://github.com/fluttercommunity/plus\_plugins/tree/main/packages/package\_info\_plus][https_github.com_fluttercommunity_plus_plugins_tree_main_packages_package_info_plus]
+
+Copyright 2017 The Chromium Authors.
+
+BSD 3-Clause "New" or "Revised" License
+
+**Shared preferences plugin**
+
+[https://github.com/flutter/plugins/tree/main/packages/shared\_preferences/shared\_preferences][https_github.com_flutter_plugins_tree_main_packages_shared_preferences_shared_preferences]
+
+Copyright 2017 The Chromium Authors.
+
+BSD 3-Clause "New" or "Revised" License
 
 # Apache License 2.0 #
 
@@ -195,20 +210,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ``````````
 
-# BSD 3-Clause "New" or "Revised" License #
+# Apple MIT License #
 
 ``````````
-Copyright (c) <year> <owner> . All rights reserved.
+Copyright: Copyright (c) 2006 by Apple Computer, Inc., All Rights Reserved.
 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+IMPORTANT: This Apple software is supplied to you by Apple Computer, Inc. ("Apple") in consideration of your agreement to the following terms, and your use, installation, modification or redistribution of this Apple software constitutes acceptance of these terms. If you do not agree with these terms, please do not use, install, modify or redistribute this Apple software.
 
-   1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+In consideration of your agreement to abide by the following terms, and subject to these terms, Apple grants you a personal, non-exclusive license, under Apple's copyrights in this original Apple software (the "Apple Software"), to use, reproduce, modify and redistribute the Apple Software, with or without modifications, in source and/or binary forms; provided that if you redistribute the Apple Software in its entirety and without modifications, you must retain this notice and the following text and disclaimers in all such redistributions of the Apple Software. Neither the name, trademarks, service marks or logos of Apple Computer, Inc. may be used to endorse or promote products derived from the Apple Software without specific prior written permission from Apple. Except as expressly stated in this notice, no other rights or licenses, express or implied, are granted by Apple herein, including but not limited to any patent rights that may be infringed by your derivative works or by other works in which the Apple Software may be incorporated.
 
-   2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+The Apple Software is provided by Apple on an "AS IS" basis. APPLE MAKES NO WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION THE IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, REGARDING THE APPLE SOFTWARE OR ITS USE AND OPERATION ALONE OR IN COMBINATION WITH YOUR PRODUCTS.
 
-   3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+IN NO EVENT SHALL APPLE BE LIABLE FOR ANY SPECIAL, INDIRECT, INCIDENTAL OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) ARISING IN ANY WAY OUT OF THE USE, REPRODUCTION, MODIFICATION AND/OR DISTRIBUTION OF THE APPLE SOFTWARE, HOWEVER CAUSED AND WHETHER UNDER THEORY OF CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ``````````
 
 # Eclipse Public License 1.0 #
@@ -308,7 +321,7 @@ THE ACCOMPANYING PROGRAM IS PROVIDED UNDER THE TERMS OF THIS ECLIPSE PUBLIC LICE
 ``````````
 MIT License
 
-Copyright (c) <year> <copyright holders>
+Copyright (c)  
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -317,7 +330,24 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ``````````
 
+# BSD 3-Clause "New" or "Revised" License #
 
-[opensource_kakaocorp.com]: mailto:opensource@kakaocorp.com
+``````````
+Copyright (c)   . All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+   1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+
+   2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+   3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+``````````
+
+
+[https_github.com_dart-lang_build_tree_master_build_runner]: https://github.com/dart-lang/build/tree/master/build_runner
 [https_github.com_dart-lang_json_serializable]: https://github.com/dart-lang/json_serializable
-<!-- Hermes : Legal Notice successful Generated -->
+[https_github.com_fluttercommunity_plus_plugins_tree_main_packages_package_info_plus]: https://github.com/fluttercommunity/plus_plugins/tree/main/packages/package_info_plus
+[https_github.com_flutter_plugins_tree_main_packages_shared_preferences_shared_preferences]: https://github.com/flutter/plugins/tree/main/packages/shared_preferences/shared_preferences

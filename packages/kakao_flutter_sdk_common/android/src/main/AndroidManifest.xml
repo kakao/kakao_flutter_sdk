@@ -1,0 +1,30 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.kakao.sdk.flutter">
+
+    <application>
+        <activity
+            android:name=".TalkAuthCodeActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@style/TransparentCompat" />
+        <activity
+            android:name=".AuthCodeCustomTabsActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@style/TransparentCompat" />
+    </application>
+
+    <queries>
+        <package android:name="com.kakao.talk" />
+        <package android:name="com.kakao.onetalk" />
+        <package android:name="com.locnall.KimGiSa" />
+        <package android:name="com.lguplus.navi" />
+
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
+</manifest>
+

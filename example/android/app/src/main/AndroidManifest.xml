@@ -1,50 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kakao.sdk.flutter.example">
-
-    <!-- io.flutter.app.FlutterApplication is an android.app.Application that
+    <!--
+         io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
          In most cases you can leave this as-is, but you if you want to provide
          additional functionality it is fine to subclass or reimplement
-         FlutterApplication and put your custom class here. -->
+         FlutterApplication and put your custom class here.
+    -->
     <meta-data
         android:name="flutterEmbedding"
         android:value="2" />
+
     <application
-        android:label="kakao_flutter_sdk_example"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:label="kakao_flutter_sdk_example">
+        <activity
+            android:name=".KakaoLinkActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.DayNight">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- "kakao{YOUR_NATIVE_APP_KEY}://kakaolink" 형식의 앱 실행 스킴을 설정하는데 사용 -->
+                <data
+                    android:host="kakaolink"
+                    android:scheme="kakao030ba7c59137629e86e8721eb1a22fd6" />
+                <data
+                    android:host="kakaostory"
+                    android:scheme="kakao030ba7c59137629e86e8721eb1a22fd6" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".MainActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:exported="true"
+            android:hardwareAccelerated="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-            android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">
-            <!-- This keeps the window background of the activity showing
+
+            <!--
+                 This keeps the window background of the activity showing
                  until Flutter renders its first frame. It can be removed if
                  there is no splash screen (such as the default splash screen
-                 defined in @style/LaunchTheme). -->
+                 defined in @style/LaunchTheme).
+            -->
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
             <!-- Deep Links -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="com.kakao.sdk.flutter.AuthCodeCustomTabsActivity">
+        <activity
+            android:name="com.kakao.sdk.flutter.AuthCodeCustomTabsActivity"
+            android:exported="true">
             <intent-filter android:label="flutter_web_auth">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <!-- alpha -->
-                <data android:scheme="kakao01a5e3755dee69871faf55fe79d47c42" android:host="oauth"/>
-                <!-- sandbox -->
-                <data android:scheme="kakao148b7d8c3c52e3421f7a13a8fc236b19" android:host="oauth"/>
-                <!-- beta-real -->
-                <data android:scheme="kakao030ba7c59137629e86e8721eb1a22fd6" android:host="oauth"/>
+
+                <data
+                    android:host="oauth"
+                    android:scheme="kakao030ba7c59137629e86e8721eb1a22fd6" />
             </intent-filter>
         </activity>
     </application>
