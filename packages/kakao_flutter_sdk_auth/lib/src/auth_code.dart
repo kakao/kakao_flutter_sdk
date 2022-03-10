@@ -115,6 +115,7 @@ class AuthCodeClient {
     String? clientId,
     String? redirectUri,
     String? codeVerifier,
+    String? nonce,
   }) async {
     final agt = await _kauthApi.agt();
     try {
@@ -124,6 +125,7 @@ class AuthCodeClient {
         scopes: scopes,
         agt: agt,
         codeVerifier: codeVerifier,
+        nonce: nonce,
       );
     } catch (e) {
       rethrow;
