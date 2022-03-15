@@ -11,6 +11,17 @@ SDK_NAME="kakao_flutter_sdk"
 
 PACKAGE_LIST=("_common" "_auth" "_navi" "_template" "_link" "_story" "_user" "_talk" "")
 
+echo "Did you update the sdkVersion in KakaoSdk class?"
+select yn in "Yes" "No"; do
+  case $yn in
+  Yes) break ;;
+  No)
+    echo "Please update the sdkVersion in KakaoSdk!"
+    exit
+    ;;
+  esac
+done
+
 branch=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
 
 # release 또는 hotfix 브랜치가 아니면 스크립트 종료
