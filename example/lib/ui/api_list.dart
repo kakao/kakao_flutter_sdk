@@ -1199,6 +1199,140 @@ class _ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
+      ApiItem('OIDC'),
+      ApiItem('loginWithKakaoTalk(nonce:openidtest)', () async {
+        // 카카오톡으로 로그인 - openId
+
+        try {
+          OAuthToken token =
+              await UserApi.instance.loginWithKakaoTalk(nonce: 'openidtest');
+          Log.i(context, tag, '로그인 성공 idToken: ${token.idToken}');
+        } catch (e) {
+          Log.e(context, tag, '로그인 실패', e);
+        }
+      }),
+      ApiItem('certLoginWithKakaoTalk(nonce:openidtest)', () async {
+        // 카카오톡으로 인증서 로그인 - openId
+
+        try {
+          CertTokenInfo certTokenInfo = await UserApi.instance
+              .certLoginWithKakaoTalk(state: 'test', nonce: 'openidtest');
+          Log.i(context, tag,
+              '로그인 성공\nidToken: ${certTokenInfo.token.idToken}\ntxId: ${certTokenInfo.txId}');
+        } catch (e) {
+          Log.e(context, tag, '로그인 실패', e);
+        }
+      }),
+      ApiItem('loginWithKakaoAccount(nonce:openidtest)', () async {
+        // 카카오계정으로 로그인 - openId
+
+        try {
+          OAuthToken token =
+              await UserApi.instance.loginWithKakaoAccount(nonce: 'openidtest');
+          Log.i(context, tag, '로그인 성공 idToken: ${token.idToken}');
+        } catch (e) {
+          Log.e(context, tag, '로그인 실패', e);
+        }
+      }),
+      ApiItem('certLoginWithKakaoAccount(nonce:openidtest)', () async {
+        // 카카오계정으로 인증서 로그인 - openId
+
+        try {
+          CertTokenInfo certTokenInfo = await UserApi.instance
+              .certLoginWithKakaoAccount(state: 'test', nonce: 'openidtest');
+          Log.i(context, tag,
+              '로그인 성공\nidToken: ${certTokenInfo.token.idToken}\ntxId:${certTokenInfo.txId}');
+        } catch (e) {
+          Log.e(context, tag, '로그인 실패', e);
+        }
+      }),
+      ApiItem('me() - new scopes(nonce:openidtest)', () async {
+        // 사용자 정보 요청 (추가 동의)
+
+        // 사용자가 로그인 시 제3자 정보제공에 동의하지 않은 개인정보 항목 중 어떤 정보가 반드시 필요한 시나리오에 진입한다면
+        // 다음과 같이 추가 동의를 받고 해당 정보를 획득할 수 있습니다.
+
+        //  * 주의: 선택 동의항목은 사용자가 거부하더라도 서비스 이용에 지장이 없어야 합니다.
+
+        // 추가 권한 요청 시나리오 예제
+
+        User user;
+        try {
+          user = await UserApi.instance.me();
+        } catch (e) {
+          Log.e(context, tag, '사용자 정보 요청 실패', e);
+          return;
+        }
+
+        List<String> scopes = [];
+
+        if (user.kakaoAccount?.emailNeedsAgreement == true) {
+          scopes.add('account_email');
+        }
+        if (user.kakaoAccount?.birthdayNeedsAgreement == true) {
+          scopes.add("birthday");
+        }
+        if (user.kakaoAccount?.birthyearNeedsAgreement == true) {
+          scopes.add("birthyear");
+        }
+        if (user.kakaoAccount?.ciNeedsAgreement == true) {
+          scopes.add("account_ci");
+        }
+        if (user.kakaoAccount?.legalNameNeedsAgreement == true) {
+          scopes.add("legal_name");
+        }
+        if (user.kakaoAccount?.legalBirthDateNeedsAgreement == true) {
+          scopes.add("legal_birth_date");
+        }
+        if (user.kakaoAccount?.legalGenderNeedsAgreement == true) {
+          scopes.add("legal_gender");
+        }
+        if (user.kakaoAccount?.phoneNumberNeedsAgreement == true) {
+          scopes.add("phone_number");
+        }
+        if (user.kakaoAccount?.profileNeedsAgreement == true) {
+          scopes.add("profile");
+        }
+        if (user.kakaoAccount?.ageRangeNeedsAgreement == true) {
+          scopes.add("age_range");
+        }
+
+        if (scopes.length > 0) {
+          Log.d(context, tag, '사용자에게 추가 동의를 받아야 합니다.');
+
+          // OpenID 활성화 후
+          // - scope 파라메터에 openid 항목을 포함하여 요청할 경우 OIDC로 동작
+          // - scope 파라메터에 openid 항목을 미포함 시 OAuth2.0 으로 동작
+
+          // OIDC 요청이므로 "openid" 항목을 추가한다
+          scopes.add('openid');
+
+          OAuthToken token;
+          try {
+            token = await UserApi.instance
+                .loginWithNewScopes(scopes, nonce: 'openidtest');
+            Log.i(context, tag, 'allowed scopes: ${token.scopes}');
+          } catch (e) {
+            Log.e(context, tag, "사용자 추가 동의 실패", e);
+            return;
+          }
+
+          // 사용자 정보 재요청
+          try {
+            User user = await UserApi.instance.me();
+            Log.i(
+                context,
+                tag,
+                '사용자 정보 요청 성공'
+                '\n회원번호: ${user.id}'
+                '\n이메일: ${user.kakaoAccount?.email}'
+                '\n닉네임: ${user.kakaoAccount?.profile?.nickname}'
+                '\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}');
+          } catch (e) {
+            Log.e(context, tag, '사용자 정보 요청 실패', e);
+          }
+        }
+      }),
       ApiItem('ETC'),
       ApiItem('Get Current Token', () async {
         // 현재 토큰 저장소에서 토큰 가져오기
@@ -1248,39 +1382,5 @@ class _ApiListState extends State<ApiList> {
         }
       }),
     ];
-  }
-}
-
-void login() async {
-  bool talkInstalled = await isKakaoTalkInstalled();
-
-  // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
-  if (talkInstalled) {
-    try {
-      OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
-      print('카카오톡으로 로그인 성공 ${token.accessToken}');
-    } catch (e) {
-      print('카카오톡으로 로그인 실패 $e');
-
-      // 유저에 의해서 카카오톡으로 로그인이 취소된 경우 카카오계정으로 로그인 생략 (ex 뒤로가기)
-      if (e is PlatformException && e.code == 'CANCELED') {
-        return;
-      }
-
-      // 카카오톡에 로그인이 안되어있는 경우 카카오계정으로 로그인
-      try {
-        OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
-        print('카카오계정으로 로그인 성공 ${token.accessToken}');
-      } catch (e) {
-        print('카카오계정으로 로그인 실패 $e');
-      }
-    }
-  } else {
-    try {
-      OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
-      print('카카오계정으로 로그인 성공 ${token.accessToken}');
-    } catch (e) {
-      print('카카오계정으로 로그인 실패 $e');
-    }
   }
 }
