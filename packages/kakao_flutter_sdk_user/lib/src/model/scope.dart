@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'scope.g.dart';
 
-/// 사용자 동의 항목
+/// 동의 항목별 정보
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class Scope {

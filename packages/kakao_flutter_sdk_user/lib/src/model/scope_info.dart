@@ -3,7 +3,7 @@ import 'package:kakao_flutter_sdk_user/src/model/scope.dart';
 
 part 'scope_info.g.dart';
 
-/// 사용자가 동의한 약관 정보
+/// 사용자 동의 내역
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class ScopeInfo {
