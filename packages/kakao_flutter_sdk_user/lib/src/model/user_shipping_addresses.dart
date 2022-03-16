@@ -9,7 +9,7 @@ part 'user_shipping_addresses.g.dart';
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class UserShippingAddresses {
-  /// 배송지 정보를 요청한 사용자 아이디
+  /// 배송지 정보를 요청한 회원번호
   int? userId;
 
   /// 배송지 정보 조회를 위하여 유저에게 제3자 정보제공동의를 받아야 하는지 여부
