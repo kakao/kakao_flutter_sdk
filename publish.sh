@@ -11,12 +11,11 @@ SDK_NAME="kakao_flutter_sdk"
 
 PACKAGE_LIST=("_common" "_auth" "_navi" "_template" "_link" "_story" "_user" "_talk" "")
 
-echo "Did you update the sdkVersion in KakaoSdk class?"
+echo "Do you want to publish kakao_flutter_sdk?"
 select yn in "Yes" "No"; do
   case $yn in
   Yes) break ;;
   No)
-    echo "Please update the sdkVersion in KakaoSdk!"
     exit
     ;;
   esac
@@ -44,6 +43,9 @@ if [[ $version != *.*.* ]] || [[ $version == 0.0.0 ]]; then
   echo "The current branch must contains version!"
   exit
 fi
+
+# KakaoSdk.sdkVersion 변경
+find packages/kakao_flutter_sdk_common/lib/src -name "kakao_sdk.dart" -exec perl -pi -e "s/static String sdkVersion .*/static String sdkVersion = \"${version}\";/g" {} \;
 
 # 버전 정보를 변경해야하는 패키지 이름 저장
 melos list -a >$FILENAME
