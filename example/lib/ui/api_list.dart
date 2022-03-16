@@ -232,15 +232,6 @@ class _ApiListState extends State<ApiList> {
         if (user.kakaoAccount?.ciNeedsAgreement == true) {
           scopes.add("account_ci");
         }
-        if (user.kakaoAccount?.legalNameNeedsAgreement == true) {
-          scopes.add("legal_name");
-        }
-        if (user.kakaoAccount?.legalBirthDateNeedsAgreement == true) {
-          scopes.add("legal_birth_date");
-        }
-        if (user.kakaoAccount?.legalGenderNeedsAgreement == true) {
-          scopes.add("legal_gender");
-        }
         if (user.kakaoAccount?.phoneNumberNeedsAgreement == true) {
           scopes.add("phone_number");
         }
@@ -311,7 +302,7 @@ class _ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('revokeScopes()', () async {
-        List<String> scopes = ['account_email', 'legal_birth_date', 'friends'];
+        List<String> scopes = ['account_email', 'friends'];
         try {
           ScopeInfo scopeInfo =
               await UserApi.instance.revokeScopes(scopes: scopes);
@@ -1277,15 +1268,6 @@ class _ApiListState extends State<ApiList> {
         }
         if (user.kakaoAccount?.ciNeedsAgreement == true) {
           scopes.add("account_ci");
-        }
-        if (user.kakaoAccount?.legalNameNeedsAgreement == true) {
-          scopes.add("legal_name");
-        }
-        if (user.kakaoAccount?.legalBirthDateNeedsAgreement == true) {
-          scopes.add("legal_birth_date");
-        }
-        if (user.kakaoAccount?.legalGenderNeedsAgreement == true) {
-          scopes.add("legal_gender");
         }
         if (user.kakaoAccount?.phoneNumberNeedsAgreement == true) {
           scopes.add("phone_number");
