@@ -15,6 +15,9 @@ class OAuthToken {
   @Deprecated('This property will be replaced by \'expiresAt\' from 1.2.0')
   DateTime accessTokenExpiresAt;
 
+  /// 엑세스 토큰 만료 시각
+  DateTime expiresAt;
+
   /// 엑세스 토큰을 갱신하는데 사용하는 리프레시 토큰
   String refreshToken;
 
@@ -28,8 +31,8 @@ class OAuthToken {
   String? idToken;
 
   /// @nodoc
-  OAuthToken(this.accessToken, this.accessTokenExpiresAt, this.refreshToken,
-      this.refreshTokenExpiresAt, this.scopes,
+  OAuthToken(this.accessToken, this.accessTokenExpiresAt, this.expiresAt,
+      this.refreshToken, this.refreshTokenExpiresAt, this.scopes,
       {this.idToken});
 
   /// @nodoc
@@ -75,6 +78,7 @@ class OAuthToken {
     }
     return OAuthToken(
       response.accessToken,
+      DateTime.fromMillisecondsSinceEpoch(atExpiresAt),
       DateTime.fromMillisecondsSinceEpoch(atExpiresAt),
       refreshToken!,
       DateTime.fromMillisecondsSinceEpoch(rtExpiresAt!),

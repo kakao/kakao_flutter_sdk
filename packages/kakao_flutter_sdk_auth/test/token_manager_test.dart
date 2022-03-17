@@ -130,7 +130,7 @@ class OldTokenManager implements TokenManager {
     var accessToken = preferences.getString(atKey);
     var atExpiresAtMillis = preferences.getInt(atExpiresAtKey);
 
-    var accessTokenExpiresAt = atExpiresAtMillis != null
+    var expiresAt = atExpiresAtMillis != null
         ? DateTime.fromMillisecondsSinceEpoch(atExpiresAtMillis)
         : null;
     var refreshToken = preferences.getString(rtKey);
@@ -140,7 +140,7 @@ class OldTokenManager implements TokenManager {
         : null;
     List<String>? scopes = preferences.getStringList(scopesKey);
 
-    return OAuthToken(accessToken!, accessTokenExpiresAt!, refreshToken!,
+    return OAuthToken(accessToken!, expiresAt!, expiresAt, refreshToken!,
         refreshTokenExpiresAt!, scopes);
   }
 
@@ -197,12 +197,11 @@ class BetaTokenManager implements TokenManager {
         refreshToken != null &&
         atExpiresAtMillis != null &&
         rtExpiresAtMillis != null) {
-      var accessTokenExpiresAt =
-          DateTime.fromMillisecondsSinceEpoch(atExpiresAtMillis);
+      var expiresAt = DateTime.fromMillisecondsSinceEpoch(atExpiresAtMillis);
       var refreshTokenExpiresAt =
           DateTime.fromMillisecondsSinceEpoch(rtExpiresAtMillis);
 
-      final token = OAuthToken(accessToken, accessTokenExpiresAt, refreshToken,
+      final token = OAuthToken(accessToken, expiresAt, expiresAt, refreshToken,
           refreshTokenExpiresAt, scopes);
 
       // Remove all token properties that saved before 0.9.0 version and save migrated token.

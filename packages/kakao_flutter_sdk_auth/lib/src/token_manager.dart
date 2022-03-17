@@ -121,12 +121,11 @@ class DefaultTokenManager implements TokenManager {
         rtExpiresAtMillis != null) {
       SdkLog.i("=== Migrate from old version token ===");
 
-      var accessTokenExpiresAt =
-          DateTime.fromMillisecondsSinceEpoch(atExpiresAtMillis);
+      var expiresAt = DateTime.fromMillisecondsSinceEpoch(atExpiresAtMillis);
       var refreshTokenExpiresAt =
           DateTime.fromMillisecondsSinceEpoch(rtExpiresAtMillis);
 
-      final token = OAuthToken(accessToken, accessTokenExpiresAt, refreshToken,
+      final token = OAuthToken(accessToken, expiresAt, expiresAt, refreshToken,
           refreshTokenExpiresAt, scopes);
 
       // Remove all token properties that saved before 0.9.0 version and save migrated token.
