@@ -12,7 +12,7 @@ class OAuthToken {
   String accessToken;
 
   /// 엑세스 토큰 만료 시각
-  @Deprecated('This property will be replaced by \'expiresAt\' from 1.1.0')
+  @Deprecated('This property will be replaced by \'expiresAt\' from 1.2.0')
   DateTime accessTokenExpiresAt;
 
   /// 엑세스 토큰을 갱신하는데 사용하는 리프레시 토큰
