@@ -6,7 +6,7 @@ part 'friend.g.dart';
 /// 카카오톡 친구 정보
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class Friend {
-  /// 사용자 아이디
+  /// 회원번호
   final int? id;
 
   /// 메시지를 전송하기 위한 고유 아이디

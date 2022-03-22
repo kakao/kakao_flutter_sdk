@@ -39,6 +39,18 @@ void main() {
       }
       return null;
     });
+
+    const MethodChannel('plugins.flutter.io/shared_preferences_macos')
+        .setMockMethodCallHandler((MethodCall methodCall) async {
+      if (methodCall.method == 'getAll') {
+        return <String, dynamic>{}; // set initial values here if desired
+      }
+      if (methodCall.method.startsWith("set") ||
+          methodCall.method == 'remove') {
+        return true;
+      }
+      return null;
+    });
     map = await loadJsonIntoMap('oauth/token_with_rt_and_scopes.json');
     response = AccessTokenResponse.fromJson(map!);
     tokenManager = DefaultTokenManager();
@@ -130,7 +142,7 @@ class OldTokenManager implements TokenManager {
     var accessToken = preferences.getString(atKey);
     var atExpiresAtMillis = preferences.getInt(atExpiresAtKey);
 
-    var accessTokenExpiresAt = atExpiresAtMillis != null
+    var expiresAt = atExpiresAtMillis != null
         ? DateTime.fromMillisecondsSinceEpoch(atExpiresAtMillis)
         : null;
     var refreshToken = preferences.getString(rtKey);
@@ -140,7 +152,7 @@ class OldTokenManager implements TokenManager {
         : null;
     List<String>? scopes = preferences.getStringList(scopesKey);
 
-    return OAuthToken(accessToken!, accessTokenExpiresAt!, refreshToken!,
+    return OAuthToken(accessToken!, expiresAt!, expiresAt, refreshToken!,
         refreshTokenExpiresAt!, scopes);
   }
 
@@ -197,12 +209,11 @@ class BetaTokenManager implements TokenManager {
         refreshToken != null &&
         atExpiresAtMillis != null &&
         rtExpiresAtMillis != null) {
-      var accessTokenExpiresAt =
-          DateTime.fromMillisecondsSinceEpoch(atExpiresAtMillis);
+      var expiresAt = DateTime.fromMillisecondsSinceEpoch(atExpiresAtMillis);
       var refreshTokenExpiresAt =
           DateTime.fromMillisecondsSinceEpoch(rtExpiresAtMillis);
 
-      final token = OAuthToken(accessToken, accessTokenExpiresAt, refreshToken,
+      final token = OAuthToken(accessToken, expiresAt, expiresAt, refreshToken,
           refreshTokenExpiresAt, scopes);
 
       // Remove all token properties that saved before 0.9.0 version and save migrated token.

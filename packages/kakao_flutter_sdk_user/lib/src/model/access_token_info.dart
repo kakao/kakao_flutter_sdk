@@ -9,7 +9,7 @@ class AccessTokenInfo {
   @JsonKey(name: 'app_id')
   int appId;
 
-  /// 사용자 아이디
+  /// 회원번호
   int? id;
 
   /// 해당 access token의 남은 만료시간 (단위: 초)

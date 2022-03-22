@@ -140,10 +140,12 @@ class UserApi {
   ///
   /// [scopes]로 추가로 동의 받고자 하는 동의 항목 ID 목록을 전달함
   /// 카카오 디벨로퍼스 동의 항목 설정 화면에서 확인 가능
-  Future<OAuthToken> loginWithNewScopes(List<String> scopes) async {
+  /// ID 토큰 재생 공격 방지를 위한 검증 값은 [nonce]로 전달. 임의의 문자열, ID 토큰 검증 시 사용
+  Future<OAuthToken> loginWithNewScopes(List<String> scopes,
+      {String? nonce}) async {
     String codeVerifier = AuthCodeClient.codeVerifier();
-    final authCode = await AuthCodeClient.instance
-        .requestWithAgt(scopes: scopes, codeVerifier: codeVerifier);
+    final authCode = await AuthCodeClient.instance.requestWithAgt(
+        scopes: scopes, codeVerifier: codeVerifier, nonce: nonce);
     final token = await AuthApi.instance
         .issueAccessToken(authCode: authCode, codeVerifier: codeVerifier);
     await TokenManagerProvider.instance.manager.setToken(token);

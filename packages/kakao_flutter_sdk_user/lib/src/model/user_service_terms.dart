@@ -8,7 +8,7 @@ part 'user_service_terms.g.dart';
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class UserServiceTerms {
-  /// 사용자 아이디
+  /// 회원번호
   int? userId;
 
   /// 사용자가 동의한 3rd의 약관 항목들

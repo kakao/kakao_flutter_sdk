@@ -7,7 +7,7 @@ part 'channels.g.dart';
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class Channels {
-  /// 사용자 아이디
+  /// 회원번호
   int? userId;
 
   /// 사용자의 채널 추가상태 목록
