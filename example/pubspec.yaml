@@ -1,6 +1,6 @@
 name: kakao_flutter_sdk_example
 description: Demonstrates how to use the kakao_flutter_sdk plugin.
-version: 1.0.0
+version: 1.1.0
 publish_to: "none"
 environment:
   sdk: ">=2.12.2 <3.0.0"
