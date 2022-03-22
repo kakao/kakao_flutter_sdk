@@ -1,3 +1,8 @@
+## 1.1.0
+- Added OpenID Connect functionality.
+- Added expiresAt property to OAuthToken.
+    - accessTokenExpiresAt (Validity period of access token) will be replaced with expiresAt in version 1.2.0.
+
 ## 1.0.0
 
 - Released the official Kakao SDK for Flutter.
