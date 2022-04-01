@@ -47,7 +47,7 @@ class DefaultTokenManager implements TokenManager {
   static const tokenKey = "com.kakao.token.OAuthToken";
 
   static const atKey = "com.kakao.token.AccessToken";
-  static const atExpiresAtKey = "com.kakao.token.AccessToken.ExpiresAt";
+  static const expiresAtKey = "com.kakao.token.AccessToken.ExpiresAt";
   static const rtKey = "com.kakao.token.RefreshToken";
   static const rtExpiresAtKey = "com.kakao.token.RefreshToken.ExpiresAt";
   static const secureModeKey = "com.kakao.token.KakaoSecureMode";
@@ -110,27 +110,27 @@ class DefaultTokenManager implements TokenManager {
     _preferences ??= await SharedPreferences.getInstance();
     var accessToken = _preferences!.getString(atKey);
     var refreshToken = _preferences!.getString(rtKey);
-    var atExpiresAtMillis = _preferences!.getInt(atExpiresAtKey);
+    var expiresAtMillis = _preferences!.getInt(expiresAtKey);
     var rtExpiresAtMillis = _preferences!.getInt(rtExpiresAtKey);
     List<String>? scopes = _preferences!.getStringList(scopesKey);
 
     // If token that issued before 0.9.0 version are loaded, then return OAuthToken.
     if (accessToken != null &&
         refreshToken != null &&
-        atExpiresAtMillis != null &&
+        expiresAtMillis != null &&
         rtExpiresAtMillis != null) {
       SdkLog.i("=== Migrate from old version token ===");
 
-      var expiresAt = DateTime.fromMillisecondsSinceEpoch(atExpiresAtMillis);
+      var expiresAt = DateTime.fromMillisecondsSinceEpoch(expiresAtMillis);
       var refreshTokenExpiresAt =
           DateTime.fromMillisecondsSinceEpoch(rtExpiresAtMillis);
 
-      final token = OAuthToken(accessToken, expiresAt, expiresAt, refreshToken,
-          refreshTokenExpiresAt, scopes);
+      final token = OAuthToken(
+          accessToken, expiresAt, refreshToken, refreshTokenExpiresAt, scopes);
 
       // Remove all token properties that saved before 0.9.0 version and save migrated token.
       await _preferences!.remove(atKey);
-      await _preferences!.remove(atExpiresAtKey);
+      await _preferences!.remove(expiresAtKey);
       await _preferences!.remove(rtKey);
       await _preferences!.remove(rtExpiresAtKey);
       await _preferences!.remove(secureModeKey);
