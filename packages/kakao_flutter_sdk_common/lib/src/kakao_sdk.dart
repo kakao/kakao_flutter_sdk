@@ -17,7 +17,7 @@ class KakaoSdk {
   static late String nativeKey;
   static late String jsKey;
 
-  static String sdkVersion = "1.1.0";
+  static String sdkVersion = "1.1.1";
 
   static bool logging = false;
 
