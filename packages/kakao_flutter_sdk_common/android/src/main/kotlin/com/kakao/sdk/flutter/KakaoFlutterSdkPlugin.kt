@@ -17,7 +17,6 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
-import io.flutter.plugin.common.PluginRegistry.Registrar
 import java.security.MessageDigest
 
 class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
@@ -33,13 +32,6 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
     companion object {
         var redirectUri: String? = null
         lateinit var redirectUriResult: Result
-
-        @JvmStatic
-        fun registerWith(registrar: Registrar) {
-            val instance = KakaoFlutterSdkPlugin()
-            instance.onAttachedToEngine(registrar.context(), registrar.messenger())
-            instance.onAttachedToActivity(registrar.activity())
-        }
     }
 
     override fun onMethodCall(call: MethodCall, result: Result) {
@@ -194,10 +186,6 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         _activity = binding.activity
-    }
-
-    private fun onAttachedToActivity(activity: Activity) {
-        _activity = activity
     }
 
     override fun onDetachedFromActivityForConfigChanges() {

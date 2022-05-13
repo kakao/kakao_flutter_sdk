@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.net.Uri
 import android.os.Bundle
-import java.lang.Exception
 import androidx.browser.customtabs.CustomTabsIntent
 
 class AuthCodeCustomTabsActivity : Activity() {
