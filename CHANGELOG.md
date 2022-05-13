@@ -1,3 +1,6 @@
+## 1.1.1
+- Updated to be compatible with Flutter 3.0.
+
 ## 1.1.0
 - Added OpenID Connect functionality.
 - Added expiresAt property to OAuthToken.
