@@ -5,8 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Window
-import java.lang.IllegalStateException
-import kotlin.IllegalArgumentException
 
 class TalkAuthCodeActivity : Activity() {
     companion object {
