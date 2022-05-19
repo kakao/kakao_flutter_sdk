@@ -322,12 +322,12 @@ class _ApiListState extends State<ApiList> {
           Log.e(context, tag, '동의 철회 실패', e);
         }
       }),
-      ApiItem('updateProfile() - nickname', () async {
+      ApiItem('updateProfile()', () async {
         // 사용자 정보 저장
 
         try {
           // 변경할 내용
-          Map<String, String> properties = {'nickname': "${DateTime.now()}"};
+          Map<String, String> properties = {'custom_key': "${DateTime.now()}"};
           await UserApi.instance.updateProfile(properties);
           Log.i(context, tag, '사용자 정보 저장 성공');
         } catch (e) {
