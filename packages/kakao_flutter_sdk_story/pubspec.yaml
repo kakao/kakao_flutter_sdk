@@ -12,8 +12,8 @@ dependencies:
     sdk: flutter
   json_annotation: ^4.0.1
   dio: ^4.0.0
-  kakao_flutter_sdk_auth:
-    path: ../kakao_flutter_sdk_auth
+  kakao_flutter_sdk_user:
+    path: ../kakao_flutter_sdk_user
 
 dev_dependencies:
   flutter_test:
