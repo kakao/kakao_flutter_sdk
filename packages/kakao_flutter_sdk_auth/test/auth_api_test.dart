@@ -135,7 +135,7 @@ void main() {
 
       expect(true, oldToken != null);
 
-      var newToken = await _authApi.refreshAccessToken(
+      var newToken = await _authApi.refreshToken(
           oldToken: oldToken!, redirectUri: redirectUri, appKey: appKey);
       expect(true, oldToken.accessToken != newToken.accessToken);
       expect(
@@ -214,7 +214,7 @@ void main() {
 
       expect(true, oldToken != null);
 
-      newToken = await _authApi.refreshAccessToken(
+      newToken = await _authApi.refreshToken(
           oldToken: oldToken!, redirectUri: redirectUri, appKey: clientId);
 
       expect(true, newToken != null);

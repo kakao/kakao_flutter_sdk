@@ -76,7 +76,7 @@ class AuthApi {
   }
 
   /// 기존 토큰([oldToken])을 갱신합니다.
-  Future<OAuthToken> refreshAccessToken({
+  Future<OAuthToken> refreshToken({
     required OAuthToken oldToken,
     String? redirectUri,
     String? appKey,
@@ -91,6 +91,17 @@ class AuthApi {
     final newToken = await _issueAccessToken(data, oldToken: oldToken);
     await _tokenManagerProvider.manager.setToken(newToken);
     return newToken;
+  }
+
+  /// 기존 토큰([oldToken])을 갱신합니다.
+  @Deprecated('This method is replaced with \'AuthApi#refreshToken\'')
+  Future<OAuthToken> refreshAccessToken({
+    required OAuthToken oldToken,
+    String? redirectUri,
+    String? appKey,
+  }) async {
+    return await refreshToken(
+        oldToken: oldToken, redirectUri: redirectUri, appKey: appKey);
   }
 
   /// @nodoc
