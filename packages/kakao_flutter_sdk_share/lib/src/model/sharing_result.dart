@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'link_result.g.dart';
+part 'sharing_result.g.dart';
 
-/// 카카오링크 API 호출 결과
+/// 카카오톡 공유 API 호출 결과
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
-class LinkResult {
+class SharingResult {
   /// 메시지 템플릿 도구에서 구성한 사용자 정의 템플릿의 ID
   int templateId;
 
@@ -21,15 +21,15 @@ class LinkResult {
   Map<String, dynamic> argumentMsg;
 
   /// @nodoc
-  LinkResult(this.templateId, this.templateArgs, this.templateMsg,
+  SharingResult(this.templateId, this.templateArgs, this.templateMsg,
       this.warningMsg, this.argumentMsg);
 
   /// @nodoc
-  factory LinkResult.fromJson(Map<String, dynamic> json) =>
-      _$LinkResultFromJson(json);
+  factory SharingResult.fromJson(Map<String, dynamic> json) =>
+      _$SharingResultFromJson(json);
 
   /// @nodoc
-  Map<String, dynamic> toJson() => _$LinkResultToJson(this);
+  Map<String, dynamic> toJson() => _$SharingResultToJson(this);
 
   /// @nodoc
   @override

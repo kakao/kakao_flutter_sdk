@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'link_result.dart';
+part of 'sharing_result.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-LinkResult _$LinkResultFromJson(Map<String, dynamic> json) {
-  return LinkResult(
+SharingResult _$SharingResultFromJson(Map<String, dynamic> json) {
+  return SharingResult(
     json['template_id'] as int,
     json['template_args'] as Map<String, dynamic>?,
     json['template_msg'] as Map<String, dynamic>,
@@ -16,7 +16,7 @@ LinkResult _$LinkResultFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$LinkResultToJson(LinkResult instance) {
+Map<String, dynamic> _$SharingResultToJson(SharingResult instance) {
   final val = <String, dynamic>{
     'template_id': instance.templateId,
   };
