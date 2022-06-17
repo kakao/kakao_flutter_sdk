@@ -909,122 +909,122 @@ class _ApiListState extends State<ApiList> {
           Log.e(context, tag, '스토리 쓰기 실패', e);
         }
       }),
-      ApiItem('KakaoLink API'),
-      ApiItem('isKakaoLinkAvailable()', () async {
+      ApiItem('KakaoTalk Sharing API'),
+      ApiItem('isKakaoTalkSharingAvailable()', () async {
         // 카카오톡 설치여부 확인
-        bool result = await LinkClient.instance.isKakaoLinkAvailable();
+        bool result = await ShareClient.instance.isKakaoTalkSharingAvailable();
         if (result) {
-          Log.i(context, tag, '카카오톡으로 카카오링크 공유 가능');
+          Log.i(context, tag, '카카오톡 공유 가능');
         } else {
           Log.i(context, tag, '카카오톡 미설치: 웹 공유 사용 권장');
         }
       }),
       ApiItem('customTemplate()', () async {
-        // 커스텀 템플릿으로 카카오링크 보내기
+        // 커스텀 템플릿으로 카카오톡 공유하기
         //  * 만들기 가이드: https://developers.kakao.com/docs/latest/ko/message/message-template
         int templateId = templateIds['customMemo']!;
 
         try {
           Uri uri =
-              await LinkClient.instance.customTemplate(templateId: templateId);
-          await LinkClient.instance.launchKakaoTalk(uri);
-          Log.d(context, tag, '카카오링크 보내기 성공');
+              await ShareClient.instance.shareCustom(templateId: templateId);
+          await ShareClient.instance.launchKakaoTalk(uri);
+          Log.d(context, tag, '카카오톡 공유 성공');
         } catch (e) {
-          Log.e(context, tag, '카카오링크 보내기 실패', e);
+          Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
       ApiItem('scrapTemplate()', () async {
-        // 스크랩 템플릿으로 카카오링크 보내기
+        // 스크랩 템플릿으로 카카오톡 공유하기
 
         // 공유할 웹페이지 URL
         // * 주의: 개발자사이트 Web 플랫폼 설정에 공유할 URL의 도메인이 등록되어 있어야 합니다.
         String url = "https://developers.kakao.com";
 
         try {
-          Uri uri = await LinkClient.instance.scrapTemplate(url: url);
-          await LinkClient.instance.launchKakaoTalk(uri);
-          Log.d(context, tag, '카카오링크 보내기 성공');
+          Uri uri = await ShareClient.instance.shareScrap(url: url);
+          await ShareClient.instance.launchKakaoTalk(uri);
+          Log.d(context, tag, '카카오톡 공유 성공');
         } catch (e) {
-          Log.e(context, tag, '카카오링크 보내기 실패', e);
+          Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
       ApiItem('defaultTemplate() - feed', () async {
-        // 디폴트 템플릿으로 카카오링크 보내기 - Feed
+        // 디폴트 템플릿으로 카카오톡 공유하기 - Feed
 
         try {
           Uri uri =
-              await LinkClient.instance.defaultTemplate(template: defaultFeed);
-          await LinkClient.instance.launchKakaoTalk(uri);
-          Log.d(context, tag, '카카오링크 보내기 성공');
+              await ShareClient.instance.shareDefault(template: defaultFeed);
+          await ShareClient.instance.launchKakaoTalk(uri);
+          Log.d(context, tag, '카카오톡 공유 성공');
         } catch (e) {
-          Log.e(context, tag, '카카오링크 보내기 실패', e);
+          Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
       ApiItem('defaultTemplate() - list', () async {
-        // 디폴트 템플릿으로 카카오링크 보내기 - List
+        // 디폴트 템플릿으로 카카오톡 공유하기 - List
 
         try {
           Uri uri =
-              await LinkClient.instance.defaultTemplate(template: defaultList);
-          await LinkClient.instance.launchKakaoTalk(uri);
-          Log.d(context, tag, '카카오링크 보내기 성공');
+              await ShareClient.instance.shareDefault(template: defaultList);
+          await ShareClient.instance.launchKakaoTalk(uri);
+          Log.d(context, tag, '카카오톡 공유 성공');
         } catch (e) {
-          Log.e(context, tag, '카카오링크 보내기 실패', e);
+          Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
       ApiItem('defaultTemplate() - location', () async {
-        // 디폴트 템플릿으로 카카오링크 보내기 - List
+        // 디폴트 템플릿으로 카카오톡 공유하기 - List
 
         try {
-          Uri uri = await LinkClient.instance
-              .defaultTemplate(template: defaultLocation);
-          await LinkClient.instance.launchKakaoTalk(uri);
-          Log.d(context, tag, '카카오링크 보내기 성공');
+          Uri uri = await ShareClient.instance
+              .shareDefault(template: defaultLocation);
+          await ShareClient.instance.launchKakaoTalk(uri);
+          Log.d(context, tag, '카카오톡 공유 성공');
         } catch (e) {
-          Log.e(context, tag, '카카오링크 보내기 실패', e);
+          Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
       ApiItem('defaultTemplate() - commerce', () async {
-        // 디폴트 템플릿으로 카카오링크 보내기 - List
+        // 디폴트 템플릿으로 카카오톡 공유하기 - List
 
         try {
-          Uri uri = await LinkClient.instance
-              .defaultTemplate(template: defaultCommerce);
-          await LinkClient.instance.launchKakaoTalk(uri);
-          Log.d(context, tag, '카카오링크 보내기 성공');
+          Uri uri = await ShareClient.instance
+              .shareDefault(template: defaultCommerce);
+          await ShareClient.instance.launchKakaoTalk(uri);
+          Log.d(context, tag, '카카오톡 공유 성공');
         } catch (e) {
-          Log.e(context, tag, '카카오링크 보내기 실패', e);
+          Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
       ApiItem('defaultTemplate() - text', () async {
-        // 디폴트 템플릿으로 카카오링크 보내기 - List
+        // 디폴트 템플릿으로 카카오톡 공유하기 - List
 
         try {
           Uri uri =
-              await LinkClient.instance.defaultTemplate(template: defaultText);
-          await LinkClient.instance.launchKakaoTalk(uri);
-          Log.d(context, tag, '카카오링크 보내기 성공');
+              await ShareClient.instance.shareDefault(template: defaultText);
+          await ShareClient.instance.launchKakaoTalk(uri);
+          Log.d(context, tag, '카카오톡 공유 성공');
         } catch (e) {
-          Log.e(context, tag, '카카오링크 보내기 실패', e);
+          Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
       ApiItem('customTemplateUri() - web sharer', () async {
-        // 커스텀 템플릿으로 웹에서 카카오링크 보내기
+        // 커스텀 템플릿으로 웹에서 카카오톡 공유하기
 
         // 메시지 템플릿 아이디
         // * 만들기 가이드: https://developers.kakao.com/docs/latest/ko/message/message-template
         int templateId = templateIds['customMemo']!;
 
         try {
-          Uri shareUrl = await WebSharerClient.instance.customTemplateUri(
+          Uri shareUrl = await WebSharerClient.instance.makeCustomUrl(
               templateId: templateId, templateArgs: {'key1': 'value1'});
           await launchBrowserTab(shareUrl);
         } catch (e) {
-          Log.e(context, tag, '카카오링크 보내기 실패', e);
+          Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
       ApiItem('scrapTemplateUri() - web sharer', () async {
-        // 스크랩 템플릿으로 웹에서 카카오링크 보내기
+        // 스크랩 템플릿으로 웹에서 카카오톡 공유하기
 
         // 공유할 웹페이지 URL
         // * 주의: 개발자사이트 Web 플랫폼 설정에 공유할 URL의 도메인이 등록되어 있어야 합니다.
@@ -1032,32 +1032,32 @@ class _ApiListState extends State<ApiList> {
 
         try {
           Uri shareUrl = await WebSharerClient.instance
-              .scrapTemplateUri(url: url, templateArgs: {'key1': 'value1'});
+              .makeScrapUrl(url: url, templateArgs: {'key1': 'value1'});
           await launchBrowserTab(shareUrl);
         } catch (e) {
-          Log.e(context, tag, '카카오링크 보내기 실패', e);
+          Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
       ApiItem('defaultTemplateUri() - web sharer - feed', () async {
-        // 커스텀 템플릿으로 웹에서 카카오링크 보내기 - Feed
+        // 커스텀 템플릿으로 웹에서 카카오톡 공유하기 - Feed
 
         try {
           Uri shareUrl = await WebSharerClient.instance
-              .defaultTemplateUri(template: defaultFeed);
+              .makeDefaultUrl(template: defaultFeed);
           await launchBrowserTab(shareUrl);
         } catch (e) {
-          Log.e(context, tag, '카카오링크 보내기 실패', e);
+          Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
       ApiItem('defaultTemplateUri() - web sharer - location', () async {
-        // 커스텀 템플릿으로 웹에서 카카오링크 보내기 - Location
+        // 커스텀 템플릿으로 웹에서 카카오톡 공유하기 - Location
 
         try {
           Uri shareUrl = await WebSharerClient.instance
-              .defaultTemplateUri(template: defaultLocation);
+              .makeDefaultUrl(template: defaultLocation);
           await launchBrowserTab(shareUrl);
         } catch (e) {
-          Log.e(context, tag, '카카오링크 보내기 실패', e);
+          Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
       ApiItem('uploadImage()', () async {
@@ -1076,7 +1076,7 @@ class _ApiListState extends State<ApiList> {
         try {
           // 카카오 이미지 서버로 업로드
           ImageUploadResult imageUploadResult =
-              await LinkClient.instance.uploadImage(image: file);
+              await ShareClient.instance.uploadImage(image: file);
           Log.i(
               context, tag, '이미지 업로드 성공\n${imageUploadResult.infos.original}');
         } catch (e) {
@@ -1093,7 +1093,7 @@ class _ApiListState extends State<ApiList> {
         try {
           // 카카오 이미지 서버로 업로드
           ImageUploadResult imageUploadResult =
-              await LinkClient.instance.scrapImage(imageUrl: url);
+              await ShareClient.instance.scrapImage(imageUrl: url);
           Log.i(
               context, tag, '이미지 스크랩 성공\n${imageUploadResult.infos.original}');
         } catch (e) {

@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 
 /**
- * 카카오링크, 메시지 또는 카카오스토리에서 앱 링크 클릭 시 실행되는 Activity 예제
+ * 카카오톡 공유 , 메시지 또는 카카오스토리에서 앱 링크 클릭 시 실행되는 Activity 예제
  *
  *  AndroidManifest.xml 에 intent-filter 설정이 필요하므로 샘플앱의 설정을 참고합니다.
  *
@@ -21,7 +21,7 @@ class KakaoLinkActivity : AppCompatActivity() {
         setContentView(R.layout.activity_kakao_link)
 
         intent.data?.let {
-            parseKakaoLink(it)
+            parseKakaoTalkSharing(it)
         }
     }
 
@@ -29,12 +29,12 @@ class KakaoLinkActivity : AppCompatActivity() {
         super.onNewIntent(intent)
 
         intent.data?.let {
-            parseKakaoLink(it)
+            parseKakaoTalkSharing(it)
         }
     }
 
-    // 카카오링크 파라미터 파싱
-    private fun parseKakaoLink(uri: Uri) {
+    // 카카오톡 공유 파라미터 파싱
+    private fun parseKakaoTalkSharing(uri: Uri) {
         // 공유 시 전달한 파라미터
         val executionParams = mutableMapOf<String, String>()
 
