@@ -19,7 +19,7 @@ class WebSharerClient {
 
   /// 카카오 디벨로퍼스에서 생성한 메시지 템플릿을 웹으로 공유
   /// 템플릿을 생성하는 방법은 [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/ko/message/message-template) 참고
-  Future<Uri> customTemplateUri({
+  Future<Uri> makeCustomUrl({
     required int templateId,
     Map<String, String>? templateArgs,
     Map<String, String>? serverCallbackArgs,
@@ -30,7 +30,7 @@ class WebSharerClient {
   }
 
   /// 기본 템플릿을 웹으로 공유
-  Future<Uri> defaultTemplateUri({
+  Future<Uri> makeDefaultUrl({
     required DefaultTemplate template,
     Map<String, String>? serverCallbackArgs,
   }) async {
@@ -41,7 +41,7 @@ class WebSharerClient {
 
   /// 원격 이미지를 카카오톡 공유 컨텐츠 이미지로 활용하기 위해 카카오 이미지 서버로 업로드
   /// 지정된 URL 을 스크랩하여 만들어진 템플릿을 웹으로 공유
-  Future<Uri> scrapTemplateUri({
+  Future<Uri> makeScrapUrl({
     required String url,
     int? templateId,
     Map<String, String>? templateArgs,
