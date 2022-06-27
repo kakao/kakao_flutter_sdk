@@ -6,29 +6,27 @@ part of 'story.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Story _$StoryFromJson(Map<String, dynamic> json) {
-  return Story(
-    json['id'] as String,
-    json['url'] as String,
-    json['content'] as String,
-    DateTime.parse(json['created_at'] as String),
-    _$enumDecodeNullable(_$StoryTypeEnumMap, json['media_type'],
-        unknownValue: StoryType.notSupported),
-    json['comment_count'] as int,
-    json['like_count'] as int,
-    (json['media'] as List<dynamic>?)
-        ?.map((e) => StoryImage.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    (json['likes'] as List<dynamic>?)
-        ?.map((e) => StoryLike.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    (json['comments'] as List<dynamic>?)
-        ?.map((e) => StoryComment.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    _$enumDecodeNullable(_$StoryPermissionEnumMap, json['permission'],
-        unknownValue: StoryPermission.unknown),
-  );
-}
+Story _$StoryFromJson(Map<String, dynamic> json) => Story(
+      json['id'] as String,
+      json['url'] as String,
+      json['content'] as String,
+      DateTime.parse(json['created_at'] as String),
+      _$enumDecodeNullable(_$StoryTypeEnumMap, json['media_type'],
+          unknownValue: StoryType.notSupported),
+      json['comment_count'] as int,
+      json['like_count'] as int,
+      (json['media'] as List<dynamic>?)
+          ?.map((e) => StoryImage.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      (json['likes'] as List<dynamic>?)
+          ?.map((e) => StoryLike.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      (json['comments'] as List<dynamic>?)
+          ?.map((e) => StoryComment.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      _$enumDecodeNullable(_$StoryPermissionEnumMap, json['permission'],
+          unknownValue: StoryPermission.unknown),
+    );
 
 Map<String, dynamic> _$StoryToJson(Story instance) {
   final val = <String, dynamic>{

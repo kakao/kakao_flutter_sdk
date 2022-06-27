@@ -6,50 +6,48 @@ part of 'account.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Account _$AccountFromJson(Map<String, dynamic> json) {
-  return Account(
-    json['profile_needs_agreement'] as bool?,
-    json['profile_nickname_needs_agreement'] as bool?,
-    json['profile_image_needs_agreement'] as bool?,
-    json['profile'] == null
-        ? null
-        : Profile.fromJson(json['profile'] as Map<String, dynamic>),
-    json['name_needs_agreement'] as bool?,
-    json['name'] as String?,
-    json['email_needs_agreement'] as bool?,
-    json['is_email_valid'] as bool?,
-    json['is_email_verified'] as bool?,
-    json['email'] as String?,
-    json['age_range_needs_agreement'] as bool?,
-    _$enumDecodeNullable(_$AgeRangeEnumMap, json['age_range'],
-        unknownValue: AgeRange.unknown),
-    json['birthyear_needs_agreement'] as bool?,
-    json['birthyear'] as String?,
-    json['birthday_needs_agreement'] as bool?,
-    json['birthday'] as String?,
-    _$enumDecodeNullable(_$BirthdayTypeEnumMap, json['birthday_type'],
-        unknownValue: BirthdayType.unknown),
-    json['gender_needs_agreement'] as bool?,
-    _$enumDecodeNullable(_$GenderEnumMap, json['gender'],
-        unknownValue: Gender.other),
-    json['ci_needs_agreement'] as bool?,
-    json['ci'] as String?,
-    json['ci_authenticated_at'] == null
-        ? null
-        : DateTime.parse(json['ci_authenticated_at'] as String),
-    json['legal_name_needs_agreement'] as bool?,
-    json['legal_name'] as String?,
-    json['legal_gender_needs_agreement'] as bool?,
-    _$enumDecodeNullable(_$GenderEnumMap, json['legal_gender'],
-        unknownValue: Gender.other),
-    json['legal_birth_date_needs_agreement'] as bool?,
-    json['legal_birth_date'] as String?,
-    json['phone_number_needs_agreement'] as bool?,
-    json['phone_number'] as String?,
-    json['is_korean_needs_agreement'] as bool?,
-    json['is_korean'] as bool?,
-  );
-}
+Account _$AccountFromJson(Map<String, dynamic> json) => Account(
+      json['profile_needs_agreement'] as bool?,
+      json['profile_nickname_needs_agreement'] as bool?,
+      json['profile_image_needs_agreement'] as bool?,
+      json['profile'] == null
+          ? null
+          : Profile.fromJson(json['profile'] as Map<String, dynamic>),
+      json['name_needs_agreement'] as bool?,
+      json['name'] as String?,
+      json['email_needs_agreement'] as bool?,
+      json['is_email_valid'] as bool?,
+      json['is_email_verified'] as bool?,
+      json['email'] as String?,
+      json['age_range_needs_agreement'] as bool?,
+      _$enumDecodeNullable(_$AgeRangeEnumMap, json['age_range'],
+          unknownValue: AgeRange.unknown),
+      json['birthyear_needs_agreement'] as bool?,
+      json['birthyear'] as String?,
+      json['birthday_needs_agreement'] as bool?,
+      json['birthday'] as String?,
+      _$enumDecodeNullable(_$BirthdayTypeEnumMap, json['birthday_type'],
+          unknownValue: BirthdayType.unknown),
+      json['gender_needs_agreement'] as bool?,
+      _$enumDecodeNullable(_$GenderEnumMap, json['gender'],
+          unknownValue: Gender.other),
+      json['ci_needs_agreement'] as bool?,
+      json['ci'] as String?,
+      json['ci_authenticated_at'] == null
+          ? null
+          : DateTime.parse(json['ci_authenticated_at'] as String),
+      json['legal_name_needs_agreement'] as bool?,
+      json['legal_name'] as String?,
+      json['legal_gender_needs_agreement'] as bool?,
+      _$enumDecodeNullable(_$GenderEnumMap, json['legal_gender'],
+          unknownValue: Gender.other),
+      json['legal_birth_date_needs_agreement'] as bool?,
+      json['legal_birth_date'] as String?,
+      json['phone_number_needs_agreement'] as bool?,
+      json['phone_number'] as String?,
+      json['is_korean_needs_agreement'] as bool?,
+      json['is_korean'] as bool?,
+    );
 
 Map<String, dynamic> _$AccountToJson(Account instance) {
   final val = <String, dynamic>{};
@@ -139,6 +137,8 @@ K? _$enumDecodeNullable<K, V>(
 }
 
 const _$AgeRangeEnumMap = {
+  AgeRange.age_0_9: '0~9',
+  AgeRange.age_10_14: '10~14',
   AgeRange.age_15_19: '15~19',
   AgeRange.age_20_29: '20~29',
   AgeRange.age_30_39: '30~39',
@@ -148,13 +148,13 @@ const _$AgeRangeEnumMap = {
   AgeRange.age_70_79: '70~79',
   AgeRange.age_80_89: '80~89',
   AgeRange.age_90above: '90~',
-  AgeRange.unknown: 'UNKNOWN',
+  AgeRange.unknown: 'unknown',
 };
 
 const _$BirthdayTypeEnumMap = {
   BirthdayType.solar: 'SOLAR',
   BirthdayType.lunar: 'LUNAR',
-  BirthdayType.unknown: 'UNKNOWN',
+  BirthdayType.unknown: 'unknown',
 };
 
 const _$GenderEnumMap = {

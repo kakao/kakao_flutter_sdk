@@ -6,19 +6,17 @@ part of 'navi_option.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-NaviOption _$NaviOptionFromJson(Map<String, dynamic> json) {
-  return NaviOption(
-    coordType: _$enumDecodeNullable(_$NaviCoordTypeEnumMap, json['coord_type']),
-    vehicleType:
-        _$enumDecodeNullable(_$VehicleTypeEnumMap, json['vehicle_type']),
-    rpOption: _$enumDecodeNullable(_$RpOptionEnumMap, json['rpoption']),
-    routeInfo: json['route_info'] as bool?,
-    startX: json['s_x'] as String?,
-    startY: json['s_y'] as String?,
-    startAngle: json['start_angle'] as int?,
-    returnUri: json['return_uri'] as String?,
-  );
-}
+NaviOption _$NaviOptionFromJson(Map<String, dynamic> json) => NaviOption(
+      coordType: _$enumDecodeNullable(_$CoordTypeEnumMap, json['coord_type']),
+      vehicleType:
+          _$enumDecodeNullable(_$VehicleTypeEnumMap, json['vehicle_type']),
+      rpOption: _$enumDecodeNullable(_$RpOptionEnumMap, json['rpoption']),
+      routeInfo: json['route_info'] as bool?,
+      startX: json['s_x'] as String?,
+      startY: json['s_y'] as String?,
+      startAngle: json['start_angle'] as int?,
+      returnUri: json['return_uri'] as String?,
+    );
 
 Map<String, dynamic> _$NaviOptionToJson(NaviOption instance) {
   final val = <String, dynamic>{};
@@ -29,7 +27,7 @@ Map<String, dynamic> _$NaviOptionToJson(NaviOption instance) {
     }
   }
 
-  writeNotNull('coord_type', _$NaviCoordTypeEnumMap[instance.coordType]);
+  writeNotNull('coord_type', _$CoordTypeEnumMap[instance.coordType]);
   writeNotNull('vehicle_type', _$VehicleTypeEnumMap[instance.vehicleType]);
   writeNotNull('rpoption', _$RpOptionEnumMap[instance.rpOption]);
   writeNotNull('route_info', instance.routeInfo);
@@ -77,7 +75,7 @@ K? _$enumDecodeNullable<K, V>(
   return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
-const _$NaviCoordTypeEnumMap = {
+const _$CoordTypeEnumMap = {
   CoordType.wgs84: 'wgs84',
   CoordType.katec: 'katec',
 };

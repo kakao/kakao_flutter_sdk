@@ -6,13 +6,11 @@ part of 'story_like.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-StoryLike _$StoryLikeFromJson(Map<String, dynamic> json) {
-  return StoryLike(
-    _$enumDecode(_$EmotionEnumMap, json['emotion'],
-        unknownValue: Emotion.unknown),
-    StoryActor.fromJson(json['actor'] as Map<String, dynamic>),
-  );
-}
+StoryLike _$StoryLikeFromJson(Map<String, dynamic> json) => StoryLike(
+      _$enumDecode(_$EmotionEnumMap, json['emotion'],
+          unknownValue: Emotion.unknown),
+      StoryActor.fromJson(json['actor'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$StoryLikeToJson(StoryLike instance) => <String, dynamic>{
       'emotion': _$EmotionEnumMap[instance.emotion],

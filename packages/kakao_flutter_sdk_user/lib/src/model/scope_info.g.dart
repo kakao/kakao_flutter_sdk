@@ -6,14 +6,12 @@ part of 'scope_info.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ScopeInfo _$ScopeInfoFromJson(Map<String, dynamic> json) {
-  return ScopeInfo(
-    json['id'] as int,
-    (json['scopes'] as List<dynamic>?)
-        ?.map((e) => Scope.fromJson(e as Map<String, dynamic>))
-        .toList(),
-  );
-}
+ScopeInfo _$ScopeInfoFromJson(Map<String, dynamic> json) => ScopeInfo(
+      json['id'] as int,
+      (json['scopes'] as List<dynamic>?)
+          ?.map((e) => Scope.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$ScopeInfoToJson(ScopeInfo instance) {
   final val = <String, dynamic>{

@@ -6,12 +6,10 @@ part of 'service_terms.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ServiceTerms _$ServiceTermsFromJson(Map<String, dynamic> json) {
-  return ServiceTerms(
-    json['tag'] as String,
-    DateTime.parse(json['agreed_at'] as String),
-  );
-}
+ServiceTerms _$ServiceTermsFromJson(Map<String, dynamic> json) => ServiceTerms(
+      json['tag'] as String,
+      DateTime.parse(json['agreed_at'] as String),
+    );
 
 Map<String, dynamic> _$ServiceTermsToJson(ServiceTerms instance) =>
     <String, dynamic>{

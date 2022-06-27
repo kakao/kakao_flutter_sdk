@@ -6,13 +6,12 @@ part of 'access_token_info.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AccessTokenInfo _$AccessTokenInfoFromJson(Map<String, dynamic> json) {
-  return AccessTokenInfo(
-    json['app_id'] as int,
-    json['id'] as int?,
-    json['expires_in'] as int,
-  );
-}
+AccessTokenInfo _$AccessTokenInfoFromJson(Map<String, dynamic> json) =>
+    AccessTokenInfo(
+      json['app_id'] as int,
+      json['id'] as int?,
+      json['expires_in'] as int,
+    );
 
 Map<String, dynamic> _$AccessTokenInfoToJson(AccessTokenInfo instance) {
   final val = <String, dynamic>{

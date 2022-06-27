@@ -6,15 +6,13 @@ part of 'story_image.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-StoryImage _$StoryImageFromJson(Map<String, dynamic> json) {
-  return StoryImage(
-    json['xlarge'] as String?,
-    json['large'] as String?,
-    json['medium'] as String?,
-    json['small'] as String?,
-    json['original'] as String?,
-  );
-}
+StoryImage _$StoryImageFromJson(Map<String, dynamic> json) => StoryImage(
+      json['xlarge'] as String?,
+      json['large'] as String?,
+      json['medium'] as String?,
+      json['small'] as String?,
+      json['original'] as String?,
+    );
 
 Map<String, dynamic> _$StoryImageToJson(StoryImage instance) {
   final val = <String, dynamic>{};

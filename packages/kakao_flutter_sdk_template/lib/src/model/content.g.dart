@@ -6,16 +6,14 @@ part of 'content.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Content _$ContentFromJson(Map<String, dynamic> json) {
-  return Content(
-    title: json['title'] as String,
-    imageUrl: Uri.parse(json['image_url'] as String),
-    link: Link.fromJson(json['link'] as Map<String, dynamic>),
-    description: json['description'] as String?,
-    imageWidth: json['image_width'] as int?,
-    imageHeight: json['image_height'] as int?,
-  );
-}
+Content _$ContentFromJson(Map<String, dynamic> json) => Content(
+      title: json['title'] as String,
+      imageUrl: Uri.parse(json['image_url'] as String),
+      link: Link.fromJson(json['link'] as Map<String, dynamic>),
+      description: json['description'] as String?,
+      imageWidth: json['image_width'] as int?,
+      imageHeight: json['image_height'] as int?,
+    );
 
 Map<String, dynamic> _$ContentToJson(Content instance) {
   final val = <String, dynamic>{

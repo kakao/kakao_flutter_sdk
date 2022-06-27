@@ -6,16 +6,14 @@ part of 'friend.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Friend _$FriendFromJson(Map<String, dynamic> json) {
-  return Friend(
-    json['id'] as int?,
-    json['uuid'] as String,
-    json['profile_nickname'] as String?,
-    json['profile_thumbnail_image'] as String?,
-    json['favorite'] as bool?,
-    json['allowed_msg'] as bool?,
-  );
-}
+Friend _$FriendFromJson(Map<String, dynamic> json) => Friend(
+      json['id'] as int?,
+      json['uuid'] as String,
+      json['profile_nickname'] as String?,
+      json['profile_thumbnail_image'] as String?,
+      json['favorite'] as bool?,
+      json['allowed_msg'] as bool?,
+    );
 
 Map<String, dynamic> _$FriendToJson(Friend instance) {
   final val = <String, dynamic>{};

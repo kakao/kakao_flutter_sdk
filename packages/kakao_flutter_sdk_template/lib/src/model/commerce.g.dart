@@ -6,17 +6,15 @@ part of 'commerce.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Commerce _$CommerceFromJson(Map<String, dynamic> json) {
-  return Commerce(
-    regularPrice: json['regular_price'] as int,
-    discountPrice: json['discount_price'] as int?,
-    fixedDiscountPrice: json['fixed_discount_price'] as int?,
-    discountRate: json['discount_rate'] as int?,
-    productName: json['product_name'] as String?,
-    currencyUnit: json['currency_unit'] as String?,
-    currencyUnitPosition: json['currency_unit_position'] as int?,
-  );
-}
+Commerce _$CommerceFromJson(Map<String, dynamic> json) => Commerce(
+      regularPrice: json['regular_price'] as int,
+      discountPrice: json['discount_price'] as int?,
+      fixedDiscountPrice: json['fixed_discount_price'] as int?,
+      discountRate: json['discount_rate'] as int?,
+      productName: json['product_name'] as String?,
+      currencyUnit: json['currency_unit'] as String?,
+      currencyUnitPosition: json['currency_unit_position'] as int?,
+    );
 
 Map<String, dynamic> _$CommerceToJson(Commerce instance) {
   final val = <String, dynamic>{

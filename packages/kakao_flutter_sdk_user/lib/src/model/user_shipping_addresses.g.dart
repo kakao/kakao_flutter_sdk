@@ -7,15 +7,14 @@ part of 'user_shipping_addresses.dart';
 // **************************************************************************
 
 UserShippingAddresses _$UserShippingAddressesFromJson(
-    Map<String, dynamic> json) {
-  return UserShippingAddresses(
-    json['user_id'] as int?,
-    json['shipping_addresses_needs_agreement'] as bool,
-    (json['shipping_addresses'] as List<dynamic>?)
-        ?.map((e) => ShippingAddress.fromJson(e as Map<String, dynamic>))
-        .toList(),
-  );
-}
+        Map<String, dynamic> json) =>
+    UserShippingAddresses(
+      json['user_id'] as int?,
+      json['shipping_addresses_needs_agreement'] as bool,
+      (json['shipping_addresses'] as List<dynamic>?)
+          ?.map((e) => ShippingAddress.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$UserShippingAddressesToJson(
     UserShippingAddresses instance) {

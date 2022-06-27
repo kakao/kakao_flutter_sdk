@@ -6,14 +6,12 @@ part of 'talk_profile.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-TalkProfile _$TalkProfileFromJson(Map<String, dynamic> json) {
-  return TalkProfile(
-    json['nickName'] as String?,
-    json['profileImageURL'] as String?,
-    json['thumbnailURL'] as String?,
-    json['countryISO'] as String?,
-  );
-}
+TalkProfile _$TalkProfileFromJson(Map<String, dynamic> json) => TalkProfile(
+      json['nickName'] as String?,
+      json['profileImageURL'] as String?,
+      json['thumbnailURL'] as String?,
+      json['countryISO'] as String?,
+    );
 
 Map<String, dynamic> _$TalkProfileToJson(TalkProfile instance) {
   final val = <String, dynamic>{};

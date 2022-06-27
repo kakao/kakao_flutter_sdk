@@ -6,20 +6,19 @@ part of 'kakao_api_exception.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-KakaoApiException _$KakaoApiExceptionFromJson(Map<String, dynamic> json) {
-  return KakaoApiException(
-    _$enumDecode(_$ApiErrorCauseEnumMap, json['code'],
-        unknownValue: ApiErrorCause.unknown),
-    json['msg'] as String,
-    apiType: json['api_type'] as String?,
-    requiredScopes: (json['required_scopes'] as List<dynamic>?)
-        ?.map((e) => e as String)
-        .toList(),
-    allowedScopes: (json['allowed_scopes'] as List<dynamic>?)
-        ?.map((e) => e as String)
-        .toList(),
-  );
-}
+KakaoApiException _$KakaoApiExceptionFromJson(Map<String, dynamic> json) =>
+    KakaoApiException(
+      _$enumDecode(_$ApiErrorCauseEnumMap, json['code'],
+          unknownValue: ApiErrorCause.unknown),
+      json['msg'] as String,
+      apiType: json['api_type'] as String?,
+      requiredScopes: (json['required_scopes'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      allowedScopes: (json['allowed_scopes'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+    );
 
 Map<String, dynamic> _$KakaoApiExceptionToJson(KakaoApiException instance) {
   final val = <String, dynamic>{
@@ -97,5 +96,5 @@ const _$ApiErrorCauseEnumMap = {
   ApiErrorCause.storyMaxUploadCountExceed: -606,
   ApiErrorCause.developerDoesNotExist: -903,
   ApiErrorCause.underMaintenance: -9798,
-  ApiErrorCause.unknown: 'UNKNOWN',
+  ApiErrorCause.unknown: 'unknown',
 };

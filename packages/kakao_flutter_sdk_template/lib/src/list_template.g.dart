@@ -6,20 +6,18 @@ part of 'list_template.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ListTemplate _$ListTemplateFromJson(Map<String, dynamic> json) {
-  return ListTemplate(
-    headerTitle: json['header_title'] as String,
-    headerLink: Link.fromJson(json['header_link'] as Map<String, dynamic>),
-    contents: (json['contents'] as List<dynamic>)
-        .map((e) => Content.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    buttons: (json['buttons'] as List<dynamic>?)
-        ?.map((e) => Button.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    buttonTitle: json['button_title'] as String?,
-    objectType: json['object_type'] as String,
-  );
-}
+ListTemplate _$ListTemplateFromJson(Map<String, dynamic> json) => ListTemplate(
+      headerTitle: json['header_title'] as String,
+      headerLink: Link.fromJson(json['header_link'] as Map<String, dynamic>),
+      contents: (json['contents'] as List<dynamic>)
+          .map((e) => Content.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      buttons: (json['buttons'] as List<dynamic>?)
+          ?.map((e) => Button.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      buttonTitle: json['button_title'] as String?,
+      objectType: json['object_type'] as String? ?? "list",
+    );
 
 Map<String, dynamic> _$ListTemplateToJson(ListTemplate instance) {
   final val = <String, dynamic>{

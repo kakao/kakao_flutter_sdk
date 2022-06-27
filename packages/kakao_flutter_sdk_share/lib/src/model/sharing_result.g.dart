@@ -6,15 +6,14 @@ part of 'sharing_result.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SharingResult _$SharingResultFromJson(Map<String, dynamic> json) {
-  return SharingResult(
-    json['template_id'] as int,
-    json['template_args'] as Map<String, dynamic>?,
-    json['template_msg'] as Map<String, dynamic>,
-    json['warning_msg'] as Map<String, dynamic>,
-    json['argument_msg'] as Map<String, dynamic>,
-  );
-}
+SharingResult _$SharingResultFromJson(Map<String, dynamic> json) =>
+    SharingResult(
+      json['template_id'] as int,
+      json['template_args'] as Map<String, dynamic>?,
+      json['template_msg'] as Map<String, dynamic>,
+      json['warning_msg'] as Map<String, dynamic>,
+      json['argument_msg'] as Map<String, dynamic>,
+    );
 
 Map<String, dynamic> _$SharingResultToJson(SharingResult instance) {
   final val = <String, dynamic>{
