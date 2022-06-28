@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_story/src/constants.dart';
 import 'package:kakao_flutter_sdk_story/src/model/link_info.dart';
 import 'package:kakao_flutter_sdk_story/src/model/story.dart';
 import 'package:kakao_flutter_sdk_story/src/model/story_post_result.dart';
 import 'package:kakao_flutter_sdk_story/src/model/story_profile.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
 /// 카카오스토리 API 호출을 담당하는 클라이언트
 class StoryApi {
