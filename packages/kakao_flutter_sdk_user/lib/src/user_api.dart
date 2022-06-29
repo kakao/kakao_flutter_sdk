@@ -139,7 +139,7 @@ class UserApi {
   /// 발급된 토큰은 [TokenManagerProvider]에 지정된 토큰 저장소에 자동으로 저장됨
   ///
   /// [scopes]로 추가로 동의 받고자 하는 동의 항목 ID 목록을 전달함
-  /// 카카오 디벨로퍼스 동의 항목 설정 화면에서 확인 가능
+  /// 카카오디벨로퍼스 동의 항목 설정 화면에서 확인 가능
   /// ID 토큰 재생 공격 방지를 위한 검증 값은 [nonce]로 전달. 임의의 문자열, ID 토큰 검증 시 사용
   Future<OAuthToken> loginWithNewScopes(List<String> scopes,
       {String? nonce}) async {
@@ -229,7 +229,7 @@ class UserApi {
 
   /// User 클래스에서 제공되고 있는 사용자의 부가정보를 신규저장 및 수정
   ///
-  /// 저장 가능한 키 이름은 카카오 디벨로퍼스 > 카카오 로그인 > 사용자 프로퍼티 메뉴에서 확인
+  /// 저장 가능한 키 이름은 카카오디벨로퍼스 > 카카오 로그인 > 사용자 프로퍼티 메뉴에서 확인
   /// 앱 연결 시 기본 저장되는 nickname, profile_image, thumbnail_image 값도 덮어쓰기 가능하며 새로운 컬럼을 추가하면 해당 키 이름으로 정보 저장 가능
   Future<void> updateProfile(Map<String, String> properties) {
     return ApiFactory.handleApiError(() async {

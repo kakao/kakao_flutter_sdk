@@ -6,18 +6,17 @@ part of 'access_token_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AccessTokenResponse _$AccessTokenResponseFromJson(Map<String, dynamic> json) {
-  return AccessTokenResponse(
-    json['access_token'] as String,
-    json['expires_in'] as int,
-    json['refresh_token'] as String?,
-    json['refresh_token_expires_in'] as int?,
-    json['scope'] as String?,
-    json['token_type'] as String,
-    txId: json['tx_id'] as String?,
-    idToken: json['id_token'] as String?,
-  );
-}
+AccessTokenResponse _$AccessTokenResponseFromJson(Map<String, dynamic> json) =>
+    AccessTokenResponse(
+      json['access_token'] as String,
+      json['expires_in'] as int,
+      json['refresh_token'] as String?,
+      json['refresh_token_expires_in'] as int?,
+      json['scope'] as String?,
+      json['token_type'] as String,
+      txId: json['tx_id'] as String?,
+      idToken: json['id_token'] as String?,
+    );
 
 Map<String, dynamic> _$AccessTokenResponseToJson(AccessTokenResponse instance) {
   final val = <String, dynamic>{

@@ -6,17 +6,15 @@ part of 'story_profile.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-StoryProfile _$StoryProfileFromJson(Map<String, dynamic> json) {
-  return StoryProfile(
-    json['nickName'] as String?,
-    json['profileImageURL'] as String?,
-    json['thumbnailURL'] as String?,
-    json['bgImageURL'] as String?,
-    json['permalink'] as String?,
-    json['birthday'] as String?,
-    json['birthdayType'] as String?,
-  );
-}
+StoryProfile _$StoryProfileFromJson(Map<String, dynamic> json) => StoryProfile(
+      json['nickName'] as String?,
+      json['profileImageURL'] as String?,
+      json['thumbnailURL'] as String?,
+      json['bgImageURL'] as String?,
+      json['permalink'] as String?,
+      json['birthday'] as String?,
+      json['birthdayType'] as String?,
+    );
 
 Map<String, dynamic> _$StoryProfileToJson(StoryProfile instance) {
   final val = <String, dynamic>{};

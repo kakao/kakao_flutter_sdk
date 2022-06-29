@@ -107,14 +107,14 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
                 applicationContext.startActivity(intent)
                 result.success(true)
             }
-            "isKakaoLinkAvailable" -> {
+            "isKakaoTalkSharingAvailable" -> {
                 val uriBuilder = Uri.Builder().scheme("kakaolink").authority("send")
-                val linkIntentClient = IntentResolveClient.instance
-                val isKakaoLinkAvailable = linkIntentClient.resolveTalkIntent(
+                val kakaotalkIntentClient = IntentResolveClient.instance
+                val isKakaoTalkSharingAvailable = kakaotalkIntentClient.resolveTalkIntent(
                     applicationContext,
                     Intent(Intent.ACTION_VIEW, uriBuilder.build())
                 ) != null
-                result.success(isKakaoLinkAvailable)
+                result.success(isKakaoTalkSharingAvailable)
             }
             "navigate" -> {
                 @Suppress("UNCHECKED_CAST") val args = call.arguments as Map<String, String>

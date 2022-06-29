@@ -117,7 +117,7 @@ void main() {
 
 const tokenKey = "com.kakao.token.OAuthToken";
 const atKey = "com.kakao.token.AccessToken";
-const atExpiresAtKey = "com.kakao.token.AccessToken.ExpiresAt";
+const expiresAtKey = "com.kakao.token.AccessToken.ExpiresAt";
 const rtKey = "com.kakao.token.RefreshToken";
 const rtExpiresAtKey = "com.kakao.token.RefreshToken.ExpiresAt";
 const secureModeKey = "com.kakao.token.KakaoSecureMode";
@@ -129,7 +129,7 @@ class OldTokenManager implements TokenManager {
   Future<void> clear() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.remove(atKey);
-    await preferences.remove(atExpiresAtKey);
+    await preferences.remove(expiresAtKey);
     await preferences.remove(rtKey);
     await preferences.remove(rtExpiresAtKey);
     await preferences.remove(secureModeKey);
@@ -140,7 +140,7 @@ class OldTokenManager implements TokenManager {
   Future<OAuthToken?> getToken() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var accessToken = preferences.getString(atKey);
-    var atExpiresAtMillis = preferences.getInt(atExpiresAtKey);
+    var atExpiresAtMillis = preferences.getInt(expiresAtKey);
 
     var expiresAt = atExpiresAtMillis != null
         ? DateTime.fromMillisecondsSinceEpoch(atExpiresAtMillis)
@@ -152,7 +152,7 @@ class OldTokenManager implements TokenManager {
         : null;
     List<String>? scopes = preferences.getStringList(scopesKey);
 
-    return OAuthToken(accessToken!, expiresAt!, expiresAt, refreshToken!,
+    return OAuthToken(accessToken!, expiresAt!, refreshToken!,
         refreshTokenExpiresAt!, scopes);
   }
 
@@ -161,7 +161,7 @@ class OldTokenManager implements TokenManager {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.setString(atKey, token.accessToken);
     await preferences.setInt(
-        atExpiresAtKey, token.accessTokenExpiresAt.millisecondsSinceEpoch);
+        expiresAtKey, token.expiresAt.millisecondsSinceEpoch);
     await preferences.setString(rtKey, token.refreshToken);
     await preferences.setInt(
         rtExpiresAtKey, token.refreshTokenExpiresAt.millisecondsSinceEpoch);
@@ -200,7 +200,7 @@ class BetaTokenManager implements TokenManager {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var accessToken = preferences.getString(atKey);
     var refreshToken = preferences.getString(rtKey);
-    var atExpiresAtMillis = preferences.getInt(atExpiresAtKey);
+    var atExpiresAtMillis = preferences.getInt(expiresAtKey);
     var rtExpiresAtMillis = preferences.getInt(rtExpiresAtKey);
     List<String>? scopes = preferences.getStringList(scopesKey);
 
@@ -213,12 +213,12 @@ class BetaTokenManager implements TokenManager {
       var refreshTokenExpiresAt =
           DateTime.fromMillisecondsSinceEpoch(rtExpiresAtMillis);
 
-      final token = OAuthToken(accessToken, expiresAt, expiresAt, refreshToken,
-          refreshTokenExpiresAt, scopes);
+      final token = OAuthToken(
+          accessToken, expiresAt, refreshToken, refreshTokenExpiresAt, scopes);
 
       // Remove all token properties that saved before 0.9.0 version and save migrated token.
       await preferences.remove(atKey);
-      await preferences.remove(atExpiresAtKey);
+      await preferences.remove(expiresAtKey);
       await preferences.remove(rtKey);
       await preferences.remove(rtExpiresAtKey);
       await preferences.remove(secureModeKey);

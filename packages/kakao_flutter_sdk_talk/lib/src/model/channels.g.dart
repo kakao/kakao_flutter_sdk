@@ -6,14 +6,12 @@ part of 'channels.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Channels _$ChannelsFromJson(Map<String, dynamic> json) {
-  return Channels(
-    json['user_id'] as int?,
-    (json['channels'] as List<dynamic>?)
-        ?.map((e) => Channel.fromJson(e as Map<String, dynamic>))
-        .toList(),
-  );
-}
+Channels _$ChannelsFromJson(Map<String, dynamic> json) => Channels(
+      json['user_id'] as int?,
+      (json['channels'] as List<dynamic>?)
+          ?.map((e) => Channel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$ChannelsToJson(Channels instance) {
   final val = <String, dynamic>{};

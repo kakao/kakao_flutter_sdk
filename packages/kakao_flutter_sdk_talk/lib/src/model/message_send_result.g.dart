@@ -6,16 +6,15 @@ part of 'message_send_result.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-MessageSendResult _$MessageSendResultFromJson(Map<String, dynamic> json) {
-  return MessageSendResult(
-    (json['successful_receiver_uuids'] as List<dynamic>?)
-        ?.map((e) => e as String)
-        .toList(),
-    (json['failure_info'] as List<dynamic>?)
-        ?.map((e) => MessageFailureInfo.fromJson(e as Map<String, dynamic>))
-        .toList(),
-  );
-}
+MessageSendResult _$MessageSendResultFromJson(Map<String, dynamic> json) =>
+    MessageSendResult(
+      (json['successful_receiver_uuids'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      (json['failure_info'] as List<dynamic>?)
+          ?.map((e) => MessageFailureInfo.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$MessageSendResultToJson(MessageSendResult instance) {
   final val = <String, dynamic>{};

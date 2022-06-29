@@ -3,34 +3,34 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:kakao_flutter_sdk_link/src/constants.dart';
-import 'package:kakao_flutter_sdk_link/src/link_api.dart';
-import 'package:kakao_flutter_sdk_link/src/model/image_upload_result.dart';
-import 'package:kakao_flutter_sdk_link/src/model/link_result.dart';
+import 'package:kakao_flutter_sdk_share/src/constants.dart';
+import 'package:kakao_flutter_sdk_share/src/model/image_upload_result.dart';
+import 'package:kakao_flutter_sdk_share/src/model/sharing_result.dart';
+import 'package:kakao_flutter_sdk_share/src/share_api.dart';
 import 'package:kakao_flutter_sdk_template/kakao_flutter_sdk_template.dart';
 import 'package:platform/platform.dart';
 
-/// 카카오링크 API 호출을 담당하는 클라이언트
-class LinkClient {
-  LinkClient(this.api, {Platform? platform})
+/// 카카오톡 공유 호출을 담당하는 클라이언트.
+class ShareClient {
+  ShareClient(this.api, {Platform? platform})
       : _platform = platform ?? const LocalPlatform();
-  LinkApi api;
+  ShareApi api;
   final Platform _platform;
 
   static const MethodChannel _channel =
       MethodChannel(CommonConstants.methodChannel);
 
   /// 간편한 API 호출을 위해 기본 제공되는 singleton 객체
-  static final LinkClient instance = LinkClient(LinkApi.instance);
+  static final ShareClient instance = ShareClient(ShareApi.instance);
 
-  Future<bool> isKakaoLinkAvailable() async {
-    return await _channel.invokeMethod(CommonConstants.isKakaoLinkAvailable) ??
+  Future<bool> isKakaoTalkSharingAvailable() async {
+    return await _channel
+            .invokeMethod(CommonConstants.isKakaoTalkSharingAvailable) ??
         false;
   }
 
-  /// 카카오 디벨로퍼스에서 생성한 메시지 템플릿을 카카오톡으로 공유
-  /// 템플릿을 생성하는 방법은 [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/ko/message/message-template) 참고
-  Future<Uri> customTemplate({
+  /// 카카오디벨로퍼스에서 생성한 메시지 템플릿으로 카카오톡 공유 URI 생성, [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/message/message-template) 참고
+  Future<Uri> shareCustom({
     required int templateId,
     Map<String, String>? templateArgs,
     Map<String, String>? serverCallbackArgs,
@@ -39,8 +39,8 @@ class LinkClient {
     return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
-  /// 기본 템플릿을 카카오톡으로 공유
-  Future<Uri> defaultTemplate({
+  /// 기본 템플릿으로 카카오톡 공유 URI 생성, [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/message/message-template) 참고
+  Future<Uri> shareDefault({
     required DefaultTemplate template,
     Map<String, String>? serverCallbackArgs,
   }) async {
@@ -48,9 +48,8 @@ class LinkClient {
     return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
-  /// 카카오링크 컨텐츠 이미지로 활용하기 위해 원격 이미지를 카카오 이미지 서버로 업로드
-  /// 지정된 URL 을 스크랩하여 만들어진 템플릿을 카카오톡으로 공유
-  Future<Uri> scrapTemplate({
+  /// 특정 URL의 웹 페이지 정보를 바탕으로 카카오톡 공유 URI 생성, [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/message/message-template) 참고
+  Future<Uri> shareScrap({
     required String url,
     int? templateId,
     Map<String, String>? templateArgs,
@@ -61,7 +60,7 @@ class LinkClient {
     return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
-  /// 카카오링크 컨텐츠 이미지로 활용하기 위해 로컬 이미지를 카카오 이미지 서버로 업로드
+  /// 로컬 이미지를 카카오톡 공유 컨텐츠 이미지로 활용하기 위해 카카오 이미지 서버로 업로드
   Future<ImageUploadResult> uploadImage({
     required File image,
     bool secureResource = true,
@@ -69,7 +68,7 @@ class LinkClient {
     return await api.uploadImage(image, secureResource: secureResource);
   }
 
-  /// 카카오링크 컨텐츠 이미지로 활용하기 위해 원격 이미지를 카카오 이미지 서버로 업로드
+  /// 원격 이미지를 카카오톡 공유 컨텐츠 이미지로 활용하기 위해 카카오 이미지 서버에 스크랩
   Future<ImageUploadResult> scrapImage({
     required String imageUrl,
     bool secureResource = true,
@@ -82,7 +81,7 @@ class LinkClient {
         CommonConstants.launchKakaoTalk, {Constants.uri: uri.toString()});
   }
 
-  Future<Uri> _talkWithResponse(LinkResult response,
+  Future<Uri> _talkWithResponse(SharingResult response,
       {String? appKey, Map<String, String>? serverCallbackArgs}) async {
     final attachmentSize = await _attachmentSize(response,
         appKey: appKey, serverCallbackArgs: serverCallbackArgs);
@@ -127,7 +126,7 @@ class LinkClient {
     return extras;
   }
 
-  Future<int> _attachmentSize(LinkResult response,
+  Future<int> _attachmentSize(SharingResult response,
       {String? appKey, Map<String, String>? serverCallbackArgs}) async {
     final templateMsg = response.templateMsg;
     final attachment = {

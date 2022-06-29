@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk_link/src/model/image_info.dart';
+import 'package:kakao_flutter_sdk_share/src/model/image_info.dart';
 
 part 'image_infos.g.dart';
 

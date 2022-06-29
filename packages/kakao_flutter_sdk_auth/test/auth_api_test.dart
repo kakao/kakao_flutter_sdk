@@ -84,7 +84,7 @@ void main() {
       final newToken = await _tokenManager.getToken();
       expect(true, newToken != null);
       expect(true, token.accessToken == newToken!.accessToken);
-      expect(true, token.accessTokenExpiresAt == newToken.accessTokenExpiresAt);
+      expect(true, token.expiresAt == newToken.expiresAt);
       expect(true, token.refreshToken == newToken.refreshToken);
       expect(
           true, token.refreshTokenExpiresAt == newToken.refreshTokenExpiresAt);
@@ -135,11 +135,10 @@ void main() {
 
       expect(true, oldToken != null);
 
-      var newToken = await _authApi.refreshAccessToken(
+      var newToken = await _authApi.refreshToken(
           oldToken: oldToken!, redirectUri: redirectUri, appKey: appKey);
       expect(true, oldToken.accessToken != newToken.accessToken);
-      expect(
-          true, oldToken.accessTokenExpiresAt != newToken.accessTokenExpiresAt);
+      expect(true, oldToken.expiresAt != newToken.expiresAt);
       expect(true, oldToken.refreshToken == newToken.refreshToken);
       expect(true,
           oldToken.refreshTokenExpiresAt == newToken.refreshTokenExpiresAt);
@@ -214,13 +213,12 @@ void main() {
 
       expect(true, oldToken != null);
 
-      newToken = await _authApi.refreshAccessToken(
+      newToken = await _authApi.refreshToken(
           oldToken: oldToken!, redirectUri: redirectUri, appKey: clientId);
 
       expect(true, newToken != null);
       expect(true, oldToken.accessToken != newToken!.accessToken);
-      expect(true,
-          oldToken.accessTokenExpiresAt != newToken!.accessTokenExpiresAt);
+      expect(true, oldToken.expiresAt != newToken!.expiresAt);
       expect(true, oldToken.refreshToken != newToken!.refreshToken);
       expect(true,
           oldToken.refreshTokenExpiresAt != newToken!.refreshTokenExpiresAt);

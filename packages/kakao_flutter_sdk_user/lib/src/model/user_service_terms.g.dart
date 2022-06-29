@@ -6,16 +6,15 @@ part of 'user_service_terms.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserServiceTerms _$UserServiceTermsFromJson(Map<String, dynamic> json) {
-  return UserServiceTerms(
-    json['user_id'] as int?,
-    (json['allowed_service_terms'] as List<dynamic>?)
-        ?.map((e) => ServiceTerms.fromJson(e as Map<String, dynamic>))
-        .toList(),
-  )..appServiceTerms = (json['app_service_terms'] as List<dynamic>?)
-      ?.map((e) => AppServiceTerms.fromJson(e as Map<String, dynamic>))
-      .toList();
-}
+UserServiceTerms _$UserServiceTermsFromJson(Map<String, dynamic> json) =>
+    UserServiceTerms(
+      json['user_id'] as int?,
+      (json['allowed_service_terms'] as List<dynamic>?)
+          ?.map((e) => ServiceTerms.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    )..appServiceTerms = (json['app_service_terms'] as List<dynamic>?)
+        ?.map((e) => AppServiceTerms.fromJson(e as Map<String, dynamic>))
+        .toList();
 
 Map<String, dynamic> _$UserServiceTermsToJson(UserServiceTerms instance) {
   final val = <String, dynamic>{};

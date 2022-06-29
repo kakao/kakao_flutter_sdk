@@ -51,8 +51,7 @@ class SdkLog {
   SdkLog._();
 
   static Future<String> get logs async {
-    return '==== sdk version: ${KakaoSdk.sdkVersion}\n==== app version: ${await KakaoSdk.appVer}\n' +
-        _logs.join("\n");
+    return '==== sdk version: ${KakaoSdk.sdkVersion}\n==== app version: ${await KakaoSdk.appVer}\n${_logs.join("\n")}';
   }
 
   static void v(Object? logged) => _log(logged, SdkLogLevel.v);

@@ -6,14 +6,12 @@ part of 'profile.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Profile _$ProfileFromJson(Map<String, dynamic> json) {
-  return Profile(
-    json['nickname'] as String?,
-    json['thumbnail_image_url'] as String?,
-    json['profile_image_url'] as String?,
-    json['is_default_image'] as bool?,
-  );
-}
+Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
+      json['nickname'] as String?,
+      json['thumbnail_image_url'] as String?,
+      json['profile_image_url'] as String?,
+      json['is_default_image'] as bool?,
+    );
 
 Map<String, dynamic> _$ProfileToJson(Profile instance) {
   final val = <String, dynamic>{};

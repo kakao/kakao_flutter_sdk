@@ -2,21 +2,21 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kakao_flutter_sdk_link/src/link_api.dart';
+import 'package:kakao_flutter_sdk_share/src/share_api.dart';
 
 import '../../kakao_flutter_sdk_common/test/helper.dart';
 import '../../kakao_flutter_sdk_common/test/mock_adapter.dart';
 
 void main() {
   late MockAdapter _adapter;
-  late LinkApi _api;
+  late ShareApi _api;
   late Dio _dio;
 
   setUp(() {
     _dio = Dio();
     _adapter = MockAdapter();
     _dio.httpClientAdapter = _adapter;
-    _api = LinkApi(_dio);
+    _api = ShareApi(_dio);
   });
 
   test("send custom 200", () async {

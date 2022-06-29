@@ -31,7 +31,7 @@ class AccessTokenInterceptor extends Interceptor {
     final request = err.requestOptions;
     final token = await _tokenManagerProvider.manager.getToken();
 
-    if (!isRetryable(err) || options == null || token == null) {
+    if (!_isTokenError(err) || options == null || token == null) {
       handler.next(err);
       return;
     }
@@ -51,7 +51,7 @@ class AccessTokenInterceptor extends Interceptor {
       _dio.lock();
       _dio.interceptors.errorLock.lock();
 
-      final newToken = await _kauthApi.refreshAccessToken(oldToken: token);
+      final newToken = await _kauthApi.refreshToken(oldToken: token);
       options.headers[CommonConstants.authorization] =
           "${CommonConstants.bearer} ${newToken.accessToken}";
 
@@ -77,17 +77,23 @@ class AccessTokenInterceptor extends Interceptor {
     }
   }
 
-  // This can be overridden
-  bool isRetryable(DioError err) =>
-      err.requestOptions.baseUrl ==
-          "${CommonConstants.scheme}://${KakaoSdk.hosts.kapi}" &&
-      err.response != null &&
-      err.response?.statusCode == 401;
-
   bool _isTokenError(Object err) {
-    if (err is KakaoAuthException ||
-        err is KakaoApiException && err.code == ApiErrorCause.invalidToken) {
-      return true;
+    if (err is DioError) {
+      if (err.requestOptions.baseUrl ==
+              "${CommonConstants.scheme}://${KakaoSdk.hosts.kapi}" &&
+          err.response != null &&
+          err.response?.data != null) {
+        var kapiException = KakaoApiException.fromJson(err.response?.data!);
+
+        if (kapiException.code == ApiErrorCause.invalidToken) {
+          return true;
+        }
+      }
+
+      if (err.requestOptions.baseUrl ==
+          "${CommonConstants.scheme}://${KakaoSdk.hosts.kauth}") {
+        return true;
+      }
     }
     return false;
   }

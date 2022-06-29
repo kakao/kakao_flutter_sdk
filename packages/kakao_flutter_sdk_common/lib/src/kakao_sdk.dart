@@ -12,12 +12,12 @@ class KakaoSdk {
   static const MethodChannel _channel =
       MethodChannel(CommonConstants.methodChannel);
 
-  /// Kakao Natvie App Key
+  /// Kakao Native App Key
   /// SDK를 사용하기 전에 반드시 초기화 필요
   static late String nativeKey;
   static late String jsKey;
 
-  static String sdkVersion = "1.1.1";
+  static String sdkVersion = "1.2.0";
 
   static bool logging = false;
 

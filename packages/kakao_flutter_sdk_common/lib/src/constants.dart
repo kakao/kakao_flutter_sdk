@@ -21,7 +21,8 @@ class CommonConstants {
   static const String isKakaoTalkInstalled = 'isKakaoTalkInstalled';
   static const String isKakaoNaviInstalled = 'isKakaoNaviInstalled';
   static const String launchKakaoTalk = 'launchKakaoTalk';
-  static const String isKakaoLinkAvailable = 'isKakaoLinkAvailable';
+  static const String isKakaoTalkSharingAvailable =
+      'isKakaoTalkSharingAvailable';
   static const String navigate = 'navigate';
   static const String shareDestination = 'shareDestination';
 }

@@ -53,9 +53,9 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
             let args = call.arguments as! Dictionary<String, String>
             let uri = args["uri"]
             launchKakaoTalk(uri: uri!, result: result)
-        case "isKakaoLinkAvailable":
-            let isKakaoLinkAvailable = UIApplication.shared.canOpenURL(URL(string:"kakaolink://send")!)
-            result(isKakaoLinkAvailable)
+        case "isKakaoTalkSharingAvailable":
+            let isKakaoTalkSharingAvailable = UIApplication.shared.canOpenURL(URL(string:"kakaolink://send")!)
+            result(isKakaoTalkSharingAvailable)
         case "navigate":
             let args = call.arguments as! Dictionary<String, String>
             let appKey = args["app_key"]

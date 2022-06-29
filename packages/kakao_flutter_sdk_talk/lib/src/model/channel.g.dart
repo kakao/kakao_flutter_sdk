@@ -6,16 +6,14 @@ part of 'channel.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Channel _$ChannelFromJson(Map<String, dynamic> json) {
-  return Channel(
-    json['channel_uuid'] as String,
-    json['channel_public_id'] as String,
-    json['relation'] as String,
-    json['updated_at'] == null
-        ? null
-        : DateTime.parse(json['updated_at'] as String),
-  );
-}
+Channel _$ChannelFromJson(Map<String, dynamic> json) => Channel(
+      json['channel_uuid'] as String,
+      json['channel_public_id'] as String,
+      json['relation'] as String,
+      json['updated_at'] == null
+          ? null
+          : DateTime.parse(json['updated_at'] as String),
+    );
 
 Map<String, dynamic> _$ChannelToJson(Channel instance) {
   final val = <String, dynamic>{

@@ -6,11 +6,10 @@ part of 'user_id_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserIdResponse _$UserIdResponseFromJson(Map<String, dynamic> json) {
-  return UserIdResponse(
-    json['id'] as int,
-  );
-}
+UserIdResponse _$UserIdResponseFromJson(Map<String, dynamic> json) =>
+    UserIdResponse(
+      json['id'] as int,
+    );
 
 Map<String, dynamic> _$UserIdResponseToJson(UserIdResponse instance) =>
     <String, dynamic>{
