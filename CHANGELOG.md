@@ -1,3 +1,21 @@
+## 1.2.0
+- Changed the module name:
+  - kakao_flutter_sdk_link → kakao_flutter_sdk_share
+- Changed the class name:
+  - LinkClient → ShareClient
+  - LinkResult → SharingResult
+- Changed the method name:
+  - refreshAccessToken() → refreshToken()
+  - isKakaoLinkAvailable() → isKakaoTalkSharingAvailable()
+  - defaultTemplate() → shareDefault()
+  - customTemplate() → shareCustom()
+  - scrapTemplate() → shareScrap()
+  - defaultTemplateUri() → makeDefaultUrl()
+  - customTemplateUri() → makeCustomUrl()
+  - scrapTemplateUri() → makeScrapUrl()
+- Changed the property name:
+  - accessTokenExpiresAt → expiresAt
+
 ## 1.1.1
 - Updated to be compatible with Flutter 3.0.
 
