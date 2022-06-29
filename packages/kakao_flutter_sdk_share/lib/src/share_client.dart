@@ -29,8 +29,7 @@ class ShareClient {
         false;
   }
 
-  /// 카카오 디벨로퍼스에서 생성한 메시지 템플릿을 카카오톡으로 공유
-  /// 템플릿을 생성하는 방법은 [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/ko/message/message-template) 참고
+  /// 카카오디벨로퍼스에서 생성한 메시지 템플릿으로 카카오톡 공유 URI 생성, [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/message/message-template) 참고
   Future<Uri> shareCustom({
     required int templateId,
     Map<String, String>? templateArgs,
@@ -40,7 +39,7 @@ class ShareClient {
     return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
-  /// 기본 템플릿을 카카오톡으로 공유
+  /// 기본 템플릿으로 카카오톡 공유 URI 생성, [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/message/message-template) 참고
   Future<Uri> shareDefault({
     required DefaultTemplate template,
     Map<String, String>? serverCallbackArgs,
@@ -49,8 +48,7 @@ class ShareClient {
     return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
-  /// 원격 이미지를 카카오톡 공유 컨텐츠 이미지로 활용하기 위해 카카오 이미지 서버로 업로드
-  /// 지정된 URL 을 스크랩하여 만들어진 템플릿을 카카오톡으로 공유
+  /// 특정 URL의 웹 페이지 정보를 바탕으로 카카오톡 공유 URI 생성, [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/message/message-template) 참고
   Future<Uri> shareScrap({
     required String url,
     int? templateId,
@@ -70,7 +68,7 @@ class ShareClient {
     return await api.uploadImage(image, secureResource: secureResource);
   }
 
-  /// 원격 이미지를 카카오톡 공유 컨텐츠 이미지로 활용하기 위해 카카오 이미지 서버로 업로드
+  /// 원격 이미지를 카카오톡 공유 컨텐츠 이미지로 활용하기 위해 카카오 이미지 서버에 스크랩
   Future<ImageUploadResult> scrapImage({
     required String imageUrl,
     bool secureResource = true,

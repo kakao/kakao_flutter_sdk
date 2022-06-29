@@ -17,7 +17,7 @@ class WebSharerClient {
   /// 간편한 API 호출을 위해 기본 제공되는 singleton 객체
   static final WebSharerClient instance = WebSharerClient(ShareApi.instance);
 
-  /// 카카오 디벨로퍼스에서 생성한 메시지 템플릿을 웹으로 공유
+  /// 카카오디벨로퍼스에서 생성한 메시지 템플릿을 웹으로 공유
   /// 템플릿을 생성하는 방법은 [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/ko/message/message-template) 참고
   Future<Uri> makeCustomUrl({
     required int templateId,

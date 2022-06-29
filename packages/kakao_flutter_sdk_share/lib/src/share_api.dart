@@ -17,7 +17,7 @@ class ShareApi {
 
   static final ShareApi instance = ShareApi(ApiFactory.appKeyApi);
 
-  /// 카카오 디벨로퍼스에서 생성한 메시지 템플릿을 카카오톡 메시지로 공유
+  /// 카카오디벨로퍼스에서 생성한 메시지 템플릿을 카카오톡 메시지로 공유
   Future<SharingResult> custom(int templateId,
       {Map<String, String>? templateArgs}) async {
     return _validate(Constants.validate, {

@@ -30,7 +30,7 @@ class TalkApi {
     });
   }
 
-  /// 카카오 디벨로퍼스에서 생성한 서비스만의 커스텀 메시지 템플릿을 사용하여, 카카오톡의 나와의 채팅방으로 메시지 전송
+  /// 카카오디벨로퍼스에서 생성한 서비스만의 커스텀 메시지 템플릿을 사용하여, 카카오톡의 나와의 채팅방으로 메시지 전송
   ///
   /// 템플릿을 생성하는 방법은 [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/ko/message/message-template) 참고
   Future<void> sendCustomMemo({
@@ -111,7 +111,7 @@ class TalkApi {
     });
   }
 
-  /// 카카오 디벨로퍼스에서 생성한 서비스만의 커스텀 메시지 템플릿을 사용하여, 조회한 친구를 대상으로 카카오톡으로 메시지 전송
+  /// 카카오디벨로퍼스에서 생성한 서비스만의 커스텀 메시지 템플릿을 사용하여, 조회한 친구를 대상으로 카카오톡으로 메시지 전송
   ///
   /// 템플릿을 생성하는 방법은 [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/ko/message/message-template) 참고
   Future<MessageSendResult> sendCustomMessage({
