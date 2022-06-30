@@ -1,3 +1,6 @@
+## 1.2.1
+- Fix the build error related to `UniqueKey` that occurs in Flutter versions of 2.x.x.
+
 ## 1.2.0
 - Changed the module name:
   - kakao_flutter_sdk_link → kakao_flutter_sdk_share
