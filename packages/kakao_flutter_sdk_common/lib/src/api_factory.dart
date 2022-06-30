@@ -62,12 +62,11 @@ class ApiFactory {
     return KakaoApiException.fromJson(response.data);
   }
 
-  // DIO interceptor for App-key based API (Link, Local, Search, etc).
+  // DIO interceptor for App-key based API (Link etc).
   static Interceptor appKeyInterceptor = InterceptorsWrapper(onRequest:
       (RequestOptions options, RequestInterceptorHandler handler) async {
-    var appKey = KakaoSdk.nativeKey;
     options.headers[CommonConstants.authorization] =
-        "${CommonConstants.kakaoAk} $appKey";
+        "${CommonConstants.kakaoAk} ${KakaoSdk.appKey}";
     handler.next(options);
   });
 

@@ -19,6 +19,8 @@ class KakaoSdk {
 
   static String sdkVersion = "1.2.1";
 
+  static String get appKey => kIsWeb ? jsKey : nativeKey;
+
   static bool logging = false;
 
   // ServerHosts used by SDK.
@@ -102,6 +104,10 @@ class KakaoSdk {
     jsKey = javaScriptAppKey ?? "";
     hosts = serviceHosts ?? ServerHosts();
     logging = loggingEnabled ?? false;
+
+    if (kIsWeb) {
+      _channel.invokeMethod("retrieveAuthCode");
+    }
   }
 }
 

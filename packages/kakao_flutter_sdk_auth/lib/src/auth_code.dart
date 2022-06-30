@@ -192,13 +192,7 @@ class AuthCodeClient {
   }
 
   String _platformKey() {
-    if (kIsWeb) {
-      return KakaoSdk.jsKey;
-    }
-    if (_platform.isAndroid || _platform.isIOS) {
-      return KakaoSdk.nativeKey;
-    }
-    return KakaoSdk.jsKey;
+    return KakaoSdk.appKey;
   }
 
   static String codeVerifier() {

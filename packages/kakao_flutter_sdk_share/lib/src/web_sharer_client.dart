@@ -72,7 +72,7 @@ class WebSharerClient {
   Future<Uri> _sharerWithResponse(SharingResult response,
       {Map<String, String>? serverCallbackArgs}) async {
     final params = {
-      Constants.sharerAppKey: KakaoSdk.nativeKey,
+      Constants.sharerAppKey: KakaoSdk.appKey,
       Constants.sharerKa: await KakaoSdk.kaHeader,
       Constants.validationAction: Constants.custom,
       Constants.validationParams: jsonEncode({
