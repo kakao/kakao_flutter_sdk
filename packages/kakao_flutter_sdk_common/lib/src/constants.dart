@@ -12,6 +12,11 @@ class CommonConstants {
   static const String http = 'http';
   static const String url = 'url';
   static const String redirectUri = 'redirect_uri';
+  static const String androidWebRedirectUri = '/cors/afterlogin.html';
+  static const String iosWebRedirectUri = 'JS-SDK';
+  static const String iosWebUniversalLink =
+      'https://talk-apps.kakao.com/scheme/';
+  static const String iosTalkLoginScheme = 'kakaokompassauth://authorize';
 
   static const String methodChannel = 'kakao_flutter_sdk';
   static const String getOrigin = 'getOrigin';

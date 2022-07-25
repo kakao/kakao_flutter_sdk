@@ -1,11 +1,16 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:html' as html;
 import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
+import 'package:kakao_flutter_sdk_common/src/web/ua_parser.dart';
 
 class KakaoFlutterSdkPlugin {
+  final _uaParser = UaParser();
+
   static void registerWith(Registrar registrar) {
     final MethodChannel channel = MethodChannel(
         "kakao_flutter_sdk", const StandardMethodCodec(), registrar.messenger);
@@ -37,26 +42,152 @@ class KakaoFlutterSdkPlugin {
         });
         return completer.future;
       case "retrieveAuthCode":
-        final uri = Uri.parse(html.window.location.search!);
-        final params = uri.queryParameters;
-        if (params.containsKey("code") || params.containsKey("error")) {
-          html.window.opener?.postMessage(html.window.location.href, "*");
-          html.window.close();
-        }
+        _retrieveAuthCode();
         break;
       case "getOrigin":
         return html.window.location.origin;
       case "getKaHeader":
-        return "os/javascript origin/${html.window.location.origin}";
+        return getKaHeader();
       case "isKakaoTalkInstalled":
         return false;
       case "platformId":
         return Uint8List.fromList([1, 2, 3]);
+      case "platformRedirectURi":
+        String ua = html.window.navigator.userAgent;
+        if (_uaParser.isAndroid(ua)) {
+          return "${CommonConstants.scheme}://${KakaoSdk.hosts.kapi}${CommonConstants.androidWebRedirectUri}";
+        } else if (_uaParser.isiOS(ua)) {
+          return CommonConstants.iosWebRedirectUri;
+        }
+        return null;
+      case "authorizeWithTalk":
+        String ua = html.window.navigator.userAgent;
+        var arguments = call.arguments;
+
+        String fallbackUrl = redirectLoginThroughWeb(Map.castFrom(arguments));
+
+        Browser currentBrowser = _uaParser.detectBrowser(ua);
+
+        if (_uaParser.isAndroid(ua)) {
+          String intent =
+              getAndroidIntent(Map.castFrom(arguments), fallbackUrl);
+
+          if (currentBrowser == Browser.kakaotalk ||
+              currentBrowser == Browser.daum) {
+            html.window.location.href = intent;
+          } else {
+            html.window.open(intent, '_blank');
+          }
+        } else if (_uaParser.isiOS(ua)) {
+          String iosLoginScheme = getIosLoginScheme(Map.castFrom(arguments));
+          String universalLink =
+              '${CommonConstants.iosWebUniversalLink}${Uri.encodeComponent(iosLoginScheme)}&web=${Uri.encodeComponent(fallbackUrl)}';
+          html.window.open(universalLink, "_blank");
+        }
+        break;
       default:
         throw PlatformException(
             code: "NotImplemented",
             details:
                 "KakaoFlutterSdk for web doesn't implement the method ${call.method}");
     }
+  }
+
+  void _retrieveAuthCode() {
+    final uri = Uri.parse(html.window.location.search!);
+    final params = uri.queryParameters;
+    if (params.containsKey("code") || params.containsKey("error")) {
+      html.window.opener?.postMessage(html.window.location.href, "*");
+      html.window.close();
+    }
+  }
+
+  String getKaHeader() {
+    return "os/javascript origin/${html.window.location.origin}";
+  }
+
+  String getAndroidIntent(Map<String, dynamic> arguments, String fallbackUrl) {
+    Map<String, dynamic> extras = {
+      'channel_public_id': arguments['channel_public_ids'],
+      'service_terms': arguments['service_terms'],
+      'approval_type': arguments['approval_type'],
+      'prompt': arguments['prompt'],
+      'state': arguments['state'],
+    };
+    extras.removeWhere((k, v) => v == null);
+
+    String intent = [
+      'intent:#Intent',
+      'action=com.kakao.talk.intent.action.CAPRI_LOGGED_IN_ACTIVITY',
+      'launchFlags=0x08880000',
+      'S.com.kakao.sdk.talk.appKey=${KakaoSdk.appKey}',
+      'S.com.kakao.sdk.talk.redirectUri=${arguments['redirect_uri']}',
+      'S.com.kakao.sdk.talk.state=${arguments['state_token']}',
+      'S.com.kakao.sdk.talk.kaHeader=${getKaHeader()}',
+      'S.com.kakao.sdk.talk.extraparams=${Uri.encodeComponent(jsonEncode(extras))}',
+      'S.browser_fallback_url=${Uri.encodeComponent(fallbackUrl)}',
+      'end;',
+    ].join(';');
+    return intent;
+  }
+
+  String getIosLoginScheme(Map<String, dynamic> arguments) {
+    var authParams = {
+      'client_id': KakaoSdk.appKey,
+      'approval_type': arguments['approval_type'],
+      'scope': arguments['scope'],
+      'state': arguments['state_token'],
+      'channel_public_id': arguments['channel_public_id'],
+      'prompt': arguments['prompt'],
+      'device_type': arguments['device_type'],
+      'login_hint': arguments['login_hint'],
+      'nonce': arguments['nonce'],
+      'extra.plus_friend_public_id': arguments['plus_friend_public_id'],
+      'extra.service_terms': arguments['service_terms'],
+    };
+    authParams.removeWhere((k, v) => v == null);
+
+    var params = {
+      'client_id': KakaoSdk.appKey,
+      'redirect_uri': arguments[CommonConstants.redirectUri],
+      'params': jsonEncode(authParams),
+    };
+    params.removeWhere((k, v) => v == null);
+
+    return Uri.parse(CommonConstants.iosTalkLoginScheme)
+        .replace(queryParameters: params)
+        .toString();
+  }
+
+  String loginThroughWeb(Map<String, dynamic> arguments) {
+    return Uri.parse('${CommonConstants.scheme}://${KakaoSdk.hosts.kauth}')
+        .replace(queryParameters: arguments)
+        .toString();
+  }
+
+  String redirectLoginThroughWeb(Map<String, dynamic> arguments) {
+    var params = {
+      'client_id': KakaoSdk.appKey,
+      'approval_type': arguments['approval_type'],
+      'scope': arguments['scope'],
+      'state': arguments['state_token'],
+      'channel_public_id': arguments['channel_public_id'],
+      'prompt': arguments['prompt'],
+      'login_hint': arguments['login_hint'],
+      'nonce': arguments['nonce'],
+      'redirect_uri': arguments[CommonConstants.redirectUri],
+      'response_type': 'code',
+      'ka': getKaHeader(),
+      'device_type': html.window.location.origin,
+      'extra.channel_public_id': arguments['channel_public_ids'],
+      'extra.service_terms': arguments['service_terms'],
+    };
+
+    params.removeWhere((k, v) => v == null);
+
+    return Uri.parse(
+            '${CommonConstants.scheme}://${KakaoSdk.hosts.kauth}/oauth/authorize')
+        .replace(queryParameters: params)
+        .toString();
   }
 }

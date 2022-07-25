@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
@@ -89,9 +90,10 @@ class AuthCodeClient {
     String? state,
     String? codeVerifier,
     String? nonce,
+    String? stateToken,
   }) async {
     try {
-      return _parseCode(await _openKakaoTalk(
+      var response = await _openKakaoTalk(
         clientId ?? _platformKey(),
         redirectUri ?? "kakao${_platformKey()}://oauth",
         channelPublicId,
@@ -100,7 +102,13 @@ class AuthCodeClient {
         prompts,
         state,
         nonce,
-      ));
+        stateToken: stateToken,
+      );
+
+      if (kIsWeb) {
+        return response;
+      }
+      return _parseCode(response);
     } catch (e) {
       SdkLog.e(e);
       rethrow;
@@ -132,9 +140,14 @@ class AuthCodeClient {
     }
   }
 
-  // Retreives auth code in web environment. (This method is web specific. Use after checking the platform)
+  // Retrieve auth code in web environment. (This method is web specific. Use after checking the platform)
   void retrieveAuthCode() {
     _channel.invokeMethod("retrieveAuthCode");
+  }
+
+  // Get platform specific redirect uri. (This method is web specific. Use after checking the platform)
+  Future<String> platformRedirectUri() async {
+    return await _channel.invokeMethod('platformRedirectURi');
   }
 
   String _parseCode(String redirectedUri) {
@@ -152,11 +165,13 @@ class AuthCodeClient {
     String? codeVerifier,
     List<Prompt>? prompts,
     String? state,
-    String? nonce,
-  ) async {
+    String? nonce, {
+    String? stateToken,
+  }) async {
     var arguments = {
       Constants.sdkVersion: "sdk/${KakaoSdk.sdkVersion} sdk_type/flutter",
       Constants.clientId: clientId,
+      Constants.responseType: Constants.code,
       Constants.redirectUri: redirectUri,
       Constants.codeVerifier: codeVerifier,
       Constants.channelPublicId: channelPublicId?.join(','),
@@ -166,8 +181,33 @@ class AuthCodeClient {
           : _parsePrompts(_makeCertPrompts(prompts)),
       Constants.state: state,
       Constants.nonce: nonce,
+      Constants.isPopup: kIsWeb ? 'true' : null,
+      Constants.stateToken: stateToken,
     };
     arguments.removeWhere((k, v) => v == null);
+
+    if (kIsWeb) {
+      await _channel.invokeMethod<String>(
+          CommonConstants.authorizeWithTalk, arguments);
+
+      String kaHeader = await _channel.invokeMethod('getKaHeader');
+
+      int count = 0;
+      int maxCount = 600;
+
+      while (count < maxCount) {
+        await Future.delayed(const Duration(milliseconds: 1000));
+
+        String response = await _kauthApi.codeForWeb(
+            stateToken: stateToken!, kaHeader: kaHeader);
+        if (response != 'error') {
+          return response;
+        }
+      }
+
+      throw TimeoutException('KakaoTalk login timed out. Please login again.');
+    }
+
     final redirectUriWithParams = await _channel.invokeMethod<String>(
         CommonConstants.authorizeWithTalk, arguments);
     if (redirectUriWithParams != null) return redirectUriWithParams;

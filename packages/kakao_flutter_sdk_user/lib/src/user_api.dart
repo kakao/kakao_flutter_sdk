@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_user/src/constants.dart';
+import 'package:kakao_flutter_sdk_user/src/utils.dart';
 
 import 'model/access_token_info.dart';
 import 'model/scope_info.dart';
@@ -26,19 +28,33 @@ class UserApi {
   /// 발급된 토큰은 [TokenManagerProvider]에 지정된 토큰 저장소에 자동으로 저장됨
   /// ID 토큰 재생 공격 방지를 위한 검증 값은 [nonce]로 전달. 임의의 문자열, ID 토큰 검증 시 사용
   Future<OAuthToken> loginWithKakaoTalk({
+    String? redirectUri,
     List<String>? channelPublicIds,
     List<String>? serviceTerms,
     String? nonce,
   }) async {
     var codeVerifier = AuthCodeClient.codeVerifier();
+
+    String? stateToken;
+    String? redirectUrl;
+    if (kIsWeb) {
+      stateToken = generateRandomString(20);
+      redirectUrl = await AuthCodeClient.instance.platformRedirectUri();
+    }
+
     final authCode = await AuthCodeClient.instance.requestWithTalk(
+      redirectUri: redirectUrl,
       channelPublicId: channelPublicIds,
       serviceTerms: serviceTerms,
       codeVerifier: codeVerifier,
       nonce: nonce,
+      stateToken: stateToken,
     );
-    final token = await AuthApi.instance
-        .issueAccessToken(authCode: authCode, codeVerifier: codeVerifier);
+
+    final token = await AuthApi.instance.issueAccessToken(
+        redirectUri: redirectUrl,
+        authCode: authCode,
+        codeVerifier: codeVerifier);
     await TokenManagerProvider.instance.manager.setToken(token);
     return token;
   }

@@ -118,6 +118,27 @@ class AuthApi {
     });
   }
 
+  Future<String> codeForWeb({
+    required String stateToken,
+    required String kaHeader,
+  }) async {
+    var queryParams = {
+      'client_id': KakaoSdk.appKey,
+      'auth_tran_id': stateToken,
+      'ka': kaHeader,
+    };
+
+    return await ApiFactory.handleApiError(() async {
+      var response = await _dio.get(Constants.apiWebCodeJson,
+          queryParameters: queryParams);
+
+      if (response.data.toString().contains('error')) {
+        return 'error';
+      }
+      return response.data['code'];
+    });
+  }
+
   Future<OAuthToken> _issueAccessToken(data, {OAuthToken? oldToken}) async {
     return await ApiFactory.handleApiError(() async {
       Response response = await _dio.post(Constants.tokenPath, data: data);
