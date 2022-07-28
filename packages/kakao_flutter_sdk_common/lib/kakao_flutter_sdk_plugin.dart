@@ -118,7 +118,7 @@ class KakaoFlutterSdkPlugin {
   }
 
   String _getAndroidShareIntent(String uri) {
-    final newIntent = 'intent://link?$uri#Intent;scheme=kakaolink';
+    final newIntent = 'intent://send?$uri#Intent;scheme=kakaolink';
     final oldIntent = 'intent:$uri#Intent';
 
     final intent = [
