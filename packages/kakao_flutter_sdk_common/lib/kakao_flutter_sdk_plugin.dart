@@ -47,7 +47,7 @@ class KakaoFlutterSdkPlugin {
       case "getOrigin":
         return html.window.location.origin;
       case "getKaHeader":
-        return getKaHeader();
+        return _getKaHeader();
       case "isKakaoTalkInstalled":
         return false;
       case "platformId":
@@ -64,13 +64,13 @@ class KakaoFlutterSdkPlugin {
         String ua = html.window.navigator.userAgent;
         var arguments = call.arguments;
 
-        String fallbackUrl = redirectLoginThroughWeb(Map.castFrom(arguments));
+        String fallbackUrl = _redirectLoginThroughWeb(Map.castFrom(arguments));
 
         Browser currentBrowser = _uaParser.detectBrowser(ua);
 
         if (_uaParser.isAndroid(ua)) {
           String intent =
-              getAndroidIntent(Map.castFrom(arguments), fallbackUrl);
+              _getAndroidLoginIntent(Map.castFrom(arguments), fallbackUrl);
 
           if (currentBrowser == Browser.kakaotalk ||
               currentBrowser == Browser.daum) {
@@ -79,7 +79,7 @@ class KakaoFlutterSdkPlugin {
             html.window.open(intent, '_blank');
           }
         } else if (_uaParser.isiOS(ua)) {
-          String iosLoginScheme = getIosLoginScheme(Map.castFrom(arguments));
+          String iosLoginScheme = _getIosLoginScheme(Map.castFrom(arguments));
           String universalLink =
               '${CommonConstants.iosWebUniversalLink}${Uri.encodeComponent(iosLoginScheme)}&web=${Uri.encodeComponent(fallbackUrl)}';
           html.window.open(universalLink, "_blank");
@@ -113,11 +113,10 @@ class KakaoFlutterSdkPlugin {
     }
   }
 
-  String getKaHeader() {
+  String _getKaHeader() {
     return "os/javascript origin/${html.window.location.origin}";
   }
 
-  String getAndroidIntent(Map<String, dynamic> arguments, String fallbackUrl) {
   String _getAndroidShareIntent(String uri) {
     final newIntent = 'intent://link?$uri#Intent;scheme=kakaolink';
     final oldIntent = 'intent:$uri#Intent';
@@ -130,6 +129,9 @@ class KakaoFlutterSdkPlugin {
     ].join(';');
     return intent;
   }
+
+  String _getAndroidLoginIntent(
+      Map<String, dynamic> arguments, String fallbackUrl) {
     Map<String, dynamic> extras = {
       'channel_public_id': arguments['channel_public_ids'],
       'service_terms': arguments['service_terms'],
@@ -146,7 +148,7 @@ class KakaoFlutterSdkPlugin {
       'S.com.kakao.sdk.talk.appKey=${KakaoSdk.appKey}',
       'S.com.kakao.sdk.talk.redirectUri=${arguments['redirect_uri']}',
       'S.com.kakao.sdk.talk.state=${arguments['state_token']}',
-      'S.com.kakao.sdk.talk.kaHeader=${getKaHeader()}',
+      'S.com.kakao.sdk.talk.kaHeader=${_getKaHeader()}',
       'S.com.kakao.sdk.talk.extraparams=${Uri.encodeComponent(jsonEncode(extras))}',
       'S.browser_fallback_url=${Uri.encodeComponent(fallbackUrl)}',
       'end;',
@@ -154,7 +156,7 @@ class KakaoFlutterSdkPlugin {
     return intent;
   }
 
-  String getIosLoginScheme(Map<String, dynamic> arguments) {
+  String _getIosLoginScheme(Map<String, dynamic> arguments) {
     var authParams = {
       'client_id': KakaoSdk.appKey,
       'approval_type': arguments['approval_type'],
@@ -182,13 +184,13 @@ class KakaoFlutterSdkPlugin {
         .toString();
   }
 
-  String loginThroughWeb(Map<String, dynamic> arguments) {
+  String _loginThroughWeb(Map<String, dynamic> arguments) {
     return Uri.parse('${CommonConstants.scheme}://${KakaoSdk.hosts.kauth}')
         .replace(queryParameters: arguments)
         .toString();
   }
 
-  String redirectLoginThroughWeb(Map<String, dynamic> arguments) {
+  String _redirectLoginThroughWeb(Map<String, dynamic> arguments) {
     var params = {
       'client_id': KakaoSdk.appKey,
       'approval_type': arguments['approval_type'],
@@ -200,7 +202,7 @@ class KakaoFlutterSdkPlugin {
       'nonce': arguments['nonce'],
       'redirect_uri': arguments[CommonConstants.redirectUri],
       'response_type': 'code',
-      'ka': getKaHeader(),
+      'ka': _getKaHeader(),
       'device_type': html.window.location.origin,
       'extra.channel_public_id': arguments['channel_public_ids'],
       'extra.service_terms': arguments['service_terms'],
