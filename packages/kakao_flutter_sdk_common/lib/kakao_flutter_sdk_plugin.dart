@@ -85,6 +85,17 @@ class KakaoFlutterSdkPlugin {
           html.window.open(universalLink, "_blank");
         }
         break;
+      case 'launchKakaoTalk':
+        String ua = html.window.navigator.userAgent;
+        String uri = call.arguments['uri'];
+
+        if (_uaParser.isAndroid(ua)) {
+          final intent = _getAndroidShareIntent(uri);
+
+          html.window.location.href = intent;
+          return true;
+        } else if (_uaParser.isiOS(ua)) {}
+        return false;
       default:
         throw PlatformException(
             code: "NotImplemented",
@@ -107,6 +118,18 @@ class KakaoFlutterSdkPlugin {
   }
 
   String getAndroidIntent(Map<String, dynamic> arguments, String fallbackUrl) {
+  String _getAndroidShareIntent(String uri) {
+    final newIntent = 'intent://link?$uri#Intent;scheme=kakaolink';
+    final oldIntent = 'intent:$uri#Intent';
+
+    final intent = [
+      oldIntent,
+      'launchFlags=0x14008000',
+      'package=com.kakao.talk',
+      'end;'
+    ].join(';');
+    return intent;
+  }
     Map<String, dynamic> extras = {
       'channel_public_id': arguments['channel_public_ids'],
       'service_terms': arguments['service_terms'],

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_share/src/constants.dart';
 import 'package:kakao_flutter_sdk_share/src/model/image_upload_result.dart';
@@ -109,18 +110,21 @@ class ShareClient {
 
   Future<Map<String, String?>> _extras(
       [Map<String, String>? serverCallbackArgs]) async {
+    var platformInfo = (kIsWeb
+        ? {}
+        : _platform.isAndroid
+            ? {
+                Constants.ka: await KakaoSdk.packageName,
+                Constants.keyHash: await KakaoSdk.origin
+              }
+            : _platform.isIOS
+                ? {Constants.iosBundleId: await KakaoSdk.origin}
+                : {});
     Map<String, String?> extras = {
       Constants.ka: await KakaoSdk.kaHeader,
       Constants.lcba:
           serverCallbackArgs == null ? null : jsonEncode(serverCallbackArgs),
-      ...(_platform.isAndroid
-          ? {
-              Constants.ka: await KakaoSdk.packageName,
-              Constants.keyHash: await KakaoSdk.origin
-            }
-          : _platform.isIOS
-              ? {Constants.iosBundleId: await KakaoSdk.origin}
-              : {}),
+      ...platformInfo,
     };
     extras.removeWhere((k, v) => v == null);
     return extras;
