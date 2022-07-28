@@ -94,7 +94,10 @@ class KakaoFlutterSdkPlugin {
 
           html.window.location.href = intent;
           return true;
-        } else if (_uaParser.isiOS(ua)) {}
+        } else if (_uaParser.isiOS(ua)) {
+          html.window.location.href = uri;
+          return true;
+        }
         return false;
       default:
         throw PlatformException(
