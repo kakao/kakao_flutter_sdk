@@ -38,7 +38,7 @@ class UaParser {
       return Browser.samsung;
     } else if (ua.contains('FxiOS') || ua.contains("Firefox")) {
       return Browser.firefox;
-    } else if (ua.contains('Chrome')) {
+    } else if (ua.contains('Chrome') || ua.contains('CriOS')) {
       return Browser.chrome;
     } else if (ua.contains('Safari')) {
       return Browser.safari;
