@@ -82,7 +82,12 @@ class KakaoFlutterSdkPlugin {
           String iosLoginScheme = _getIosLoginScheme(Map.castFrom(arguments));
           String universalLink =
               '${CommonConstants.iosWebUniversalLink}${Uri.encodeComponent(iosLoginScheme)}&web=${Uri.encodeComponent(fallbackUrl)}';
-          html.window.open(universalLink, "_blank");
+
+          if (currentBrowser == Browser.kakaotalk) {
+            html.window.location.href = universalLink;
+          } else {
+            html.window.open(universalLink, "_blank");
+          }
         }
         break;
       case 'launchKakaoTalk':
@@ -96,6 +101,29 @@ class KakaoFlutterSdkPlugin {
           return true;
         } else if (_uaParser.isiOS(ua)) {
           html.window.location.href = uri;
+          return true;
+        }
+        return false;
+      case "navigate":
+      case "shareDestination":
+        String ua = html.window.navigator.userAgent;
+
+        String scheme = 'kakaonavi-sdk://navigate';
+        String queries =
+            'apiver=1.0&appkey=${KakaoSdk.appKey}&param=${Uri.encodeComponent(call.arguments['navi_params'])}&extras=${Uri.encodeComponent(call.arguments['extras'])}';
+
+        if (_uaParser.isAndroid(ua)) {
+          html.window.location.href = _getAndroidNaviIntent(scheme, queries);
+          return true;
+        } else if (_uaParser.isiOS(ua)) {
+          _bindPageHideEvent(_deferredFallback(
+              'https://kakaonavi.kakao.com/launch/index.do?$queries',
+              (storeUrl) {
+            html.window.top?.location.href = storeUrl;
+          }));
+
+          html.window.location.href = '$scheme?$queries';
+
           return true;
         }
         return false;
@@ -159,6 +187,18 @@ class KakaoFlutterSdkPlugin {
     return intent;
   }
 
+  String _getAndroidNaviIntent(String scheme, String queries) {
+    var url = '$scheme?$queries';
+
+    final intent = [
+      'intent:$url#Intent',
+      'package=com.locnall.KimGiSa',
+      'S.browser_fallback_url=${Uri.encodeComponent('https://kakaonavi.kakao.com/launch/index.do?$queries')}',
+      'end;'
+    ].join(';');
+    return intent;
+  }
+
   String _getIosLoginScheme(Map<String, dynamic> arguments) {
     var authParams = {
       'client_id': KakaoSdk.appKey,
@@ -217,5 +257,35 @@ class KakaoFlutterSdkPlugin {
             '${CommonConstants.scheme}://${KakaoSdk.hosts.kauth}/oauth/authorize')
         .replace(queryParameters: params)
         .toString();
+  }
+
+  Timer _deferredFallback(String storeUrl, Function(String) fallback) {
+    int timeout = 5000;
+
+    return Timer(Duration(milliseconds: timeout), () {
+      fallback(storeUrl);
+    });
+  }
+
+  _bindPageHideEvent(Timer timer) {
+    EventListener? listener;
+
+    listener = (event) {
+      if (!_isPageVisible()) {
+        timer.cancel();
+        html.window.removeEventListener('pagehide', listener);
+        html.window.removeEventListener('visibilitychange', listener);
+      }
+    };
+
+    html.window.addEventListener('pagehide', listener);
+    html.window.addEventListener('visibilitychange', listener);
+  }
+
+  bool _isPageVisible() {
+    if (html.document.hidden != null) {
+      return !html.document.hidden!;
+    }
+    return true;
   }
 }

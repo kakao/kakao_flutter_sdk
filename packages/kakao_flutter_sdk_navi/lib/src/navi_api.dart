@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:kakao_flutter_sdk_navi/src/constants.dart';
@@ -69,7 +70,7 @@ class NaviApi {
 
     final extras = await _getExtras();
     final arguments = {
-      Constants.appKey: KakaoSdk.nativeKey,
+      Constants.appKey: KakaoSdk.appKey,
       Constants.extras: jsonEncode(extras),
       Constants.naviParams: jsonEncode(
         KakaoNaviParams(
@@ -84,16 +85,17 @@ class NaviApi {
   }
 
   Future<Map<String, String>> _getExtras() async {
-    return {
-      Constants.ka: await KakaoSdk.kaHeader,
-      ...(_platform.isAndroid
-          ? {
-              Constants.appPkg: await KakaoSdk.packageName,
-              Constants.keyHash: await KakaoSdk.origin
-            }
-          : _platform.isIOS
-              ? {Constants.appPkg: await KakaoSdk.origin}
-              : {})
-    };
+    var platformInfo = kIsWeb
+        ? {}
+        : _platform.isAndroid
+            ? {
+                Constants.appPkg: await KakaoSdk.packageName,
+                Constants.keyHash: await KakaoSdk.origin
+              }
+            : _platform.isIOS
+                ? {Constants.appPkg: await KakaoSdk.origin}
+                : {};
+
+    return {Constants.ka: await KakaoSdk.kaHeader, ...platformInfo};
   }
 }
