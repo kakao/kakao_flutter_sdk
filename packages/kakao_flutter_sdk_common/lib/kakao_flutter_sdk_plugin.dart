@@ -20,6 +20,8 @@ class KakaoFlutterSdkPlugin {
   }
 
   Future<dynamic> handleMethodCall(MethodCall call) async {
+    String userAgent = html.window.navigator.userAgent;
+
     switch (call.method) {
       case "launchBrowserTab":
         Map<dynamic, dynamic> args = call.arguments;
@@ -48,74 +50,83 @@ class KakaoFlutterSdkPlugin {
         return html.window.location.origin;
       case "getKaHeader":
         return _getKaHeader();
+      case 'isKakaoTalkSharingAvailable':
+      case 'isKakaoNaviInstalled':
       case "isKakaoTalkInstalled":
+        if (_uaParser.isAndroid(userAgent) || _uaParser.isiOS(userAgent)) {
+          return true;
+        }
         return false;
       case "platformId":
         return Uint8List.fromList([1, 2, 3]);
-      case "platformRedirectURi":
-        String ua = html.window.navigator.userAgent;
-        if (_uaParser.isAndroid(ua)) {
+      case "platformRedirectUri":
+        if (_uaParser.isAndroid(userAgent)) {
           return "${CommonConstants.scheme}://${KakaoSdk.hosts.kapi}${CommonConstants.androidWebRedirectUri}";
-        } else if (_uaParser.isiOS(ua)) {
+        } else if (_uaParser.isiOS(userAgent)) {
           return CommonConstants.iosWebRedirectUri;
         }
-        return null;
+        // Returns meaningless values unless Android and iOS.
+        return 'redirectUri';
       case "authorizeWithTalk":
-        String ua = html.window.navigator.userAgent;
+        if (!_uaParser.isAndroid(userAgent) && !_uaParser.isiOS(userAgent)) {
+          throw PlatformException(
+              code: 'NotImplemented',
+              message:
+                  'KakaoTalk easy login is only available on Android or iOS devices.');
+        }
         var arguments = call.arguments;
 
         String fallbackUrl = _redirectLoginThroughWeb(Map.castFrom(arguments));
+        Browser currentBrowser = _uaParser.detectBrowser(userAgent);
 
-        Browser currentBrowser = _uaParser.detectBrowser(ua);
-
-        if (_uaParser.isAndroid(ua)) {
-          String intent =
-              _getAndroidLoginIntent(Map.castFrom(arguments), fallbackUrl);
+        if (_uaParser.isAndroid(userAgent)) {
+          String intent = _getAndroidLoginIntent(
+              userAgent, Map.castFrom(arguments), fallbackUrl);
 
           if (currentBrowser == Browser.kakaotalk ||
-              currentBrowser == Browser.daum) {
+              currentBrowser == Browser.daum ||
+              currentBrowser == Browser.chrome) {
             html.window.location.href = intent;
           } else {
             html.window.open(intent, '_blank');
           }
-        } else if (_uaParser.isiOS(ua)) {
+        } else if (_uaParser.isiOS(userAgent)) {
           String iosLoginScheme = _getIosLoginScheme(Map.castFrom(arguments));
           String universalLink =
               '${CommonConstants.iosWebUniversalLink}${Uri.encodeComponent(iosLoginScheme)}&web=${Uri.encodeComponent(fallbackUrl)}';
 
-          if (currentBrowser == Browser.kakaotalk) {
-            html.window.location.href = universalLink;
-          } else {
+          if (currentBrowser == Browser.safari) {
             html.window.open(universalLink, "_blank");
+          } else {
+            html.window.location.href = universalLink;
           }
         }
         break;
       case 'launchKakaoTalk':
-        String ua = html.window.navigator.userAgent;
         String uri = call.arguments['uri'];
 
-        if (_uaParser.isAndroid(ua)) {
-          final intent = _getAndroidShareIntent(uri);
-
+        if (_uaParser.isAndroid(userAgent)) {
+          final intent = _getAndroidShareIntent(userAgent, uri);
           html.window.location.href = intent;
           return true;
-        } else if (_uaParser.isiOS(ua)) {
+        } else if (_uaParser.isiOS(userAgent)) {
           html.window.location.href = uri;
           return true;
         }
-        return false;
+        throw PlatformException(
+            code: 'NotImplemented',
+            message:
+                'KakaoTalk can only be launched on Android or iOS devices.');
       case "navigate":
       case "shareDestination":
-        String ua = html.window.navigator.userAgent;
-
         String scheme = 'kakaonavi-sdk://navigate';
         String queries =
             'apiver=1.0&appkey=${KakaoSdk.appKey}&param=${Uri.encodeComponent(call.arguments['navi_params'])}&extras=${Uri.encodeComponent(call.arguments['extras'])}';
 
-        if (_uaParser.isAndroid(ua)) {
+        if (_uaParser.isAndroid(userAgent)) {
           html.window.location.href = _getAndroidNaviIntent(scheme, queries);
           return true;
-        } else if (_uaParser.isiOS(ua)) {
+        } else if (_uaParser.isiOS(userAgent)) {
           _bindPageHideEvent(_deferredFallback(
               'https://kakaonavi.kakao.com/launch/index.do?$queries',
               (storeUrl) {
@@ -148,12 +159,17 @@ class KakaoFlutterSdkPlugin {
     return "os/javascript origin/${html.window.location.origin}";
   }
 
-  String _getAndroidShareIntent(String uri) {
-    final newIntent = 'intent://send?$uri#Intent;scheme=kakaolink';
-    final oldIntent = 'intent:$uri#Intent';
+  String _getAndroidShareIntent(String userAgent, String uri) {
+    String intentScheme;
+    if (userAgent.contains('FB_IAB') || userAgent.contains('Instagram')) {
+      intentScheme =
+          'intent://send?${uri.substring('kakaolink://send?'.length, uri.length)}#Intent;scheme=kakaolink';
+    } else {
+      intentScheme = 'intent:$uri#Intent';
+    }
 
     final intent = [
-      oldIntent,
+      intentScheme,
       'launchFlags=0x14008000',
       'package=com.kakao.talk',
       'end;'
@@ -162,7 +178,7 @@ class KakaoFlutterSdkPlugin {
   }
 
   String _getAndroidLoginIntent(
-      Map<String, dynamic> arguments, String fallbackUrl) {
+      String userAgent, Map<String, dynamic> arguments, String fallbackUrl) {
     Map<String, dynamic> extras = {
       'channel_public_id': arguments['channel_public_ids'],
       'service_terms': arguments['service_terms'],
@@ -224,12 +240,6 @@ class KakaoFlutterSdkPlugin {
 
     return Uri.parse(CommonConstants.iosTalkLoginScheme)
         .replace(queryParameters: params)
-        .toString();
-  }
-
-  String _loginThroughWeb(Map<String, dynamic> arguments) {
-    return Uri.parse('${CommonConstants.scheme}://${KakaoSdk.hosts.kauth}')
-        .replace(queryParameters: arguments)
         .toString();
   }
 

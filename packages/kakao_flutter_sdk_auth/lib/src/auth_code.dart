@@ -147,7 +147,7 @@ class AuthCodeClient {
 
   // Get platform specific redirect uri. (This method is web specific. Use after checking the platform)
   Future<String> platformRedirectUri() async {
-    return await _channel.invokeMethod('platformRedirectURi');
+    return await _channel.invokeMethod('platformRedirectUri');
   }
 
   String _parseCode(String redirectedUri) {
@@ -186,33 +186,43 @@ class AuthCodeClient {
     };
     arguments.removeWhere((k, v) => v == null);
 
-    if (kIsWeb) {
-      await _channel.invokeMethod<String>(
+    if (!kIsWeb) {
+      final redirectUriWithParams = await _channel.invokeMethod<String>(
           CommonConstants.authorizeWithTalk, arguments);
-
-      String kaHeader = await _channel.invokeMethod('getKaHeader');
-
-      int count = 0;
-      int maxCount = 600;
-
-      while (count < maxCount) {
-        await Future.delayed(const Duration(milliseconds: 1000));
-
-        String response = await _kauthApi.codeForWeb(
-            stateToken: stateToken!, kaHeader: kaHeader);
-        if (response != 'error') {
-          return response;
-        }
-      }
-
-      throw TimeoutException('KakaoTalk login timed out. Please login again.');
+      if (redirectUriWithParams != null) return redirectUriWithParams;
+      throw KakaoClientException(
+          "OAuth 2.0 redirect uri was null, which should not happen.");
     }
 
-    final redirectUriWithParams = await _channel.invokeMethod<String>(
+    await _channel.invokeMethod<String>(
         CommonConstants.authorizeWithTalk, arguments);
-    if (redirectUriWithParams != null) return redirectUriWithParams;
-    throw KakaoClientException(
-        "OAuth 2.0 redirect uri was null, which should not happen.");
+
+    String kaHeader = await _channel.invokeMethod('getKaHeader');
+
+    int count = 0;
+    const maxCount = 600;
+    Completer<String> completer = Completer();
+
+    await Future.doWhile(() async {
+      if (count == maxCount) {
+        completer.completeError(
+            TimeoutException('KakaoTalk login timed out. Please login again.'));
+        return false;
+      }
+
+      count++;
+      await Future.delayed(const Duration(milliseconds: 1000));
+
+      String response = await _kauthApi.codeForWeb(
+          stateToken: stateToken!, kaHeader: kaHeader);
+
+      if (response != 'error') {
+        completer.complete(response);
+        return false;
+      }
+      return true;
+    });
+    return completer.future;
   }
 
   List<Prompt> _makeCertPrompts(List<Prompt>? prompts) {
