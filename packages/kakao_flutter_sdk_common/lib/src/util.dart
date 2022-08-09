@@ -8,7 +8,8 @@ import 'package:kakao_flutter_sdk_common/src/kakao_exception.dart';
 const MethodChannel _channel = MethodChannel(CommonConstants.methodChannel);
 
 /// 플랫폼별 기본 브라우저로 URL 실행
-Future<String> launchBrowserTab(Uri uri, {String? redirectUri}) async {
+Future<String> launchBrowserTab(Uri uri,
+    {String? redirectUri, bool webPopupLogin = false}) async {
   if (uri.scheme != CommonConstants.http &&
       uri.scheme != CommonConstants.scheme) {
     throw KakaoClientException(
@@ -17,7 +18,8 @@ Future<String> launchBrowserTab(Uri uri, {String? redirectUri}) async {
   }
   var args = {
     CommonConstants.url: uri.toString(),
-    CommonConstants.redirectUri: redirectUri
+    CommonConstants.redirectUri: redirectUri,
+    CommonConstants.isPopup: webPopupLogin,
   };
   args.removeWhere((k, v) => v == null);
   final redirectUriWithParams = await _channel.invokeMethod<String>(

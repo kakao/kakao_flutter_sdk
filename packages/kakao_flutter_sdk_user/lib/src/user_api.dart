@@ -48,6 +48,7 @@ class UserApi {
       codeVerifier: codeVerifier,
       nonce: nonce,
       stateToken: stateToken,
+      webPopupLogin: true,
     );
 
     final token = await AuthApi.instance.issueAccessToken(
@@ -73,13 +74,24 @@ class UserApi {
     String? nonce,
   }) async {
     var codeVerifier = AuthCodeClient.codeVerifier();
+
+    String? stateToken;
+    String? redirectUrl;
+    if (kIsWeb) {
+      stateToken = generateRandomString(20);
+      redirectUrl = await AuthCodeClient.instance.platformRedirectUri();
+    }
+
     final authCode = await AuthCodeClient.instance.requestWithTalk(
+      redirectUri: redirectUrl,
       prompts: prompts,
       state: state,
       channelPublicId: channelPublicIds,
       serviceTerms: serviceTerms,
       codeVerifier: codeVerifier,
       nonce: nonce,
+      stateToken: stateToken,
+      webPopupLogin: true,
     );
     final certTokenInfo = await AuthApi.instance.issueAccessTokenWithCert(
         authCode: authCode, codeVerifier: codeVerifier);
@@ -109,6 +121,7 @@ class UserApi {
       codeVerifier: codeVerifier,
       loginHint: loginHint,
       nonce: nonce,
+      webPopupLogin: true,
     );
     final token = await AuthApi.instance
         .issueAccessToken(authCode: authCode, codeVerifier: codeVerifier);
@@ -142,6 +155,7 @@ class UserApi {
       codeVerifier: codeVerifier,
       loginHint: loginHint,
       nonce: nonce,
+      webPopupLogin: true,
     );
     final certTokenInfo = await AuthApi.instance.issueAccessTokenWithCert(
         authCode: authCode, codeVerifier: codeVerifier);

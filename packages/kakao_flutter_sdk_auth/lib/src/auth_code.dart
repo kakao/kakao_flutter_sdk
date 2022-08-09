@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:kakao_flutter_sdk_auth/src/auth_api.dart';
 import 'package:kakao_flutter_sdk_auth/src/constants.dart';
+import 'package:kakao_flutter_sdk_auth/src/utils.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:platform/platform.dart';
 
@@ -38,6 +39,7 @@ class AuthCodeClient {
     String? state,
     String? codeVerifier,
     String? nonce,
+    bool webPopupLogin = false,
   }) async {
     final finalRedirectUri = redirectUri ?? "kakao${_platformKey()}://oauth";
     String? codeChallenge = codeVerifier != null
@@ -67,9 +69,14 @@ class AuthCodeClient {
     final url =
         Uri.https(KakaoSdk.hosts.kauth, Constants.authorizePath, params);
     SdkLog.i(url);
+
     try {
-      final authCode =
-          await launchBrowserTab(url, redirectUri: finalRedirectUri);
+      final authCode = await launchBrowserTab(
+        url,
+        redirectUri: finalRedirectUri,
+        webPopupLogin: webPopupLogin,
+      );
+
       return _parseCode(authCode);
     } catch (e) {
       SdkLog.e(e);
@@ -91,8 +98,12 @@ class AuthCodeClient {
     String? codeVerifier,
     String? nonce,
     String? stateToken,
+    bool webPopupLogin = false,
   }) async {
     try {
+      final webStateToken =
+          stateToken ?? (kIsWeb ? generateRandomString(20) : null);
+
       var response = await _openKakaoTalk(
         clientId ?? _platformKey(),
         redirectUri ?? "kakao${_platformKey()}://oauth",
@@ -102,10 +113,20 @@ class AuthCodeClient {
         prompts,
         state,
         nonce,
-        stateToken: stateToken,
+        stateToken: webStateToken,
+        webPopupLogin: webPopupLogin,
       );
 
       if (kIsWeb) {
+        if (webPopupLogin) {
+          return response;
+        }
+        var params = {
+          'redirect_uri': redirectUri,
+          'code': response,
+          'state': webStateToken
+        };
+        await _channel.invokeMethod('redirectForEasyLogin', params);
         return response;
       }
       return _parseCode(response);
@@ -141,7 +162,7 @@ class AuthCodeClient {
   }
 
   // Retrieve auth code in web environment. (This method is web specific. Use after checking the platform)
-  void retrieveAuthCode() {
+  void _retrieveAuthCode() {
     _channel.invokeMethod("retrieveAuthCode");
   }
 
@@ -167,6 +188,7 @@ class AuthCodeClient {
     String? state,
     String? nonce, {
     String? stateToken,
+    bool webPopupLogin = false,
   }) async {
     var arguments = {
       Constants.sdkVersion: "sdk/${KakaoSdk.sdkVersion} sdk_type/flutter",
@@ -181,15 +203,19 @@ class AuthCodeClient {
           : _parsePrompts(_makeCertPrompts(prompts)),
       Constants.state: state,
       Constants.nonce: nonce,
-      Constants.isPopup: kIsWeb ? 'true' : null,
       Constants.stateToken: stateToken,
+      Constants.isPopup: webPopupLogin,
     };
     arguments.removeWhere((k, v) => v == null);
 
     if (!kIsWeb) {
       final redirectUriWithParams = await _channel.invokeMethod<String>(
           CommonConstants.authorizeWithTalk, arguments);
-      if (redirectUriWithParams != null) return redirectUriWithParams;
+
+      if (redirectUriWithParams != null) {
+        return redirectUriWithParams;
+      }
+
       throw KakaoClientException(
           "OAuth 2.0 redirect uri was null, which should not happen.");
     }

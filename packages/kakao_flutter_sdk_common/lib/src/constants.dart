@@ -17,6 +17,7 @@ class CommonConstants {
   static const String iosWebUniversalLink =
       'https://talk-apps.kakao.com/scheme/';
   static const String iosTalkLoginScheme = 'kakaokompassauth://authorize';
+  static const String iosInAppLoginScheme = 'kakaotalk://inappbrowser';
 
   static const String methodChannel = 'kakao_flutter_sdk';
   static const String getOrigin = 'getOrigin';
@@ -30,4 +31,5 @@ class CommonConstants {
       'isKakaoTalkSharingAvailable';
   static const String navigate = 'navigate';
   static const String shareDestination = 'shareDestination';
+  static const String isPopup = 'is_popup';
 }
