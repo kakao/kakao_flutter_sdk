@@ -5,7 +5,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_user/src/constants.dart';
-import 'package:kakao_flutter_sdk_user/src/utils.dart';
 
 import 'model/access_token_info.dart';
 import 'model/scope_info.dart';
