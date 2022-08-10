@@ -69,7 +69,14 @@ class KakaoFlutterSdkPlugin {
         }
         return false;
       case "platformId":
-        return Uint8List.fromList([1, 2, 3]);
+        final origin = html.window.location.origin
+            .replaceFirst('http', '')
+            .replaceFirst('https', '')
+            .split('')
+            .map((e) => e.codeUnits[0])
+            .toList();
+        int end = origin.length >= 10 ? 10 : origin.length;
+        return Uint8List.fromList(origin.sublist(0, end));
       case "platformRedirectUri":
         if (_uaParser.isAndroid(userAgent)) {
           return "${CommonConstants.scheme}://${KakaoSdk.hosts.kapi}${CommonConstants.androidWebRedirectUri}";
