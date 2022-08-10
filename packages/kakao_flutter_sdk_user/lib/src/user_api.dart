@@ -41,7 +41,7 @@ class UserApi {
       redirectUrl = await AuthCodeClient.instance.platformRedirectUri();
     }
 
-    final authCode = await AuthCodeClient.instance.requestWithTalk(
+    final authCode = await AuthCodeClient.instance.authorizeWithTalk(
       redirectUri: redirectUrl,
       channelPublicId: channelPublicIds,
       serviceTerms: serviceTerms,
@@ -82,7 +82,7 @@ class UserApi {
       redirectUrl = await AuthCodeClient.instance.platformRedirectUri();
     }
 
-    final authCode = await AuthCodeClient.instance.requestWithTalk(
+    final authCode = await AuthCodeClient.instance.authorizeWithTalk(
       redirectUri: redirectUrl,
       prompts: prompts,
       state: state,
@@ -114,7 +114,7 @@ class UserApi {
     String? nonce,
   }) async {
     String codeVerifier = AuthCodeClient.codeVerifier();
-    final authCode = await AuthCodeClient.instance.request(
+    final authCode = await AuthCodeClient.instance.authorize(
       prompts: prompts,
       channelPublicIds: channelPublicIds,
       serviceTerms: serviceTerms,
@@ -147,7 +147,7 @@ class UserApi {
     String? nonce,
   }) async {
     var codeVerifier = AuthCodeClient.codeVerifier();
-    final authCode = await AuthCodeClient.instance.request(
+    final authCode = await AuthCodeClient.instance.authorize(
       prompts: prompts,
       state: state,
       channelPublicIds: channelPublicIds,
@@ -173,7 +173,7 @@ class UserApi {
   Future<OAuthToken> loginWithNewScopes(List<String> scopes,
       {String? nonce}) async {
     String codeVerifier = AuthCodeClient.codeVerifier();
-    final authCode = await AuthCodeClient.instance.requestWithAgt(
+    final authCode = await AuthCodeClient.instance.authorizeWithAgt(
         scopes: scopes, codeVerifier: codeVerifier, nonce: nonce);
     final token = await AuthApi.instance
         .issueAccessToken(authCode: authCode, codeVerifier: codeVerifier);

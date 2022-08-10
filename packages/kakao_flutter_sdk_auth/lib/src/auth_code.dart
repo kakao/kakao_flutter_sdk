@@ -27,7 +27,7 @@ class AuthCodeClient {
   static final AuthCodeClient instance = AuthCodeClient();
 
   // Requests authorization code via `Chrome Custom Tabs` (on Android) and `ASWebAuthenticationSession` (on iOS).
-  Future<String> request({
+  Future<String> authorize({
     String? clientId,
     String? redirectUri,
     List<String>? scopes,
@@ -88,7 +88,7 @@ class AuthCodeClient {
   //
   // This will only work on devices where KakaoTalk is installed.
   // You MUST check if KakaoTalk is installed before calling this method with [isKakaoTalkInstalled].
-  Future<String> requestWithTalk({
+  Future<String> authorizeWithTalk({
     String? clientId,
     String? redirectUri,
     List<Prompt>? prompts,
@@ -139,7 +139,7 @@ class AuthCodeClient {
   // Requests authorization code with current access token.
   //
   // User should be logged in in order to call this method.
-  Future<String> requestWithAgt({
+  Future<String> authorizeWithAgt({
     required List<String> scopes,
     String? clientId,
     String? redirectUri,
@@ -148,7 +148,7 @@ class AuthCodeClient {
   }) async {
     final agt = await _kauthApi.agt();
     try {
-      return request(
+      return authorize(
         clientId: clientId,
         redirectUri: redirectUri,
         scopes: scopes,
