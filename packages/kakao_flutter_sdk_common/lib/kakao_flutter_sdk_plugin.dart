@@ -102,7 +102,7 @@ class KakaoFlutterSdkPlugin {
         }
 
         var arguments = call.arguments;
-        final kaHeader = _getKaHeader();
+        final kaHeader = await KakaoSdk.kaHeader;
 
         if (_uaParser.isAndroid(userAgent)) {
           String intent =
