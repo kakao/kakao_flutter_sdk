@@ -74,7 +74,7 @@ class AuthCodeClient {
       final authCode = await launchBrowserTab(
         url,
         redirectUri: finalRedirectUri,
-        webPopupLogin: webPopupLogin,
+        popupOpen: webPopupLogin,
       );
 
       return _parseCode(authCode);
@@ -275,12 +275,6 @@ class AuthCodeClient {
     return base64
         .encode(sha512.convert(utf8.encode(UniqueKey().toString())).bytes);
   }
-
-// String _platformRedirectUri() {
-//   if (kIsWeb) {
-//     return "${html.win}"
-//   }
-// }
 }
 
 /// 동의 화면 요청 시 추가 상호작용을 요청하고자 할 때 전달하는 파라미터
