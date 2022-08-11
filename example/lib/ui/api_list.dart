@@ -1139,7 +1139,7 @@ class _ApiListState extends State<ApiList> {
           Log.i(context, tag, '카카오내비 미설치');
         }
       }),
-      ApiItem('shareDestinationIntent() - KATEC', () async {
+      ApiItem('shareDestination - KATEC', () async {
         if (await NaviApi.instance.isKakaoNaviInstalled()) {
           // 카카오내비 앱으로 목적지 공유하기 - KATEC
           await NaviApi.instance.shareDestination(
@@ -1150,7 +1150,7 @@ class _ApiListState extends State<ApiList> {
           launchBrowserTab(Uri.parse(NaviApi.webNaviInstall));
         }
       }),
-      ApiItem('shareDestinationIntent() - WGS84', () async {
+      ApiItem('shareDestination - WGS84', () async {
         if (await NaviApi.instance.isKakaoNaviInstalled()) {
           // 카카오내비 앱으로 목적지 공유하기 - WGS84
           await NaviApi.instance.shareDestination(
@@ -1163,7 +1163,7 @@ class _ApiListState extends State<ApiList> {
           launchBrowserTab(Uri.parse(NaviApi.webNaviInstall));
         }
       }),
-      ApiItem('navigateIntent() - KATEC - viaList', () async {
+      ApiItem('navigate - KATEC - viaList', () async {
         if (await NaviApi.instance.isKakaoNaviInstalled()) {
           // 카카오내비 앱으로 목적지 공유하기 - KATEC - 경유지 추가
           await NaviApi.instance.navigate(
@@ -1177,7 +1177,7 @@ class _ApiListState extends State<ApiList> {
           launchBrowserTab(Uri.parse(NaviApi.webNaviInstall));
         }
       }),
-      ApiItem('navigateIntent() - WGS84 - viaList', () async {
+      ApiItem('navigate - WGS84 - viaList', () async {
         if (await NaviApi.instance.isKakaoNaviInstalled()) {
           // 카카오내비 앱으로 목적지 공유하기 - WGS84 - 경유지 추가
           await NaviApi.instance.navigate(
