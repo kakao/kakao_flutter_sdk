@@ -96,11 +96,12 @@ class KakaoSdk {
     ServerHosts? serviceHosts,
     bool? loggingEnabled,
   }) {
-    if (nativeAppKey == null) {
-      throw KakaoClientException("Native App Key is required");
+    if (nativeAppKey == null && javaScriptAppKey == null) {
+      throw KakaoClientException(
+          "A Native App Key or JavaScript App Key is required");
     }
 
-    nativeKey = nativeAppKey;
+    nativeKey = nativeAppKey ?? "";
     jsKey = javaScriptAppKey ?? "";
     hosts = serviceHosts ?? ServerHosts();
     logging = loggingEnabled ?? false;
