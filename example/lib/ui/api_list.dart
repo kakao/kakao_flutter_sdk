@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
@@ -1068,7 +1069,7 @@ class _ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
-      ApiItem('uploadImage()', () async {
+      ApiItem('uploadImage() - File', () async {
         // 이미지 업로드
 
         // 로컬 이미지 파일
@@ -1089,6 +1090,26 @@ class _ApiListState extends State<ApiList> {
               context, tag, '이미지 업로드 성공\n${imageUploadResult.infos.original}');
         } catch (e) {
           Log.e(context, tag, '이미지 업로드 실패', e);
+        }
+      }),
+      ApiItem('uploadImage() - ByteData', () async {
+        // 이미지 업로드
+
+        // 이 샘플에서는 file_picker를 사용해 이미지 파일을 가져왔습니다.
+        var filePickerResult = await FilePicker.platform.pickFiles();
+
+        if (filePickerResult != null) {
+          var byteData = filePickerResult.files.first.bytes;
+
+          try {
+            // 카카오 이미지 서버로 업로드
+            ImageUploadResult imageUploadResult =
+                await ShareClient.instance.uploadImage(byteData: byteData);
+            Log.i(context, tag,
+                '이미지 업로드 성공\n${imageUploadResult.infos.original}');
+          } catch (e) {
+            Log.e(context, tag, '이미지 업로드 실패', e);
+          }
         }
       }),
       ApiItem('scrapImage()', () async {
