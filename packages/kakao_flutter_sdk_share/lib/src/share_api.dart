@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk_share/src/constants.dart';
@@ -47,12 +48,19 @@ class ShareApi {
   }
 
   /// 로컬 이미지를 카카오톡 공유 컨텐츠 이미지로 활용하기 위해 카카오 이미지 서버로 업로드
-  Future<ImageUploadResult> uploadImage(File image,
-      {bool secureResource = true}) {
+  Future<ImageUploadResult> uploadImage(File? image, Uint8List? byteData,
+      {bool secureResource = true}) async {
     return ApiFactory.handleApiError(() async {
       var formData = FormData();
-      var file = await MultipartFile.fromFile(image.path,
-          filename: image.path.split("/").last);
+
+      final MultipartFile file;
+
+      if (image != null) {
+        file = await MultipartFile.fromFile(image.path,
+            filename: image.path.split("/").last);
+      } else {
+        file = MultipartFile.fromBytes(byteData!, filename: "image");
+      }
       formData.files.add(MapEntry(Constants.file, file));
       formData.fields
           .add(MapEntry(Constants.secureResource, secureResource.toString()));

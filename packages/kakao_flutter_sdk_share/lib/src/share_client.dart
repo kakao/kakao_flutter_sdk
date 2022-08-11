@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -63,10 +64,16 @@ class ShareClient {
 
   /// 로컬 이미지를 카카오톡 공유 컨텐츠 이미지로 활용하기 위해 카카오 이미지 서버로 업로드
   Future<ImageUploadResult> uploadImage({
-    required File image,
+    File? image,
+    Uint8List? byteData,
     bool secureResource = true,
   }) async {
-    return await api.uploadImage(image, secureResource: secureResource);
+    if (image == null && byteData == null) {
+      throw KakaoClientException(
+          'Either parameter image or byteData must not be null.');
+    }
+    return await api.uploadImage(image, byteData,
+        secureResource: secureResource);
   }
 
   /// 원격 이미지를 카카오톡 공유 컨텐츠 이미지로 활용하기 위해 카카오 이미지 서버에 스크랩
