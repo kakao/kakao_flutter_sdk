@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.pm.LabeledIntent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
+import android.os.Build
 import android.os.Parcelable
 
 class IntentResolveClient {
@@ -18,11 +20,14 @@ class IntentResolveClient {
         for (packageName in ALLOWED_PACKAGES) {
             val cloned = intent.clone() as Intent
             cloned.setPackage(packageName)
-            val info = pm.resolveActivity(cloned, PackageManager.MATCH_DEFAULT_ONLY) ?: continue
-            val packageInfo = pm.getPackageInfo(
-                info.activityInfo.applicationInfo.packageName,
-                PackageManager.GET_SIGNATURES
-            )
+            val info = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                pm.resolveActivity(cloned,
+                    PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong()))
+            } else {
+                @Suppress("DEPRECATION")
+                pm.resolveActivity(cloned, PackageManager.MATCH_DEFAULT_ONLY)
+            } ?: continue
+            val packageInfo = packageInfo(pm, info)
             if (!validateTalkSignature(packageInfo)) continue
             targetIntents.add(cloned)
             labeledIntents.add(
@@ -53,13 +58,38 @@ class IntentResolveClient {
     }
 
     private fun validateTalkSignature(packageInfo: PackageInfo): Boolean {
-        for (signature in packageInfo.signatures) {
+        val arrayOfSignatures = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            packageInfo.signingInfo.apkContentsSigners
+        } else {
+            @Suppress("DEPRECATION")
+            packageInfo.signatures
+        }
+
+        for (signature in arrayOfSignatures) {
             val signatureCharsString = signature.toCharsString()
             if (ALLOWED_SIGNATURES.contains(signatureCharsString)) {
                 return true
             }
         }
         return false
+    }
+
+    private fun packageInfo(pm: PackageManager, info: ResolveInfo): PackageInfo {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            pm.getPackageInfo(
+                info.activityInfo.applicationInfo.packageName,
+                PackageManager.PackageInfoFlags.of(PackageManager.GET_SIGNING_CERTIFICATES.toLong())
+            )
+        } else {
+            val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                PackageManager.GET_SIGNING_CERTIFICATES
+            } else {
+                @Suppress("DEPRECATION")
+                PackageManager.GET_SIGNATURES
+            }
+            @Suppress("DEPRECATION")
+            pm.getPackageInfo(info.activityInfo.applicationInfo.packageName, flag)
+        }
     }
 
     private val RELEASE_SIGNATURE =
