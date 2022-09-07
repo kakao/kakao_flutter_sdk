@@ -36,7 +36,8 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
             let codeVerifier = args["code_verifier"]
             let prompt = args["prompt"]
             let state = args["state"]
-            authorizeWithTalk(sdkVersion: sdkVersion!, clientId: clientId!, redirectUri: redirectUri!, codeVerifier: codeVerifier, prompt: prompt, state: state, result: result)
+            let nonce = args["nonce"]
+            authorizeWithTalk(sdkVersion: sdkVersion!, clientId: clientId!, redirectUri: redirectUri!, codeVerifier: codeVerifier, prompt: prompt, state: state, nonce: nonce, result: result)
         case "isKakaoTalkInstalled":
             guard let talkUrl = URL(string: "kakaokompassauth://authorize") else {
                 result(false)
@@ -91,7 +92,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
         }
     }
     
-    private func authorizeWithTalk(sdkVersion: String, clientId: String, redirectUri: String, codeVerifier: String?, prompt: String?, state: String?, result: @escaping FlutterResult) {
+    private func authorizeWithTalk(sdkVersion: String, clientId: String, redirectUri: String, codeVerifier: String?, prompt: String?, state: String?, nonce: String?, result: @escaping FlutterResult) {
         self.result = result
         self.redirectUri = redirectUri
         self.authorizeTalkCompletionHandler = {
@@ -128,6 +129,10 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
         
         if(state != nil) {
             parameters["state"] = state
+        }
+
+        if(nonce != nil) {
+            parameters["nonce"] = nonce
         }
         
         guard let url = Utility.makeUrlWithParameters("kakaokompassauth://authorize", parameters: parameters) else {

@@ -37,6 +37,7 @@ object Constants {
     const val APPROVAL_TYPE = "approval_type"
     const val PROMPT = "prompt"
     const val STATE = "state"
+    const val NONCE = "nonce"
 
     const val PARAM = "param"
     const val APIVER = "apiver"

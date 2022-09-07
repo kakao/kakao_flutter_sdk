@@ -1,6 +1,6 @@
 name: kakao_flutter_sdk_example
 description: Demonstrates how to use the kakao_flutter_sdk plugin.
-version: 1.2.1
+version: 1.2.2
 publish_to: "none"
 environment:
   sdk: ">=2.12.2 <3.0.0"
@@ -18,7 +18,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1
+  flutter_lints: ^1.0.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

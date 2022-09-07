@@ -4,7 +4,8 @@
     <application>
         <activity
             android:name=".TalkAuthCodeActivity"
-            android:exported="true"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="false"
             android:launchMode="singleTask"
             android:theme="@style/TransparentCompat" />
         <activity
