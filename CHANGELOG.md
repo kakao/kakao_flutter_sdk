@@ -1,3 +1,9 @@
+## 1.2.2
+- Changed the type of fromUpdatedAt parameter for Retrieving shipping address API.
+  - int? → DateTime?
+- Fixed issue where the views for Consent screen are recreated when attempting to log in with Kakao Talk on an Android device.
+- Added nonce to idToken in response to Login with Kakao Talk.
+
 ## 1.2.1
 - Fix the build error related to `UniqueKey` that occurs in Flutter versions of 2.x.x.
 
