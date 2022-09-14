@@ -90,6 +90,9 @@ class KakaoSdk {
     return KakaoSdk.nativeKey;
   }
 
+  /// [내 애플리케이션]에서 확인한 앱 키로 Flutter SDK 초기화, 서비스 환경별 앱 키 사용
+  /// 웹: javaScriptAppKey에 JavaScript 키 전달
+  /// 앱: nativeAppKey에 네이티브 앱 키 전달
   static void init({
     String? nativeAppKey,
     String? javaScriptAppKey,

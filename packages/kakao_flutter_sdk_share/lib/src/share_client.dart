@@ -25,6 +25,7 @@ class ShareClient {
   /// 간편한 API 호출을 위해 기본 제공되는 singleton 객체
   static final ShareClient instance = ShareClient(ShareApi.instance);
 
+  /// 카카오톡 실행을 통한 공유 가능 여부 확인
   Future<bool> isKakaoTalkSharingAvailable() async {
     return await _channel
             .invokeMethod(CommonConstants.isKakaoTalkSharingAvailable) ??

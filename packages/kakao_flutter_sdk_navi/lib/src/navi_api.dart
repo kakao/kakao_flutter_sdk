@@ -23,7 +23,7 @@ class NaviApi {
   /// 간편한 API 호출을 위해 기본 제공되는 singleton 객체
   static final NaviApi instance = NaviApi();
 
-  /// 카카오내비 앱 설치 여부 검사
+  /// 카카오내비 앱 실행 가능 여부 확인
   Future<bool> isKakaoNaviInstalled() async {
     final isInstalled =
         await _channel.invokeMethod<bool>("isKakaoNaviInstalled") ?? false;

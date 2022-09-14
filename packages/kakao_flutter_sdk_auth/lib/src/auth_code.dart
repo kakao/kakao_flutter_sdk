@@ -13,9 +13,7 @@ import 'package:platform/platform.dart';
 
 const MethodChannel _channel = MethodChannel(CommonConstants.methodChannel);
 
-/// @nodoc
-// Provides OAuth authorization process.
-// Corresponds to Authorization Endpoint of [OAuth 2.0 spec](https://tools.ietf.org/html/rfc6749).
+/// Kakao SDK의 카카오 로그인 내부 동작에 사용되는 클라이언트
 class AuthCodeClient {
   AuthCodeClient({AuthApi? authApi, Platform? platform})
       : _kauthApi = authApi ?? AuthApi.instance,
@@ -26,7 +24,7 @@ class AuthCodeClient {
 
   static final AuthCodeClient instance = AuthCodeClient();
 
-  // Requests authorization code via `Chrome Custom Tabs` (on Android) and `ASWebAuthenticationSession` (on iOS).
+  /// 사용자가 앱에 로그인할 수 있도록 인가 코드를 요청하는 함수입니다. 인가 코드를 받을 수 있는 서버 개발이 필요합니다.
   Future<String> authorize({
     String? clientId,
     String? redirectUri,
@@ -84,10 +82,8 @@ class AuthCodeClient {
     }
   }
 
-  // Requests authorization code via KakaoTalk.
-  //
-  // This will only work on devices where KakaoTalk is installed.
-  // You MUST check if KakaoTalk is installed before calling this method with [isKakaoTalkInstalled].
+  /// 사용자가 앱에 로그인할 수 있도록 사용자의 디바이스에 설치된 카카오톡을 통해 인가 코드를 요청하는 함수입니다.
+  /// 인가 코드를 받을 수 있는 서버 개발이 필요합니다.
   Future<String> authorizeWithTalk({
     String? clientId,
     String? redirectUri,
@@ -136,6 +132,7 @@ class AuthCodeClient {
     }
   }
 
+  /// @nodoc
   // Requests authorization code with current access token.
   //
   // User should be logged in in order to call this method.
@@ -166,6 +163,7 @@ class AuthCodeClient {
     _channel.invokeMethod("retrieveAuthCode");
   }
 
+  /// @nodoc
   // Get platform specific redirect uri. (This method is web specific. Use after checking the platform)
   Future<String> platformRedirectUri() async {
     return await _channel.invokeMethod('platformRedirectUri');
@@ -271,6 +269,7 @@ class AuthCodeClient {
     return KakaoSdk.appKey;
   }
 
+  /// @nodoc
   static String codeVerifier() {
     return base64
         .encode(sha512.convert(utf8.encode(UniqueKey().toString())).bytes);

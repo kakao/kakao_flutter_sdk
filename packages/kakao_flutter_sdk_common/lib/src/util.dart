@@ -8,6 +8,7 @@ import 'package:kakao_flutter_sdk_common/src/kakao_exception.dart';
 const MethodChannel _channel = MethodChannel(CommonConstants.methodChannel);
 
 /// 플랫폼별 기본 브라우저로 URL 실행
+/// URL을 팝업으로 열고싶을 때 [popupOpen] 사용. 웹에서만 사용 가능
 Future<String> launchBrowserTab(Uri uri,
     {String? redirectUri, bool popupOpen = false}) async {
   if (uri.scheme != CommonConstants.http &&
@@ -30,7 +31,7 @@ Future<String> launchBrowserTab(Uri uri,
       "OAuth 2.0 redirect uri was null, which should not happen.");
 }
 
-/// 카카오톡이 설치되어 있는지 여부 확인
+/// 카카오톡 앱 실행 가능 여부 확인
 Future<bool> isKakaoTalkInstalled() async {
   final isInstalled =
       await _channel.invokeMethod<bool>(CommonConstants.isKakaoTalkInstalled) ??
