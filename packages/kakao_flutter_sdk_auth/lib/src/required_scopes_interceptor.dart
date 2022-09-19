@@ -3,6 +3,7 @@ import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 
 /// @nodoc
 // -402 에러 시 자동 추가 동의
+// Android, iOS 앱일 때만 동작
 class RequiredScopesInterceptor extends Interceptor {
   final Dio _dio;
   final AuthCodeClient _authCodeClient;

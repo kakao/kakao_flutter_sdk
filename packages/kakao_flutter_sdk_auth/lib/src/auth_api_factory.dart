@@ -32,18 +32,21 @@ class AuthApiFactory {
     var dio = Dio();
     dio.options.baseUrl = "${CommonConstants.scheme}://${KakaoSdk.hosts.kapi}";
     dio.options.contentType = CommonConstants.contentType;
-    var tokenInterceptor = AccessTokenInterceptor(dio, AuthApi.instance);
-    var scopeInterceptor = RequiredScopesInterceptor(dio);
-    dio.interceptors.addAll([
-      tokenInterceptor,
-      scopeInterceptor,
+
+    var interceptors = [
+      AccessTokenInterceptor(dio, AuthApi.instance),
       ApiFactory.kaInterceptor,
       LogInterceptor(
         logPrint: SdkLog.i,
         requestBody: kDebugMode ? true : false,
         responseBody: kDebugMode ? true : false,
       )
-    ]);
+    ];
+
+    if (!kIsWeb) {
+      interceptors.add(RequiredScopesInterceptor(dio));
+    }
+    dio.interceptors.addAll(interceptors);
     return dio;
   }
 }

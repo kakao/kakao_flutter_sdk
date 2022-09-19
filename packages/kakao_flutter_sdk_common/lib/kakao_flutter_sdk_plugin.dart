@@ -85,7 +85,7 @@ class KakaoFlutterSdkPlugin {
           return CommonConstants.iosWebRedirectUri;
         }
         // Returns meaningless values unless Android and iOS.
-        return 'redirectUri';
+        return html.window.origin;
       case 'redirectForEasyLogin':
         final String redirectUri = call.arguments['redirect_uri'];
         final String code = call.arguments['code'];

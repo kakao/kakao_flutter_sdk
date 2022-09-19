@@ -142,17 +142,18 @@ class AuthCodeClient {
     String? redirectUri,
     String? codeVerifier,
     String? nonce,
+    bool webPopupLogin = false,
   }) async {
     final agt = await _kauthApi.agt();
     try {
       return authorize(
-        clientId: clientId,
-        redirectUri: redirectUri,
-        scopes: scopes,
-        agt: agt,
-        codeVerifier: codeVerifier,
-        nonce: nonce,
-      );
+          clientId: clientId,
+          redirectUri: redirectUri,
+          scopes: scopes,
+          agt: agt,
+          codeVerifier: codeVerifier,
+          nonce: nonce,
+          webPopupLogin: webPopupLogin);
     } catch (e) {
       rethrow;
     }
