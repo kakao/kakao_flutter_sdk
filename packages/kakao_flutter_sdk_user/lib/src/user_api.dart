@@ -173,7 +173,7 @@ class UserApi {
   Future<OAuthToken> loginWithNewScopes(List<String> scopes,
       {String? nonce}) async {
     String codeVerifier = AuthCodeClient.codeVerifier();
-    final authCode = await AuthCodeClient.instance.authorizeWithAgt(
+    final authCode = await AuthCodeClient.instance.authorizeWithNewScopes(
         scopes: scopes, codeVerifier: codeVerifier, nonce: nonce);
     final token = await AuthApi.instance
         .issueAccessToken(authCode: authCode, codeVerifier: codeVerifier);

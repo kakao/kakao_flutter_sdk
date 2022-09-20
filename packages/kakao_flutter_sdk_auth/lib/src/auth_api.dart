@@ -107,6 +107,10 @@ class AuthApi {
   /// @nodoc
   Future<String> agt({String? appKey, String? accessToken}) async {
     final tokenInfo = await _tokenManagerProvider.manager.getToken();
+    if (accessToken == null && tokenInfo == null) {
+      throw KakaoClientException(
+          'Token registered in TokenManager does not exist!');
+    }
     final data = {
       Constants.clientId: appKey ?? KakaoSdk.platformAppKey,
       Constants.accessToken: accessToken ?? tokenInfo!.accessToken

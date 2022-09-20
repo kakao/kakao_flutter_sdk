@@ -132,11 +132,9 @@ class AuthCodeClient {
     }
   }
 
-  /// @nodoc
-  // Requests authorization code with current access token.
-  //
-  // User should be logged in in order to call this method.
-  Future<String> authorizeWithAgt({
+  /// 사용자가 아직 동의하지 않은 개인정보 및 접근권한 동의 항목에 대하여 동의를 요청 화면을 출력하고 인가 코드를 요청하는 함수입니다.
+  /// 인가 코드를 받을 수 있는 서버 개발이 필요합니다.
+  Future<String> authorizeWithNewScopes({
     required List<String> scopes,
     String? clientId,
     String? redirectUri,
