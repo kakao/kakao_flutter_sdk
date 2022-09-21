@@ -39,7 +39,7 @@ class NaviApi {
       List<Location>? viaList}) async {
     final extras = await _getExtras();
     final arguments = {
-      Constants.appKey: KakaoSdk.nativeKey,
+      Constants.appKey: KakaoSdk.appKey,
       Constants.extras: jsonEncode(extras),
       Constants.naviParams: jsonEncode(
         KakaoNaviParams(

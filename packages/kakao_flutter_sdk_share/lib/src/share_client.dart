@@ -100,7 +100,7 @@ class ShareClient {
     }
     Map<String, String> params = {
       Constants.linkVer: Constants.linkVersion_40,
-      Constants.appKey: appKey ?? KakaoSdk.nativeKey,
+      Constants.appKey: appKey ?? KakaoSdk.appKey,
       Constants.appVer: await KakaoSdk.appVer,
       Constants.templateId: response.templateId.toString(),
       Constants.templateArgs: jsonEncode(response.templateArgs),
@@ -144,7 +144,7 @@ class ShareClient {
     final attachment = {
       Constants.lv: Constants.linkVersion_40,
       Constants.av: Constants.linkVersion_40,
-      Constants.ak: appKey ?? KakaoSdk.nativeKey,
+      Constants.ak: appKey ?? KakaoSdk.appKey,
       Constants.P: templateMsg[Constants.P],
       Constants.C: templateMsg[Constants.C],
       Constants.templateId: response.templateId,

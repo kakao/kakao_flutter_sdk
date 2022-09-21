@@ -175,6 +175,6 @@ class AuthApi {
 
   Future<String> _platformRedirectUri() async {
     if (kIsWeb) return await KakaoSdk.origin;
-    return "kakao${KakaoSdk.nativeKey}://oauth";
+    return "kakao${KakaoSdk.appKey}://oauth";
   }
 }
