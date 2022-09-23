@@ -98,8 +98,14 @@ class DefaultTokenManager implements TokenManager {
     if (jsonToken == null || version == null) {
       _currentToken = await _migrateOldToken();
     } else {
-      _currentToken =
-          OAuthToken.fromJson(jsonDecode(_encryptor!.decrypt(jsonToken)));
+      try {
+        _currentToken =
+            OAuthToken.fromJson(jsonDecode(_encryptor!.decrypt(jsonToken)));
+      } catch (e) {
+        await clear();
+        SdkLog.e(
+            'A previously saved token was deleted due to an error during decryption. Please login again.');
+      }
     }
     return _currentToken;
   }
