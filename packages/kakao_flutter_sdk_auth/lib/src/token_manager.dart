@@ -135,15 +135,17 @@ class DefaultTokenManager implements TokenManager {
       await _preferences!.remove(rtExpiresAtKey);
       await _preferences!.remove(secureModeKey);
       await _preferences!.remove(scopesKey);
-      await _preferences!.setString(tokenKey, jsonEncode(token));
+      await _preferences!
+          .setString(tokenKey, _encryptor!.encrypt(jsonEncode(token)));
       await _preferences!.setString(versionKey, KakaoSdk.sdkVersion);
       return token;
     }
 
-    // if a token is issued between version 0.9.0 and version 1.0.0, save the versionKey
+    // if a token is issued between version 0.9.0 and version 1.0.0, save the versionKey and encrypt previous token
     var jsonToken = _preferences!.getString(tokenKey);
     if (jsonToken != null) {
       await _preferences!.setString(versionKey, KakaoSdk.sdkVersion);
+      await _preferences!.setString(tokenKey, _encryptor!.encrypt(jsonToken));
       return OAuthToken.fromJson(jsonDecode(jsonToken));
     }
     return null;
