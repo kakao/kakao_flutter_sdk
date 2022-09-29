@@ -14,10 +14,12 @@ class KakaoSdk {
 
   /// Kakao Native App Key
   /// SDK를 사용하기 전에 반드시 초기화 필요
-  static late String nativeKey;
-  static late String jsKey;
+  static late String _nativeKey;
+  static late String _jsKey;
 
-  static String sdkVersion = "1.2.2";
+  static String sdkVersion = "1.3.0-beta.1";
+
+  static String get appKey => kIsWeb ? _jsKey : _nativeKey;
 
   static bool logging = false;
 
@@ -83,25 +85,33 @@ class KakaoSdk {
 
   static String get platformAppKey {
     if (kIsWeb) {
-      return KakaoSdk.jsKey;
+      return KakaoSdk._jsKey;
     }
-    return KakaoSdk.nativeKey;
+    return KakaoSdk._nativeKey;
   }
 
+  /// [내 애플리케이션]에서 확인한 앱 키로 Flutter SDK 초기화, 서비스 환경별 앱 키 사용
+  /// 웹: javaScriptAppKey에 JavaScript 키 전달
+  /// 앱: nativeAppKey에 네이티브 앱 키 전달
   static void init({
     String? nativeAppKey,
     String? javaScriptAppKey,
     ServerHosts? serviceHosts,
     bool? loggingEnabled,
   }) {
-    if (nativeAppKey == null) {
-      throw KakaoClientException("Native App Key is required");
+    if (nativeAppKey == null && javaScriptAppKey == null) {
+      throw KakaoClientException(
+          "A Native App Key or JavaScript App Key is required");
     }
 
-    nativeKey = nativeAppKey;
-    jsKey = javaScriptAppKey ?? "";
+    _nativeKey = nativeAppKey ?? "";
+    _jsKey = javaScriptAppKey ?? "";
     hosts = serviceHosts ?? ServerHosts();
     logging = loggingEnabled ?? false;
+
+    if (kIsWeb) {
+      _channel.invokeMethod("retrieveAuthCode");
+    }
   }
 }
 

@@ -16,6 +16,9 @@ scripts:
   analyze:
     run: melos exec --ignore="*example*" -- flutter analyze --no-pub
 
+  upgrade:
+    run: melos exec -- flutter pub upgrade
+
 environment:
   sdk: ">=2.12.0 <3.0.0"
   flutter: '>=1.10.0'

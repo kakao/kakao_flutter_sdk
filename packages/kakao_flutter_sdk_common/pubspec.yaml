@@ -1,6 +1,6 @@
 name: kakao_flutter_sdk_common
 description: A flutter plugin for Kakao API, which supports Kakao login, KakaoTalk Share, User API, KakaoTalk API, KakaoStory API and Navi API.
-version: 1.2.2
+version: 1.3.0-beta.1
 homepage: https://github.com/kakao/kakao_flutter_sdk
 
 environment:
@@ -9,6 +9,8 @@ environment:
 
 dependencies:
   flutter:
+    sdk: flutter
+  flutter_web_plugins:
     sdk: flutter
   json_annotation: ^4.1.0
   dio: ^4.0.0
@@ -42,9 +44,9 @@ flutter:
         pluginClass: KakaoFlutterSdkPlugin
       ios:
         pluginClass: KakaoFlutterSdkPlugin
-    # web:
-    #   pluginClass: KakaoFlutterSdkPlugin
-    #   fileName: kakao_flutter_sdk_plugin.dart
+      web:
+        pluginClass: KakaoFlutterSdkPlugin
+        fileName: kakao_flutter_sdk_plugin.dart
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

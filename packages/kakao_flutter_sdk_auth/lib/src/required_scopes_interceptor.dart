@@ -3,6 +3,7 @@ import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 
 /// @nodoc
 // -402 에러 시 자동 추가 동의
+// Android, iOS 앱일 때만 동작
 class RequiredScopesInterceptor extends Interceptor {
   final Dio _dio;
   final AuthCodeClient _authCodeClient;
@@ -45,8 +46,8 @@ class RequiredScopesInterceptor extends Interceptor {
         _dio.interceptors.errorLock.lock();
 
         // get additional consents
-        final authCode =
-            await _authCodeClient.requestWithAgt(scopes: requiredScopes);
+        final authCode = await _authCodeClient.authorizeWithNewScopes(
+            scopes: requiredScopes);
         final token =
             await AuthApi.instance.issueAccessToken(authCode: authCode);
         await _tokenManagerProvider.manager.setToken(token);

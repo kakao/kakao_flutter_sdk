@@ -107,6 +107,10 @@ class AuthApi {
   /// @nodoc
   Future<String> agt({String? appKey, String? accessToken}) async {
     final tokenInfo = await _tokenManagerProvider.manager.getToken();
+    if (accessToken == null && tokenInfo == null) {
+      throw KakaoClientException(
+          'Token registered in TokenManager does not exist!');
+    }
     final data = {
       Constants.clientId: appKey ?? KakaoSdk.platformAppKey,
       Constants.accessToken: accessToken ?? tokenInfo!.accessToken
@@ -115,6 +119,27 @@ class AuthApi {
     return await ApiFactory.handleApiError(() async {
       final response = await _dio.post(Constants.agtPath, data: data);
       return response.data[Constants.agt];
+    });
+  }
+
+  Future<String> codeForWeb({
+    required String stateToken,
+    required String kaHeader,
+  }) async {
+    var queryParams = {
+      'client_id': KakaoSdk.appKey,
+      'auth_tran_id': stateToken,
+      'ka': kaHeader,
+    };
+
+    return await ApiFactory.handleApiError(() async {
+      var response = await _dio.get(Constants.apiWebCodeJson,
+          queryParameters: queryParams);
+
+      if (response.data.toString().contains('error')) {
+        return 'error';
+      }
+      return response.data['code'];
     });
   }
 
@@ -150,6 +175,6 @@ class AuthApi {
 
   Future<String> _platformRedirectUri() async {
     if (kIsWeb) return await KakaoSdk.origin;
-    return "kakao${KakaoSdk.nativeKey}://oauth";
+    return "kakao${KakaoSdk.appKey}://oauth";
   }
 }

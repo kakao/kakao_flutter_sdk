@@ -1,3 +1,9 @@
+## 1.3.0-beta.1
+- Added beta support for a web app.
+  - IMPORTANT: This beta version does not affect the existing functions provided for mobile apps in a release phase.
+- Fixed the build error in iOS environment which occurs when Use_frameworks! is not set in Podfile. 
+- Improved error handling logic by deleting the stored tokens when token decryption fails.
+
 ## 1.2.2
 - Changed the type of fromUpdatedAt parameter for Retrieving shipping address API.
   - int? → DateTime?

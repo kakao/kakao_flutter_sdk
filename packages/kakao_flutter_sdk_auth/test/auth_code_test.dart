@@ -24,7 +24,7 @@ void main() {
         return "$redirectUri?code=$expectedCode";
       });
 
-      var code = await AuthCodeClient.instance.request(
+      var code = await AuthCodeClient.instance.authorize(
           clientId: appKey,
           redirectUri: redirectUri,
           scopes: ["profile", "account_email"]);
@@ -38,7 +38,7 @@ void main() {
 
       try {
         await AuthCodeClient.instance
-            .request(clientId: appKey, redirectUri: redirectUri);
+            .authorize(clientId: appKey, redirectUri: redirectUri);
         fail("should not reach here");
       } on KakaoAuthException catch (e) {
         expect(e.error, AuthErrorCause.accessDenied);
