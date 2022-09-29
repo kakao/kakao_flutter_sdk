@@ -1,3 +1,6 @@
+## 1.3.0-beta.3
+- Fixed a bug in a web app.
+
 ## 1.3.0-beta.2
 - Fixed a bug in a web app.
 
