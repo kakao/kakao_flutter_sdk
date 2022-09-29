@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:kakao_flutter_sdk_auth/src/auth_api.dart';
 import 'package:kakao_flutter_sdk_auth/src/token_manager.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
@@ -28,11 +27,6 @@ class AccessTokenInterceptor extends Interceptor {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) async {
-    if (kIsWeb) {
-      handler.next(err);
-      return;
-    }
-
     final options = err.response?.requestOptions;
     final request = err.requestOptions;
     final token = await _tokenManagerProvider.manager.getToken();
