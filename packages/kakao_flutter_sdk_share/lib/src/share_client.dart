@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_share/src/constants.dart';
 import 'package:kakao_flutter_sdk_share/src/model/image_upload_result.dart';
@@ -23,6 +25,7 @@ class ShareClient {
   /// 간편한 API 호출을 위해 기본 제공되는 singleton 객체
   static final ShareClient instance = ShareClient(ShareApi.instance);
 
+  /// 카카오톡 실행을 통한 공유 가능 여부 확인
   Future<bool> isKakaoTalkSharingAvailable() async {
     return await _channel
             .invokeMethod(CommonConstants.isKakaoTalkSharingAvailable) ??
@@ -62,10 +65,16 @@ class ShareClient {
 
   /// 로컬 이미지를 카카오톡 공유 컨텐츠 이미지로 활용하기 위해 카카오 이미지 서버로 업로드
   Future<ImageUploadResult> uploadImage({
-    required File image,
+    File? image,
+    Uint8List? byteData,
     bool secureResource = true,
   }) async {
-    return await api.uploadImage(image, secureResource: secureResource);
+    if (image == null && byteData == null) {
+      throw KakaoClientException(
+          'Either parameter image or byteData must not be null.');
+    }
+    return await api.uploadImage(image, byteData,
+        secureResource: secureResource);
   }
 
   /// 원격 이미지를 카카오톡 공유 컨텐츠 이미지로 활용하기 위해 카카오 이미지 서버에 스크랩
@@ -91,7 +100,7 @@ class ShareClient {
     }
     Map<String, String> params = {
       Constants.linkVer: Constants.linkVersion_40,
-      Constants.appKey: appKey ?? KakaoSdk.nativeKey,
+      Constants.appKey: appKey ?? KakaoSdk.appKey,
       Constants.appVer: await KakaoSdk.appVer,
       Constants.templateId: response.templateId.toString(),
       Constants.templateArgs: jsonEncode(response.templateArgs),
@@ -109,18 +118,21 @@ class ShareClient {
 
   Future<Map<String, String?>> _extras(
       [Map<String, String>? serverCallbackArgs]) async {
+    var platformInfo = (kIsWeb
+        ? {}
+        : _platform.isAndroid
+            ? {
+                Constants.ka: await KakaoSdk.packageName,
+                Constants.keyHash: await KakaoSdk.origin
+              }
+            : _platform.isIOS
+                ? {Constants.iosBundleId: await KakaoSdk.origin}
+                : {});
     Map<String, String?> extras = {
       Constants.ka: await KakaoSdk.kaHeader,
       Constants.lcba:
           serverCallbackArgs == null ? null : jsonEncode(serverCallbackArgs),
-      ...(_platform.isAndroid
-          ? {
-              Constants.ka: await KakaoSdk.packageName,
-              Constants.keyHash: await KakaoSdk.origin
-            }
-          : _platform.isIOS
-              ? {Constants.iosBundleId: await KakaoSdk.origin}
-              : {}),
+      ...platformInfo,
     };
     extras.removeWhere((k, v) => v == null);
     return extras;
@@ -132,7 +144,7 @@ class ShareClient {
     final attachment = {
       Constants.lv: Constants.linkVersion_40,
       Constants.av: Constants.linkVersion_40,
-      Constants.ak: appKey ?? KakaoSdk.nativeKey,
+      Constants.ak: appKey ?? KakaoSdk.appKey,
       Constants.P: templateMsg[Constants.P],
       Constants.C: templateMsg[Constants.C],
       Constants.templateId: response.templateId,

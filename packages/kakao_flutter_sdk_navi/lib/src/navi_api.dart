@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:kakao_flutter_sdk_navi/src/constants.dart';
@@ -22,7 +23,7 @@ class NaviApi {
   /// 간편한 API 호출을 위해 기본 제공되는 singleton 객체
   static final NaviApi instance = NaviApi();
 
-  /// 카카오내비 앱 설치 여부 검사
+  /// 카카오내비 앱 실행 가능 여부 확인
   Future<bool> isKakaoNaviInstalled() async {
     final isInstalled =
         await _channel.invokeMethod<bool>("isKakaoNaviInstalled") ?? false;
@@ -38,7 +39,7 @@ class NaviApi {
       List<Location>? viaList}) async {
     final extras = await _getExtras();
     final arguments = {
-      Constants.appKey: KakaoSdk.nativeKey,
+      Constants.appKey: KakaoSdk.appKey,
       Constants.extras: jsonEncode(extras),
       Constants.naviParams: jsonEncode(
         KakaoNaviParams(
@@ -69,7 +70,7 @@ class NaviApi {
 
     final extras = await _getExtras();
     final arguments = {
-      Constants.appKey: KakaoSdk.nativeKey,
+      Constants.appKey: KakaoSdk.appKey,
       Constants.extras: jsonEncode(extras),
       Constants.naviParams: jsonEncode(
         KakaoNaviParams(
@@ -84,16 +85,17 @@ class NaviApi {
   }
 
   Future<Map<String, String>> _getExtras() async {
-    return {
-      Constants.ka: await KakaoSdk.kaHeader,
-      ...(_platform.isAndroid
-          ? {
-              Constants.appPkg: await KakaoSdk.packageName,
-              Constants.keyHash: await KakaoSdk.origin
-            }
-          : _platform.isIOS
-              ? {Constants.appPkg: await KakaoSdk.origin}
-              : {})
-    };
+    var platformInfo = kIsWeb
+        ? {}
+        : _platform.isAndroid
+            ? {
+                Constants.appPkg: await KakaoSdk.packageName,
+                Constants.keyHash: await KakaoSdk.origin
+              }
+            : _platform.isIOS
+                ? {Constants.appPkg: await KakaoSdk.origin}
+                : {};
+
+    return {Constants.ka: await KakaoSdk.kaHeader, ...platformInfo};
   }
 }

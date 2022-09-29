@@ -12,6 +12,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   path_provider: ^2.0.8
   shared_preferences: ^2.0.5
+  file_picker: ^4.6.1
   kakao_flutter_sdk:
     path: ../packages/kakao_flutter_sdk
 
@@ -21,7 +22,7 @@ dev_dependencies:
   flutter_lints: ^1.0.4
 
 # For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
+# following page: https://dart.devs/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:

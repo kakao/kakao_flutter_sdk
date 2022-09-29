@@ -199,7 +199,7 @@ class TalkApi {
 
   Future<Map<String, String>> _channelBaseParams() async {
     return {
-      Constants.appKey: KakaoSdk.nativeKey,
+      Constants.appKey: KakaoSdk.appKey,
       Constants.kakaoAgent: await KakaoSdk.kaHeader,
       Constants.apiVersion: Constants.apiVersion_10
     };

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
@@ -213,6 +214,14 @@ class _ApiListState extends State<ApiList> {
         User user;
         try {
           user = await UserApi.instance.me();
+          Log.i(
+              context,
+              tag,
+              '사용자 정보 요청 성공'
+              '\n회원번호: ${user.id}'
+              '\n이메일: ${user.kakaoAccount?.email}'
+              '\n닉네임: ${user.kakaoAccount?.profile?.nickname}'
+              '\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}');
         } catch (e) {
           Log.e(context, tag, '사용자 정보 요청 실패', e);
           return;
@@ -1060,7 +1069,7 @@ class _ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
-      ApiItem('uploadImage()', () async {
+      ApiItem('uploadImage() - File', () async {
         // 이미지 업로드
 
         // 로컬 이미지 파일
@@ -1081,6 +1090,26 @@ class _ApiListState extends State<ApiList> {
               context, tag, '이미지 업로드 성공\n${imageUploadResult.infos.original}');
         } catch (e) {
           Log.e(context, tag, '이미지 업로드 실패', e);
+        }
+      }),
+      ApiItem('uploadImage() - ByteData', () async {
+        // 이미지 업로드
+
+        // 이 샘플에서는 file_picker를 사용해 이미지 파일을 가져왔습니다.
+        var filePickerResult = await FilePicker.platform.pickFiles();
+
+        if (filePickerResult != null) {
+          var byteData = filePickerResult.files.first.bytes;
+
+          try {
+            // 카카오 이미지 서버로 업로드
+            ImageUploadResult imageUploadResult =
+                await ShareClient.instance.uploadImage(byteData: byteData);
+            Log.i(context, tag,
+                '이미지 업로드 성공\n${imageUploadResult.infos.original}');
+          } catch (e) {
+            Log.e(context, tag, '이미지 업로드 실패', e);
+          }
         }
       }),
       ApiItem('scrapImage()', () async {
@@ -1110,7 +1139,7 @@ class _ApiListState extends State<ApiList> {
           Log.i(context, tag, '카카오내비 미설치');
         }
       }),
-      ApiItem('shareDestinationIntent() - KATEC', () async {
+      ApiItem('shareDestination - KATEC', () async {
         if (await NaviApi.instance.isKakaoNaviInstalled()) {
           // 카카오내비 앱으로 목적지 공유하기 - KATEC
           await NaviApi.instance.shareDestination(
@@ -1121,7 +1150,7 @@ class _ApiListState extends State<ApiList> {
           launchBrowserTab(Uri.parse(NaviApi.webNaviInstall));
         }
       }),
-      ApiItem('shareDestinationIntent() - WGS84', () async {
+      ApiItem('shareDestination - WGS84', () async {
         if (await NaviApi.instance.isKakaoNaviInstalled()) {
           // 카카오내비 앱으로 목적지 공유하기 - WGS84
           await NaviApi.instance.shareDestination(
@@ -1134,7 +1163,7 @@ class _ApiListState extends State<ApiList> {
           launchBrowserTab(Uri.parse(NaviApi.webNaviInstall));
         }
       }),
-      ApiItem('navigateIntent() - KATEC - viaList', () async {
+      ApiItem('navigate - KATEC - viaList', () async {
         if (await NaviApi.instance.isKakaoNaviInstalled()) {
           // 카카오내비 앱으로 목적지 공유하기 - KATEC - 경유지 추가
           await NaviApi.instance.navigate(
@@ -1148,7 +1177,7 @@ class _ApiListState extends State<ApiList> {
           launchBrowserTab(Uri.parse(NaviApi.webNaviInstall));
         }
       }),
-      ApiItem('navigateIntent() - WGS84 - viaList', () async {
+      ApiItem('navigate - WGS84 - viaList', () async {
         if (await NaviApi.instance.isKakaoNaviInstalled()) {
           // 카카오내비 앱으로 목적지 공유하기 - WGS84 - 경유지 추가
           await NaviApi.instance.navigate(
@@ -1250,6 +1279,14 @@ class _ApiListState extends State<ApiList> {
         User user;
         try {
           user = await UserApi.instance.me();
+          Log.i(
+              context,
+              tag,
+              '사용자 정보 요청 성공'
+              '\n회원번호: ${user.id}'
+              '\n이메일: ${user.kakaoAccount?.email}'
+              '\n닉네임: ${user.kakaoAccount?.profile?.nickname}'
+              '\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}');
         } catch (e) {
           Log.e(context, tag, '사용자 정보 요청 실패', e);
           return;

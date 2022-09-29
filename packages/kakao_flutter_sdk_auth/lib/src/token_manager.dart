@@ -29,7 +29,8 @@ class TokenManagerProvider {
 
 /// 카카오 API에 사용되는 액세스 토큰, 리프레시 토큰을 관리하는 추상 클래스
 abstract class TokenManager {
-  /// 토큰([token])를 저장
+  /// [TokenManager]에 [OAuthToken] 할당
+  /// Redirect 방식 로그인 시 서비스 서버에서 발급받은 토큰을 클라이언트에 할당하기 위한 용도로 사용 가능
   Future<void> setToken(OAuthToken token);
 
   /// 저장되어 있는 [OAuthToken] 반환
