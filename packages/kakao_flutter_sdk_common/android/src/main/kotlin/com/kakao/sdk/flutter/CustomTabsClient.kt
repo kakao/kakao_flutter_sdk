@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import androidx.browser.customtabs.CustomTabsClient
 import androidx.browser.customtabs.CustomTabsIntent
@@ -21,7 +22,7 @@ object CustomTabsCommonClient {
         val connection = object : CustomTabsServiceConnection() {
             override fun onCustomTabsServiceConnected(
                 name: ComponentName,
-                client: CustomTabsClient
+                client: CustomTabsClient,
             ) {
                 val builder = CustomTabsIntent.Builder()
                     .enableUrlBarHiding().setShowTitle(true)
@@ -49,10 +50,22 @@ object CustomTabsCommonClient {
         var chromePackage: String? = null
         // get ResolveInfo for default browser
         val intent = Intent(Intent.ACTION_VIEW, uri)
-        val resolveInfo =
+        val resolveInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            context.packageManager.resolveActivity(intent,
+                PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong()))
+        } else {
+            @Suppress("DEPRECATION")
             context.packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
+        }
         val serviceIntent = Intent().setAction(CustomTabsService.ACTION_CUSTOM_TABS_CONNECTION)
-        val serviceInfos = context.packageManager.queryIntentServices(serviceIntent, 0)
+        val serviceInfos = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            context.packageManager.queryIntentServices(serviceIntent,
+                PackageManager.ResolveInfoFlags.of(0))
+        } else {
+            @Suppress("DEPRECATION")
+            context.packageManager.queryIntentServices(serviceIntent, 0)
+        }
+
         for (info in serviceInfos) {
             // check if chrome is available on this device
             if (chromePackage == null && isPackageNameChrome(info.serviceInfo.packageName)) {

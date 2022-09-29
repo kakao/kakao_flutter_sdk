@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.browser.customtabs.CustomTabsIntent
 
@@ -29,7 +30,12 @@ class AuthCodeCustomTabsActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fullUri = intent.extras?.getParcelable(KEY_FULL_URI)
+        fullUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.extras?.getParcelable(KEY_FULL_URI, Uri::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.extras?.getParcelable(KEY_FULL_URI)
+        }
             ?: throw IllegalArgumentException("No uri was passed to AuthCodeCustomTabsActivity. This might be a bug in Kakao Flutter SDK.")
     }
 
@@ -61,7 +67,7 @@ class AuthCodeCustomTabsActivity : Activity() {
         this.finish()
     }
 
-    fun openChromeCustomTab(uri: Uri) {
+    private fun openChromeCustomTab(uri: Uri) {
         try {
             customTabsConnection = CustomTabsCommonClient.openWithDefault(this, uri)
         } catch (e: Exception) {

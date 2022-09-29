@@ -19,7 +19,7 @@ class TalkAuthCodeActivity : Activity() {
             sdkVersion: String,
             clientId: String,
             redirectUri: String,
-            extras: Bundle
+            extras: Bundle,
         ) {
             context.startActivity(
                 Intent(context, TalkAuthCodeActivity::class.java).apply {
@@ -76,7 +76,7 @@ class TalkAuthCodeActivity : Activity() {
                 sendError(error, errorDescription, null)
                 return
             }
-            KakaoFlutterSdkPlugin.redirectUriResult.success(extras[Constants.EXTRA_REDIRECT_URL])
+            KakaoFlutterSdkPlugin.redirectUriResult.success(extras.getString(Constants.EXTRA_REDIRECT_URL))
             finish()
             overridePendingTransition(0, 0)
             return
