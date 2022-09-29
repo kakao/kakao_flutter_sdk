@@ -1,3 +1,6 @@
+## 1.3.0-beta.2
+- Fixed a bug in a web app.
+
 ## 1.3.0-beta.1
 - Added beta support for a web app.
   - IMPORTANT: This beta version does not affect the existing functions provided for mobile apps in a release phase.
