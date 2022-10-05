@@ -18,18 +18,25 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+        func castArguments(_ arguments: Any?) -> Dictionary<String, String> {
+            var args = arguments as! Dictionary<String, Any>
+            let isPopup = (args["is_popup"] as? Bool) ?? true
+            args["is_popup"] = (isPopup) ? "YES" : "NO"
+            return args as! Dictionary<String, String>
+        }
+
         switch call.method {
         case "getOrigin":
             result(Utility.origin())
         case "getKaHeader":
             result(Utility.kaHeader())
         case "launchBrowserTab":
-            let args = call.arguments as! Dictionary<String, String>
+            let args = castArguments(call.arguments)
             let url = args["url"]
             let redirectUri = args["redirect_uri"]
             launchBrowserTab(url: url!, redirectUri: redirectUri, result: result)
         case "authorizeWithTalk":
-            let args = call.arguments as! Dictionary<String, String>
+            let args = castArguments(call.arguments)
             let sdkVersion = args["sdk_version"]
             let clientId = args["client_id"]
             let redirectUri = args["redirect_uri"]
@@ -51,21 +58,21 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
             }
             result(UIApplication.shared.canOpenURL(naviUrl))
         case "launchKakaoTalk":
-            let args = call.arguments as! Dictionary<String, String>
+            let args = castArguments(call.arguments)
             let uri = args["uri"]
             launchKakaoTalk(uri: uri!, result: result)
         case "isKakaoTalkSharingAvailable":
             let isKakaoTalkSharingAvailable = UIApplication.shared.canOpenURL(URL(string:"kakaolink://send")!)
             result(isKakaoTalkSharingAvailable)
         case "navigate":
-            let args = call.arguments as! Dictionary<String, String>
+            let args = castArguments(call.arguments)
             let appKey = args["app_key"]
             let extras = args["extras"]
             let params = args["navi_params"]
             let url = Utility.makeUrlWithParameters("kakaonavi-sdk://navigate", parameters: ["extras": extras!, "param": params!, "appkey": appKey!, "apiver": "1.0"])
             UIApplication.shared.open(url!, options: [:], completionHandler: nil)
         case "shareDestination":
-            let args = call.arguments as! Dictionary<String, String>
+            let args = castArguments(call.arguments)
             let appKey = args["app_key"]
             let extras = args["extras"]
             let params = args["navi_params"]
