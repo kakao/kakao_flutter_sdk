@@ -1,3 +1,7 @@
+## 1.3.0-beta.4
+- Fixed issue where app is closed when attempting to log in with Kakao Talk on iOS.
+- Fixed issue where app is closed when attempting Kakao Talk sharing via web on iOS.
+
 ## 1.3.0-beta.3
 - Fixed a bug in a web app.
 
