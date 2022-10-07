@@ -1096,7 +1096,8 @@ class _ApiListState extends State<ApiList> {
         // 이미지 업로드
 
         // 이 샘플에서는 file_picker를 사용해 이미지 파일을 가져왔습니다.
-        var filePickerResult = await FilePicker.platform.pickFiles();
+        var filePickerResult =
+            await FilePicker.platform.pickFiles(withData: true);
 
         if (filePickerResult != null) {
           var byteData = filePickerResult.files.first.bytes;
