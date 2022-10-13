@@ -11,7 +11,7 @@ Story _$StoryFromJson(Map<String, dynamic> json) => Story(
       json['url'] as String,
       json['content'] as String,
       DateTime.parse(json['created_at'] as String),
-      _$enumDecodeNullable(_$StoryTypeEnumMap, json['media_type'],
+      $enumDecodeNullable(_$StoryTypeEnumMap, json['media_type'],
           unknownValue: StoryType.notSupported),
       json['comment_count'] as int,
       json['like_count'] as int,
@@ -24,7 +24,7 @@ Story _$StoryFromJson(Map<String, dynamic> json) => Story(
       (json['comments'] as List<dynamic>?)
           ?.map((e) => StoryComment.fromJson(e as Map<String, dynamic>))
           .toList(),
-      _$enumDecodeNullable(_$StoryPermissionEnumMap, json['permission'],
+      $enumDecodeNullable(_$StoryPermissionEnumMap, json['permission'],
           unknownValue: StoryPermission.unknown),
     );
 
@@ -50,43 +50,6 @@ Map<String, dynamic> _$StoryToJson(Story instance) {
   writeNotNull('likes', instance.likes?.map((e) => e.toJson()).toList());
   writeNotNull('comments', instance.comments?.map((e) => e.toJson()).toList());
   return val;
-}
-
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
-
-K? _$enumDecodeNullable<K, V>(
-  Map<K, V> enumValues,
-  dynamic source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$StoryTypeEnumMap = {
