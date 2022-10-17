@@ -9,18 +9,14 @@ import 'package:kakao_flutter_sdk_auth/src/auth_api.dart';
 import 'package:kakao_flutter_sdk_auth/src/constants.dart';
 import 'package:kakao_flutter_sdk_auth/src/utils.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
-import 'package:platform/platform.dart';
 
 const MethodChannel _channel = MethodChannel(CommonConstants.methodChannel);
 
 /// Kakao SDK의 카카오 로그인 내부 동작에 사용되는 클라이언트
 class AuthCodeClient {
-  AuthCodeClient({AuthApi? authApi, Platform? platform})
-      : _kauthApi = authApi ?? AuthApi.instance,
-        _platform = platform ?? const LocalPlatform();
+  AuthCodeClient({AuthApi? authApi}) : _kauthApi = authApi ?? AuthApi.instance;
 
   final AuthApi _kauthApi;
-  final Platform _platform;
 
   static final AuthCodeClient instance = AuthCodeClient();
 

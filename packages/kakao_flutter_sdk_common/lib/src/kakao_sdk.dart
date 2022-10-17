@@ -70,9 +70,6 @@ class KakaoSdk {
     return "sdk/$sdkVersion sdk_type/flutter $kaHeader";
   }
 
-  static Future<PackageInfo> get packageInfo async =>
-      await PackageInfo.fromPlatform();
-
   static Future<String> get appVer async {
     final packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.version;
