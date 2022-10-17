@@ -1,15 +1,18 @@
 package com.kakao.sdk.flutter
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.browser.customtabs.CustomTabsIntent
+import io.flutter.embedding.android.FlutterActivity
+import io.flutter.plugin.common.MethodChannel
 
-class AuthCodeCustomTabsActivity : Activity() {
+class AuthCodeCustomTabsActivity : FlutterActivity() {
+    private lateinit var result: MethodChannel.Result
     private lateinit var fullUri: Uri
     private var customTabsConnection: ServiceConnection? = null
     private var customTabsOpened = false
@@ -30,54 +33,80 @@ class AuthCodeCustomTabsActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fullUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.extras?.getParcelable(KEY_FULL_URI, Uri::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            intent.extras?.getParcelable(KEY_FULL_URI)
+
+        try {
+            fullUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.extras?.getParcelable(KEY_FULL_URI, Uri::class.java)
+            } else {
+                @Suppress("DEPRECATION")
+                intent.extras?.getParcelable(KEY_FULL_URI)
+            }
+                ?: throw IllegalArgumentException("No uri was passed to AuthCodeCustomTabsActivity. This might be a bug in Kakao Flutter SDK.")
+
+            result = KakaoFlutterSdkPlugin.redirectUriResult
+        } catch (e: Throwable) {
+            if (::result.isInitialized) {
+                result.error(e.javaClass.simpleName, e.localizedMessage, e)
+            }
+            Log.e(e.javaClass.simpleName, e.toString())
+            finish()
         }
-            ?: throw IllegalArgumentException("No uri was passed to AuthCodeCustomTabsActivity. This might be a bug in Kakao Flutter SDK.")
     }
 
     override fun onResume() {
         super.onResume()
         if (!customTabsOpened) {
-            openChromeCustomTab(fullUri)
             customTabsOpened = true
+
+            if (::fullUri.isInitialized) {
+                openChromeCustomTab(fullUri)
+            } else {
+                if (::result.isInitialized) {
+                    result.error("AuthCodeCustomTabs", "url has been not initialized.", null)
+                }
+                Log.e("AuthCodeCustomTabs", "url has been not initialized.")
+                finish()
+            }
         } else {
-            KakaoFlutterSdkPlugin.redirectUriResult.error("CANCELED", "User canceled login.", null)
+            if (::result.isInitialized) {
+                result.error("CANCELED", "User canceled login.", null)
+            }
             finish()
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
-        val url = intent?.dataString
+        val url = intent.dataString
         val redirectUri = KakaoFlutterSdkPlugin.redirectUri
         if (redirectUri != null && url?.startsWith(redirectUri) == true) {
-            KakaoFlutterSdkPlugin.redirectUriResult.success(url.toString())
+            if(::result.isInitialized) {
+                result.success(url.toString())
+            }
         } else {
-            KakaoFlutterSdkPlugin.redirectUriResult.error(
-                "REDIRECT_URL_MISMATCH",
-                "Expected: $redirectUri, Actual: $url",
-                null
-            )
+            if(::result.isInitialized) {
+                result.error(
+                    "REDIRECT_URL_MISMATCH",
+                    "Expected: $redirectUri, Actual: $url",
+                    null
+                )
+            }
         }
-        this.finish()
+        finish()
     }
 
     private fun openChromeCustomTab(uri: Uri) {
         try {
             customTabsConnection = CustomTabsCommonClient.openWithDefault(this, uri)
         } catch (e: Exception) {
-
             try {
                 CustomTabsIntent.Builder().enableUrlBarHiding().setShowTitle(true).build()
                     .launchUrl(this, uri)
-
             } catch (e: Exception) {
-                KakaoFlutterSdkPlugin.redirectUriResult.error("EUNKNOWN", e.localizedMessage, null)
+                if(::result.isInitialized) {
+                    result.error("EUNKNOWN", e.localizedMessage, null)
+                }
                 finish()
             }
         }
