@@ -54,4 +54,21 @@ object Constants {
     const val CODE_CHALLENGE_METHOD = "code_challenge_method"
     const val CODE_CHALLENGE_METHOD_VALUE = "S256"
     const val CODE_CHALLENGE_ALGORITHM = "SHA-256"
+
+    const val KEY_CUSTOM_TABS_OPENED = "key.customtabs.opened"
+
+    // SDK Internal Key
+    const val REQUEST_KAKAO_LOGIN = 1
+    const val KEY_RETURN_URL = "key_return_url"
+    const val KEY_ERROR_CODE = "key_error_code"
+    const val KEY_ERROR_MESSAGE = "key_error_message"
+    const val KEY_FULL_URI = "key_full_uri"
+    const val KEY_REDIRECT_URL = "key_redirect_url"
+
+    // Talk Login Key
+    const val REQUEST_CODE = 1004
+    const val KEY_SDK_VERSION = "key_sdk_version"
+    const val KEY_CLIENT_ID = "key_client_Id"
+    const val KEY_REDIRECT_URI = "key_redirect_uri"
+    const val KEY_EXTRAS = "key_extras"
 }
