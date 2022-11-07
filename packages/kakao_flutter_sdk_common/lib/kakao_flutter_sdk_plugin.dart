@@ -7,6 +7,7 @@ import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:kakao_flutter_sdk_common/src/web/login.dart';
 import 'package:kakao_flutter_sdk_common/src/web/navi.dart';
+import 'package:kakao_flutter_sdk_common/src/web/picker.dart';
 import 'package:kakao_flutter_sdk_common/src/web/ua_parser.dart';
 import 'package:kakao_flutter_sdk_common/src/web/utility.dart';
 
@@ -165,6 +166,43 @@ class KakaoFlutterSdkPlugin {
           return true;
         }
         return false;
+      case "requestWebPicker":
+        String pickerType = call.arguments['picker_type'];
+        String transId = call.arguments['trans_id'];
+        String accessToken = call.arguments['access_token'];
+        Map pickerParams = call.arguments['picker_params'];
+
+        var url = CommonConstants.webPickerUrl;
+
+        var iframe = createIFrame(transId, url);
+        html.document.body?.append(iframe);
+
+        var params = await createPickerParams(
+          pickerType,
+          transId,
+          accessToken,
+          Map.castFrom(pickerParams),
+        );
+
+        Completer<String> completer = Completer();
+        addMessageEvent(url, completer);
+        if (params.containsKey('returnUrl')) {
+          submitForm('$url/select/$pickerType', params);
+          return completer.future;
+        } else {
+          var popup = windowOpen(
+            '$url/select/$pickerType',
+            'friend_picker',
+            features:
+                'location=no,resizable=no,status=no,scrollbars=no,width=460,height=608',
+          );
+          submitForm(
+            '$url/select/$pickerType',
+            params,
+            popupName: 'friend_picker',
+          );
+          return completer.future;
+        }
       default:
         throw PlatformException(
             code: "NotImplemented",
@@ -202,5 +240,9 @@ class KakaoFlutterSdkPlugin {
       'end;'
     ].join(';');
     return intent;
+  }
+
+  html.WindowBase windowOpen(String url, String name, {String? features}) {
+    return html.window.open(url, name, features);
   }
 }
