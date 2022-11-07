@@ -18,6 +18,7 @@ class CommonConstants {
       'https://talk-apps.kakao.com/scheme/';
   static const String iosTalkLoginScheme = 'kakaokompassauth://authorize';
   static const String iosInAppLoginScheme = 'kakaotalk://inappbrowser';
+  static const String webPickerUrl = 'https://friend-picker.kakao.com';
 
   static const String methodChannel = 'kakao_flutter_sdk';
   static const String getOrigin = 'getOrigin';
