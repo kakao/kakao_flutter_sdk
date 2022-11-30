@@ -20,16 +20,16 @@ Account _$AccountFromJson(Map<String, dynamic> json) => Account(
       json['is_email_verified'] as bool?,
       json['email'] as String?,
       json['age_range_needs_agreement'] as bool?,
-      _$enumDecodeNullable(_$AgeRangeEnumMap, json['age_range'],
+      $enumDecodeNullable(_$AgeRangeEnumMap, json['age_range'],
           unknownValue: AgeRange.unknown),
       json['birthyear_needs_agreement'] as bool?,
       json['birthyear'] as String?,
       json['birthday_needs_agreement'] as bool?,
       json['birthday'] as String?,
-      _$enumDecodeNullable(_$BirthdayTypeEnumMap, json['birthday_type'],
+      $enumDecodeNullable(_$BirthdayTypeEnumMap, json['birthday_type'],
           unknownValue: BirthdayType.unknown),
       json['gender_needs_agreement'] as bool?,
-      _$enumDecodeNullable(_$GenderEnumMap, json['gender'],
+      $enumDecodeNullable(_$GenderEnumMap, json['gender'],
           unknownValue: Gender.other),
       json['ci_needs_agreement'] as bool?,
       json['ci'] as String?,
@@ -39,7 +39,7 @@ Account _$AccountFromJson(Map<String, dynamic> json) => Account(
       json['legal_name_needs_agreement'] as bool?,
       json['legal_name'] as String?,
       json['legal_gender_needs_agreement'] as bool?,
-      _$enumDecodeNullable(_$GenderEnumMap, json['legal_gender'],
+      $enumDecodeNullable(_$GenderEnumMap, json['legal_gender'],
           unknownValue: Gender.other),
       json['legal_birth_date_needs_agreement'] as bool?,
       json['legal_birth_date'] as String?,
@@ -97,43 +97,6 @@ Map<String, dynamic> _$AccountToJson(Account instance) {
   writeNotNull('is_korean_needs_agreement', instance.isKoreanNeedsAgreement);
   writeNotNull('is_korean', instance.isKorean);
   return val;
-}
-
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
-
-K? _$enumDecodeNullable<K, V>(
-  Map<K, V> enumValues,
-  dynamic source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$AgeRangeEnumMap = {

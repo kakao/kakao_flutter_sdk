@@ -9,7 +9,7 @@ part of 'scope.dart';
 Scope _$ScopeFromJson(Map<String, dynamic> json) => Scope(
       json['id'] as String,
       json['display_name'] as String,
-      _$enumDecode(_$ScopeTypeEnumMap, json['type']),
+      $enumDecode(_$ScopeTypeEnumMap, json['type']),
       json['using'] as bool,
       json['delegated'] as bool?,
       json['agreed'] as bool,
@@ -20,7 +20,7 @@ Map<String, dynamic> _$ScopeToJson(Scope instance) {
   final val = <String, dynamic>{
     'id': instance.id,
     'display_name': instance.displayName,
-    'type': _$ScopeTypeEnumMap[instance.type],
+    'type': _$ScopeTypeEnumMap[instance.type]!,
     'using': instance.using,
   };
 
@@ -34,32 +34,6 @@ Map<String, dynamic> _$ScopeToJson(Scope instance) {
   val['agreed'] = instance.agreed;
   writeNotNull('revocable', instance.revocable);
   return val;
-}
-
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
 }
 
 const _$ScopeTypeEnumMap = {
