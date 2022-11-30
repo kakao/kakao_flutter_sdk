@@ -64,8 +64,20 @@ object Utility {
             Constants.ANDROID_PKG,
             context.packageName,
             Constants.APP_VER,
-            context.packageManager.getPackageInfo(context.packageName, 0).versionName
+            getAppVer(context),
         )
+    }
+
+    fun getAppVer(context: Context): String {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            context.packageManager.getPackageInfo(
+                context.packageName,
+                PackageManager.PackageInfoFlags.of(0)
+            ).versionName
+        } else {
+            @Suppress("DEPRECATION")
+            context.packageManager.getPackageInfo(context.packageName, 0).versionName
+        }
     }
 
     fun talkLoginIntent(

@@ -5,7 +5,10 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.pm.PackageManager.PackageInfoFlags
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Base64
@@ -37,6 +40,14 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
         this.result = result
 
         when (call.method) {
+            "appVer" -> {
+                try {
+                    result.success(Utility.getAppVer(applicationContext))
+                } catch (e: PackageManager.NameNotFoundException) {
+                    result.error("Name not found", e.message, null)
+                }
+            }
+            "packageName" -> result.success(applicationContext.packageName)
             "getOrigin" -> result.success(Utility.getKeyHash(applicationContext))
             "getKaHeader" -> result.success(Utility.getKAHeader(applicationContext))
             "launchBrowserTab" -> {

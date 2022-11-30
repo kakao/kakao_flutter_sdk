@@ -8,6 +8,7 @@ import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:kakao_flutter_sdk_common/src/web/login.dart';
 import 'package:kakao_flutter_sdk_common/src/web/navi.dart';
 import 'package:kakao_flutter_sdk_common/src/web/ua_parser.dart';
+import 'package:kakao_flutter_sdk_common/src/web/utility.dart';
 
 class KakaoFlutterSdkPlugin {
   final _uaParser = UaParser();
@@ -25,6 +26,10 @@ class KakaoFlutterSdkPlugin {
     Browser currentBrowser = _uaParser.detectBrowser(userAgent);
 
     switch (call.method) {
+      case "appVer":
+        return await Utility.getAppVersion();
+      case "packageName":
+        return await Utility.getPackageName();
       case "launchBrowserTab":
         Map<dynamic, dynamic> args = call.arguments;
         String uri = args["url"];
