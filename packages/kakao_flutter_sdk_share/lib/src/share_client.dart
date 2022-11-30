@@ -122,7 +122,7 @@ class ShareClient {
         ? {}
         : _platform.isAndroid
             ? {
-                Constants.ka: await KakaoSdk.packageName,
+                Constants.appPkg: await KakaoSdk.packageName,
                 Constants.keyHash: await KakaoSdk.origin
               }
             : _platform.isIOS
