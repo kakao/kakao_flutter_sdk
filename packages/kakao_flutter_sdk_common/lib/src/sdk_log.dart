@@ -67,7 +67,7 @@ class SdkLog {
   static void _log(Object? logged, SdkLogLevel logLevel) {
     String log = "${logLevel.prefix} $logged";
 
-    if (kDebugMode) {
+    if (kDebugMode && _enabled) {
       developer.log(log, level: logLevel.level);
     }
     if (_enabled && logLevel.level >= SdkLogLevel.i.level) {
