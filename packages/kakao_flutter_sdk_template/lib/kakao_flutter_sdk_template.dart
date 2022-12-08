@@ -3,6 +3,7 @@
 library kakao_flutter_sdk_template;
 
 export 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
+export 'package:kakao_flutter_sdk_template/src/calendar_template.dart';
 export 'package:kakao_flutter_sdk_template/src/commerce_template.dart';
 export 'package:kakao_flutter_sdk_template/src/default_template.dart';
 export 'package:kakao_flutter_sdk_template/src/feed_template.dart';
