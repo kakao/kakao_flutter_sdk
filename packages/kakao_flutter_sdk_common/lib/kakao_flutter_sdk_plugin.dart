@@ -76,8 +76,8 @@ class KakaoFlutterSdkPlugin {
         return false;
       case "platformId":
         final origin = html.window.location.origin
-            .replaceFirst('http', '')
             .replaceFirst('https', '')
+            .replaceFirst('http', '')
             .split('')
             .map((e) => e.codeUnits[0])
             .toList();
