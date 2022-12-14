@@ -1,0 +1,25 @@
+name: I need help
+description: 특정 API를 사용하는데 도움이 필요합니다. You need help with using a particular API.
+title: "[Question] "
+labels: ["question", "help wanted"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Kakao Flutter SDK를 사용해주셔서 감사합니다.
+        
+        [공식 문서](https://developers.kakao.com/docs/latest/getting-started/sdk-flutter)를 확인해주세요.
+        
+        [카카오 데브톡](https://devtalk.kakao.com)에서 문의하실 수도 있습니다.
+        <br/>        
+        Thank you for using Kakao Flutter SDK!
+
+        Please check out our [documentation].(https://developers.kakao.com/docs/latest/getting-started/sdk-flutter)
+
+        You can ask a question on the [Kakao DevTalk](https://devtalk.kakao.com) Web site.
+  - type: textarea
+    id: question
+    attributes:
+      label: 문의 사항 (Question)
+    validations:
+      required: true

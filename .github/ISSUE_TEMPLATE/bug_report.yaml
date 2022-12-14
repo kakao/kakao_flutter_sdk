@@ -1,0 +1,126 @@
+name: Bug Report
+description: |
+  kakao_flutter_sdk를 사용하는데 문제가 있습니다. There is a problem using kakao_flutter_sdk.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Kakao Flutter SDK를 사용해주셔서 감사합니다.
+
+        버그를 발견한 경우 아래 템플릿을 작성해주세요.
+        <br/>        
+        Thank you for using Kakao Flutter SDK!
+
+        If you have found a bug then fill our the template below.
+        <br/>
+        > ⚠️ IMPORTANT
+        > 이 템플릿을 따르지 않는 이슈는 닫힐 수 있습니다.
+        > Bug reports that don't follow this template may be closed
+  - type: textarea
+    id: description
+    attributes:
+      label: 이슈 설명 (Issue description)
+      description: |
+         이슈에 대해서 설명해주세요
+         Please explain the issue
+    validations:
+      required: true
+  - type: input
+    id: app
+    attributes:
+      label: 앱 ID (App ID)
+      description: |
+         [카카오 디벨로퍼스](https://developers.kakao.com)에서 앱 ID를 확인해주세요
+         Please check your app id on [Kakao Developers](https://developers.kakao.com)
+      placeholder: ex. 123456
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: 플랫폼 (Platform)
+      description: |
+        이슈가 발생한 플랫폼 + 버전 정보
+        Platform + Version the Issue occurs on
+      placeholder: ex. Android 13, iOS 16
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: 디바이스 (Device)
+      description: |
+        이슈가 발생한 디바이스 모델명
+        Name of the device that the Issue occurs on
+      placeholder: ex. Samsung Galaxy S22, iPhone 14 Pro
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: |
+        플러그인 버전 정보
+        Plugin version
+      placeholder: ex. 1.0.0
+    validations:
+      required: true
+  - type: input
+    id: sdk
+    attributes:
+      label: Flutter SDK
+      description: |
+        Flutter SDK 버전 
+        
+        Flutter SDK Version
+      placeholder: ex. 3.0.0
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 재현 방법 (Steps to reproduce)
+      description: |
+        이슈를 재현할 수 있는 정확한 방법을 알려주세요
+        Please tell us exactly how to reproduce the problem you are running into.
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: code
+    attributes:
+      label: 코드 샘플 (Code Sample)
+      render: dart
+      description: |
+        이슈를 재현할 수 있는 코드를 첨부해주세요.
+        Include a minimal code sample that can be used to reproduce the error.
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      render: shell
+      description: |
+        **이슈와 관련된 모든 로그**를 첨부해주세요. 
+        예외가 발생한 경우 오류 메시지에 문제 해결을 위한 충분한 정보가 포함되었는지 확인해주세요.
+        Attach **all the log output related to the problem**. 
+        If there is an exception, please see if the error message includes 
+        enough information to explain how to solve the issue.
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: Flutter Doctor
+      render: shell
+      description: |
+        `flutter doctor -v`를 실행한 결과를 첨부해주세요.
+        Paste the output of running `flutter doctor -v` here.
+    validations:
+      required: true
