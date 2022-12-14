@@ -665,6 +665,69 @@ class _ApiListState extends State<ApiList> {
           }
         }
       }),
+      ApiItem('sendDefaultMessage() - calendar', () async {
+        // 디폴트 템플릿으로 친구에게 메시지 보내기 - calendar
+
+        // 카카오톡 친구 목록 받기
+        Friends friends;
+        try {
+          friends = await TalkApi.instance.friends();
+        } catch (e) {
+          Log.e(context, tag, '카카오톡 친구 목록 받기 실패', e);
+          return;
+        }
+
+        if (friends.elements == null) {
+          return;
+        }
+
+        if (friends.elements!.isEmpty) {
+          Log.e(context, tag, '메시지 보낼 친구가 없습니다');
+        } else {
+          // 서비스에 상황에 맞게 메시지 보낼 친구의 UUID 를 가져오세요.
+          // 이 샘플에서는 친구 목록을 화면에 보여주고 체크박스로 선택된 친구들의 UUID 를 수집하도록 구현했습니다.
+          List<String> selectedItems = await Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => FriendPage(
+                items: friends.elements!
+                    .map((friend) => PickerItem(
+                        friend.uuid,
+                        friend.profileNickname ?? '',
+                        friend.profileThumbnailImage))
+                    .toList(),
+              ),
+            ),
+          );
+
+          if (selectedItems.isEmpty) {
+            return;
+          }
+          Log.d(context, tag, '선택된 친구:\n${selectedItems.join('\n')}');
+
+          // 메시지 보낼 친구의 UUID 목록
+          List<String> receiverUuids = selectedItems;
+
+          // Calendar 메시지
+          CalendarTemplate template = defaultCalendar;
+
+          // 메시지 보내기
+          try {
+            MessageSendResult result =
+                await TalkApi.instance.sendDefaultMessage(
+              receiverUuids: receiverUuids,
+              template: template,
+            );
+            Log.i(context, tag, '메시지 보내기 성공 ${result.successfulReceiverUuids}');
+
+            if (result.failureInfos != null) {
+              Log.d(context, tag,
+                  '메시지 보내기에 일부 성공했으나, 일부 대상에게는 실패 \n${result.failureInfos}');
+            }
+          } catch (e) {
+            Log.e(context, tag, '메시지 보내기 실패', e);
+          }
+        }
+      }),
       ApiItem('sendScrapMessage()', () async {
         // 스크랩 템플릿으로 친구에게 메시지 보내기
 
@@ -982,7 +1045,7 @@ class _ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('defaultTemplate() - location', () async {
-        // 디폴트 템플릿으로 카카오톡 공유하기 - List
+        // 디폴트 템플릿으로 카카오톡 공유하기 - Location
 
         try {
           Uri uri = await ShareClient.instance
@@ -994,7 +1057,7 @@ class _ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('defaultTemplate() - commerce', () async {
-        // 디폴트 템플릿으로 카카오톡 공유하기 - List
+        // 디폴트 템플릿으로 카카오톡 공유하기 - Commerce
 
         try {
           Uri uri = await ShareClient.instance
@@ -1006,11 +1069,23 @@ class _ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('defaultTemplate() - text', () async {
-        // 디폴트 템플릿으로 카카오톡 공유하기 - List
+        // 디폴트 템플릿으로 카카오톡 공유하기 - Text
 
         try {
           Uri uri =
               await ShareClient.instance.shareDefault(template: defaultText);
+          await ShareClient.instance.launchKakaoTalk(uri);
+          Log.d(context, tag, '카카오톡 공유 성공');
+        } catch (e) {
+          Log.e(context, tag, '카카오톡 공유 실패', e);
+        }
+      }),
+      ApiItem('defaultTemplate() - calendar', () async {
+        // 디폴트 템플릿으로 카카오톡 공유하기 - Calendar
+
+        try {
+          Uri uri = await ShareClient.instance
+              .shareDefault(template: defaultCalendar);
           await ShareClient.instance.launchKakaoTalk(uri);
           Log.d(context, tag, '카카오톡 공유 성공');
         } catch (e) {
@@ -1064,6 +1139,17 @@ class _ApiListState extends State<ApiList> {
         try {
           Uri shareUrl = await WebSharerClient.instance
               .makeDefaultUrl(template: defaultLocation);
+          await launchBrowserTab(shareUrl);
+        } catch (e) {
+          Log.e(context, tag, '카카오톡 공유 실패', e);
+        }
+      }),
+      ApiItem('defaultTemplateUri() - web sharer - calendar', () async {
+        // 커스텀 템플릿으로 웹에서 카카오톡 공유하기 - Feed
+
+        try {
+          Uri shareUrl = await WebSharerClient.instance
+              .makeDefaultUrl(template: defaultCalendar);
           await launchBrowserTab(shareUrl);
         } catch (e) {
           Log.e(context, tag, '카카오톡 공유 실패', e);

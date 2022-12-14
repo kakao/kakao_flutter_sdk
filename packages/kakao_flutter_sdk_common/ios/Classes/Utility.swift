@@ -5,6 +5,25 @@ class Utility {
         return "os/\(os()) lang/\(lang()) res/\(res()) device/\(device()) origin/\(origin()) app_ver/\(appVer())"
     }
     
+    static func origin() -> String {
+        return Bundle.main.bundleIdentifier!
+    }
+    
+    static func appVer() -> String {
+        return Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
+    }
+    
+    static func makeUrlStringWithParameters(_ url:String, parameters:[String:Any]?) -> String? {
+        guard var components = URLComponents(string:url) else { return nil }
+        components.queryItems = parameters?.urlQueryItems
+        return components.url?.absoluteString
+    }
+    
+    static func makeUrlWithParameters(_ url:String, parameters:[String:Any]?) -> URL? {
+        guard let finalStringUrl = makeUrlStringWithParameters(url, parameters:parameters) else { return nil }
+        return URL(string:finalStringUrl)
+    }
+    
     private static func os() -> String {
         return "ios-\(UIDevice.current.systemVersion)"
     }
@@ -19,25 +38,6 @@ class Utility {
     
     private static func device() -> String {
         return UIDevice.current.model
-    }
-    
-    static func origin() -> String {
-        return Bundle.main.bundleIdentifier!
-    }
-    
-    private static func appVer() -> String {
-        return Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
-    }
-    
-    static func makeUrlStringWithParameters(_ url:String, parameters:[String:Any]?) -> String? {
-        guard var components = URLComponents(string:url) else { return nil }
-        components.queryItems = parameters?.urlQueryItems
-        return components.url?.absoluteString
-    }
-    
-    static func makeUrlWithParameters(_ url:String, parameters:[String:Any]?) -> URL? {
-        guard let finalStringUrl = makeUrlStringWithParameters(url, parameters:parameters) else { return nil }
-        return URL(string:finalStringUrl)
     }
 }
 

@@ -7,10 +7,10 @@ part of 'navi_option.dart';
 // **************************************************************************
 
 NaviOption _$NaviOptionFromJson(Map<String, dynamic> json) => NaviOption(
-      coordType: _$enumDecodeNullable(_$CoordTypeEnumMap, json['coord_type']),
+      coordType: $enumDecodeNullable(_$CoordTypeEnumMap, json['coord_type']),
       vehicleType:
-          _$enumDecodeNullable(_$VehicleTypeEnumMap, json['vehicle_type']),
-      rpOption: _$enumDecodeNullable(_$RpOptionEnumMap, json['rpoption']),
+          $enumDecodeNullable(_$VehicleTypeEnumMap, json['vehicle_type']),
+      rpOption: $enumDecodeNullable(_$RpOptionEnumMap, json['rpoption']),
       routeInfo: json['route_info'] as bool?,
       startX: json['s_x'] as String?,
       startY: json['s_y'] as String?,
@@ -36,43 +36,6 @@ Map<String, dynamic> _$NaviOptionToJson(NaviOption instance) {
   writeNotNull('start_angle', instance.startAngle);
   writeNotNull('return_uri', instance.returnUri);
   return val;
-}
-
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
-
-K? _$enumDecodeNullable<K, V>(
-  Map<K, V> enumValues,
-  dynamic source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$CoordTypeEnumMap = {

@@ -8,7 +8,7 @@ part of 'kakao_api_exception.dart';
 
 KakaoApiException _$KakaoApiExceptionFromJson(Map<String, dynamic> json) =>
     KakaoApiException(
-      _$enumDecode(_$ApiErrorCauseEnumMap, json['code'],
+      $enumDecode(_$ApiErrorCauseEnumMap, json['code'],
           unknownValue: ApiErrorCause.unknown),
       json['msg'] as String,
       apiType: json['api_type'] as String?,
@@ -22,7 +22,7 @@ KakaoApiException _$KakaoApiExceptionFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$KakaoApiExceptionToJson(KakaoApiException instance) {
   final val = <String, dynamic>{
-    'code': _$ApiErrorCauseEnumMap[instance.code],
+    'code': _$ApiErrorCauseEnumMap[instance.code]!,
     'msg': instance.msg,
   };
 
@@ -36,32 +36,6 @@ Map<String, dynamic> _$KakaoApiExceptionToJson(KakaoApiException instance) {
   writeNotNull('required_scopes', instance.requiredScopes);
   writeNotNull('allowed_scopes', instance.allowedScopes);
   return val;
-}
-
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
 }
 
 const _$ApiErrorCauseEnumMap = {

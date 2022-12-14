@@ -26,6 +26,10 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
         }
 
         switch call.method {
+        case "appVer":
+            result(Utility.appVer())
+        case "packageName":
+            result(Utility.origin())
         case "getOrigin":
             result(Utility.origin())
         case "getKaHeader":

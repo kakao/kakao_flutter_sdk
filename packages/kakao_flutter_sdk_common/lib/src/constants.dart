@@ -20,6 +20,8 @@ class CommonConstants {
   static const String iosInAppLoginScheme = 'kakaotalk://inappbrowser';
 
   static const String methodChannel = 'kakao_flutter_sdk';
+  static const String appVer = 'appVer';
+  static const String packageName = 'packageName';
   static const String getOrigin = 'getOrigin';
   static const String getKaHeader = 'getKaHeader';
   static const String launchBrowserTab = 'launchBrowserTab';

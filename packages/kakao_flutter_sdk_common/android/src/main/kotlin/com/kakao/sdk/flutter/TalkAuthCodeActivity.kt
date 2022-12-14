@@ -1,47 +1,22 @@
 package com.kakao.sdk.flutter
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Window
 
 class TalkAuthCodeActivity : Activity() {
-    companion object {
-        private const val REQUEST_CODE = 1004
-        const val KEY_SDK_VERSION = "key_sdk_version"
-        const val KEY_CLIENT_ID = "key_client_Id"
-        const val KEY_REDIRECT_URI = "key_redirect_uri"
-        const val KEY_EXTRAS = "key_extras"
-
-        fun start(
-            context: Context,
-            sdkVersion: String,
-            clientId: String,
-            redirectUri: String,
-            extras: Bundle,
-        ) {
-            context.startActivity(
-                Intent(context, TalkAuthCodeActivity::class.java).apply {
-                    putExtra(KEY_SDK_VERSION, sdkVersion)
-                    putExtra(KEY_CLIENT_ID, clientId)
-                    putExtra(KEY_REDIRECT_URI, redirectUri)
-                    putExtra(KEY_EXTRAS, extras)
-                }
-            )
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_talk_auth_code)
-        val sdkVersion = intent.extras?.getString(KEY_SDK_VERSION)
-        val clientId = intent.extras?.getString(KEY_CLIENT_ID)
+        val sdkVersion = intent.extras?.getString(Constants.KEY_SDK_VERSION)
+        val clientId = intent.extras?.getString(Constants.KEY_CLIENT_ID)
             ?: throw IllegalArgumentException("Client id is required.")
-        val redirectUri = intent.extras?.getString(KEY_REDIRECT_URI)
+        val redirectUri = intent.extras?.getString(Constants.KEY_REDIRECT_URI)
             ?: throw IllegalArgumentException("Redirect uri is required.")
-        val extra = intent.extras?.getBundle(KEY_EXTRAS) ?: Bundle()
+        val extra = intent.extras?.getBundle(Constants.KEY_EXTRAS) ?: Bundle()
 
         val loginIntent = Utility.talkLoginIntent(
             clientId,
@@ -49,38 +24,42 @@ class TalkAuthCodeActivity : Activity() {
             "$sdkVersion ${Utility.getKAHeader(this)}",
             extra
         )
-        startActivityForResult(loginIntent, REQUEST_CODE)
-    }
-
-    private fun sendError(errorCode: String, errorMessage: String, errorDetails: Any?) {
-        KakaoFlutterSdkPlugin.redirectUriResult.error(errorCode, errorMessage, errorDetails)
-        finish()
+        startActivityForResult(loginIntent, Constants.REQUEST_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (data == null || resultCode == RESULT_CANCELED) {
-            sendError("CANCELED", "User canceled login.", null)
+            sendError("CANCELED", "User canceled login.")
             return
         }
         if (resultCode == RESULT_OK) {
             val extras = data.extras
             if (extras == null) {
                 // no result returned from kakaotalk
-                sendError("EUNKNOWN", "No result returned from KakaoTalk.", null)
+                sendError("EUNKNOWN", "No result returned from KakaoTalk.")
                 return
             }
             val error = extras.getString(Constants.EXTRA_ERROR_TYPE)
             val errorDescription =
                 extras.getString(Constants.EXTRA_ERROR_DESCRIPTION) ?: "No error description."
             if (error != null) {
-                sendError(error, errorDescription, null)
+                sendError(error, errorDescription)
                 return
             }
-            KakaoFlutterSdkPlugin.redirectUriResult.success(extras.getString(Constants.EXTRA_REDIRECT_URL))
+            val redirectUrl = extras.getString(Constants.EXTRA_REDIRECT_URL)
+            setResult(RESULT_OK, Intent().putExtra(Constants.KEY_RETURN_URL, redirectUrl))
             finish()
             overridePendingTransition(0, 0)
             return
         }
         throw IllegalStateException("Unexpected data from KakaoTalk in onActivityResult. $data")
+    }
+
+    private fun sendError(errorCode: String, errorMessage: String) {
+        val intent = Intent()
+            .putExtra(Constants.KEY_ERROR_CODE, errorCode)
+            .putExtra(Constants.KEY_ERROR_MESSAGE, errorMessage)
+        setResult(RESULT_CANCELED, intent)
+        finish()
     }
 }

@@ -21,8 +21,18 @@ class AccessTokenInterceptor extends Interceptor {
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     final token = await _tokenManagerProvider.manager.getToken();
+
+    if (token == null) {
+      handler.reject(
+        DioError(
+            requestOptions: options,
+            error: "authentication tokens don't exist."),
+      );
+      return;
+    }
+
     options.headers[CommonConstants.authorization] =
-        "${CommonConstants.bearer} ${token?.accessToken}";
+        "${CommonConstants.bearer} ${token.accessToken}";
     handler.next(options);
   }
 

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 /// Kakao SDK의 싱글턴 Context
 class KakaoSdk {
@@ -17,7 +16,7 @@ class KakaoSdk {
   static late String _nativeKey;
   static late String _jsKey;
 
-  static String sdkVersion = "1.3.0-beta.4";
+  static String sdkVersion = "1.3.0";
 
   static String get appKey => kIsWeb ? _jsKey : _nativeKey;
 
@@ -70,17 +69,12 @@ class KakaoSdk {
     return "sdk/$sdkVersion sdk_type/flutter $kaHeader";
   }
 
-  static Future<PackageInfo> get packageInfo async =>
-      await PackageInfo.fromPlatform();
-
   static Future<String> get appVer async {
-    final packageInfo = await PackageInfo.fromPlatform();
-    return packageInfo.version;
+    return await _channel.invokeMethod(CommonConstants.appVer);
   }
 
   static Future<String> get packageName async {
-    final packageInfo = await PackageInfo.fromPlatform();
-    return packageInfo.packageName;
+    return await _channel.invokeMethod(CommonConstants.packageName);
   }
 
   static String get platformAppKey {
