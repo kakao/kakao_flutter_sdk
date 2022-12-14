@@ -162,3 +162,27 @@ final TextTemplate defaultText = TextTemplate(
     mobileWebUrl: Uri.parse('https://developers.kakao.com'),
   ),
 );
+
+final CalendarTemplate defaultCalendar = CalendarTemplate(
+  idType: IdType.event,
+  id: '63996425afcec577cce94f0b',
+  content: Content(
+    title: '1월 신작 평론 모임',
+    description: '따끈한 신작 감상평을 나누는 월간 모임에 초대합니다.',
+    imageUrl: Uri.parse(
+        'http://k.kakaocdn.net/dn/dFUqwp/bl3SUTqb2VV/VFSqyPpKUzZVVMcmotN9A0/kakaolink40_original.png'),
+    link: Link(
+      webUrl: Uri.parse('https://developers.kakao.com'),
+      mobileWebUrl: Uri.parse('https://developers.kakao.com'),
+    ),
+  ),
+  buttons: [
+    Button(
+      title: '모임 주제 보기',
+      link: Link(
+        webUrl: Uri.parse('https://developers.kakao.com'),
+        mobileWebUrl: Uri.parse('https://developers.kakao.com'),
+      ),
+    )
+  ],
+);
