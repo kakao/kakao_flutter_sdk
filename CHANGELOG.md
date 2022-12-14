@@ -1,3 +1,11 @@
+## 1.3.0
+- Supported Flutter Web officially.
+- Added Calendar template for Message APIs.
+- Changed the minimum support version of DART to 2.14.0.
+- Removed `package_info_plus` package dependency.
+- Updated the internal package and plugin versions.
+- Updated the internal source code.
+
 ## 1.3.0-beta.4
 - Fixed issue where app is closed when attempting to log in with Kakao Talk on iOS.
 - Fixed issue where app is closed when attempting Kakao Talk sharing via web on iOS.
