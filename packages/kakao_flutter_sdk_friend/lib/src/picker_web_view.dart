@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_friend/src/localization_options.dart';
 import 'package:kakao_flutter_sdk_friend/src/model/picker_friend_request_params.dart';
+import 'package:kakao_flutter_sdk_friend/src/picker_alert.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -149,7 +150,14 @@ class _PickerWebViewState extends State<PickerWebView> {
     return JavascriptChannel(
       name: 'Alert',
       onMessageReceived: (JavascriptMessage message) {
-        // TODO: show alert
+        showDialog(
+          context: context,
+          builder: (context) => PickerAlert(
+            title: widget.params.title ?? _localizationOptions.pickerTitle,
+            message: message.message,
+            confirm: _localizationOptions.confirm,
+          ),
+        );
       },
     );
   }
