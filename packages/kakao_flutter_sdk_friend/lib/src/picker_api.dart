@@ -17,6 +17,7 @@ class PickerApi {
   /// 간편한 API 호출을 위해 기본 제공되는 singleton 객체
   static final PickerApi instance = PickerApi();
 
+  /// 한 명의 친구만 선택(싱글 피커)할 수 있는 친구 피커를 화면에 표시합니다.
   Future selectFriend({
     required PickerFriendRequestParams params,
     BuildContext? context,
@@ -45,6 +46,7 @@ class PickerApi {
         context: context, params: params, isSingle: true);
   }
 
+  /// 여러 명의 친구를 선택(멀티 피커)할 수 있는 친구 피커를 화면에 표시합니다.
   Future selectFriends({
     required PickerFriendRequestParams params,
     BuildContext? context,
