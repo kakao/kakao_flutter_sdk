@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_friend/src/default_values.dart';
 import 'package:kakao_flutter_sdk_friend/src/model/picker_friend_request_params.dart';
 import 'package:kakao_flutter_sdk_friend/src/model/selected_user.dart';
+import 'package:kakao_flutter_sdk_friend/src/picker_web_view.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
 const MethodChannel _channel = MethodChannel(CommonConstants.methodChannel);
@@ -30,18 +31,7 @@ class PickerApi {
 
     if (kIsWeb) {
       try {
-        var response = await _channel.invokeMethod('requestWebPicker', {
-          'picker_type': 'single',
-          'trans_id': generateRandomString(60),
-          'access_token':
-              (await TokenManagerProvider.instance.manager.getToken())!
-                  .accessToken,
-          'picker_params': params.toJson(),
-        });
-        if (params.returnUrl == null) {
-          return SelectedUsers.fromJson(jsonDecode(response));
-        }
-        return;
+        return await _invokeWebPicker(params, 'single');
       } catch (e) {
         rethrow;
       }
@@ -51,8 +41,8 @@ class PickerApi {
       throw KakaoClientException('FriendPicker requires context.');
     }
 
-    // TODO: implement native(android, ios) web picker
-    return SelectedUsers(totalCount: 12345);
+    return await _navigateToWebView(
+        context: context, params: params, isSingle: true);
   }
 
   Future selectFriends({
@@ -71,18 +61,7 @@ class PickerApi {
 
     if (kIsWeb) {
       try {
-        var response = await _channel.invokeMethod('requestWebPicker', {
-          'picker_type': 'multiple',
-          'trans_id': generateRandomString(60),
-          'access_token':
-              (await TokenManagerProvider.instance.manager.getToken())!
-                  .accessToken,
-          'picker_params': params.toJson(),
-        });
-        if (params.returnUrl == null) {
-          return SelectedUsers.fromJson(jsonDecode(response));
-        }
-        return;
+        return await _invokeWebPicker(params, 'multiple');
       } catch (e) {
         rethrow;
       }
@@ -92,8 +71,7 @@ class PickerApi {
       throw KakaoClientException('FriendPicker requires context.');
     }
 
-    // TODO: implement native(android, ios) web picker
-    return SelectedUsers(totalCount: 12345);
+    return await _navigateToWebView(context: context, params: params);
   }
 
   KakaoClientException? _isParameterCorrect(PickerFriendRequestParams params) {
@@ -115,5 +93,42 @@ class PickerApi {
           'Parameter maxPickableCount must be greater than or equal to parameter minPickableCount.');
     }
     return null;
+  }
+
+  Future _invokeWebPicker(
+      PickerFriendRequestParams params, String pickerType) async {
+    var response = await _channel.invokeMethod('requestWebPicker', {
+      'picker_type': pickerType,
+      'trans_id': generateRandomString(60),
+      'access_token':
+          (await TokenManagerProvider.instance.manager.getToken())!.accessToken,
+      'picker_params': params.toJson(),
+    });
+    if (params.returnUrl == null) {
+      return SelectedUsers.fromJson(jsonDecode(response));
+    }
+  }
+
+  Future _navigateToWebView({
+    required BuildContext context,
+    bool isSingle = false,
+    required PickerFriendRequestParams params,
+  }) async {
+    Map<String, String>? result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              PickerWebView(params: params, isSingle: isSingle)),
+    );
+
+    if (result == null) {
+      throw KakaoClientException('User Cancelled');
+    }
+
+    if (result.containsKey('selected')) {
+      return SelectedUsers.fromJson(jsonDecode(result['selected']!));
+    } else if (result.containsKey('error')) {
+      throw KakaoApiException.fromJson(jsonDecode(result['error']!));
+    }
   }
 }
