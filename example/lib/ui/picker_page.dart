@@ -20,6 +20,7 @@ class _PickerPageState extends State<PickerPage> {
   bool _enableSearch = true;
   bool _showFavorite = true;
   bool _showPickedFriend = true;
+  bool _isPopupPicker = true;
   final TextEditingController _maxPickableCountController =
       TextEditingController(text: '30');
   final TextEditingController _minPickableCountController =
@@ -41,105 +42,121 @@ class _PickerPageState extends State<PickerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Picker Test')),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          _renderTextFieldList('title', _titleController),
-          BoolRadioListTile(
-            title: 'enableSearch',
-            defaultValue: _enableSearch,
-            callback: (value) => _enableSearch = value,
-          ),
-          BoolRadioListTile(
-            title: 'showMyProfile',
-            defaultValue: _showMyProfile,
-            callback: (value) => _showMyProfile = value,
-          ),
-          BoolRadioListTile(
-            title: 'showFavorite',
-            defaultValue: _showFavorite,
-            callback: (value) => _showFavorite = value,
-          ),
-          BoolRadioListTile(
-            title: 'showPickedFriend',
-            defaultValue: _showPickedFriend,
-            callback: (value) => _showPickedFriend = value,
-          ),
-          _renderTextFieldList(
-            'maxPickableCount',
-            _maxPickableCountController,
-            isText: false,
-          ),
-          _renderTextFieldList(
-            'minPickableCount',
-            _minPickableCountController,
-            isText: false,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 16, 0, 8),
-            child: Column(
-              children: const [
-                Text('REDIRECT ONLY '),
-                Divider(height: 2, thickness: 2),
-              ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _renderTextFieldList('title', _titleController),
+            BoolRadioListTile(
+              title: 'enableSearch',
+              defaultValue: _enableSearch,
+              callback: (value) => _enableSearch = value,
             ),
-          ),
-          BoolRadioListTile(
-            title: 'enableBackButton',
-            defaultValue: _enableBackButton,
-            callback: (value) => _enableBackButton = value,
-          ),
-          _renderTextFieldList('returnUrl', _returnUrlController),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: () async {
-                PickerFriendRequestParams params = _createPickerParams();
-                try {
-                  var users =
-                      await PickerApi.instance.selectFriend(params: params);
-                  setState(() {
-                    if (users != null) {
-                      response = '${users.toJson()}';
-                    } else {
-                      response = widget.result;
-                    }
-                  });
-                } catch (e) {
-                  setState(() {
-                    response = e.toString();
-                  });
-                }
-              },
-              child: const Text('싱글 피커'),
+            BoolRadioListTile(
+              title: 'showMyProfile',
+              defaultValue: _showMyProfile,
+              callback: (value) => _showMyProfile = value,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: () async {
-                PickerFriendRequestParams params = _createPickerParams();
-                try {
-                  var users =
-                      await PickerApi.instance.selectFriends(params: params);
-                  setState(() {
-                    if (users != null) {
-                      response = '${users.toJson()}';
-                    } else {
-                      response = widget.result;
-                    }
-                  });
-                } catch (e) {
-                  setState(() {
-                    response = e.toString();
-                  });
-                }
-              },
-              child: const Text('멀티 피커'),
+            BoolRadioListTile(
+              title: 'showFavorite',
+              defaultValue: _showFavorite,
+              callback: (value) => _showFavorite = value,
             ),
-          ),
-          response == null ? Container() : Text(response!),
-        ],
+            BoolRadioListTile(
+              title: 'showPickedFriend',
+              defaultValue: _showPickedFriend,
+              callback: (value) => _showPickedFriend = value,
+            ),
+            _renderTextFieldList(
+              'maxPickableCount',
+              _maxPickableCountController,
+              isText: false,
+            ),
+            _renderTextFieldList(
+              'minPickableCount',
+              _minPickableCountController,
+              isText: false,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 16, 0, 8),
+              child: Column(
+                children: const [
+                  Text('NATIVE(Android/iOS) or WEB REDIRECT ONLY '),
+                  Divider(height: 2, thickness: 2),
+                ],
+              ),
+            ),
+            BoolRadioListTile(
+              title: 'enableBackButton',
+              defaultValue: _enableBackButton,
+              callback: (value) => _enableBackButton = value,
+            ),
+            _renderTextFieldList('returnUrl', _returnUrlController),
+            BoolRadioListTile(
+              title: 'Popup Picker',
+              defaultValue: _isPopupPicker,
+              callback: (value) => _isPopupPicker = value,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                onPressed: () async {
+                  try {
+                    PickerFriendRequestParams params = _createPickerParams(
+                      popupPicker: _isPopupPicker,
+                    );
+                    var users = await PickerApi.instance
+                        .selectFriend(params: params, context: context);
+                    setState(() {
+                      if (users != null) {
+                        response = '${users.toJson()}';
+                      } else {
+                        response = widget.result;
+                      }
+                    });
+                  } catch (e) {
+                    setState(() {
+                      response = e.toString();
+                    });
+                  }
+                },
+                child: const Text('싱글 피커'),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                onPressed: () async {
+                  PickerFriendRequestParams params = _createPickerParams(
+                    popupPicker: _isPopupPicker,
+                  );
+                  try {
+                    var users = await PickerApi.instance
+                        .selectFriends(params: params, context: context);
+                    setState(() {
+                      if (users != null) {
+                        response = '${users.toJson()}';
+                      } else {
+                        response = widget.result;
+                      }
+                    });
+                  } catch (e) {
+                    setState(() {
+                      response = e.toString();
+                    });
+                  }
+                },
+                child: const Text('멀티 피커'),
+              ),
+            ),
+            response == null
+                ? Container()
+                : Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text(response!),
+                  ),
+          ],
+        ),
       ),
     );
   }
@@ -173,9 +190,11 @@ class _PickerPageState extends State<PickerPage> {
     );
   }
 
-  PickerFriendRequestParams _createPickerParams() {
+  PickerFriendRequestParams _createPickerParams({
+    bool popupPicker = false,
+  }) {
     return PickerFriendRequestParams(
-      title: _titleController.text,
+      title: _titleController.text.isEmpty ? null : _titleController.text,
       enableSearch: _enableSearch,
       showMyProfile: _showMyProfile,
       showFavorite: _showFavorite,
@@ -183,8 +202,11 @@ class _PickerPageState extends State<PickerPage> {
       maxPickableCount: int.parse(_maxPickableCountController.text),
       minPickableCount: int.parse(_minPickableCountController.text),
       enableBackButton: _enableBackButton,
-      returnUrl:
-          _returnUrlController.text.isEmpty ? null : _returnUrlController.text,
+      returnUrl: popupPicker
+          ? null
+          : (_returnUrlController.text.isEmpty
+              ? null
+              : _returnUrlController.text),
     );
   }
 }
