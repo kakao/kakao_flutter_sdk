@@ -46,13 +46,11 @@ Future<String> addMessageEvent(
         html.window.removeEventListener('message', callback);
         Map response = jsonDecode(event.data);
 
+        // picker error
         if (response.containsKey('code')) {
-          return completer.completeError(PlatformException(
-              code: response['code']!.toString(), message: response['msg']));
+          return completer.completeError(event.data);
         }
         return completer.complete(event.data);
-      } else {
-        return completer.completeError(PlatformException(code: 'error'));
       }
     }
     return completer.completeError(PlatformException(code: 'error'));
