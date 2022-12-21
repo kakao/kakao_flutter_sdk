@@ -20,6 +20,7 @@ dependencies:
   dio: ^4.0.0
   kakao_flutter_sdk_user:
     path: ../kakao_flutter_sdk_user
+  webview_flutter: ^3.0.4
 
 dev_dependencies:
   flutter_test:
