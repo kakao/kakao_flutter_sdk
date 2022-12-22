@@ -173,12 +173,12 @@ class _PickerWebViewState extends State<PickerWebView> {
       form.setAttribute('target', '$popupName')
       form.setAttribute('style', 'display:none')
       
-      for(let [key, value] of Object.entries(param)) {
+      for(var key in param) {
         const input = document.createElement('input')
         input.type = 'hidden'
         input.name = key
-        input.value = value
-        form.appendChild(input)           
+        input.value = param[key]
+        form.appendChild(input)
       }
        
       document.body.appendChild(form);
