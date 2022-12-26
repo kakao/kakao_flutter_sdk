@@ -823,6 +823,8 @@ class _ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오톡 채널 채팅 실패', e);
         }
       }),
+      ApiItem('Friend API'),
+      ApiItem('Picker Page', () => Navigator.pushNamed(context, '/picker')),
       ApiItem('KakaoStory API'),
       ApiItem('isStoryUser()', () async {
         // 카카오스토리 사용자 확인하기
