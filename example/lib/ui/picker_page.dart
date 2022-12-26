@@ -81,7 +81,7 @@ class _PickerPageState extends State<PickerPage> {
               padding: const EdgeInsets.fromLTRB(0, 16, 0, 8),
               child: Column(
                 children: const [
-                  Text('NATIVE(Android/iOS) or WEB REDIRECT ONLY '),
+                  Text('NATIVE(Android/iOS) or WEB REDIRECT ONLY'),
                   Divider(height: 2, thickness: 2),
                 ],
               ),
@@ -91,7 +91,25 @@ class _PickerPageState extends State<PickerPage> {
               defaultValue: _enableBackButton,
               callback: (value) => _enableBackButton = value,
             ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 16, 0, 8),
+              child: Column(
+                children: const [
+                  Text('WEB REDIRECT ONLY'),
+                  Divider(height: 2, thickness: 2),
+                ],
+              ),
+            ),
             _renderTextFieldList('returnUrl', _returnUrlController),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 16, 0, 8),
+              child: Column(
+                children: const [
+                  Text('팝업/리다이렉트 피커 설정 (실제로는 없는 테스트용 파라미터)'),
+                  Divider(height: 2, thickness: 2),
+                ],
+              ),
+            ),
             BoolRadioListTile(
               title: 'Popup Picker',
               defaultValue: _isPopupPicker,
@@ -171,7 +189,6 @@ class _PickerPageState extends State<PickerPage> {
           Expanded(
             // width: 200,
             child: Padding(
-              // padding: const EdgeInsets.all(8.0),
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: TextField(
                 textAlign: TextAlign.center,
