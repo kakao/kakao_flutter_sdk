@@ -5,7 +5,13 @@ import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_common/src/constants.dart';
 import 'package:kakao_flutter_sdk_common/src/kakao_exception.dart';
 
-const MethodChannel _channel = MethodChannel(CommonConstants.methodChannel);
+const MethodChannel _methodChannel =
+    MethodChannel(CommonConstants.methodChannel);
+const EventChannel _eventChannel = EventChannel(CommonConstants.eventChannel);
+
+Stream<String?> get kakaoTalkSharingStream => _eventChannel
+    .receiveBroadcastStream()
+    .map<String?>((link) => link as String?);
 
 /// 플랫폼별 기본 브라우저로 URL 실행
 /// URL을 팝업으로 열고싶을 때 [popupOpen] 사용. 웹에서만 사용 가능
@@ -23,7 +29,7 @@ Future<String> launchBrowserTab(Uri uri,
     CommonConstants.isPopup: popupOpen,
   };
   args.removeWhere((k, v) => v == null);
-  final redirectUriWithParams = await _channel.invokeMethod<String>(
+  final redirectUriWithParams = await _methodChannel.invokeMethod<String>(
       CommonConstants.launchBrowserTab, args);
 
   if (redirectUriWithParams != null) return redirectUriWithParams;
@@ -33,15 +39,19 @@ Future<String> launchBrowserTab(Uri uri,
 
 /// 카카오톡 앱 실행 가능 여부 확인
 Future<bool> isKakaoTalkInstalled() async {
-  final isInstalled =
-      await _channel.invokeMethod<bool>(CommonConstants.isKakaoTalkInstalled) ??
-          false;
+  final isInstalled = await _methodChannel
+          .invokeMethod<bool>(CommonConstants.isKakaoTalkInstalled) ??
+      false;
   return isInstalled;
+}
+
+Future<String?> getKakaoTalkSharingInitialScheme() async {
+  return await _methodChannel.invokeMethod(CommonConstants.talkSharingScheme);
 }
 
 /// @nodoc
 Future<Uint8List> platformId() async {
-  return await _channel.invokeMethod("platformId");
+  return await _methodChannel.invokeMethod("platformId");
 }
 
 /// @nodoc
