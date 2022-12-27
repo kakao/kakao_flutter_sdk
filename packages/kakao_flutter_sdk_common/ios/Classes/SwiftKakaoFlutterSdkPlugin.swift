@@ -4,16 +4,20 @@ import AuthenticationServices
 import SafariServices
 import CommonCrypto
 
-public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthenticationPresentationContextProviding {
+public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamHandler, ASWebAuthenticationPresentationContextProviding {
     var result: FlutterResult? = nil
     var redirectUri: String? = nil
     var authorizeTalkCompletionHandler : ((URL?, FlutterError?) -> Void)?
     
+    var eventSink: FlutterEventSink? = nil
+    var initialLink: String? = nil
+    
     public static func register(with registrar: FlutterPluginRegistrar) {
-        NSLog("nslog register")
-        let channel = FlutterMethodChannel(name: "kakao_flutter_sdk", binaryMessenger: registrar.messenger())
+        let methodChannel = FlutterMethodChannel(name: Constants.methodChannel, binaryMessenger: registrar.messenger())
+        let eventChannel = FlutterEventChannel(name: Constants.eventChannel, binaryMessenger: registrar.messenger())
         let instance = SwiftKakaoFlutterSdkPlugin()
-        registrar.addMethodCallDelegate(instance, channel: channel)
+        registrar.addMethodCallDelegate(instance, channel: methodChannel)
+        eventChannel.setStreamHandler(instance)
         registrar.addApplicationDelegate(instance) // This is necessary to receive open iurl delegate method.
     }
     
@@ -24,7 +28,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
             args["is_popup"] = (isPopup) ? "YES" : "NO"
             return args as! Dictionary<String, String>
         }
-
+        
         switch call.method {
         case "appVer":
             result(Utility.appVer())
@@ -66,7 +70,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
             let uri = args["uri"]
             launchKakaoTalk(uri: uri!, result: result)
         case "isKakaoTalkSharingAvailable":
-            let isKakaoTalkSharingAvailable = UIApplication.shared.canOpenURL(URL(string:"kakaolink://send")!)
+            let isKakaoTalkSharingAvailable = UIApplication.shared.canOpenURL(URL(string:"\(Constants.talkSharingPath)://send")!)
             result(isKakaoTalkSharingAvailable)
         case "navigate":
             let args = castArguments(call.arguments)
@@ -89,6 +93,8 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
             }
             let data = "SDK-\(venderId)".data(using: .utf8)
             result(data)
+        case "talkSharingScheme":
+            result(self.initialLink)
         default:
             result(FlutterMethodNotImplemented)
         }
@@ -206,23 +212,48 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
         }
     }
     
-    
     public func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        guard let finalRedirectUri = self.redirectUri else {
-            self.authorizeTalkCompletionHandler?(nil, FlutterError(code: "EUNKNOWN", message: "No redirect uri to compare. This is probably a bug in Kakao Flutter SDK.", details: nil))
-            return false
-        }
-        if (url.absoluteString.hasPrefix(finalRedirectUri)) {
-            self.authorizeTalkCompletionHandler?(url, nil)
+        
+        let urlString = url.absoluteString
+        if(redirectUri != nil && urlString.starts(with: "kakao") && urlString.contains(Constants.oauthPath)) {
+            if(urlString.hasPrefix(redirectUri!)) {
+                self.authorizeTalkCompletionHandler?(url, nil)
+                return true
+            } else {
+                self.authorizeTalkCompletionHandler?(nil, FlutterError(code: "REDIRET_URL_MISMATCH", message: "Expected: \(redirectUri!), Actual: \(url.absoluteString)", details: nil))
+                return false
+            }
+        } else if(urlString.starts(with: "kakao") && urlString.contains(Constants.talkSharingPath)) {
+            eventSink?(urlString)
             return true
         }
-        self.authorizeTalkCompletionHandler?(nil, FlutterError(code: "REDIRECT_URL_MISMATCH", message: "Expected: \(finalRedirectUri), Actual: \(url.absoluteString)", details: nil))
+        return false
+    }
+    
+    public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [AnyHashable : Any] = [:]) -> Bool {
+        let url = (launchOptions[UIApplication.LaunchOptionsKey.url] as? URL)
+        if(url != nil && url!.scheme != nil && url!.scheme!.starts(with: "kakao")
+           && url!.host == Constants.talkSharingPath) {
+            self.initialLink = url?.absoluteString
+            eventSink?(url?.absoluteString)
+            return true
+        }
         return false
     }
     
     @available(iOS 12.0, *)
     public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
         return UIApplication.shared.keyWindow ?? ASPresentationAnchor()
+    }
+    
+    public func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
+        eventSink = events
+        return nil
+    }
+    
+    public func onCancel(withArguments arguments: Any?) -> FlutterError? {
+        eventSink = nil
+        return nil
     }
 }
 
