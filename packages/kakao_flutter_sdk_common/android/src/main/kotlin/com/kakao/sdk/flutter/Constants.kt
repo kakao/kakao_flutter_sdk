@@ -1,6 +1,9 @@
 package com.kakao.sdk.flutter
 
 object Constants {
+    const val METHOD_CHANNEL = "kakao_flutter_sdk_method_channel"
+    const val EVENT_CHANNEL = "kakao_flutter_sdk_event_channel"
+
     const val SCHEME = "https"
     const val META_APP_KEY = "com.kakao.sdk.AppKey"
 
