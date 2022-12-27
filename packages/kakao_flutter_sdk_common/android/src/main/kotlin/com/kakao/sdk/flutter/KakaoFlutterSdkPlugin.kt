@@ -272,7 +272,8 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
         val action = intent.action
         val dataString = intent.dataString
 
-        return if (Intent.ACTION_VIEW == action && dataString?.startsWith("kakao") == true && dataString.contains("kakaolink")) {
+        return if (Intent.ACTION_VIEW == action && dataString?.startsWith("kakao") == true
+            && (dataString.contains("kakaolink") || dataString.contains("kakaostory"))) {
             receiver?.onReceive(context, intent)
             dataString
         } else {
