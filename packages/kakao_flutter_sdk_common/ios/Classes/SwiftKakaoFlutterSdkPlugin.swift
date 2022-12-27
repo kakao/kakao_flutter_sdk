@@ -93,7 +93,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
             }
             let data = "SDK-\(venderId)".data(using: .utf8)
             result(data)
-        case "talkSharingScheme":
+        case "receiveKakaoScheme":
             result(self.initialLink)
         default:
             result(FlutterMethodNotImplemented)

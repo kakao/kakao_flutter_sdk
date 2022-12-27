@@ -35,5 +35,5 @@ class CommonConstants {
   static const String navigate = 'navigate';
   static const String shareDestination = 'shareDestination';
   static const String isPopup = 'is_popup';
-  static const String talkSharingScheme = 'talkSharingScheme';
+  static const String receiveKakaoScheme = 'receiveKakaoScheme';
 }

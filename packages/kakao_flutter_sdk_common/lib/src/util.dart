@@ -9,7 +9,11 @@ const MethodChannel _methodChannel =
     MethodChannel(CommonConstants.methodChannel);
 const EventChannel _eventChannel = EventChannel(CommonConstants.eventChannel);
 
-Stream<String?> get kakaoTalkSharingStream => _eventChannel
+Future<String?> receiveKakaoScheme() async {
+  return await _methodChannel.invokeMethod(CommonConstants.receiveKakaoScheme);
+}
+
+Stream<String?> get kakaoSchemeStream => _eventChannel
     .receiveBroadcastStream()
     .map<String?>((link) => link as String?);
 
@@ -43,10 +47,6 @@ Future<bool> isKakaoTalkInstalled() async {
           .invokeMethod<bool>(CommonConstants.isKakaoTalkInstalled) ??
       false;
   return isInstalled;
-}
-
-Future<String?> getKakaoTalkSharingInitialScheme() async {
-  return await _methodChannel.invokeMethod(CommonConstants.talkSharingScheme);
 }
 
 /// @nodoc

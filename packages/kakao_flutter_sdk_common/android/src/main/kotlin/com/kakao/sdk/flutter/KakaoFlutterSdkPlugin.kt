@@ -11,7 +11,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Base64
-import android.util.Log
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -196,8 +195,8 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                     result.error("Error", "Can't get androidId", null)
                 }
             }
-            "talkSharingScheme" -> result.success(handleTalkSharingIntent(activity,
-                    activity.intent))
+            "receiveKakaoScheme" -> result.success(handleTalkSharingIntent(activity,
+                activity.intent))
             else -> result.notImplemented()
         }
     }
@@ -223,7 +222,7 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
     }
 
     override fun onListen(arguments: Any?, events: EventChannel.EventSink) {
-        receiver = KakaoTalkSharingSchemeReceiver(events)
+        receiver = KakaoSchemeReceiver(events)
     }
 
     override fun onCancel(arguments: Any?) {
