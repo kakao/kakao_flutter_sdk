@@ -1,5 +1,6 @@
 import 'dart:io';
 
+/// @nodoc
 class LocalizationOptions {
   final String languageCode;
   final String pickerTitle;

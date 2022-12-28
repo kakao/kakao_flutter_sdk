@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// @nodoc
 class PickerAlert extends StatelessWidget {
   final String title;
   final String message;
