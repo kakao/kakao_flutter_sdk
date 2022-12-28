@@ -15,26 +15,6 @@
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="kakao_flutter_sdk_example">
-        <activity
-            android:name=".KakaoLinkActivity"
-            android:exported="true"
-            android:theme="@style/Theme.AppCompat.DayNight">
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <!-- "kakao{YOUR_NATIVE_APP_KEY}://kakaolink" 형식의 앱 실행 스킴을 설정하는데 사용 -->
-                <data
-                    android:host="kakaolink"
-                    android:scheme="kakao030ba7c59137629e86e8721eb1a22fd6" />
-                <data
-                    android:host="kakaostory"
-                    android:scheme="kakao030ba7c59137629e86e8721eb1a22fd6" />
-            </intent-filter>
-        </activity>
 
         <activity
             android:name=".MainActivity"
@@ -62,6 +42,21 @@
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- "kakao{YOUR_NATIVE_APP_KEY}://kakaolink" 형식의 앱 실행 스킴을 설정하는데 사용 -->
+                <data
+                    android:host="kakaolink"
+                    android:scheme="kakao030ba7c59137629e86e8721eb1a22fd6" />
+                <data
+                    android:host="kakaostory"
+                    android:scheme="kakao030ba7c59137629e86e8721eb1a22fd6" />
             </intent-filter>
         </activity>
         <activity

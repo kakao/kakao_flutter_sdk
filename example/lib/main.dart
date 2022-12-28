@@ -6,6 +6,7 @@ import 'package:kakao_flutter_sdk_example/ui/picker_page.dart';
 
 import './url_strategy_native.dart'
     if (dart.library.html) './url_strategy_web.dart';
+import 'ui/kakao_scheme_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,6 +46,12 @@ class MyApp extends StatelessWidget {
               } else {
                 pageView = PickerPage();
               }
+              break;
+            case '/talkSharing':
+              Map<String, dynamic>? params =
+                  settings.arguments as Map<String, dynamic>;
+              pageView = KakaoSchemePage(queryParams: params);
+              break;
           }
         }
         if (pageView != null) {
