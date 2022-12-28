@@ -3,12 +3,11 @@ package com.kakao.sdk.flutter
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ActivityNotFoundException
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.pm.PackageManager.PackageInfoFlags
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Base64
@@ -16,6 +15,7 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.BinaryMessenger
+import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -24,17 +24,23 @@ import io.flutter.plugin.common.PluginRegistry
 import java.security.MessageDigest
 
 class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
-    PluginRegistry.ActivityResultListener {
+    PluginRegistry.ActivityResultListener, EventChannel.StreamHandler,
+    PluginRegistry.NewIntentListener {
     private var _applicationContext: Context? = null
     private val applicationContext get() = _applicationContext!!
 
-    private var _channel: MethodChannel? = null
-    private val channel get() = _channel!!
+    private var _methodChannel: MethodChannel? = null
+    private val methodChannel get() = _methodChannel!!
+
+    private var _eventChannel: EventChannel? = null
+    private val eventChannel get() = _eventChannel!!
 
     private var _activity: Activity? = null
     private val activity get() = _activity!!
 
     private var result: Result? = null
+
+    private var receiver: BroadcastReceiver? = null
 
     override fun onMethodCall(call: MethodCall, result: Result) {
         this.result = result
@@ -189,6 +195,8 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                     result.error("Error", "Can't get androidId", null)
                 }
             }
+            "receiveKakaoScheme" -> result.success(handleTalkSharingIntent(activity,
+                activity.intent))
             else -> result.notImplemented()
         }
     }
@@ -213,25 +221,37 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
         return false
     }
 
+    override fun onListen(arguments: Any?, events: EventChannel.EventSink) {
+        receiver = KakaoSchemeReceiver(events)
+    }
+
+    override fun onCancel(arguments: Any?) {
+        receiver = null
+    }
+
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         onAttachedToEngine(binding.applicationContext, binding.binaryMessenger)
     }
 
     private fun onAttachedToEngine(applicationContext: Context, messenger: BinaryMessenger) {
         _applicationContext = applicationContext
-        _channel = MethodChannel(messenger, "kakao_flutter_sdk")
-        channel.setMethodCallHandler(this)
+        _methodChannel = MethodChannel(messenger, Constants.METHOD_CHANNEL)
+        methodChannel.setMethodCallHandler(this)
+
+        _eventChannel = EventChannel(messenger, Constants.EVENT_CHANNEL)
+        eventChannel.setStreamHandler(this)
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         _applicationContext = null
-        channel.setMethodCallHandler(null)
-        _channel = null
+        methodChannel.setMethodCallHandler(null)
+        _methodChannel = null
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         _activity = binding.activity
         binding.addActivityResultListener(this)
+        binding.addOnNewIntentListener(this)
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
@@ -240,10 +260,25 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
         _activity = binding.activity
         binding.addActivityResultListener(this)
+        binding.addOnNewIntentListener(this)
+        handleTalkSharingIntent(activity, activity.intent)
     }
 
     override fun onDetachedFromActivity() {
         _activity = null
+    }
+
+    private fun handleTalkSharingIntent(context: Context, intent: Intent): String? {
+        val action = intent.action
+        val dataString = intent.dataString
+
+        return if (Intent.ACTION_VIEW == action && dataString?.startsWith("kakao") == true
+            && (dataString.contains("kakaolink") || dataString.contains("kakaostory"))) {
+            receiver?.onReceive(context, intent)
+            dataString
+        } else {
+            null
+        }
     }
 
     private fun codeChallenge(codeVerifier: ByteArray): String =
@@ -259,5 +294,12 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
             .appendQueryParameter(Constants.APIVER, Constants.APIVER_10)
             .appendQueryParameter(Constants.APPKEY, appKey)
             .appendQueryParameter(Constants.EXTRAS, extras)
+    }
+
+    override fun onNewIntent(intent: Intent): Boolean {
+        if(handleTalkSharingIntent(activity, intent) != null) {
+            return true
+        }
+        return false
     }
 }

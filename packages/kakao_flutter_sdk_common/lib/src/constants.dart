@@ -20,7 +20,8 @@ class CommonConstants {
   static const String iosInAppLoginScheme = 'kakaotalk://inappbrowser';
   static const String webPickerUrl = 'https://friend-picker.kakao.com';
 
-  static const String methodChannel = 'kakao_flutter_sdk';
+  static const String methodChannel = 'kakao_flutter_sdk_method_channel';
+  static const String eventChannel = 'kakao_flutter_sdk_event_channel';
   static const String appVer = 'appVer';
   static const String packageName = 'packageName';
   static const String getOrigin = 'getOrigin';
@@ -35,4 +36,5 @@ class CommonConstants {
   static const String navigate = 'navigate';
   static const String shareDestination = 'shareDestination';
   static const String isPopup = 'is_popup';
+  static const String receiveKakaoScheme = 'receiveKakaoScheme';
 }
