@@ -251,7 +251,7 @@ class _ApiListState extends State<ApiList> {
           scopes.add("age_range");
         }
 
-        if (scopes.length > 0) {
+        if (scopes.isNotEmpty) {
           Log.d(context, tag, '사용자에게 추가 동의를 받아야 합니다.');
 
           OAuthToken token;
@@ -1405,7 +1405,7 @@ class _ApiListState extends State<ApiList> {
           scopes.add("age_range");
         }
 
-        if (scopes.length > 0) {
+        if (scopes.isNotEmpty) {
           Log.d(context, tag, '사용자에게 추가 동의를 받아야 합니다.');
 
           // OpenID 활성화 후

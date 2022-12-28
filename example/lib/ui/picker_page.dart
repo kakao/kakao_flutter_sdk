@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_friend.dart';
 
+@immutable
 class PickerPage extends StatefulWidget {
-  String? result;
-  String? error;
+  final String? result;
+  final String? error;
 
-  PickerPage({Key? key, this.result, this.error}) : super(key: key);
+  const PickerPage({Key? key, this.result, this.error}) : super(key: key);
 
   @override
   State<PickerPage> createState() => _PickerPageState();
@@ -228,12 +229,13 @@ class _PickerPageState extends State<PickerPage> {
   }
 }
 
+@immutable
 class BoolRadioListTile extends StatefulWidget {
-  String title;
-  bool defaultValue;
-  Function(bool) callback;
+  final String title;
+  final bool defaultValue;
+  final Function(bool) callback;
 
-  BoolRadioListTile(
+  const BoolRadioListTile(
       {Key? key,
       required this.title,
       required this.defaultValue,

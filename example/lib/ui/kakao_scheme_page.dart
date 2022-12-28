@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+@immutable
 class KakaoSchemePage extends StatelessWidget {
-  Map<String, dynamic> queryParams;
+  final Map<String, dynamic> queryParams;
 
-  KakaoSchemePage({Key? key, required this.queryParams}) : super(key: key);
+  const KakaoSchemePage({Key? key, required this.queryParams})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

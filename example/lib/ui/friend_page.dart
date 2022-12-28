@@ -15,7 +15,7 @@ class _FriendPageState extends State<FriendPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('친구 선택'),
+        title: const Text('친구 선택'),
         actions: [
           GestureDetector(
             onTap: () {
@@ -27,8 +27,8 @@ class _FriendPageState extends State<FriendPage> {
               }
               Navigator.of(context).pop(selectedItems);
             },
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
+            child: const Padding(
+              padding: EdgeInsets.all(16.0),
               child: Center(
                 child: Text('OK'),
               ),
@@ -56,7 +56,7 @@ class _FriendPageState extends State<FriendPage> {
                         ),
                         width: 56,
                         height: 56,
-                        child: Icon(Icons.person)),
+                        child: const Icon(Icons.person)),
                 trailing: Checkbox(
                   value: widget.items[index].checked,
                   onChanged: (value) {

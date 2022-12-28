@@ -13,7 +13,7 @@ class _DebugPageState extends State<DebugPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Debug Page"),
+        title: const Text("Debug Page"),
         actions: [
           GestureDetector(
             child: const Padding(
@@ -46,7 +46,7 @@ class _DebugPageState extends State<DebugPage> {
                 child: SingleChildScrollView(
                     child: Text(
                   '${snapshot.data}',
-                  style: TextStyle(color: Colors.green),
+                  style: const TextStyle(color: Colors.green),
                 )),
               );
             },

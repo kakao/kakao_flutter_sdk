@@ -30,7 +30,7 @@ class MainPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('SDK Sample'),
+        title: const Text('SDK Sample'),
         actions: [
           GestureDetector(
             child: const Padding(
@@ -43,7 +43,7 @@ class MainPage extends StatelessWidget {
           ),
         ],
       ),
-      body: ApiList(),
+      body: const ApiList(),
     );
   }
 }

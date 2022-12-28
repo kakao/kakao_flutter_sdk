@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
               } else if (data.queryParameters.containsKey('error')) {
                 pageView = PickerPage(error: data.queryParameters['error']);
               } else {
-                pageView = PickerPage();
+                pageView = const PickerPage();
               }
               break;
             case '/talkSharing':
