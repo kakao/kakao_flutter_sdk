@@ -1,21 +1,32 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_common/src/constants.dart';
 import 'package:kakao_flutter_sdk_common/src/kakao_exception.dart';
 
 const MethodChannel _methodChannel =
     MethodChannel(CommonConstants.methodChannel);
-const EventChannel _eventChannel = EventChannel(CommonConstants.eventChannel);
 
+/// 종료된 앱이 카카오 스킴 호출로 실행될 때 URL 전달
 Future<String?> receiveKakaoScheme() async {
+  if (kIsWeb) {
+    return null;
+  }
   return await _methodChannel.invokeMethod(CommonConstants.receiveKakaoScheme);
 }
 
-Stream<String?> get kakaoSchemeStream => _eventChannel
-    .receiveBroadcastStream()
-    .map<String?>((link) => link as String?);
+/// 실행 중인 앱이 카카오 스킴 호출로 실행될 때 URL 전달
+Stream<String?> get kakaoSchemeStream {
+  if (kIsWeb) {
+    return Stream.value(null);
+  }
+
+  return const EventChannel(CommonConstants.eventChannel)
+      .receiveBroadcastStream()
+      .map<String?>((link) => link as String?);
+}
 
 /// 플랫폼별 기본 브라우저로 URL 실행
 /// URL을 팝업으로 열고싶을 때 [popupOpen] 사용. 웹에서만 사용 가능

@@ -16,7 +16,7 @@ class KakaoFlutterSdkPlugin {
 
   static void registerWith(Registrar registrar) {
     final MethodChannel channel = MethodChannel(
-        "kakao_flutter_sdk", const StandardMethodCodec(), registrar);
+        CommonConstants.methodChannel, const StandardMethodCodec(), registrar);
 
     final KakaoFlutterSdkPlugin instance = KakaoFlutterSdkPlugin();
     channel.setMethodCallHandler(instance.handleMethodCall);
