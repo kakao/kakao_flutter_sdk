@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
               break;
             case '/talkSharing':
               Map<String, dynamic>? params =
-                  settings.arguments as Map<String, dynamic>;
+                  settings.arguments as Map<String, dynamic>?;
               pageView = KakaoSchemePage(queryParams: params);
               break;
           }

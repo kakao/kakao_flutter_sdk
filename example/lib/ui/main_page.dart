@@ -25,7 +25,7 @@ class MainPage extends StatelessWidget {
       }
     }, onError: (e) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('카카오톡 공유하기 페이지 이동 실패')));
+          .showSnackBar(const SnackBar(content: Text('에러가 발생했습니다')));
     });
 
     return Scaffold(
