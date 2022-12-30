@@ -1,3 +1,6 @@
+## 1.3.1
+- Fixed an issue that launchBrowserTab() does not work on Android devices.
+
 ## 1.3.0
 - Supported Flutter Web officially.
 - Added Calendar template for Message APIs.
