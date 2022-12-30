@@ -6,7 +6,6 @@ import android.content.ServiceConnection
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.browser.customtabs.CustomTabsIntent
 import io.flutter.embedding.android.FlutterActivity
 
 class AuthCodeCustomTabsActivity : FlutterActivity() {
@@ -21,9 +20,10 @@ class AuthCodeCustomTabsActivity : FlutterActivity() {
         try {
             val url = intent.getStringExtra(Constants.KEY_FULL_URI)
                 ?: throw IllegalArgumentException("No uri was passed to AuthCodeCustomTabsActivity.")
-            redirectUrl = intent.getStringExtra(Constants.KEY_REDIRECT_URL)
-                ?: throw IllegalArgumentException("No redirect url was passed to AuthCodeCustomTabsActivity.")
+
             fullUri = Uri.parse(url)
+            redirectUrl = intent.getStringExtra(Constants.KEY_REDIRECT_URL)
+
         } catch (e: Throwable) {
             Log.e(e.javaClass.simpleName, e.toString())
             sendError(e.javaClass.simpleName, e.localizedMessage)
@@ -54,7 +54,7 @@ class AuthCodeCustomTabsActivity : FlutterActivity() {
                 sendError("AuthCodeCustomTabs", "url has been not initialized.")
             }
         } else {
-            sendError("CANCELED", "User canceled login.")
+            sendError("CANCELED", "User canceled.")
         }
     }
 
@@ -76,8 +76,7 @@ class AuthCodeCustomTabsActivity : FlutterActivity() {
             customTabsConnection = CustomTabsCommonClient.openWithDefault(this, uri)
         } catch (e: Exception) {
             try {
-                CustomTabsIntent.Builder().enableUrlBarHiding().setShowTitle(true).build()
-                    .launchUrl(this, uri)
+                CustomTabsCommonClient.open(this, uri)
             } catch (e: Exception) {
                 sendError("EUNKNOWN", e.localizedMessage)
             }
@@ -85,8 +84,7 @@ class AuthCodeCustomTabsActivity : FlutterActivity() {
     }
 
     private fun sendError(errorCode: String, errorMessage: String?) {
-        val data = Intent()
-            .putExtra(Constants.KEY_ERROR_CODE, errorCode)
+        val data = Intent().putExtra(Constants.KEY_ERROR_CODE, errorCode)
             .putExtra(Constants.KEY_ERROR_MESSAGE, errorMessage)
         setResult(Activity.RESULT_CANCELED, data)
         finish()
