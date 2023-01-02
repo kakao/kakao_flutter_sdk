@@ -22,7 +22,7 @@ void main() {
   KakaoSdk.init(nativeAppKey: appKey);
 
   TestWidgetsFlutterBinding.ensureInitialized();
-  const MethodChannel channel = MethodChannel('kakao_flutter_sdk');
+  const MethodChannel channel = MethodChannel(CommonConstants.methodChannel);
 
   const MethodChannel('plugins.flutter.io/shared_preferences')
       .setMockMethodCallHandler((MethodCall methodCall) async {
