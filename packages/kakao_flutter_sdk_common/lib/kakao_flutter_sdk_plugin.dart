@@ -226,7 +226,9 @@ class KakaoFlutterSdkPlugin {
 
   String _getAndroidShareIntent(String userAgent, String uri) {
     String intentScheme;
-    if (userAgent.contains('FB_IAB') || userAgent.contains('Instagram')) {
+    Browser currentBrowser = _uaParser.detectBrowser(userAgent);
+    if (currentBrowser == Browser.facebook ||
+        currentBrowser == Browser.instagram) {
       intentScheme =
           'intent://send?${uri.substring('kakaolink://send?'.length, uri.length)}#Intent;scheme=kakaolink';
     } else {

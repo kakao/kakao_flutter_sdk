@@ -6,6 +6,8 @@ enum Browser {
   kakaotalk,
   firefox,
   samsung,
+  facebook,
+  instagram,
   unknown
 }
 
@@ -42,6 +44,10 @@ class UaParser {
       return Browser.chrome;
     } else if (ua.contains('Safari')) {
       return Browser.safari;
+    } else if (ua.contains('FA_IAB')) {
+      return Browser.facebook;
+    } else if (ua.contains('Instagram')) {
+      return Browser.instagram;
     }
     return Browser.unknown;
   }
