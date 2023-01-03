@@ -23,7 +23,7 @@ class PickerWebView extends StatefulWidget {
 }
 
 class _PickerWebViewState extends State<PickerWebView> {
-  static String domain = CommonConstants.webPickerUrl;
+  static String domain = 'https://${KakaoSdk.hosts.picker}';
   static String sdkPath = 'flutter/sdk';
   static String singlePickerPath = 'select/single';
   static String multiPickerPath = 'select/multiple';
