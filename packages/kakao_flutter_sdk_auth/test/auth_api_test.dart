@@ -117,6 +117,20 @@ void main() {
     }
   });
 
+  test('oauth_token without refresh_token - web spec', () async {
+    String body = await loadJson("oauth/token.json");
+    _adapter.setResponseString(body, 200);
+    try {
+      OAuthToken token = await _authApi.issueAccessToken(
+          authCode: "authCode",
+          redirectUri: "kakaosample_app_key://oauth",
+          appKey: "sample_app_key");
+      print(jsonEncode(token));
+    } catch (e) {
+      fail("Should not reach here");
+    }
+  });
+
   group("/oauth/token refresh access token only", () {
     var refreshToken = "e8sAQWpgBDWPGcvN1_tJR24QVcdAcHgopdtYAAAFi_FnbLAiMpaTTZ";
     var redirectUri = "kakaosample_app_key://oauth";
