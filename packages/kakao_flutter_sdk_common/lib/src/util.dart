@@ -3,11 +3,14 @@ import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:kakao_flutter_sdk_common/src/constants.dart';
 import 'package:kakao_flutter_sdk_common/src/kakao_exception.dart';
+import 'package:platform/platform.dart';
 
 const MethodChannel _methodChannel =
     MethodChannel(CommonConstants.methodChannel);
+const _platform = LocalPlatform();
 
 /// 종료된 앱이 카카오 스킴 호출로 실행될 때 URL 전달
 Future<String?> receiveKakaoScheme() async {
@@ -54,10 +57,18 @@ Future<String> launchBrowserTab(Uri uri,
 
 /// 카카오톡 앱 실행 가능 여부 확인
 Future<bool> isKakaoTalkInstalled() async {
-  final isInstalled = await _methodChannel
-          .invokeMethod<bool>(CommonConstants.isKakaoTalkInstalled) ??
+  var arguments = {};
+  if (kIsWeb) {
+    // web does not support platform. so I divided the branch
+  } else if (_platform.isAndroid) {
+    arguments
+        .addAll({'talkPackageName': KakaoSdk.platforms.android.talkPackage});
+  } else if (_platform.isIOS) {
+    arguments.addAll({'loginScheme': KakaoSdk.platforms.ios.talkLoginScheme});
+  }
+  return await _methodChannel.invokeMethod<bool>(
+          CommonConstants.isKakaoTalkInstalled, arguments) ??
       false;
-  return isInstalled;
 }
 
 /// @nodoc

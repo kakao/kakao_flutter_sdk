@@ -40,6 +40,8 @@ class KakaoSdk {
   // ```
   static late ServerHosts hosts;
 
+  static late PlatformSupport platforms;
+
   // Origin value in KA header.
   //
   // Bundle id and Android keyhash for iOS and Android platform, respectively.
@@ -84,6 +86,7 @@ class KakaoSdk {
     String? nativeAppKey,
     String? javaScriptAppKey,
     ServerHosts? serviceHosts,
+    PlatformSupport? platformSupport,
     bool? loggingEnabled,
   }) {
     if (nativeAppKey == null && javaScriptAppKey == null) {
@@ -94,6 +97,7 @@ class KakaoSdk {
     _nativeKey = nativeAppKey ?? "";
     _jsKey = javaScriptAppKey ?? "";
     hosts = serviceHosts ?? ServerHosts();
+    platforms = platformSupport ?? PlatformSupport();
     logging = loggingEnabled ?? false;
 
     if (kIsWeb) {

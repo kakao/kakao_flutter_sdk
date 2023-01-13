@@ -24,7 +24,6 @@ class Constants {
   static const String templateJson = 'template_json';
   static const String extras = 'extras';
 
-  static const String linkScheme = 'kakaolink';
   static const String linkAuthority = 'send';
   static const String ka = 'KA';
   static const String lcba = 'lcba';

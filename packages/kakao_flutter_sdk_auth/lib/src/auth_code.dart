@@ -9,6 +9,7 @@ import 'package:kakao_flutter_sdk_auth/src/auth_api.dart';
 import 'package:kakao_flutter_sdk_auth/src/constants.dart';
 import 'package:kakao_flutter_sdk_auth/src/utils.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
+import 'package:platform/platform.dart';
 
 const MethodChannel _channel = MethodChannel(CommonConstants.methodChannel);
 
@@ -17,6 +18,7 @@ class AuthCodeClient {
   AuthCodeClient({AuthApi? authApi}) : _kauthApi = authApi ?? AuthApi.instance;
 
   final AuthApi _kauthApi;
+  final _platform = const LocalPlatform();
 
   static final AuthCodeClient instance = AuthCodeClient();
 
@@ -202,6 +204,11 @@ class AuthCodeClient {
     arguments.removeWhere((k, v) => v == null);
 
     if (!kIsWeb) {
+      if (_platform.isIOS) {
+        arguments
+            .addAll({'loginScheme': KakaoSdk.platforms.ios.talkLoginScheme});
+      }
+
       final redirectUriWithParams = await _channel.invokeMethod<String>(
           CommonConstants.authorizeWithTalk, arguments);
 

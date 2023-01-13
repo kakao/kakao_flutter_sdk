@@ -1,7 +1,8 @@
 /// @nodoc
 class Constants {
-  static const String naviHosts = 'kakaonavi-wguide.kakao.com';
-
+  // static const String naviHosts = 'kakaonavi-wguide.kakao.com';
+  static const String naviScheme = 'navi_scheme';
+  static const String naviOrigin = 'navi_origin';
   static const String appKey = 'app_key';
   static const String extras = 'extras';
   static const String naviParams = 'navi_params';

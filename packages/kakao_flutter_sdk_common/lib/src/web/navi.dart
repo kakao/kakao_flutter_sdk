@@ -2,14 +2,15 @@ import 'dart:async';
 import 'dart:html' as html;
 
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 
 String androidNaviIntent(String scheme, String queries) {
   var url = '$scheme?$queries';
 
   final intent = [
     'intent:$url#Intent',
-    'package=com.locnall.KimGiSa',
-    'S.browser_fallback_url=${Uri.encodeComponent('https://kakaonavi.kakao.com/launch/index.do?$queries')}',
+    'package=${KakaoSdk.platforms.web.kakaoNaviOrigin}',
+    'S.browser_fallback_url=${Uri.encodeComponent('${KakaoSdk.platforms.web.kakaoNaviInstallPage}?$queries')}',
     'end;'
   ].join(';');
   return intent;
