@@ -67,17 +67,18 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                 activity.startActivityForResult(intent, Constants.REQUEST_KAKAO_LOGIN)
             }
             "authorizeWithTalk" -> {
-                if (!Utility.isKakaoTalkInstalled(applicationContext)) {
-                    result.error(
-                        "Error",
-                        "KakaoTalk is not installed. If you want KakaoTalk Login, please install KakaoTalk",
-                        null
-                    )
-                    return
-                }
                 try {
                     @Suppress("UNCHECKED_CAST")
                     val args = call.arguments as Map<String, String>
+                    val talkPackageName = args["talkPackageName"] ?: Constants.TALK_PACKAGE
+                    if (!Utility.isKakaoTalkInstalled(applicationContext, talkPackageName)) {
+                        result.error(
+                            "Error",
+                            "KakaoTalk is not installed. If you want KakaoTalk Login, please install KakaoTalk",
+                            null
+                        )
+                        return
+                    }
                     val sdkVersion = args["sdk_version"]
                         ?: throw IllegalArgumentException("Sdk version id is required.")
                     val clientId = args["client_id"]
@@ -117,18 +118,25 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                 }
             }
             "isKakaoTalkInstalled" -> {
-                result.success(Utility.isKakaoTalkInstalled(applicationContext))
+                @Suppress("UNCHECKED_CAST")
+                val args = call.arguments as Map<String, String>
+                val talkPackageName = args["talkPackageName"] ?: Constants.TALK_PACKAGE
+                result.success(Utility.isKakaoTalkInstalled(applicationContext, talkPackageName))
             }
             "isKakaoNaviInstalled" -> {
-                result.success(Utility.isKakaoNaviInstalled(applicationContext))
+                @Suppress("UNCHECKED_CAST")
+                val args = call.arguments as Map<String, String>
+                val naviPackageName = args["navi_origin"] ?: "com.locnall.KimGiSa"
+                result.success(Utility.isKakaoNaviInstalled(applicationContext, naviPackageName))
             }
             "launchKakaoTalk" -> {
-                if (!Utility.isKakaoTalkInstalled(applicationContext)) {
+                @Suppress("UNCHECKED_CAST")
+                val args = call.arguments as Map<String, String>
+                val talkPackageName = args["talkPackageName"] ?: Constants.TALK_PACKAGE
+                if (!Utility.isKakaoTalkInstalled(applicationContext, talkPackageName)) {
                     result.success(false)
                     return
                 }
-                @Suppress("UNCHECKED_CAST")
-                val args = call.arguments as Map<String, String>
                 val uri = args["uri"]
                     ?: throw IllegalArgumentException("KakaoTalk uri scheme is required.")
                 val intent = Intent(Intent.ACTION_SEND, Uri.parse(uri))
@@ -148,11 +156,11 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
             "navigate" -> {
                 @Suppress("UNCHECKED_CAST")
                 val args = call.arguments as Map<String, String>
+                val (scheme, authority) = (args["navi_scheme"] ?: "kakaonavi-sdk://navigate").split("://")
                 val appKey = args["app_key"]
                 val extras = args["extras"]
                 val params = args["navi_params"]
-                val uri = naviBaseUriBuilder(appKey, extras, params).scheme(Constants.NAVI_SCHEME)
-                    .authority(Constants.NAVIGATE).build()
+                val uri = naviBaseUriBuilder(scheme, authority, appKey, extras, params).build()
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 try {
@@ -165,11 +173,11 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
             "shareDestination" -> {
                 @Suppress("UNCHECKED_CAST")
                 val args = call.arguments as Map<String, String>
+                val (scheme, authority) = (args["navi_scheme"] ?: "kakaonavi-sdk://navigate").split("://")
                 val appKey = args["app_key"]
                 val extras = args["extras"]
                 val params = args["navi_params"]
-                val uri = naviBaseUriBuilder(appKey, extras, params).scheme(Constants.NAVI_SCHEME)
-                    .authority(Constants.NAVIGATE).build()
+                val uri = naviBaseUriBuilder(scheme, authority, appKey, extras, params).build()
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 try {
@@ -273,7 +281,8 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
         val dataString = intent.dataString
 
         return if (Intent.ACTION_VIEW == action && dataString?.startsWith("kakao") == true
-            && (dataString.contains("kakaolink") || dataString.contains("kakaostory"))) {
+            && (dataString.contains("kakaolink") || dataString.contains("kakaostory"))
+        ) {
             receiver?.onReceive(context, intent)
             dataString
         } else {
@@ -287,9 +296,8 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
             Base64.NO_WRAP or Base64.NO_PADDING or Base64.URL_SAFE
         )
 
-    private fun naviBaseUriBuilder(appKey: String?, extras: String?, params: String?): Uri.Builder {
-        return Uri.Builder().scheme(Constants.NAVI_WEB_SCHEME)
-            .authority(Constants.NAVI_HOST)
+    private fun naviBaseUriBuilder(scheme: String, authority: String, appKey: String?, extras: String?, params: String?): Uri.Builder {
+        return Uri.Builder().scheme(scheme).authority(authority)
             .appendQueryParameter(Constants.PARAM, params)
             .appendQueryParameter(Constants.APIVER, Constants.APIVER_10)
             .appendQueryParameter(Constants.APPKEY, appKey)
@@ -297,7 +305,7 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
     }
 
     override fun onNewIntent(intent: Intent): Boolean {
-        if(handleTalkSharingIntent(activity, intent) != null) {
+        if (handleTalkSharingIntent(activity, intent) != null) {
             return true
         }
         return false

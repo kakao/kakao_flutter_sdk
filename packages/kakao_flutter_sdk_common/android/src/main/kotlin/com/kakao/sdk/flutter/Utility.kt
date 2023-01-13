@@ -84,7 +84,7 @@ object Utility {
         clientId: String? = null,
         redirectUri: String? = null,
         kaHeader: String? = null,
-        extras: Bundle = Bundle()
+        extras: Bundle = Bundle(),
     ): Intent {
         val intent = Intent().setAction("com.kakao.talk.intent.action.CAPRI_LOGGED_IN_ACTIVITY")
             .addCategory(Intent.CATEGORY_DEFAULT)
@@ -105,13 +105,13 @@ object Utility {
         return ai.metaData.getString(key)
     }
 
-    fun isKakaoTalkInstalled(context: Context): Boolean {
-        return isPackageInstalled(context, "com.kakao.talk") ||
+    fun isKakaoTalkInstalled(context: Context, talkPackageName: String): Boolean {
+        return isPackageInstalled(context, talkPackageName) ||
                 isPackageInstalled(context, "com.kakao.onetalk")
     }
 
-    fun isKakaoNaviInstalled(context: Context): Boolean {
-        return isPackageInstalled(context, "com.locnall.KimGiSa") ||
+    fun isKakaoNaviInstalled(context: Context, naviPackageName: String): Boolean {
+        return isPackageInstalled(context, naviPackageName) ||
                 isPackageInstalled(context, "com.lguplus.navi")
     }
 
