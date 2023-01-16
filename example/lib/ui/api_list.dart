@@ -13,13 +13,11 @@ import 'package:kakao_flutter_sdk_example/util/log.dart';
 import 'package:path_provider/path_provider.dart';
 
 const String tag = "KakaoSdkSample";
-const Map<String, int> templateIds = {
-  "customMemo": 67020,
-  "customMessage": 67020,
-};
 
 class ApiList extends StatefulWidget {
-  const ApiList({Key? key}) : super(key: key);
+  Map<String, dynamic> customData;
+
+  ApiList({Key? key, required this.customData}) : super(key: key);
 
   @override
   _ApiListState createState() => _ApiListState();
@@ -32,7 +30,7 @@ class _ApiListState extends State<ApiList> {
   @override
   void initState() {
     super.initState();
-    _initApiList();
+    _initApiList(widget.customData);
   }
 
   @override
@@ -56,7 +54,7 @@ class _ApiListState extends State<ApiList> {
         itemCount: apiList.length);
   }
 
-  _initApiList() {
+  _initApiList(Map<String, dynamic> customData) {
     apiList = [
       ApiItem('User API'),
       ApiItem('isKakaoTalkInstalled()', () async {
@@ -433,7 +431,7 @@ class _ApiListState extends State<ApiList> {
 
         // 메시지 템플릿 아이디
         // * 만들기 가이드: https://developers.kakao.com/docs/latest/ko/message/message-template
-        int templateId = templateIds['customMessage']!;
+        int templateId = customData['customMessage']!;
 
         try {
           await TalkApi.instance.sendCustomMemo(templateId: templateId);
@@ -583,7 +581,7 @@ class _ApiListState extends State<ApiList> {
 
           // 메시지 템플릿 아이디
           // * 만들기 가이드: https://developers.kakao.com/docs/latest/ko/message/message-template
-          int templateId = templateIds['customMessage']!;
+          int templateId = customData['customMessage']!;
 
           // 메시지 보내기
           try {
@@ -708,7 +706,8 @@ class _ApiListState extends State<ApiList> {
           List<String> receiverUuids = selectedItems;
 
           // Calendar 메시지
-          CalendarTemplate template = defaultCalendar;
+          CalendarTemplate template =
+              getDefaultCalendar(customData['calendarEventId']);
 
           // 메시지 보내기
           try {
@@ -803,7 +802,8 @@ class _ApiListState extends State<ApiList> {
       }),
       ApiItem('addChannelUrl()', () async {
         // 카카오톡 채널 추가하기 URL
-        Uri url = await TalkApi.instance.addChannelUrl('_ZeUTxl');
+        String channelId = customData['channelId'];
+        Uri url = await TalkApi.instance.addChannelUrl(channelId);
 
         // 디바이스 브라우저 열기
         try {
@@ -814,7 +814,8 @@ class _ApiListState extends State<ApiList> {
       }),
       ApiItem('channelChatUrl()', () async {
         // 카카오톡 채널 채팅 URL
-        Uri url = await TalkApi.instance.channelChatUrl('_ZeUTxl');
+        String channelId = customData['channelId'];
+        Uri url = await TalkApi.instance.channelChatUrl(channelId);
 
         // 디바이스 브라우저 열기
         try {
@@ -996,7 +997,7 @@ class _ApiListState extends State<ApiList> {
       ApiItem('customTemplate()', () async {
         // 커스텀 템플릿으로 카카오톡 공유하기
         //  * 만들기 가이드: https://developers.kakao.com/docs/latest/ko/message/message-template
-        int templateId = templateIds['customMemo']!;
+        int templateId = customData['customMemo']!;
 
         try {
           Uri uri =
@@ -1086,8 +1087,8 @@ class _ApiListState extends State<ApiList> {
         // 디폴트 템플릿으로 카카오톡 공유하기 - Calendar
 
         try {
-          Uri uri = await ShareClient.instance
-              .shareDefault(template: defaultCalendar);
+          Uri uri = await ShareClient.instance.shareDefault(
+              template: getDefaultCalendar(customData['calendarEventId']));
           await ShareClient.instance.launchKakaoTalk(uri);
           Log.d(context, tag, '카카오톡 공유 성공');
         } catch (e) {
@@ -1099,7 +1100,7 @@ class _ApiListState extends State<ApiList> {
 
         // 메시지 템플릿 아이디
         // * 만들기 가이드: https://developers.kakao.com/docs/latest/ko/message/message-template
-        int templateId = templateIds['customMemo']!;
+        int templateId = customData['customMemo']!;
 
         try {
           Uri shareUrl = await WebSharerClient.instance.makeCustomUrl(
@@ -1150,8 +1151,8 @@ class _ApiListState extends State<ApiList> {
         // 커스텀 템플릿으로 웹에서 카카오톡 공유하기 - Feed
 
         try {
-          Uri shareUrl = await WebSharerClient.instance
-              .makeDefaultUrl(template: defaultCalendar);
+          Uri shareUrl = await WebSharerClient.instance.makeDefaultUrl(
+              template: getDefaultCalendar(customData['calendarEventId']));
           await launchBrowserTab(shareUrl);
         } catch (e) {
           Log.e(context, tag, '카카오톡 공유 실패', e);
