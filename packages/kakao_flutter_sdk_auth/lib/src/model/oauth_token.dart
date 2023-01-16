@@ -59,8 +59,6 @@ class OAuthToken {
       }
     } else {
       refreshToken = oldToken?.refreshToken;
-      // : throw KakaoClientException(
-      //     'Refresh token not found in the response.');
       rtExpiresAt = oldToken?.refreshTokenExpiresAt?.millisecondsSinceEpoch;
     }
 
