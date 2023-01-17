@@ -192,6 +192,8 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
+        if(data == null) retrun false
+
         if (requestCode == Constants.REQUEST_KAKAO_LOGIN) {
             return when (resultCode) {
                 Activity.RESULT_OK -> {
