@@ -163,9 +163,15 @@ class OldTokenManager implements TokenManager {
     await preferences.setString(atKey, token.accessToken);
     await preferences.setInt(
         expiresAtKey, token.expiresAt.millisecondsSinceEpoch);
-    await preferences.setString(rtKey, token.refreshToken);
-    await preferences.setInt(
-        rtExpiresAtKey, token.refreshTokenExpiresAt.millisecondsSinceEpoch);
+
+    if (token.refreshToken != null) {
+      await preferences.setString(rtKey, token.refreshToken!);
+    }
+
+    if (token.refreshTokenExpiresAt != null) {
+      await preferences.setInt(
+          rtExpiresAtKey, token.refreshTokenExpiresAt!.millisecondsSinceEpoch);
+    }
     await preferences.setStringList(scopesKey, token.scopes!);
   }
 }
