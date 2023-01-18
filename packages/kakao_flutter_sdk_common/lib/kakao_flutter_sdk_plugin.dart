@@ -149,7 +149,7 @@ class KakaoFlutterSdkPlugin {
                 'KakaoTalk can only be launched on Android or iOS devices.');
       case "navigate":
       case "shareDestination":
-        String scheme = 'kakaonavi-sdk://navigate';
+        String scheme = call.arguments['navi_scheme'];
         String queries =
             'apiver=1.0&appkey=${KakaoSdk.appKey}&param=${Uri.encodeComponent(call.arguments['navi_params'])}&extras=${Uri.encodeComponent(call.arguments['extras'])}';
 
@@ -158,7 +158,7 @@ class KakaoFlutterSdkPlugin {
           return true;
         } else if (_uaParser.isiOS(userAgent)) {
           bindPageHideEvent(deferredFallback(
-              'https://kakaonavi.kakao.com/launch/index.do?$queries',
+              '${KakaoSdk.platforms.web.kakaoNaviInstallPage}?$queries',
               (storeUrl) {
             html.window.top?.location.href = storeUrl;
           }));
@@ -172,7 +172,7 @@ class KakaoFlutterSdkPlugin {
         String accessToken = call.arguments['access_token'];
         Map pickerParams = call.arguments['picker_params'];
 
-        var url = CommonConstants.webPickerUrl;
+        var url = 'https://${KakaoSdk.hosts.picker}';
 
         var iframe = createIFrame(transId, url);
         html.document.body?.append(iframe);
@@ -226,19 +226,22 @@ class KakaoFlutterSdkPlugin {
 
   String _getAndroidShareIntent(String userAgent, String uri) {
     String intentScheme;
+    String talkSharingScheme = KakaoSdk.platforms.android.talkSharingScheme;
     Browser currentBrowser = _uaParser.detectBrowser(userAgent);
     if (currentBrowser == Browser.facebook ||
         currentBrowser == Browser.instagram) {
       intentScheme =
-          'intent://send?${uri.substring('kakaolink://send?'.length, uri.length)}#Intent;scheme=kakaolink';
+          'intent://send?${uri.substring('$talkSharingScheme://send?'.length, uri.length)}#Intent;scheme=$talkSharingScheme';
     } else {
+      uri = uri.replaceFirst(
+          KakaoSdk.platforms.web.talkSharingScheme, talkSharingScheme);
       intentScheme = 'intent:$uri#Intent';
     }
 
     final intent = [
       intentScheme,
       'launchFlags=0x14008000',
-      'package=com.kakao.talk',
+      'package=${KakaoSdk.platforms.web.talkPackage}',
       'end;'
     ].join(';');
     return intent;

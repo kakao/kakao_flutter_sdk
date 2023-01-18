@@ -14,11 +14,6 @@ class CommonConstants {
   static const String redirectUri = 'redirect_uri';
   static const String androidWebRedirectUri = '/cors/afterlogin.html';
   static const String iosWebRedirectUri = 'JS-SDK';
-  static const String iosWebUniversalLink =
-      'https://talk-apps.kakao.com/scheme/';
-  static const String iosTalkLoginScheme = 'kakaokompassauth://authorize';
-  static const String iosInAppLoginScheme = 'kakaotalk://inappbrowser';
-  static const String webPickerUrl = 'https://friend-picker.kakao.com';
 
   static const String methodChannel = 'kakao_flutter_sdk_method_channel';
   static const String eventChannel = 'kakao_flutter_sdk_event_channel';

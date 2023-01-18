@@ -3,7 +3,9 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:kakao_flutter_sdk_example/ui/api_list.dart';
 
 class MainPage extends StatelessWidget {
-  const MainPage({Key? key}) : super(key: key);
+  Map<String, dynamic> customData;
+
+  MainPage({Key? key, required this.customData}) : super(key: key);
 
   Future _navigateInitialLink(BuildContext context) async {
     var url = await receiveKakaoScheme();
@@ -43,7 +45,7 @@ class MainPage extends StatelessWidget {
           ),
         ],
       ),
-      body: const ApiList(),
+      body: ApiList(customData: customData),
     );
   }
 }

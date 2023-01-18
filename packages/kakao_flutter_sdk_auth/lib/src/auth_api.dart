@@ -48,7 +48,7 @@ class AuthApi {
     final data = {
       Constants.code: authCode,
       Constants.grantType: Constants.authorizationCode,
-      Constants.clientId: appKey ?? KakaoSdk.platformAppKey,
+      Constants.clientId: appKey ?? KakaoSdk.appKey,
       Constants.redirectUri: redirectUri ?? await _platformRedirectUri(),
       Constants.codeVerifier: codeVerifier,
       ...await _platformData()
@@ -67,7 +67,7 @@ class AuthApi {
     final data = {
       Constants.code: authCode,
       Constants.grantType: Constants.authorizationCode,
-      Constants.clientId: appKey ?? KakaoSdk.platformAppKey,
+      Constants.clientId: appKey ?? KakaoSdk.appKey,
       Constants.redirectUri: redirectUri ?? await _platformRedirectUri(),
       Constants.codeVerifier: codeVerifier,
       ...await _platformData()
@@ -84,7 +84,7 @@ class AuthApi {
     final data = {
       Constants.refreshToken: oldToken.refreshToken,
       Constants.grantType: Constants.refreshToken,
-      Constants.clientId: appKey ?? KakaoSdk.platformAppKey,
+      Constants.clientId: appKey ?? KakaoSdk.appKey,
       Constants.redirectUri: redirectUri ?? await _platformRedirectUri(),
       ...await _platformData()
     };
@@ -112,7 +112,7 @@ class AuthApi {
           'Token registered in TokenManager does not exist!');
     }
     final data = {
-      Constants.clientId: appKey ?? KakaoSdk.platformAppKey,
+      Constants.clientId: appKey ?? KakaoSdk.appKey,
       Constants.accessToken: accessToken ?? tokenInfo!.accessToken
     };
 

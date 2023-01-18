@@ -17,16 +17,35 @@ class NaviApi {
   static const MethodChannel _channel =
       MethodChannel(CommonConstants.methodChannel);
 
-  static const String webNaviInstall =
-      'https://kakaonavi.kakao.com/launch/index.do';
+  static String get webNaviInstall {
+    var platform = const LocalPlatform();
+    if (kIsWeb) {
+      return KakaoSdk.platforms.web.kakaoNaviInstallPage;
+    } else if (platform.isIOS) {
+      return KakaoSdk.platforms.ios.kakaoNaviInstallPage;
+    } else {
+      return KakaoSdk.platforms.android.kakaoNaviInstallPage;
+    }
+  }
 
   /// 간편한 API 호출을 위해 기본 제공되는 singleton 객체
   static final NaviApi instance = NaviApi();
 
   /// 카카오내비 앱 실행 가능 여부 확인
   Future<bool> isKakaoNaviInstalled() async {
-    final isInstalled =
-        await _channel.invokeMethod<bool>("isKakaoNaviInstalled") ?? false;
+    Map<String, String> arguments = {};
+    if (kIsWeb) {
+    } else if (_platform.isAndroid) {
+      arguments.addAll(
+          {Constants.naviOrigin: KakaoSdk.platforms.android.kakaoNaviOrigin});
+    } else {
+      arguments.addAll(
+          {Constants.naviOrigin: KakaoSdk.platforms.ios.kakaoNaviScheme});
+    }
+
+    final isInstalled = await _channel.invokeMethod<bool>(
+            CommonConstants.isKakaoNaviInstalled, arguments) ??
+        false;
     return isInstalled;
   }
 
@@ -37,8 +56,10 @@ class NaviApi {
       {required Location destination,
       NaviOption? option,
       List<Location>? viaList}) async {
+    String naviScheme = _getKakaoNaviScheme();
     final extras = await _getExtras();
     final arguments = {
+      Constants.naviScheme: naviScheme,
       Constants.appKey: KakaoSdk.appKey,
       Constants.extras: jsonEncode(extras),
       Constants.naviParams: jsonEncode(
@@ -68,8 +89,10 @@ class NaviApi {
         startY: option?.startY,
         startAngle: option?.startAngle);
 
+    String naviScheme = _getKakaoNaviScheme();
     final extras = await _getExtras();
     final arguments = {
+      Constants.naviScheme: naviScheme,
       Constants.appKey: KakaoSdk.appKey,
       Constants.extras: jsonEncode(extras),
       Constants.naviParams: jsonEncode(
@@ -97,5 +120,17 @@ class NaviApi {
                 : {};
 
     return {Constants.ka: await KakaoSdk.kaHeader, ...platformInfo};
+  }
+
+  String _getKakaoNaviScheme() {
+    PlatformSupportValues platform;
+    if (kIsWeb) {
+      platform = KakaoSdk.platforms.web;
+    } else if (_platform.isAndroid) {
+      platform = KakaoSdk.platforms.android;
+    } else {
+      platform = KakaoSdk.platforms.ios;
+    }
+    return platform.kakaoNaviScheme;
   }
 }

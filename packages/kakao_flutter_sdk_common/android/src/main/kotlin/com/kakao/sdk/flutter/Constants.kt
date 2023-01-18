@@ -26,6 +26,7 @@ object Constants {
     const val KEY_HEADERS = "key.extra.headers"
     const val KEY_EXCEPTION = "key.exception"
 
+    const val TALK_PACKAGE = "com.kakao.talk"
     const val EXTRA_APPLICATION_KEY = "com.kakao.sdk.talk.appKey"
     const val EXTRA_REDIRECT_URI = "com.kakao.sdk.talk.redirectUri"
     const val EXTRA_KA_HEADER = "com.kakao.sdk.talk.kaHeader"
@@ -47,8 +48,8 @@ object Constants {
     const val APPKEY = "appkey"
     const val APIVER_10 = "1.0"
 
-    const val NAVI_WEB_SCHEME = "https"
-    const val NAVI_HOST = "kakaonavi-wguide.kakao.com"
+//    const val NAVI_WEB_SCHEME = "https"
+//    const val NAVI_HOST = "kakaonavi-wguide.kakao.com"
     const val NAVI_SCHEME = "kakaonavi-sdk"
     const val NAVIGATE = "navigate"
     const val SHARE_POI = "sharePoi"

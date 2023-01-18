@@ -57,9 +57,9 @@ String iosLoginUniversalLink(String kaHeader, Map<String, dynamic> arguments) {
       : _iosRedirectLoginScheme(kaHeader, arguments);
 
   if (isPopup) {
-    return '${CommonConstants.iosWebUniversalLink}${Uri.encodeComponent(iosLoginScheme)}&web=${Uri.encodeComponent(fallbackUrl)}';
+    return '${KakaoSdk.platforms.web.iosLoginUniversalLink}${Uri.encodeComponent(iosLoginScheme)}&web=${Uri.encodeComponent(fallbackUrl)}';
   } else {
-    return '${CommonConstants.iosWebUniversalLink}${Uri.encodeComponent("${CommonConstants.iosInAppLoginScheme}?url=${Uri.encodeComponent(iosLoginScheme)}")}&web=${Uri.encodeComponent(iosLoginScheme)}';
+    return '${KakaoSdk.platforms.web.iosLoginUniversalLink}${Uri.encodeComponent("${KakaoSdk.platforms.web.iosInAppLoginScheme}?url=${Uri.encodeComponent(iosLoginScheme)}")}&web=${Uri.encodeComponent(iosLoginScheme)}';
   }
 }
 
@@ -73,7 +73,7 @@ String _iosPopupLoginScheme(String kaHeader, Map<String, dynamic> arguments) {
   };
   params.removeWhere((k, v) => v == null);
 
-  return Uri.parse(CommonConstants.iosTalkLoginScheme)
+  return Uri.parse(KakaoSdk.platforms.web.talkLoginScheme)
       .replace(queryParameters: params)
       .toString();
 }
@@ -87,7 +87,8 @@ String _iosRedirectLoginScheme(
     'is_popup': 'true',
     'ka': kaHeader,
   };
-  return Uri.parse("https://kauth.kakao.com/oauth/authorize")
+  return Uri.parse(
+          '${CommonConstants.scheme}://${KakaoSdk.hosts.kauth}/oauth/authorize')
       .replace(queryParameters: easyLoginAuthParams)
       .toString();
 }
