@@ -210,16 +210,16 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
-        if (requestCode == Constants.REQUEST_KAKAO_LOGIN) {
+        if (requestCode == Constants.REQUEST_KAKAO_LOGIN && data != null) {
             return when (resultCode) {
                 Activity.RESULT_OK -> {
-                    val url = data?.getStringExtra(Constants.KEY_RETURN_URL)
+                    val url = data.getStringExtra(Constants.KEY_RETURN_URL)
                     result?.success(url)
                     true
                 }
                 Activity.RESULT_CANCELED -> {
-                    val errorCode = data?.getStringExtra(Constants.KEY_ERROR_CODE) ?: "ERROR"
-                    val errorMessage = data?.getStringExtra(Constants.KEY_ERROR_MESSAGE)
+                    val errorCode = data.getStringExtra(Constants.KEY_ERROR_CODE) ?: "ERROR"
+                    val errorMessage = data.getStringExtra(Constants.KEY_ERROR_MESSAGE)
                     result?.error(errorCode, errorMessage, null)
                     true
                 }
