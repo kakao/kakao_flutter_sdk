@@ -6,9 +6,8 @@ import android.content.ServiceConnection
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import io.flutter.embedding.android.FlutterActivity
 
-class AuthCodeCustomTabsActivity : FlutterActivity() {
+class AuthCodeCustomTabsActivity : Activity() {
     private var fullUri: Uri? = null
     private var redirectUrl: String? = null
     private var customTabsConnection: ServiceConnection? = null
