@@ -1,5 +1,12 @@
+## 1.4.0
+- Added the `friend` module for the Friend picker function.
+- Improved calling method of Custom URL Scheme.
+- Changed `refreshToken`, `refreshTokenExpiresAt` fields type of `OAuthToken` class to nullable.
+- Changed the minimum support version of Android to 5.0 (API 21).
+- Updated the internal source code.
+
 ## 1.3.1
-- Fixed an issue that launchBrowserTab() does not work on Android devices.
+- Fixed an issue that `launchBrowserTab()` does not work on Android devices.
 
 ## 1.3.0
 - Supported Flutter Web officially.
