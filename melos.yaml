@@ -1,8 +1,8 @@
 name: kakao_flutter_sdk
 
 packages:
-  - packages/**
-  - example/**
+  - packages/*
+  - example/*
 
 scripts:
   test:

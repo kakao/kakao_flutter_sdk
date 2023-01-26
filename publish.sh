@@ -48,11 +48,11 @@ fi
 find packages/kakao_flutter_sdk_common/lib/src -name "kakao_sdk.dart" -exec perl -pi -e "s/static String sdkVersion .*/static String sdkVersion = \"${version}\";/g" {} \;
 
 # 버전 정보를 변경해야하는 패키지 이름 저장
-melos list -a >$FILENAME
+melos list >$FILENAME
 
 # 파일 읽으면서 패키지 버전 수정
 while read -r line; do
-  melos version "$line" "$version" --yes --no-changelog
+  melos version "$line" "$version" --no-changelog
 done <$FILENAME
 
 # 패키지 목록 저장 파일 삭제
