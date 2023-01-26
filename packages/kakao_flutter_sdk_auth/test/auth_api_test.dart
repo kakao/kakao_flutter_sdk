@@ -22,7 +22,7 @@ void main() {
   KakaoSdk.init(nativeAppKey: appKey);
 
   TestWidgetsFlutterBinding.ensureInitialized();
-  const MethodChannel channel = MethodChannel('kakao_flutter_sdk');
+  const MethodChannel channel = MethodChannel(CommonConstants.methodChannel);
 
   const MethodChannel('plugins.flutter.io/shared_preferences')
       .setMockMethodCallHandler((MethodCall methodCall) async {
@@ -114,6 +114,20 @@ void main() {
       expect(e.error, AuthErrorCause.misconfigured);
     } catch (e) {
       expect(e, isInstanceOf<KakaoAuthException>());
+    }
+  });
+
+  test('oauth_token without refresh_token - web spec', () async {
+    String body = await loadJson("oauth/token.json");
+    _adapter.setResponseString(body, 200);
+    try {
+      OAuthToken token = await _authApi.issueAccessToken(
+          authCode: "authCode",
+          redirectUri: "kakaosample_app_key://oauth",
+          appKey: "sample_app_key");
+      print(jsonEncode(token));
+    } catch (e) {
+      fail("Should not reach here");
     }
   });
 

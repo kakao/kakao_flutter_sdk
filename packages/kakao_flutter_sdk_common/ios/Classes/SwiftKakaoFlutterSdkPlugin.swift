@@ -4,16 +4,20 @@ import AuthenticationServices
 import SafariServices
 import CommonCrypto
 
-public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthenticationPresentationContextProviding {
+public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamHandler, ASWebAuthenticationPresentationContextProviding {
     var result: FlutterResult? = nil
     var redirectUri: String? = nil
     var authorizeTalkCompletionHandler : ((URL?, FlutterError?) -> Void)?
     
+    var eventSink: FlutterEventSink? = nil
+    var initialLink: String? = nil
+    
     public static func register(with registrar: FlutterPluginRegistrar) {
-        NSLog("nslog register")
-        let channel = FlutterMethodChannel(name: "kakao_flutter_sdk", binaryMessenger: registrar.messenger())
+        let methodChannel = FlutterMethodChannel(name: Constants.methodChannel, binaryMessenger: registrar.messenger())
+        let eventChannel = FlutterEventChannel(name: Constants.eventChannel, binaryMessenger: registrar.messenger())
         let instance = SwiftKakaoFlutterSdkPlugin()
-        registrar.addMethodCallDelegate(instance, channel: channel)
+        registrar.addMethodCallDelegate(instance, channel: methodChannel)
+        eventChannel.setStreamHandler(instance)
         registrar.addApplicationDelegate(instance) // This is necessary to receive open iurl delegate method.
     }
     
@@ -24,7 +28,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
             args["is_popup"] = (isPopup) ? "YES" : "NO"
             return args as! Dictionary<String, String>
         }
-
+        
         switch call.method {
         case "appVer":
             result(Utility.appVer())
@@ -41,6 +45,8 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
             launchBrowserTab(url: url!, redirectUri: redirectUri, result: result)
         case "authorizeWithTalk":
             let args = castArguments(call.arguments)
+            let loginScheme = args["loginScheme"] ?? "kakaokompassauth://authorize"
+            
             let sdkVersion = args["sdk_version"]
             let clientId = args["client_id"]
             let redirectUri = args["redirect_uri"]
@@ -48,15 +54,19 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
             let prompt = args["prompt"]
             let state = args["state"]
             let nonce = args["nonce"]
-            authorizeWithTalk(sdkVersion: sdkVersion!, clientId: clientId!, redirectUri: redirectUri!, codeVerifier: codeVerifier, prompt: prompt, state: state, nonce: nonce, result: result)
+            authorizeWithTalk(loginScheme: loginScheme, sdkVersion: sdkVersion!, clientId: clientId!, redirectUri: redirectUri!, codeVerifier: codeVerifier, prompt: prompt, state: state, nonce: nonce, result: result)
         case "isKakaoTalkInstalled":
-            guard let talkUrl = URL(string: "kakaokompassauth://authorize") else {
+            let args = castArguments(call.arguments)
+            let loginScheme = args["loginScheme"] ?? "kakaokompassauth://authorize"
+            guard let talkUrl = URL(string: loginScheme) else {
                 result(false)
                 return
             }
             result(UIApplication.shared.canOpenURL(talkUrl))
         case "isKakaoNaviInstalled":
-            guard let naviUrl = URL(string: "kakaonavi-sdk://") else {
+            let args = castArguments(call.arguments)
+            let naviScheme = args["navi_origin"] ?? "kakaonavi-sdk://navigate"
+            guard let naviUrl = URL(string: naviScheme) else {
                 result(false)
                 return
             }
@@ -66,21 +76,25 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
             let uri = args["uri"]
             launchKakaoTalk(uri: uri!, result: result)
         case "isKakaoTalkSharingAvailable":
-            let isKakaoTalkSharingAvailable = UIApplication.shared.canOpenURL(URL(string:"kakaolink://send")!)
+            let args = castArguments(call.arguments)
+            let talkSharingScheme = args["talkSharingScheme"] ?? "kakaolink://send"
+            let isKakaoTalkSharingAvailable = UIApplication.shared.canOpenURL(URL(string:talkSharingScheme)!)
             result(isKakaoTalkSharingAvailable)
         case "navigate":
             let args = castArguments(call.arguments)
+            let naviScheme = args["navi_scheme"] ?? "kakaonavi-sdk://navigate"
             let appKey = args["app_key"]
             let extras = args["extras"]
             let params = args["navi_params"]
-            let url = Utility.makeUrlWithParameters("kakaonavi-sdk://navigate", parameters: ["extras": extras!, "param": params!, "appkey": appKey!, "apiver": "1.0"])
+            let url = Utility.makeUrlWithParameters(naviScheme, parameters: ["extras": extras!, "param": params!, "appkey": appKey!, "apiver": "1.0"])
             UIApplication.shared.open(url!, options: [:], completionHandler: nil)
         case "shareDestination":
             let args = castArguments(call.arguments)
+            let naviScheme = args["navi_scheme"] ?? "kakaonavi-sdk://navigate"
             let appKey = args["app_key"]
             let extras = args["extras"]
             let params = args["navi_params"]
-            let url = Utility.makeUrlWithParameters("kakaonavi-sdk://navigate", parameters: ["extras": extras!, "param": params!, "appkey": appKey!, "apiver": "1.0"])
+            let url = Utility.makeUrlWithParameters(naviScheme, parameters: ["extras": extras!, "param": params!, "appkey": appKey!, "apiver": "1.0"])
             UIApplication.shared.open(url!, options: [:], completionHandler: nil)
         case "platformId":
             guard let venderId = UIDevice.current.identifierForVendor?.uuidString else {
@@ -89,6 +103,8 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
             }
             let data = "SDK-\(venderId)".data(using: .utf8)
             result(data)
+        case "receiveKakaoScheme":
+            result(self.initialLink)
         default:
             result(FlutterMethodNotImplemented)
         }
@@ -103,7 +119,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
         }
     }
     
-    private func authorizeWithTalk(sdkVersion: String, clientId: String, redirectUri: String, codeVerifier: String?, prompt: String?, state: String?, nonce: String?, result: @escaping FlutterResult) {
+    private func authorizeWithTalk(loginScheme: String, sdkVersion: String, clientId: String, redirectUri: String, codeVerifier: String?, prompt: String?, state: String?, nonce: String?, result: @escaping FlutterResult) {
         self.result = result
         self.redirectUri = redirectUri
         self.authorizeTalkCompletionHandler = {
@@ -146,7 +162,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
             parameters["nonce"] = nonce
         }
         
-        guard let url = Utility.makeUrlWithParameters("kakaokompassauth://authorize", parameters: parameters) else {
+        guard let url = Utility.makeUrlWithParameters(loginScheme, parameters: parameters) else {
             result(FlutterError(code: "makeURL", message: "This is probably a bug in Kakao Flutter SDK.", details: nil))
             return
         }
@@ -206,23 +222,48 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, ASWebAuthentic
         }
     }
     
-    
     public func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        guard let finalRedirectUri = self.redirectUri else {
-            self.authorizeTalkCompletionHandler?(nil, FlutterError(code: "EUNKNOWN", message: "No redirect uri to compare. This is probably a bug in Kakao Flutter SDK.", details: nil))
-            return false
-        }
-        if (url.absoluteString.hasPrefix(finalRedirectUri)) {
-            self.authorizeTalkCompletionHandler?(url, nil)
+        
+        let urlString = url.absoluteString
+        if(redirectUri != nil && urlString.starts(with: "kakao") && urlString.contains(Constants.oauthPath)) {
+            if(urlString.hasPrefix(redirectUri!)) {
+                self.authorizeTalkCompletionHandler?(url, nil)
+                return true
+            } else {
+                self.authorizeTalkCompletionHandler?(nil, FlutterError(code: "REDIRET_URL_MISMATCH", message: "Expected: \(redirectUri!), Actual: \(url.absoluteString)", details: nil))
+                return false
+            }
+        } else if(urlString.starts(with: "kakao") && (urlString.contains(Constants.talkSharingPath) || urlString.contains(Constants.storyPath))) {
+            eventSink?(urlString)
             return true
         }
-        self.authorizeTalkCompletionHandler?(nil, FlutterError(code: "REDIRECT_URL_MISMATCH", message: "Expected: \(finalRedirectUri), Actual: \(url.absoluteString)", details: nil))
+        return false
+    }
+    
+    public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [AnyHashable : Any] = [:]) -> Bool {
+        let url = (launchOptions[UIApplication.LaunchOptionsKey.url] as? URL)
+        if(url != nil && url!.scheme != nil && url!.scheme!.starts(with: "kakao")
+           && (url!.host == Constants.talkSharingPath || url!.host == Constants.storyPath)) {
+            self.initialLink = url?.absoluteString
+            eventSink?(url?.absoluteString)
+            return true
+        }
         return false
     }
     
     @available(iOS 12.0, *)
     public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
         return UIApplication.shared.keyWindow ?? ASPresentationAnchor()
+    }
+    
+    public func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
+        eventSink = events
+        return nil
+    }
+    
+    public func onCancel(withArguments arguments: Any?) -> FlutterError? {
+        eventSink = nil
+        return nil
     }
 }
 

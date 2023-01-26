@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kakao_flutter_sdk_auth/src/model/access_token_response.dart';
 import 'package:kakao_flutter_sdk_auth/src/model/oauth_token.dart';
 import 'package:kakao_flutter_sdk_auth/src/token_manager.dart';
+import 'package:kakao_flutter_sdk_common/src/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../kakao_flutter_sdk_common/test/helper.dart';
@@ -17,7 +18,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUp(() async {
-    const MethodChannel("kakao_flutter_sdk")
+    const MethodChannel(CommonConstants.methodChannel)
         .setMockMethodCallHandler((MethodCall methodCall) async {
       if (methodCall.method == 'getOrigin') {
         return '';
@@ -162,9 +163,15 @@ class OldTokenManager implements TokenManager {
     await preferences.setString(atKey, token.accessToken);
     await preferences.setInt(
         expiresAtKey, token.expiresAt.millisecondsSinceEpoch);
-    await preferences.setString(rtKey, token.refreshToken);
-    await preferences.setInt(
-        rtExpiresAtKey, token.refreshTokenExpiresAt.millisecondsSinceEpoch);
+
+    if (token.refreshToken != null) {
+      await preferences.setString(rtKey, token.refreshToken!);
+    }
+
+    if (token.refreshTokenExpiresAt != null) {
+      await preferences.setInt(
+          rtExpiresAtKey, token.refreshTokenExpiresAt!.millisecondsSinceEpoch);
+    }
     await preferences.setStringList(scopesKey, token.scopes!);
   }
 }

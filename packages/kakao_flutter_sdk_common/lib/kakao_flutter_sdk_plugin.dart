@@ -7,6 +7,7 @@ import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:kakao_flutter_sdk_common/src/web/login.dart';
 import 'package:kakao_flutter_sdk_common/src/web/navi.dart';
+import 'package:kakao_flutter_sdk_common/src/web/picker.dart';
 import 'package:kakao_flutter_sdk_common/src/web/ua_parser.dart';
 import 'package:kakao_flutter_sdk_common/src/web/utility.dart';
 
@@ -15,7 +16,7 @@ class KakaoFlutterSdkPlugin {
 
   static void registerWith(Registrar registrar) {
     final MethodChannel channel = MethodChannel(
-        "kakao_flutter_sdk", const StandardMethodCodec(), registrar);
+        CommonConstants.methodChannel, const StandardMethodCodec(), registrar);
 
     final KakaoFlutterSdkPlugin instance = KakaoFlutterSdkPlugin();
     channel.setMethodCallHandler(instance.handleMethodCall);
@@ -148,7 +149,7 @@ class KakaoFlutterSdkPlugin {
                 'KakaoTalk can only be launched on Android or iOS devices.');
       case "navigate":
       case "shareDestination":
-        String scheme = 'kakaonavi-sdk://navigate';
+        String scheme = call.arguments['navi_scheme'];
         String queries =
             'apiver=1.0&appkey=${KakaoSdk.appKey}&param=${Uri.encodeComponent(call.arguments['navi_params'])}&extras=${Uri.encodeComponent(call.arguments['extras'])}';
 
@@ -157,7 +158,7 @@ class KakaoFlutterSdkPlugin {
           return true;
         } else if (_uaParser.isiOS(userAgent)) {
           bindPageHideEvent(deferredFallback(
-              'https://kakaonavi.kakao.com/launch/index.do?$queries',
+              '${KakaoSdk.platforms.web.kakaoNaviInstallPage}?$queries',
               (storeUrl) {
             html.window.top?.location.href = storeUrl;
           }));
@@ -165,6 +166,43 @@ class KakaoFlutterSdkPlugin {
           return true;
         }
         return false;
+      case "requestWebPicker":
+        String pickerType = call.arguments['picker_type'];
+        String transId = call.arguments['trans_id'];
+        String accessToken = call.arguments['access_token'];
+        Map pickerParams = call.arguments['picker_params'];
+
+        var url = 'https://${KakaoSdk.hosts.picker}';
+
+        var iframe = createIFrame(transId, url);
+        html.document.body?.append(iframe);
+
+        var params = await createPickerParams(
+          pickerType,
+          transId,
+          accessToken,
+          Map.castFrom(pickerParams),
+        );
+
+        Completer<String> completer = Completer();
+        addMessageEvent(url, completer);
+        if (params.containsKey('returnUrl')) {
+          submitForm('$url/select/$pickerType', params);
+          return completer.future;
+        } else {
+          var popup = windowOpen(
+            '$url/select/$pickerType',
+            'friend_picker',
+            features:
+                'location=no,resizable=no,status=no,scrollbars=no,width=460,height=608',
+          );
+          submitForm(
+            '$url/select/$pickerType',
+            params,
+            popupName: 'friend_picker',
+          );
+          return completer.future;
+        }
       default:
         throw PlatformException(
             code: "NotImplemented",
@@ -188,19 +226,28 @@ class KakaoFlutterSdkPlugin {
 
   String _getAndroidShareIntent(String userAgent, String uri) {
     String intentScheme;
-    if (userAgent.contains('FB_IAB') || userAgent.contains('Instagram')) {
+    String talkSharingScheme = KakaoSdk.platforms.android.talkSharingScheme;
+    Browser currentBrowser = _uaParser.detectBrowser(userAgent);
+    if (currentBrowser == Browser.facebook ||
+        currentBrowser == Browser.instagram) {
       intentScheme =
-          'intent://send?${uri.substring('kakaolink://send?'.length, uri.length)}#Intent;scheme=kakaolink';
+          'intent://send?${uri.substring('$talkSharingScheme://send?'.length, uri.length)}#Intent;scheme=$talkSharingScheme';
     } else {
+      uri = uri.replaceFirst(
+          KakaoSdk.platforms.web.talkSharingScheme, talkSharingScheme);
       intentScheme = 'intent:$uri#Intent';
     }
 
     final intent = [
       intentScheme,
       'launchFlags=0x14008000',
-      'package=com.kakao.talk',
+      'package=${KakaoSdk.platforms.web.talkPackage}',
       'end;'
     ].join(';');
     return intent;
+  }
+
+  html.WindowBase windowOpen(String url, String name, {String? features}) {
+    return html.window.open(url, name, features);
   }
 }

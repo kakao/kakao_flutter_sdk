@@ -1,7 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kakao_flutter_sdk_auth/src/model/access_token_response.dart';
 import 'package:kakao_flutter_sdk_auth/src/token_manager.dart';
-import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 
 part 'oauth_token.g.dart';
 
@@ -15,10 +14,10 @@ class OAuthToken {
   DateTime expiresAt;
 
   /// 엑세스 토큰을 갱신하는데 사용하는 리프레시 토큰
-  String refreshToken;
+  String? refreshToken;
 
   /// 리프레시 토큰 만료 시각
-  DateTime refreshTokenExpiresAt;
+  DateTime? refreshTokenExpiresAt;
 
   /// 이 토큰에 부여된 scope 목록
   List<String>? scopes;
@@ -59,11 +58,8 @@ class OAuthToken {
             response.refreshTokenExpiresIn! * 1000;
       }
     } else {
-      refreshToken = oldToken != null
-          ? oldToken.refreshToken
-          : throw KakaoClientException(
-              'Refresh token not found in the response.');
-      rtExpiresAt = oldToken.refreshTokenExpiresAt.millisecondsSinceEpoch;
+      refreshToken = oldToken?.refreshToken;
+      rtExpiresAt = oldToken?.refreshTokenExpiresAt?.millisecondsSinceEpoch;
     }
 
     List<String>? scopes;
@@ -75,8 +71,10 @@ class OAuthToken {
     return OAuthToken(
       response.accessToken,
       DateTime.fromMillisecondsSinceEpoch(atExpiresAt),
-      refreshToken!,
-      DateTime.fromMillisecondsSinceEpoch(rtExpiresAt!),
+      refreshToken,
+      rtExpiresAt != null
+          ? DateTime.fromMillisecondsSinceEpoch(rtExpiresAt)
+          : null,
       scopes,
       idToken: response.idToken,
     );

@@ -1,11 +1,35 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:kakao_flutter_sdk_common/src/constants.dart';
 import 'package:kakao_flutter_sdk_common/src/kakao_exception.dart';
+import 'package:platform/platform.dart';
 
-const MethodChannel _channel = MethodChannel(CommonConstants.methodChannel);
+const MethodChannel _methodChannel =
+    MethodChannel(CommonConstants.methodChannel);
+const _platform = LocalPlatform();
+
+/// 종료된 앱이 카카오 스킴 호출로 실행될 때 URL 전달
+Future<String?> receiveKakaoScheme() async {
+  if (kIsWeb) {
+    return null;
+  }
+  return await _methodChannel.invokeMethod(CommonConstants.receiveKakaoScheme);
+}
+
+/// 실행 중인 앱이 카카오 스킴 호출로 실행될 때 URL 전달
+Stream<String?> get kakaoSchemeStream {
+  if (kIsWeb) {
+    return Stream.value(null);
+  }
+
+  return const EventChannel(CommonConstants.eventChannel)
+      .receiveBroadcastStream()
+      .map<String?>((link) => link as String?);
+}
 
 /// 플랫폼별 기본 브라우저로 URL 실행
 /// URL을 팝업으로 열고싶을 때 [popupOpen] 사용. 웹에서만 사용 가능
@@ -23,7 +47,7 @@ Future<String> launchBrowserTab(Uri uri,
     CommonConstants.isPopup: popupOpen,
   };
   args.removeWhere((k, v) => v == null);
-  final redirectUriWithParams = await _channel.invokeMethod<String>(
+  final redirectUriWithParams = await _methodChannel.invokeMethod<String>(
       CommonConstants.launchBrowserTab, args);
 
   if (redirectUriWithParams != null) return redirectUriWithParams;
@@ -33,15 +57,23 @@ Future<String> launchBrowserTab(Uri uri,
 
 /// 카카오톡 앱 실행 가능 여부 확인
 Future<bool> isKakaoTalkInstalled() async {
-  final isInstalled =
-      await _channel.invokeMethod<bool>(CommonConstants.isKakaoTalkInstalled) ??
-          false;
-  return isInstalled;
+  var arguments = {};
+  if (kIsWeb) {
+    // web does not support platform. so I divided the branch
+  } else if (_platform.isAndroid) {
+    arguments
+        .addAll({'talkPackageName': KakaoSdk.platforms.android.talkPackage});
+  } else if (_platform.isIOS) {
+    arguments.addAll({'loginScheme': KakaoSdk.platforms.ios.talkLoginScheme});
+  }
+  return await _methodChannel.invokeMethod<bool>(
+          CommonConstants.isKakaoTalkInstalled, arguments) ??
+      false;
 }
 
 /// @nodoc
 Future<Uint8List> platformId() async {
-  return await _channel.invokeMethod("platformId");
+  return await _methodChannel.invokeMethod("platformId");
 }
 
 /// @nodoc

@@ -9,5 +9,7 @@ export 'package:kakao_flutter_sdk_common/src/kakao_api_exception.dart';
 export 'package:kakao_flutter_sdk_common/src/kakao_auth_exception.dart';
 export 'package:kakao_flutter_sdk_common/src/kakao_exception.dart';
 export 'package:kakao_flutter_sdk_common/src/kakao_sdk.dart';
+export 'package:kakao_flutter_sdk_common/src/platform_support.dart';
 export 'package:kakao_flutter_sdk_common/src/sdk_log.dart';
+export 'package:kakao_flutter_sdk_common/src/server_hosts.dart';
 export 'package:kakao_flutter_sdk_common/src/util.dart';

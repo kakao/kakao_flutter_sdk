@@ -8,7 +8,7 @@ void main() {
   var appKey = "sampleappkey";
   KakaoSdk.init(nativeAppKey: appKey);
 
-  var channel = const MethodChannel("kakao_flutter_sdk");
+  var channel = const MethodChannel(CommonConstants.methodChannel);
   setUp(() async {});
 
   tearDown(() async {

@@ -27,8 +27,14 @@ class ShareClient {
 
   /// 카카오톡 실행을 통한 공유 가능 여부 확인
   Future<bool> isKakaoTalkSharingAvailable() async {
-    return await _channel
-            .invokeMethod(CommonConstants.isKakaoTalkSharingAvailable) ??
+    var arguments = {};
+    if (kIsWeb) {
+    } else if (_platform.isIOS) {
+      arguments.addAll(
+          {'talkSharingScheme': KakaoSdk.platforms.ios.talkSharingScheme});
+    }
+    return await _channel.invokeMethod(
+            CommonConstants.isKakaoTalkSharingAvailable, arguments) ??
         false;
   }
 
@@ -107,10 +113,18 @@ class ShareClient {
       Constants.templateJson: jsonEncode(response.templateMsg),
       Constants.extras: jsonEncode(await _extras(serverCallbackArgs))
     };
+
+    String scheme;
+    if (kIsWeb) {
+      scheme = KakaoSdk.platforms.web.talkSharingScheme;
+    } else if (_platform.isAndroid) {
+      scheme = KakaoSdk.platforms.android.talkSharingScheme;
+    } else {
+      scheme = KakaoSdk.platforms.ios.talkSharingScheme;
+    }
+
     var uri = Uri(
-        scheme: Constants.linkScheme,
-        host: Constants.linkAuthority,
-        queryParameters: params);
+        scheme: scheme, host: Constants.linkAuthority, queryParameters: params);
     var linkUri = Uri.parse(uri.toString().replaceAll('+', '%20'));
     SdkLog.i(linkUri);
     return linkUri;

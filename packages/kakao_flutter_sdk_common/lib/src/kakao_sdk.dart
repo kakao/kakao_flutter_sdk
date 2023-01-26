@@ -16,7 +16,7 @@ class KakaoSdk {
   static late String _nativeKey;
   static late String _jsKey;
 
-  static String sdkVersion = "1.3.1";
+  static String sdkVersion = "1.4.0";
 
   static String get appKey => kIsWeb ? _jsKey : _nativeKey;
 
@@ -39,6 +39,8 @@ class KakaoSdk {
   // }
   // ```
   static late ServerHosts hosts;
+
+  static late PlatformSupport platforms;
 
   // Origin value in KA header.
   //
@@ -77,13 +79,6 @@ class KakaoSdk {
     return await _channel.invokeMethod(CommonConstants.packageName);
   }
 
-  static String get platformAppKey {
-    if (kIsWeb) {
-      return KakaoSdk._jsKey;
-    }
-    return KakaoSdk._nativeKey;
-  }
-
   /// [내 애플리케이션]에서 확인한 앱 키로 Flutter SDK 초기화, 서비스 환경별 앱 키 사용
   /// 웹: javaScriptAppKey에 JavaScript 키 전달
   /// 앱: nativeAppKey에 네이티브 앱 키 전달
@@ -91,6 +86,7 @@ class KakaoSdk {
     String? nativeAppKey,
     String? javaScriptAppKey,
     ServerHosts? serviceHosts,
+    PlatformSupport? platformSupport,
     bool? loggingEnabled,
   }) {
     if (nativeAppKey == null && javaScriptAppKey == null) {
@@ -101,19 +97,11 @@ class KakaoSdk {
     _nativeKey = nativeAppKey ?? "";
     _jsKey = javaScriptAppKey ?? "";
     hosts = serviceHosts ?? ServerHosts();
+    platforms = platformSupport ?? PlatformSupport();
     logging = loggingEnabled ?? false;
 
     if (kIsWeb) {
       _channel.invokeMethod("retrieveAuthCode");
     }
   }
-}
-
-// List of hosts used by Kakao API.
-/// @nodoc
-class ServerHosts {
-  final String kapi = "kapi.kakao.com";
-  final String kauth = "kauth.kakao.com";
-  final String sharer = "sharer.kakao.com";
-  final String pf = "pf.kakao.com";
 }

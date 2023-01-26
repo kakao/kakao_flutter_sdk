@@ -9,7 +9,7 @@ Here are what you need to use the Flutter SDK:
 - Dart 2.14.0 or higher
 - Flutter 2.0.0 or higher
 - Android Studio 3.6.1 or higher
-- Target Android API level 19 or higher (Android 4.4 (Kitkat) or higher)
+- Target Android API level 21 or higher (Android 5.0 (Lollipop) or higher)
 - Xcode 11.0 or higher
 - iOS 11.0 or higher
 - iOS Deployment Target 11.0 or higher
