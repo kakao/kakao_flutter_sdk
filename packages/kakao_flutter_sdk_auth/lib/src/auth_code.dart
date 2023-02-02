@@ -142,7 +142,7 @@ class AuthCodeClient {
   }) async {
     final agt = await _kauthApi.agt();
     try {
-      return authorize(
+      return await authorize(
           clientId: clientId,
           redirectUri: redirectUri,
           scopes: scopes,
