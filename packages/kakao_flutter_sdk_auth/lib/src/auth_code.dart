@@ -38,9 +38,8 @@ class AuthCodeClient {
     bool webPopupLogin = false,
   }) async {
     final finalRedirectUri = redirectUri ?? "kakao${_platformKey()}://oauth";
-    String? codeChallenge = codeVerifier != null
-        ? base64.encode(sha256.convert(utf8.encode(codeVerifier)).bytes)
-        : null;
+    String? codeChallenge =
+        codeVerifier != null ? _codeChallenge(codeVerifier) : null;
     final params = {
       Constants.clientId: clientId ?? _platformKey(),
       Constants.redirectUri: finalRedirectUri,
@@ -272,9 +271,18 @@ class AuthCodeClient {
   }
 
   /// @nodoc
+  static String _codeChallenge(String codeVerifier) {
+    // remove last '='
+    return base64UrlEncode(sha256.convert(utf8.encode(codeVerifier)).bytes)
+        .split('=')[0];
+  }
+
+  /// @nodoc
   static String codeVerifier() {
-    return base64
-        .encode(sha512.convert(utf8.encode(UniqueKey().toString())).bytes);
+    // remove last '='
+    return base64UrlEncode(
+            sha512.convert(utf8.encode(UniqueKey().toString())).bytes)
+        .split('=')[0];
   }
 }
 
