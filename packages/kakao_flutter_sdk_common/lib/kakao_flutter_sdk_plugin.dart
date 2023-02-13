@@ -113,14 +113,7 @@ class KakaoFlutterSdkPlugin {
         if (_uaParser.isAndroid(userAgent)) {
           String intent =
               androidLoginIntent(kaHeader, userAgent, Map.castFrom(arguments));
-
-          if (currentBrowser == Browser.kakaotalk ||
-              currentBrowser == Browser.daum ||
-              currentBrowser == Browser.chrome) {
-            html.window.location.href = intent;
-          } else {
-            html.window.open(intent, '_blank');
-          }
+          html.window.location.href = intent;
         } else if (_uaParser.isiOS(userAgent)) {
           final universalLink =
               iosLoginUniversalLink(kaHeader, Map.castFrom(arguments));
