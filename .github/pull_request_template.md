@@ -9,8 +9,8 @@
 *Replace this paragraph with a list of issues related to this PR from the [issue database](https://github.com/kakao/kakao_flutter_sdk/issues). Indicate, which of these issues are resolved or fixed by this PR.*
 
 *e.g.*
-- *Fix #123*
-- *Related #456*
+- *Fix #123456*
+- *Related #123456*
 
 ## 체크리스트 (Checklist)
 
