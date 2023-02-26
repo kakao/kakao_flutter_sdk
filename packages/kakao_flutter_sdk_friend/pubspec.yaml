@@ -17,7 +17,7 @@ dependencies:
   flutter:
     sdk: flutter
   json_annotation: ^4.5.0
-  dio: ^4.0.6
+  dio: ^5.0.1
   kakao_flutter_sdk_user:
     path: ../kakao_flutter_sdk_user
   webview_flutter: ^3.0.4

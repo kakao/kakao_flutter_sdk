@@ -4,7 +4,7 @@ import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 /// @nodoc
 // -402 에러 시 자동 추가 동의
 // Android, iOS 앱일 때만 동작
-class RequiredScopesInterceptor extends Interceptor {
+class RequiredScopesInterceptor extends QueuedInterceptor {
   final Dio _dio;
   final AuthCodeClient _authCodeClient;
   final TokenManagerProvider _tokenManagerProvider;
@@ -42,9 +42,6 @@ class RequiredScopesInterceptor extends Interceptor {
       }
 
       try {
-        _dio.lock();
-        _dio.interceptors.errorLock.lock();
-
         // get additional consents
         final authCode = await _authCodeClient.authorizeWithNewScopes(
             scopes: requiredScopes);
@@ -53,9 +50,6 @@ class RequiredScopesInterceptor extends Interceptor {
         await _tokenManagerProvider.manager.setToken(token);
         options.headers[CommonConstants.authorization] =
             "${CommonConstants.bearer} ${token.accessToken}";
-
-        _dio.unlock();
-        _dio.interceptors.errorLock.unlock();
 
         // after getting additional consents, retry api call
         var response = await _dio.fetch(options);
@@ -66,9 +60,6 @@ class RequiredScopesInterceptor extends Interceptor {
         } else {
           handler.next(err);
         }
-      } finally {
-        _dio.unlock();
-        _dio.interceptors.errorLock.unlock();
       }
     } else {
       handler.next(err);

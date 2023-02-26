@@ -7,7 +7,7 @@ import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 /// @nodoc
 /// API 요청에 AccessToken을 추가하는 인터셉터
 /// -401 발생시 자동 갱신
-class AccessTokenInterceptor extends Interceptor {
+class AccessTokenInterceptor extends QueuedInterceptor {
   AccessTokenInterceptor(this._dio, this._kauthApi,
       {TokenManagerProvider? tokenManagerProvider})
       : _tokenManagerProvider =
@@ -64,15 +64,9 @@ class AccessTokenInterceptor extends Interceptor {
         return;
       }
 
-      _dio.lock();
-      _dio.interceptors.errorLock.lock();
-
       final newToken = await _kauthApi.refreshToken(oldToken: token);
       options.headers[CommonConstants.authorization] =
           "${CommonConstants.bearer} ${newToken.accessToken}";
-
-      _dio.unlock();
-      _dio.interceptors.errorLock.unlock();
 
       SdkLog.i("retry ${options.path} after refreshing access token.");
       var response = await _dio.fetch(options);
@@ -86,10 +80,6 @@ class AccessTokenInterceptor extends Interceptor {
       } else {
         handler.reject(DioError(requestOptions: options, error: error));
       }
-    } finally {
-      // The lock must be unlocked because errors may occur while the lock is locked.
-      _dio.unlock();
-      _dio.interceptors.errorLock.unlock();
     }
   }
 

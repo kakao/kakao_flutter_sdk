@@ -48,12 +48,12 @@ class ApiFactory {
       // but the error must be DioError, so the error received from the server cannot be transmitted as it is.
       // so the error received from the server is put in the DioError.error
       if (e.error is KakaoAuthException || e.error is KakaoApiException) {
-        return e.error;
+        return e.error as KakaoException;
       }
-      return KakaoClientException(e.message);
+      return KakaoClientException(e.message ?? "");
     }
     if (response.statusCode == 404) {
-      return KakaoClientException(e.message);
+      return KakaoClientException(e.message ?? "");
     }
     if (Uri.parse(request.baseUrl).host == KakaoSdk.hosts.kauth) {
       return KakaoAuthException.fromJson(response.data);

@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 
-class MockAdapter extends HttpClientAdapter {
+class MockAdapter implements HttpClientAdapter {
   late ResponseBody _responseBody;
   void Function(RequestOptions options)? requestAssertions;
 
