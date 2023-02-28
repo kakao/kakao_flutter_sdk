@@ -1,3 +1,9 @@
+## 1.4.1
+- Added `Prompt.create` value to the prompts parameter of Kakao Login.
+- Fixed the following bugs.
+  - iOS: Fixed `isKakaoTalkSharingAvailable()` malfunction issue.
+  - Web: Fixed an issue that the pop-up does not disappear when `loginWithKakaoTalk()` is executed in the Samsung Internet browser of an Android device.
+
 ## 1.4.0
 - Added the `friend` module for the Friend picker function.
 - Improved calling method of Custom URL Scheme.
