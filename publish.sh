@@ -2,9 +2,6 @@
 
 # 각 패키지에 README.md, CHANGELOG.md 파일 생성, pubspec.yaml 버전 업데이트, 로컬 의존성 제거, 배포해주는 스크립트.
 
-# 버전 정보를 업데이트하기 위해 임시로 패키지 목록을 저장하는 파일
-FILENAME='package_list.txt'
-
 # 로컬로 참조하는 의존성을 제거해줘야함
 # 모듈 의존성 때문에 PACKAGE_LIST의 순서대로 로컬 의존성이 제거되어야함
 SDK_NAME="kakao_flutter_sdk"
@@ -29,7 +26,7 @@ if [[ $branch != "release"* ]] && [[ $branch != "hotfix"* ]]; then
   exit
 fi
 
-version="1.0.0"
+version="0.0.0"
 
 # 브랜치 이름에서 버전 파싱
 if [[ $branch == "release"* ]]; then
@@ -47,22 +44,14 @@ fi
 # KakaoSdk.sdkVersion 변경
 find packages/kakao_flutter_sdk_common/lib/src -name "kakao_sdk.dart" -exec perl -pi -e "s/static String sdkVersion .*/static String sdkVersion = \"${version}\";/g" {} \;
 
-# 버전 정보를 변경해야하는 패키지 이름 저장
-melos list >$FILENAME
-
-# 파일 읽으면서 패키지 버전 수정
-while read -r line; do
-  melos version "$line" "$version" --no-changelog
-done <$FILENAME
-
-# 패키지 목록 저장 파일 삭제
-rm $FILENAME
-
 # 각 패키지의 pubspec.yaml 백업을 위한 디렉토리 생성
 mkdir backup
 
 cd "packages" || exit
 for package in "${PACKAGE_LIST[@]}"; do
+  # 패키지 버전 업데이트
+  python3 ../update_version.py "${SDK_NAME}${package}/pubspec.yaml" "$version"
+
   # pubspec.yaml 백업을 위한 패키지 디렉토리 생성
   mkdir ../backup/${SDK_NAME}"$package"
 
@@ -82,13 +71,11 @@ for package in "${PACKAGE_LIST[@]}"; do
 
   # 백업한 pubspec.yaml을 다시 복구
   mv "../backup/${SDK_NAME}${package}/pubspec.yaml" "${SDK_NAME}${package}/pubspec.yaml"
+
+  # README.md, CHANGELOG.md 파일 삭제
+  rm "${SDK_NAME}${package}/README.md"
+  rm "${SDK_NAME}${package}/CHANGELOG.md"
 done
 
 # 백업 디렉토리 삭제
 rm -r ../backup
-
-# README.md, CHANGELOG.md 파일 삭제
-for package in "${PACKAGE_LIST[@]}"; do
-  rm "${SDK_NAME}${package}/README.md"
-  rm "${SDK_NAME}${package}/CHANGELOG.md"
-done
