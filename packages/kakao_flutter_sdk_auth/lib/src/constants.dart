@@ -30,7 +30,7 @@ class Constants {
   static const String isPopup = 'is_popup';
   static const String stateToken = 'state_token';
 
-  static const String codeChallenge = 'codeChallenge';
-  static const String codeChallengeMethod = 'codeChallengeMethod';
+  static const String codeChallenge = 'code_challenge';
+  static const String codeChallengeMethod = 'code_challenge_method';
   static const String codeChallengeMethodValue = 'S256';
 }

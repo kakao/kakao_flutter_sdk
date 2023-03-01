@@ -30,8 +30,10 @@ class ShareClient {
     var arguments = {};
     if (kIsWeb) {
     } else if (_platform.isIOS) {
-      arguments.addAll(
-          {'talkSharingScheme': KakaoSdk.platforms.ios.talkSharingScheme});
+      arguments.addAll({
+        'talkSharingScheme':
+            '${KakaoSdk.platforms.ios.talkSharingScheme}://send'
+      });
     }
     return await _channel.invokeMethod(
             CommonConstants.isKakaoTalkSharingAvailable, arguments) ??

@@ -53,6 +53,7 @@ class AuthApi {
       Constants.codeVerifier: codeVerifier,
       ...await _platformData()
     };
+    data.removeWhere((k, v) => v == null);
     return await _issueAccessToken(data);
   }
 
@@ -72,6 +73,7 @@ class AuthApi {
       Constants.codeVerifier: codeVerifier,
       ...await _platformData()
     };
+    data.removeWhere((k, v) => v == null);
     return await _issueAccessTokenWithCert(data);
   }
 
