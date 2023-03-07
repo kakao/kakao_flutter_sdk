@@ -231,13 +231,14 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
                 return true
             } else {
                 self.authorizeTalkCompletionHandler?(nil, FlutterError(code: "REDIRET_URL_MISMATCH", message: "Expected: \(redirectUri!), Actual: \(url.absoluteString)", details: nil))
+                // If the redirect uri set in sdk is different from the uri received from the server, sdk cannot handle it, so return false
                 return false
             }
         } else if(urlString.starts(with: "kakao") && (urlString.contains(Constants.talkSharingPath) || urlString.contains(Constants.storyPath))) {
             eventSink?(urlString)
             return true
         }
-        return false
+        return true
     }
     
     public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [AnyHashable : Any] = [:]) -> Bool {
@@ -246,9 +247,8 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
            && (url!.host == Constants.talkSharingPath || url!.host == Constants.storyPath)) {
             self.initialLink = url?.absoluteString
             eventSink?(url?.absoluteString)
-            return true
         }
-        return false
+        return true
     }
     
     @available(iOS 12.0, *)
