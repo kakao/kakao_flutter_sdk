@@ -21,7 +21,8 @@ dependencies:
   shared_preferences: ^2.0.15
   platform: ^3.1.0
   crypto: ^3.0.1
-  kakao_flutter_sdk_common: 1.4.1
+  kakao_flutter_sdk_common:
+    path: ../kakao_flutter_sdk_common
 
 dev_dependencies:
   flutter_test:
