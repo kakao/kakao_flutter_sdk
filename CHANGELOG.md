@@ -1,3 +1,9 @@
+## 1.4.2
+- Fixed an issue that the app using specific plugins cannot receive deep links or universal links on iOS.
+  - Flutter SDK version 1.4.0 or later.
+  - Using plugins can receive deep link or universal link.
+  - Running the app with a deep link or universal link.
+
 ## 1.4.1
 - Added `Prompt.create` value to the prompts parameter of Kakao Login.
 - Fixed the following bugs.
