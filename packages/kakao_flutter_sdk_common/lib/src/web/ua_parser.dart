@@ -40,14 +40,14 @@ class UaParser {
       return Browser.samsung;
     } else if (ua.contains('FxiOS') || ua.contains("Firefox")) {
       return Browser.firefox;
+    } else if (ua.contains('FB_IAB')) {
+      return Browser.facebook;
+    } else if (ua.contains('Instagram')) {
+      return Browser.instagram;
     } else if (ua.contains('Chrome') || ua.contains('CriOS')) {
       return Browser.chrome;
     } else if (ua.contains('Safari')) {
       return Browser.safari;
-    } else if (ua.contains('FA_IAB')) {
-      return Browser.facebook;
-    } else if (ua.contains('Instagram')) {
-      return Browser.instagram;
     }
     return Browser.unknown;
   }
