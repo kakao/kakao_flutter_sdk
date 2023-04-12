@@ -86,6 +86,19 @@ class _ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
+      ApiItem('certLoginWithKakaoTalk(settleId)', () async {
+        // 카카오톡으로 인증서 로그인
+        final settleId = customData['settle_id'];
+
+        try {
+          CertTokenInfo certTokenInfo = await UserApi.instance
+              .certLoginWithKakaoTalk(state: "test", settleId: settleId);
+          Log.i(context, tag,
+              '로그인 성공 ${certTokenInfo.token.accessToken} ${certTokenInfo.txId}');
+        } catch (e) {
+          Log.e(context, tag, '로그인 실패', e);
+        }
+      }),
       ApiItem('loginWithKakaoAccount()', () async {
         // 카카오계정으로 로그인
 
@@ -113,6 +126,19 @@ class _ApiListState extends State<ApiList> {
         try {
           CertTokenInfo certTokenInfo =
               await UserApi.instance.certLoginWithKakaoAccount(state: "test");
+          Log.i(context, tag,
+              '로그인 성공 ${certTokenInfo.token.accessToken} ${certTokenInfo.txId}');
+        } catch (e) {
+          Log.e(context, tag, '로그인 실패', e);
+        }
+      }),
+      ApiItem('certLoginWithKakaoAccount(settleId)', () async {
+        // 카카오계정으로 인증서 로그인
+        final settleId = customData['settle_id'];
+
+        try {
+          CertTokenInfo certTokenInfo = await UserApi.instance
+              .certLoginWithKakaoAccount(state: "test", settleId: settleId);
           Log.i(context, tag,
               '로그인 성공 ${certTokenInfo.token.accessToken} ${certTokenInfo.txId}');
         } catch (e) {

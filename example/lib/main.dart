@@ -13,6 +13,7 @@ const Map<String, dynamic> customData = {
   'customMessage': 67020,
   'channelId': '_ZeUTxl',
   'calendarEventId': '63996425afcec577cce94f0b',
+  'settle_id': 'f3318663-771a-4b24-8714-3f3061fa17cd',
 };
 
 void main() async {
