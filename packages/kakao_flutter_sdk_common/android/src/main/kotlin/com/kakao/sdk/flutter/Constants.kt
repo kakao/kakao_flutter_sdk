@@ -42,6 +42,7 @@ object Constants {
     const val PROMPT = "prompt"
     const val STATE = "state"
     const val NONCE = "nonce"
+    const val SETTLE_ID = "settle_id"
 
     const val PARAM = "param"
     const val APIVER = "apiver"
