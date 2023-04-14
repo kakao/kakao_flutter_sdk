@@ -212,6 +212,9 @@ class AuthCodeClient {
       if (_platform.isIOS) {
         arguments
             .addAll({'loginScheme': KakaoSdk.platforms.ios.talkLoginScheme});
+      } else if (_platform.isAndroid) {
+        arguments.addAll(
+            {'talkPackageName': KakaoSdk.platforms.android.talkPackage});
       }
 
       final redirectUriWithParams = await _channel.invokeMethod<String>(
