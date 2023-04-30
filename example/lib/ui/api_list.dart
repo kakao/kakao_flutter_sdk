@@ -582,7 +582,7 @@ class _ApiListState extends State<ApiList> {
         if (friends.elements!.isEmpty) {
           Log.e(context, tag, '메시지 보낼 친구가 없습니다');
         } else {
-          // 서비스에 상황에 맞게 메시지 보낼 친구의 UUID 를 가져오세요.
+          // 서비스의 상황에 맞게 메시지 보낼 친구의 UUID 를 가져오세요.
           // 이 샘플에서는 친구 목록을 화면에 보여주고 체크박스로 선택된 친구들의 UUID 를 수집하도록 구현했습니다.
           List<String> selectedItems = await Navigator.of(context).push(
             MaterialPageRoute(
@@ -645,7 +645,7 @@ class _ApiListState extends State<ApiList> {
         if (friends.elements!.isEmpty) {
           Log.e(context, tag, '메시지 보낼 친구가 없습니다');
         } else {
-          // 서비스에 상황에 맞게 메시지 보낼 친구의 UUID 를 가져오세요.
+          // 서비스의 상황에 맞게 메시지 보낼 친구의 UUID 를 가져오세요.
           // 이 샘플에서는 친구 목록을 화면에 보여주고 체크박스로 선택된 친구들의 UUID 를 수집하도록 구현했습니다.
           List<String> selectedItems = await Navigator.of(context).push(
             MaterialPageRoute(
@@ -708,7 +708,7 @@ class _ApiListState extends State<ApiList> {
         if (friends.elements!.isEmpty) {
           Log.e(context, tag, '메시지 보낼 친구가 없습니다');
         } else {
-          // 서비스에 상황에 맞게 메시지 보낼 친구의 UUID 를 가져오세요.
+          // 서비스의 상황에 맞게 메시지 보낼 친구의 UUID 를 가져오세요.
           // 이 샘플에서는 친구 목록을 화면에 보여주고 체크박스로 선택된 친구들의 UUID 를 수집하도록 구현했습니다.
           List<String> selectedItems = await Navigator.of(context).push(
             MaterialPageRoute(
@@ -772,7 +772,7 @@ class _ApiListState extends State<ApiList> {
         if (friends.elements!.isEmpty) {
           Log.e(context, tag, '메시지 보낼 친구가 없습니다');
         } else {
-          // 서비스에 상황에 맞게 메시지 보낼 친구의 UUID 를 가져오세요.
+          // 서비스의 상황에 맞게 메시지 보낼 친구의 UUID 를 가져오세요.
           // 이 샘플에서는 친구 목록을 화면에 보여주고 체크박스로 선택된 친구들의 UUID 를 수집하도록 구현했습니다.
           List<String> selectedItems = await Navigator.of(context).push(
             MaterialPageRoute(
