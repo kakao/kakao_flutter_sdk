@@ -180,7 +180,11 @@ class UserApi {
       {String? nonce}) async {
     String codeVerifier = AuthCodeClient.codeVerifier();
     final authCode = await AuthCodeClient.instance.authorizeWithNewScopes(
-        scopes: scopes, codeVerifier: codeVerifier, nonce: nonce);
+      scopes: scopes,
+      codeVerifier: codeVerifier,
+      nonce: nonce,
+      webPopupLogin: true,
+    );
     final token = await AuthApi.instance
         .issueAccessToken(authCode: authCode, codeVerifier: codeVerifier);
     await TokenManagerProvider.instance.manager.setToken(token);
