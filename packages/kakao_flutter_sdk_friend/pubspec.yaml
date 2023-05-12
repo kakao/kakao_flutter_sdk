@@ -5,7 +5,7 @@ homepage: https://github.com/kakao/kakao_flutter_sdk
 issue_tracker: https://github.com/kakao/kakao_flutter_sdk/issues
 
 environment:
-  sdk: ">=2.14.0 <3.0.0"
+  sdk: ">=2.18.0 <3.0.0"
   flutter: '>=2.0.0'
 
 platforms:
@@ -20,7 +20,8 @@ dependencies:
   dio: ^4.0.6
   kakao_flutter_sdk_user:
     path: ../kakao_flutter_sdk_user
-  webview_flutter: ^3.0.4
+  webview_flutter: ^4.0.7
+  webview_flutter_android: ^3.6.1 #  Added for compatibility with AGP 8.0
 
 dev_dependencies:
   flutter_test:
