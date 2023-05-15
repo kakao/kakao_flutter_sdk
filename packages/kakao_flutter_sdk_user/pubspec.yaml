@@ -19,7 +19,7 @@ dependencies:
   flutter_web_plugins:
     sdk: flutter
   json_annotation: ^4.5.0
-  dio: ^4.0.6
+  dio: ^5.0.3
   kakao_flutter_sdk_auth:
     path: ../kakao_flutter_sdk_auth
 

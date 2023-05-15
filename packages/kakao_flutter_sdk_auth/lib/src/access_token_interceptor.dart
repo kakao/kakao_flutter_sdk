@@ -25,8 +25,9 @@ class AccessTokenInterceptor extends Interceptor {
     if (token == null) {
       handler.reject(
         DioError(
-            requestOptions: options,
-            error: "authentication tokens don't exist."),
+          requestOptions: options,
+          message: "authentication token doesn't exist.",
+        ),
       );
       return;
     }
@@ -64,15 +65,9 @@ class AccessTokenInterceptor extends Interceptor {
         return;
       }
 
-      _dio.lock();
-      _dio.interceptors.errorLock.lock();
-
       final newToken = await _kauthApi.refreshToken(oldToken: token);
       options.headers[CommonConstants.authorization] =
           "${CommonConstants.bearer} ${newToken.accessToken}";
-
-      _dio.unlock();
-      _dio.interceptors.errorLock.unlock();
 
       SdkLog.i("retry ${options.path} after refreshing access token.");
       var response = await _dio.fetch(options);
@@ -86,10 +81,6 @@ class AccessTokenInterceptor extends Interceptor {
       } else {
         handler.reject(DioError(requestOptions: options, error: error));
       }
-    } finally {
-      // The lock must be unlocked because errors may occur while the lock is locked.
-      _dio.unlock();
-      _dio.interceptors.errorLock.unlock();
     }
   }
 

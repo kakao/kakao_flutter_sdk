@@ -24,8 +24,13 @@ class RequiredScopesInterceptor extends Interceptor {
     }
 
     var requiredScopes = error.requiredScopes;
-    if (error.code == ApiErrorCause.insufficientScope &&
-        requiredScopes != null) {
+
+    if(error.code != ApiErrorCause.insufficientScope || requiredScopes == null) {
+      handler.next(err);
+      return;
+    }
+
+    if (error.code == ApiErrorCause.insufficientScope) {
       if (requiredScopes.isEmpty) {
         throw KakaoApiException(
             ApiErrorCause.unknown, "requiredScopes not exist",
@@ -42,9 +47,6 @@ class RequiredScopesInterceptor extends Interceptor {
       }
 
       try {
-        _dio.lock();
-        _dio.interceptors.errorLock.lock();
-
         // get additional consents
         final authCode = await _authCodeClient.authorizeWithNewScopes(
             scopes: requiredScopes);
@@ -54,24 +56,19 @@ class RequiredScopesInterceptor extends Interceptor {
         options.headers[CommonConstants.authorization] =
             "${CommonConstants.bearer} ${token.accessToken}";
 
-        _dio.unlock();
-        _dio.interceptors.errorLock.unlock();
-
         // after getting additional consents, retry api call
         var response = await _dio.fetch(options);
         handler.resolve(response);
       } catch (error) {
         if (error is DioError) {
           handler.reject(error);
+        } else if(error is KakaoAuthException){
+          // KakaoAuthException is thrown when the 'Cancel' button is pressed in the additional consent page
+          handler.reject(DioError(requestOptions: options, error: error));
         } else {
-          handler.next(err);
+          handler.next(DioError(requestOptions: options, error: error));
         }
-      } finally {
-        _dio.unlock();
-        _dio.interceptors.errorLock.unlock();
       }
-    } else {
-      handler.next(err);
     }
   }
 }
