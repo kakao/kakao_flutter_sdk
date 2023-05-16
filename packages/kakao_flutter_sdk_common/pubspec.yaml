@@ -18,19 +18,19 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
-  json_annotation: ^4.5.0
+  json_annotation: ^4.8.0
   dio: ^5.0.3
-  shared_preferences: ^2.0.17
+  shared_preferences: ^2.0.20
   platform: ^3.1.0
-  crypto: ^3.0.1
+  crypto: ^3.0.2
   encrypt: ^5.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.1
-  build_runner: ^2.2.0
-  json_serializable: ^6.3.1
+  build_runner: ^2.3.3
+  json_serializable: ^6.5.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
