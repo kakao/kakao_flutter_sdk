@@ -1,3 +1,10 @@
+## 1.4.3
+- Updated to build on Android Gradle Plugin 8.0.
+- Changed Dart minimum support version to 2.18.0 or higher.
+- Updated internal package and plugin versions.
+- Fixed a bug.
+  - Web: Fixed UserApiClient.loginWithNewScopes() malfunction issue
+
 ## 1.4.2
 - Fixed an issue that the app using specific plugins cannot receive deep links or universal links on iOS.
   - Flutter SDK version 1.4.0 or later.
