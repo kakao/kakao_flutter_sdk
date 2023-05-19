@@ -22,6 +22,7 @@ dependencies:
     path: ../kakao_flutter_sdk_user
   webview_flutter: ^4.0.7
   webview_flutter_android: ^3.6.1 #  Added for compatibility with AGP 8.0
+  webview_flutter_wkwebview: ^3.2.4
 
 dev_dependencies:
   flutter_test:
