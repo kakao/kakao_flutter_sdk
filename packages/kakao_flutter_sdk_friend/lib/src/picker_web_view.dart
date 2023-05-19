@@ -1,6 +1,4 @@
-import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +8,7 @@ import 'package:kakao_flutter_sdk_friend/src/model/picker_friend_request_params.
 import 'package:kakao_flutter_sdk_friend/src/picker_alert.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 class PickerWebView extends StatefulWidget {
   final bool isSingle;
@@ -29,9 +28,8 @@ class _PickerWebViewState extends State<PickerWebView> {
   static String multiPickerPath = 'select/multiple';
   static String initialUrl = '$domain/$sdkPath';
 
-  late LocalizationOptions _localizationOptions;
-  final Completer<WebViewController> _controller =
-      Completer<WebViewController>();
+  late final LocalizationOptions _localizationOptions;
+  late final WebViewController _controller;
   bool pickerShown = false;
 
   // In Android, onPageFinished() is called twice.
@@ -43,9 +41,47 @@ class _PickerWebViewState extends State<PickerWebView> {
 
     _localizationOptions = LocalizationOptions.getLocalizationOptions();
 
-    if (Platform.isAndroid) {
-      WebView.platform = SurfaceAndroidWebView();
+    late final PlatformWebViewControllerCreationParams params;
+    if (WebViewPlatform.instance is WebKitWebViewPlatform) {
+      params = WebKitWebViewControllerCreationParams();
+    } else {
+      params = const PlatformWebViewControllerCreationParams();
     }
+
+    final WebViewController controller = _createWebViewController(params);
+    controller.loadRequest(Uri.parse(initialUrl));
+    _controller = controller;
+  }
+
+  WebViewController _createWebViewController(
+      PlatformWebViewControllerCreationParams params) {
+    final controller = WebViewController.fromPlatformCreationParams(params);
+
+    controller
+      ..enableZoom(false)
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..addJavaScriptChannel(
+        'Picker',
+        onMessageReceived: _handlePickerJavaScriptMessage,
+      )
+      ..addJavaScriptChannel(
+        'Alert',
+        onMessageReceived: _handleAlertJavaScriptMessage,
+      )
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onNavigationRequest: (NavigationRequest request) {
+            if (!request.url.contains(domain)) {
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
+          },
+          onPageFinished: _onPageFinishedCallback,
+        ),
+      );
+
+    return controller;
   }
 
   @override
@@ -55,28 +91,7 @@ class _PickerWebViewState extends State<PickerWebView> {
         value: SystemUiOverlayStyle.dark,
         child: SafeArea(
           child: Stack(
-            children: [
-              WebView(
-                zoomEnabled: false,
-                initialUrl: initialUrl,
-                javascriptMode: JavascriptMode.unrestricted,
-                javascriptChannels: <JavascriptChannel>{
-                  _pickerJavascriptChannel(context),
-                  _alertJavascriptChannel(context),
-                },
-                onWebViewCreated: (WebViewController webViewController) =>
-                    _controller.complete(webViewController),
-                navigationDelegate: (NavigationRequest request) {
-                  if (!request.url.contains(domain)) {
-                    return NavigationDecision.prevent;
-                  }
-                  return NavigationDecision.navigate;
-                },
-                onPageFinished: _onPageFinishedCallback,
-                gestureNavigationEnabled: true,
-                backgroundColor: const Color(0x00000000),
-              ),
-            ],
+            children: [WebViewWidget(controller: _controller)],
           ),
         ),
       ),
@@ -85,19 +100,15 @@ class _PickerWebViewState extends State<PickerWebView> {
 
   void _onPageFinishedCallback(String url) {
     if (!pickerShown) {
-      _controller.future.then((controller) {
-        controller.runJavascript('Picker.postMessage("navigatePicker")');
-      });
+      _controller.runJavaScript('Picker.postMessage("navigatePicker")');
       pickerShown = true;
     } else if (url.contains('$domain/select')) {
-      _controller.future.then((controller) {
-        var javascript = """
+      var javascript = """
           window.alert = function (e) {
             Alert.postMessage(e);
           }
         """;
-        controller.runJavascript(javascript);
-      });
+      _controller.runJavaScript(javascript);
     } else if (!isDisposed && url.contains('$domain/$sdkPath')) {
       isDisposed = true;
       var queryParameters = Uri.parse(url).queryParameters;
@@ -109,56 +120,45 @@ class _PickerWebViewState extends State<PickerWebView> {
     }
   }
 
-  JavascriptChannel _pickerJavascriptChannel(BuildContext context) {
-    return JavascriptChannel(
-      name: 'Picker',
-      onMessageReceived: (JavascriptMessage message) async {
-        if (message.message == "navigatePicker") {
-          var path = widget.isSingle ? singlePickerPath : multiPickerPath;
-          var url = '$domain/$path';
-          var params = widget.params;
+  void _handlePickerJavaScriptMessage(JavaScriptMessage message) async {
+    if (message.message == "navigatePicker") {
+      var path = widget.isSingle ? singlePickerPath : multiPickerPath;
+      var url = '$domain/$path';
+      var params = widget.params;
 
-          String transId = generateRandomString(60);
-          var pickerParams = {
-            'transId': transId,
-            'appKey': KakaoSdk.appKey,
-            'ka': await KakaoSdk.kaHeader,
-            'token': (await TokenManagerProvider.instance.manager.getToken())!
-                .accessToken,
-            'title': params.title,
-            'enableSearch': params.enableSearch,
-            'showMyProfile': params.showMyProfile,
-            'showFavorite': params.showFavorite,
-            'showPickedFriend': params.showPickedFriend,
-            'maxPickableCount': params.maxPickableCount,
-            'minPickableCount': params.minPickableCount,
-            'enableBackButton': params.enableBackButton,
-            'returnUrl': '$domain/$sdkPath',
-          };
-          pickerParams.removeWhere((k, v) => v == null);
+      String transId = generateRandomString(60);
+      var pickerParams = {
+        'transId': transId,
+        'appKey': KakaoSdk.appKey,
+        'ka': await KakaoSdk.kaHeader,
+        'token': (await TokenManagerProvider.instance.manager.getToken())!
+            .accessToken,
+        'title': params.title,
+        'enableSearch': params.enableSearch,
+        'showMyProfile': params.showMyProfile,
+        'showFavorite': params.showFavorite,
+        'showPickedFriend': params.showPickedFriend,
+        'maxPickableCount': params.maxPickableCount,
+        'minPickableCount': params.minPickableCount,
+        'enableBackButton': params.enableBackButton,
+        'returnUrl': '$domain/$sdkPath',
+      };
+      pickerParams.removeWhere((k, v) => v == null);
 
-          var javascript = '';
-          javascript += _submitForm(url, pickerParams);
-          await _controller.future
-              .then((controller) => controller.runJavascript(javascript));
-        }
-      },
-    );
+      var javascript = '';
+      javascript += _submitForm(url, pickerParams);
+      await _controller.runJavaScript(javascript);
+    }
   }
 
-  JavascriptChannel _alertJavascriptChannel(BuildContext context) {
-    return JavascriptChannel(
-      name: 'Alert',
-      onMessageReceived: (JavascriptMessage message) {
-        showDialog(
-          context: context,
-          builder: (context) => PickerAlert(
-            title: widget.params.title ?? _localizationOptions.pickerTitle,
-            message: message.message,
-            confirm: _localizationOptions.confirm,
-          ),
-        );
-      },
+  void _handleAlertJavaScriptMessage(JavaScriptMessage message) {
+    showDialog(
+      context: context,
+      builder: (context) => PickerAlert(
+        title: widget.params.title ?? _localizationOptions.pickerTitle,
+        message: message.message,
+        confirm: _localizationOptions.confirm,
+      ),
     );
   }
 

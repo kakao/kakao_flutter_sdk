@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_common/src/constants.dart';
 import 'package:kakao_flutter_sdk_common/src/kakao_api_exception.dart';
 import 'package:kakao_flutter_sdk_common/src/kakao_auth_exception.dart';
@@ -39,21 +40,31 @@ class ApiFactory {
   }
 
   /// transforms [DioError] to [KakaoException].
-  static KakaoException transformApiError(DioError e) {
+  static Exception transformApiError(DioError e) {
     var response = e.response;
     var request = e.requestOptions;
 
+    // interceptor reject the error when the error cannot be handled
+    // but the error must be DioError, so the error received from the server cannot be transmitted as it is.
+    // so the error received from the server is put in the DioError.error
     if (response == null) {
-      // interceptor reject the error when the error cannot be handled
-      // but the error must be DioError, so the error received from the server cannot be transmitted as it is.
-      // so the error received from the server is put in the DioError.error
-      if (e.error is KakaoAuthException || e.error is KakaoApiException) {
-        return e.error;
+      if (e.error != null) {
+        if (e.error is KakaoAuthException) {
+          return e.error as KakaoAuthException;
+        }
+        if (e.error is KakaoApiException) {
+          return e.error as KakaoApiException;
+        }
+        // If the user closes the default browser when the RequiredScopeInterceptor brings up the additional consent page,
+        // The PlatformException is thrown.
+        if (e.error is PlatformException) {
+          return e.error as PlatformException;
+        }
       }
-      return KakaoClientException(e.message);
+      return KakaoClientException(e.message ?? "Unknown");
     }
     if (response.statusCode == 404) {
-      return KakaoClientException(e.message);
+      return KakaoClientException(e.message ?? "404 Not Found");
     }
     if (Uri.parse(request.baseUrl).host == KakaoSdk.hosts.kauth) {
       return KakaoAuthException.fromJson(response.data);

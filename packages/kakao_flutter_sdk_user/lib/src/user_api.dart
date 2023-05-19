@@ -66,12 +66,14 @@ class UserApi {
   /// 동의 화면 요청 시 추가 상호작용을 요청하고자 할 때는 [prompts] 전달, 사용할 수 있는 옵션의 종류는 [Prompt] 참고
   /// ID 토큰 재생 공격 방지를 위한 검증 값은 [nonce] 전달. 임의의 문자열, ID 토큰 검증 시 사용
   /// 전자서명 원문은 [state]로 전달
+  /// 정산 ID는 [settleId]로 전달
   Future<CertTokenInfo> certLoginWithKakaoTalk({
     List<Prompt>? prompts,
     required String state,
     List<String>? channelPublicIds,
     List<String>? serviceTerms,
     String? nonce,
+    String? settleId,
   }) async {
     var codeVerifier = AuthCodeClient.codeVerifier();
 
@@ -91,6 +93,7 @@ class UserApi {
       codeVerifier: codeVerifier,
       nonce: nonce,
       stateToken: stateToken,
+      settleId: settleId,
       webPopupLogin: true,
     );
     final certTokenInfo = await AuthApi.instance.issueAccessTokenWithCert(
@@ -138,6 +141,7 @@ class UserApi {
   /// 카카오계정 로그인 페이지의 ID에 자동 입력할 이메일 또는 전화번호(+82 00-0000-0000 형식)는 [loginHint]에 전달
   /// ID 토큰 재생 공격 방지를 위한 검증 값은 [nonce]로 전달. 임의의 문자열, ID 토큰 검증 시 사용
   /// 전자서명 원문은 [state]로 전달
+  /// 정산 ID는 [settleId]로 전달
   Future<CertTokenInfo> certLoginWithKakaoAccount({
     List<Prompt>? prompts,
     List<String>? channelPublicIds,
@@ -145,6 +149,7 @@ class UserApi {
     String? loginHint,
     required String state,
     String? nonce,
+    String? settleId,
   }) async {
     var codeVerifier = AuthCodeClient.codeVerifier();
     final authCode = await AuthCodeClient.instance.authorize(
@@ -155,6 +160,7 @@ class UserApi {
       codeVerifier: codeVerifier,
       loginHint: loginHint,
       nonce: nonce,
+      settleId: settleId,
       webPopupLogin: true,
     );
     final certTokenInfo = await AuthApi.instance.issueAccessTokenWithCert(
@@ -174,7 +180,11 @@ class UserApi {
       {String? nonce}) async {
     String codeVerifier = AuthCodeClient.codeVerifier();
     final authCode = await AuthCodeClient.instance.authorizeWithNewScopes(
-        scopes: scopes, codeVerifier: codeVerifier, nonce: nonce);
+      scopes: scopes,
+      codeVerifier: codeVerifier,
+      nonce: nonce,
+      webPopupLogin: true,
+    );
     final token = await AuthApi.instance
         .issueAccessToken(authCode: authCode, codeVerifier: codeVerifier);
     await TokenManagerProvider.instance.manager.setToken(token);

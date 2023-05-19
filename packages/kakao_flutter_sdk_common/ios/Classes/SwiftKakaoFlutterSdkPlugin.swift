@@ -54,7 +54,8 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
             let prompt = args["prompt"]
             let state = args["state"]
             let nonce = args["nonce"]
-            authorizeWithTalk(loginScheme: loginScheme, sdkVersion: sdkVersion!, clientId: clientId!, redirectUri: redirectUri!, codeVerifier: codeVerifier, prompt: prompt, state: state, nonce: nonce, result: result)
+            let settleId = args["settle_id"]
+            authorizeWithTalk(loginScheme: loginScheme, sdkVersion: sdkVersion!, clientId: clientId!, redirectUri: redirectUri!, codeVerifier: codeVerifier, prompt: prompt, state: state, nonce: nonce, settleId: settleId, result: result)
         case "isKakaoTalkInstalled":
             let args = castArguments(call.arguments)
             let loginScheme = args["loginScheme"] ?? "kakaokompassauth://authorize"
@@ -119,7 +120,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
         }
     }
     
-    private func authorizeWithTalk(loginScheme: String, sdkVersion: String, clientId: String, redirectUri: String, codeVerifier: String?, prompt: String?, state: String?, nonce: String?, result: @escaping FlutterResult) {
+    private func authorizeWithTalk(loginScheme: String, sdkVersion: String, clientId: String, redirectUri: String, codeVerifier: String?, prompt: String?, state: String?, nonce: String?, settleId: String?, result: @escaping FlutterResult) {
         self.result = result
         self.redirectUri = redirectUri
         self.authorizeTalkCompletionHandler = {
@@ -157,9 +158,12 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
         if(state != nil) {
             parameters["state"] = state
         }
-
+        
         if(nonce != nil) {
             parameters["nonce"] = nonce
+        }
+        if(settleId != nil) {
+            parameters["settle_id"] = settleId
         }
         
         guard let url = Utility.makeUrlWithParameters(loginScheme, parameters: parameters) else {

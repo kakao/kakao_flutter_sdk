@@ -92,6 +92,7 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                     val prompts = args["prompt"]
                     val state = args["state"]
                     val nonce = args["nonce"]
+                    val settleId = args["settle_id"]
                     val extras = Bundle().apply {
                         channelPublicIds?.let { putString(Constants.CHANNEL_PUBLIC_ID, it) }
                         serviceTerms?.let { putString(Constants.SERVICE_TERMS, it) }
@@ -106,6 +107,7 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                         prompts?.let { putString(Constants.PROMPT, it) }
                         state?.let { putString(Constants.STATE, it) }
                         nonce?.let { putString(Constants.NONCE, it) }
+                        settleId?.let { putString(Constants.SETTLE_ID, it) }
                     }
                     val intent = Intent(activity, TalkAuthCodeActivity::class.java)
                         .putExtra(Constants.KEY_SDK_VERSION, sdkVersion)

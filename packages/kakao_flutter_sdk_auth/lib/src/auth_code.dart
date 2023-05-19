@@ -35,6 +35,7 @@ class AuthCodeClient {
     String? state,
     String? codeVerifier,
     String? nonce,
+    String? settleId,
     bool webPopupLogin = false,
   }) async {
     final finalRedirectUri = redirectUri ?? "kakao${_platformKey()}://oauth";
@@ -59,6 +60,7 @@ class AuthCodeClient {
           codeChallenge != null ? Constants.codeChallengeMethodValue : null,
       Constants.kaHeader: await KakaoSdk.kaHeader,
       Constants.nonce: nonce,
+      Constants.settleId: settleId,
     };
     params.removeWhere((k, v) => v == null);
     final url =
@@ -90,6 +92,7 @@ class AuthCodeClient {
     String? state,
     String? codeVerifier,
     String? nonce,
+    String? settleId,
     String? stateToken,
     bool webPopupLogin = false,
   }) async {
@@ -106,6 +109,7 @@ class AuthCodeClient {
         prompts,
         state,
         nonce,
+        settleId,
         stateToken: webStateToken,
         webPopupLogin: webPopupLogin,
       );
@@ -180,7 +184,8 @@ class AuthCodeClient {
     String? codeVerifier,
     List<Prompt>? prompts,
     String? state,
-    String? nonce, {
+    String? nonce,
+    String? settleId, {
     String? stateToken,
     bool webPopupLogin = false,
   }) async {
@@ -197,6 +202,7 @@ class AuthCodeClient {
           : _parsePrompts(_makeCertPrompts(prompts)),
       Constants.state: state,
       Constants.nonce: nonce,
+      Constants.settleId: settleId,
       Constants.stateToken: stateToken,
       Constants.isPopup: webPopupLogin,
     };
@@ -206,6 +212,9 @@ class AuthCodeClient {
       if (_platform.isIOS) {
         arguments
             .addAll({'loginScheme': KakaoSdk.platforms.ios.talkLoginScheme});
+      } else if (_platform.isAndroid) {
+        arguments.addAll(
+            {'talkPackageName': KakaoSdk.platforms.android.talkPackage});
       }
 
       final redirectUriWithParams = await _channel.invokeMethod<String>(
