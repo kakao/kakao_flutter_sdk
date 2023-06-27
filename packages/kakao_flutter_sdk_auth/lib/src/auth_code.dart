@@ -270,7 +270,7 @@ class AuthCodeClient {
   String _parsePrompts(List<Prompt> prompts) {
     var parsedPrompt = '';
     for (var element in prompts) {
-      parsedPrompt += '${describeEnum(element).toLowerCase()} ';
+      parsedPrompt += '${describeEnum(element).toSnakeCase()} ';
     }
     return parsedPrompt;
   }
@@ -302,6 +302,7 @@ enum Prompt {
 
   /// 카카오계정 가입 페이지로 이동 후, 카카오계정 가입 완료 후 동의 화면 출력
   create,
+  selectAccount,
 
   /// @nodoc
   cert,
