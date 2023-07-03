@@ -6,7 +6,7 @@ packages:
 
 scripts:
   test:
-    run: melos exec --fail-fast --ignore="*example*" --dir-exists="test" -- flutter test
+    run: melos run update && melos exec --fail-fast --ignore="*example*" --dir-exists="test" -- flutter test
     description: Run all test codes
 
   format:
@@ -18,6 +18,10 @@ scripts:
 
   upgrade:
     run: melos exec -- flutter pub upgrade
+
+  update:
+    run: if test -d ./kakao-sdk-test-data; then cd kakao-sdk-test-data && git fetch && git pull; else git clone git@github.daumkakao.com:kops/kakao-sdk-test-data.git; fi
+    description: Update Test Data
 
 environment:
   sdk: ">=2.18.0 <4.0.0"
