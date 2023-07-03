@@ -1,16 +1,14 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
-import 'package:kakao_flutter_sdk_auth/src/model/access_token_response.dart';
 import 'package:platform/platform.dart';
 
 import '../../kakao_flutter_sdk_common/test/helper.dart';
 import '../../kakao_flutter_sdk_common/test/mock_adapter.dart';
+import 'test_double.dart';
 
 void main() {
   late Dio _dio;
@@ -22,28 +20,12 @@ void main() {
   KakaoSdk.init(nativeAppKey: appKey);
 
   TestWidgetsFlutterBinding.ensureInitialized();
-  const MethodChannel channel = MethodChannel(CommonConstants.methodChannel);
+  registerMockMethodChannel();
 
-  const MethodChannel('plugins.flutter.io/shared_preferences')
-      .setMockMethodCallHandler((MethodCall methodCall) async {
-    if (methodCall.method == 'getAll') {
-      return <String, dynamic>{}; // set initial values here if desired
-    }
-    if (methodCall.method.startsWith("set") || methodCall.method == 'remove') {
-      return true;
-    }
-    return null;
-  });
-  const MethodChannel('plugins.flutter.io/shared_preferences_macos')
-      .setMockMethodCallHandler((MethodCall methodCall) async {
-    if (methodCall.method == 'getAll') {
-      return <String, dynamic>{}; // set initial values here if desired
-    }
-    if (methodCall.method.startsWith("set") || methodCall.method == 'remove') {
-      return true;
-    }
-    return null;
-  });
+  DateTime expiresAt = DateTime.fromMillisecondsSinceEpoch(
+      DateTime.now().millisecondsSinceEpoch + 1000 * 60 * 60 * 12);
+  DateTime refreshTokenExpiresAt = DateTime.fromMillisecondsSinceEpoch(
+      DateTime.now().millisecondsSinceEpoch + 1000 * 60 * 60 * 24 * 30 * 2);
 
   setUp(() {
     _dio = Dio();
@@ -52,17 +34,9 @@ void main() {
     _dio.interceptors.add(ApiFactory.kaInterceptor);
     _dio.options.baseUrl = "https://${KakaoSdk.hosts.kauth}";
     _authApi = AuthApi(dio: _dio);
-    _tokenManager = DefaultTokenManager();
-    channel.setMockMethodCallHandler((MethodCall methodCall) async {
-      if (methodCall.method == 'platformId') {
-        return Uint8List.fromList([1, 2, 3, 4, 5]);
-      }
-      return "sample_origin";
-    });
-  });
-
-  tearDown(() {
-    channel.setMockMethodCallHandler(null);
+    _tokenManager = TestTokenManager(testOAuthToken(
+        expiresAt: expiresAt, refreshTokenExpiresAt: refreshTokenExpiresAt));
+    TokenManagerProvider.instance.manager = _tokenManager;
   });
 
   group("/oauth/token 200", () {
@@ -110,10 +84,9 @@ void main() {
           redirectUri: "kakaosample_app_key://oauth",
           appKey: "sample_app_key");
       fail("Should not reach here");
-    } on KakaoAuthException catch (e) {
-      expect(e.error, AuthErrorCause.misconfigured);
     } catch (e) {
       expect(e, isInstanceOf<KakaoAuthException>());
+      expect((e as KakaoAuthException).error, AuthErrorCause.misconfigured);
     }
   });
 
@@ -125,7 +98,6 @@ void main() {
           authCode: "authCode",
           redirectUri: "kakaosample_app_key://oauth",
           appKey: "sample_app_key");
-      print(jsonEncode(token));
     } catch (e) {
       fail("Should not reach here");
     }
@@ -151,6 +123,7 @@ void main() {
 
       var newToken = await _authApi.refreshToken(
           oldToken: oldToken!, redirectUri: redirectUri, appKey: appKey);
+
       expect(true, oldToken.accessToken != newToken.accessToken);
       expect(true, oldToken.expiresAt != newToken.expiresAt);
       expect(true, oldToken.refreshToken == newToken.refreshToken);
@@ -173,6 +146,7 @@ void main() {
         expect(params["android_key_hash"], "sample_origin");
       };
     });
+
     test("on ios", () async {
       _authApi =
           AuthApi(dio: _dio, platform: FakePlatform(operatingSystem: "ios"));
@@ -253,6 +227,7 @@ void main() {
         expect(params["android_key_hash"], "sample_origin");
       };
     });
+
     test("on ios", () async {
       _authApi =
           AuthApi(dio: _dio, platform: FakePlatform(operatingSystem: "ios"));

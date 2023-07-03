@@ -1,15 +1,13 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kakao_flutter_sdk_auth/src/model/access_token_response.dart';
 import 'package:kakao_flutter_sdk_auth/src/model/oauth_token.dart';
 import 'package:kakao_flutter_sdk_auth/src/token_manager.dart';
-import 'package:kakao_flutter_sdk_common/src/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../kakao_flutter_sdk_common/test/helper.dart';
+import 'test_double.dart';
 
 void main() {
   Map<String, dynamic>? map;
@@ -18,51 +16,20 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUp(() async {
-    const MethodChannel(CommonConstants.methodChannel)
-        .setMockMethodCallHandler((MethodCall methodCall) async {
-      if (methodCall.method == 'getOrigin') {
-        return '';
-      }
-      if (methodCall.method == 'platformId') {
-        return Uint8List.fromList([1, 2, 3, 4, 5]);
-      }
-      return null;
-    });
+    registerMockMethodChannel();
+    registerMockSharedPreferencesMethodChannel();
 
-    const MethodChannel('plugins.flutter.io/shared_preferences')
-        .setMockMethodCallHandler((MethodCall methodCall) async {
-      if (methodCall.method == 'getAll') {
-        return <String, dynamic>{}; // set initial values here if desired
-      }
-      if (methodCall.method.startsWith("set") ||
-          methodCall.method == 'remove') {
-        return true;
-      }
-      return null;
-    });
-
-    const MethodChannel('plugins.flutter.io/shared_preferences_macos')
-        .setMockMethodCallHandler((MethodCall methodCall) async {
-      if (methodCall.method == 'getAll') {
-        return <String, dynamic>{}; // set initial values here if desired
-      }
-      if (methodCall.method.startsWith("set") ||
-          methodCall.method == 'remove') {
-        return true;
-      }
-      return null;
-    });
     map = await loadJsonIntoMap('oauth/token_with_rt_and_scopes.json');
     response = AccessTokenResponse.fromJson(map!);
     tokenManager = DefaultTokenManager();
   });
-  tearDown(() {});
 
   test('toCache', () async {
     expect(response!.accessToken, map!["access_token"]);
     expect(response!.refreshToken, map!["refresh_token"]);
     await tokenManager.setToken(OAuthToken.fromResponse(response!));
     var newToken = await tokenManager.getToken();
+
     expect(true, newToken != null);
     expect(newToken!.accessToken, response!.accessToken);
     expect(newToken.refreshToken, response!.refreshToken);
@@ -93,6 +60,7 @@ void main() {
       fail("should not reach here");
     } catch (e) {}
   });
+
   test("token migration test (0.9.0 <= version < 1.0.0)", () async {
     // Remove token and version key
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -223,7 +191,7 @@ class BetaTokenManager implements TokenManager {
       final token = OAuthToken(
           accessToken, expiresAt, refreshToken, refreshTokenExpiresAt, scopes);
 
-      // Remove all token properties that saved before 0.9.0 version and save migrated token.
+// Remove all token properties that saved before 0.9.0 version and save migrated token.
       await preferences.remove(atKey);
       await preferences.remove(expiresAtKey);
       await preferences.remove(rtKey);
