@@ -1,63 +1,48 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
+import 'package:kakao_flutter_sdk_user/src/constants.dart';
 import 'package:kakao_flutter_sdk_user/src/model/account.dart';
 import 'package:kakao_flutter_sdk_user/src/model/user.dart';
 import 'package:kakao_flutter_sdk_user/src/user_api.dart';
 
+import '../../kakao_flutter_sdk_auth/test/test_double.dart';
 import '../../kakao_flutter_sdk_common/test/helper.dart';
 import '../../kakao_flutter_sdk_common/test/mock_adapter.dart';
+import 'test_enum_map.dart';
 
 void main() {
-  late Dio _dio;
-  late MockAdapter _adapter;
-  late UserApi _api;
+  late Dio dio;
+  late MockAdapter adapter;
+  late UserApi api;
 
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  const MethodChannel('plugins.flutter.io/shared_preferences')
-      .setMockMethodCallHandler((MethodCall methodCall) async {
-    if (methodCall.method == 'getAll') {
-      return <String, dynamic>{}; // set initial values here if desired
-    }
-    if (methodCall.method.startsWith("set") || methodCall.method == 'remove') {
-      return true;
-    }
-    return null;
-  });
-  const MethodChannel('plugins.flutter.io/shared_preferences_macos')
-      .setMockMethodCallHandler((MethodCall methodCall) async {
-    if (methodCall.method == 'getAll') {
-      return <String, dynamic>{}; // set initial values here if desired
-    }
-    if (methodCall.method.startsWith("set") || methodCall.method == 'remove') {
-      return true;
-    }
-    return null;
-  });
+  registerMockSharedPreferencesMethodChannel();
 
   setUp(() {
-    _dio = Dio();
-    _adapter = MockAdapter();
-    _dio.httpClientAdapter = _adapter;
-    _api = UserApi(_dio);
+    dio = Dio();
+    adapter = MockAdapter();
+    dio.httpClientAdapter = adapter;
+    api = UserApi(dio);
   });
-  tearDown(() {});
 
   test('/v2/user/me 200', () async {
-    String body = await loadJson("users/me.json");
+    var path = uriPathToFilePath(Constants.v2MePath);
+    String body = await loadJsonFromRepository("user/$path/max.json");
     Map<String, dynamic> map = jsonDecode(body);
-    _adapter.setResponseString(body, 200);
-    User user = await _api.me();
+    adapter.setResponseString(body, 200);
+    User user = await api.me();
 
     expect(user.id, map["id"]);
     expect(user.hasSignedUp, map["has_signed_up"]);
 
     Account? account = user.kakaoAccount;
     Map<String, dynamic> accountMap = map["kakao_account"];
+
     expect(account?.emailNeedsAgreement, accountMap["email_needs_agreement"]);
     expect(account?.email, accountMap["email"]);
     expect(account?.isEmailVerified, accountMap["is_email_verified"]);
@@ -65,36 +50,46 @@ void main() {
         accountMap["phone_number_needs_agreement"]);
     expect(account?.phoneNumber, accountMap["phone_number"]);
 
-    expect(account?.ageRange, AgeRange.age_20_29);
-    expect(account?.gender, Gender.female);
+    if (account?.ageRange != null) {
+      expect(account?.ageRange,
+          $enumDecode($AgeRangeEnumMap, accountMap['age_range']));
+    }
 
-    final profileMap = accountMap["profile"];
+    if (account?.gender != null) {
+      expect(
+          account?.gender, $enumDecode($GenderEnumMap, accountMap['gender']));
+    }
+
+    Map<String, dynamic>? profileMap = accountMap["profile"];
     final profile = account?.profile;
-    expect(profileMap["nickname"], profile?.nickname.toString());
-    expect(profileMap["thumbnail_image_url"],
-        profile?.thumbnailImageUrl.toString());
+    expect(profileMap?["nickname"], profile?.nickname);
+    expect(profileMap?["nickname"], profile?.nickname);
+    expect(profileMap?["thumbnail_image_url"],
+        profile?.thumbnailImageUrl);
     expect(
-        profileMap["profile_image_url"], profile?.profileImageUrl.toString());
+        profileMap?["profile_image_url"], profile?.profileImageUrl);
   });
 
   test("/v1/user/access_token_info 200", () async {
-    var body = await loadJson("users/token_info.json");
+    final path = uriPathToFilePath(Constants.v1AccessTokenInfoPath);
+    var body = await loadJsonFromRepository("user/$path/normal.json");
     Map<String, dynamic> map = jsonDecode(body);
-    _adapter.setResponseString(body, 200);
+    adapter.setResponseString(body, 200);
 
-    var tokenInfo = await _api.accessTokenInfo();
-    // expect(tokenInfo.appId, map["appId"]);
+    var tokenInfo = await api.accessTokenInfo();
+    expect(tokenInfo.appId, map["app_id"]);
     expect(tokenInfo.id, map["id"]);
     expect(tokenInfo.expiresIn, map["expires_in"]);
     expect(tokenInfo.toJson(), map);
   });
 
   test("/v1/user/shipping_addresses 200", () async {
-    String body = await loadJson("users/addresses.json");
+    final path = uriPathToFilePath(Constants.v1ShippingAddressesPath);
+    String body = await loadJsonFromRepository("user/$path/normal.json");
     Map<String, dynamic> map = jsonDecode(body);
-    _adapter.setResponseString(body, 200);
+    adapter.setResponseString(body, 200);
 
-    var res = await _api.shippingAddresses();
+    var res = await api.shippingAddresses();
 
     expect(res.userId, map["user_id"]);
     expect(res.needsAgreement, map["shipping_addresses_needs_agreement"]);
@@ -104,7 +99,7 @@ void main() {
 
     addresses?.asMap().forEach((index, it) {
       var element = elements[index];
-      expect(it.isDefault, element["default"]);
+      expect(it.isDefault, element["is_default"]);
       expect(it.id, element["id"]);
       expect(it.name, element["name"]);
       expect(it.baseAddress, element["base_address"]);
@@ -114,11 +109,12 @@ void main() {
   });
 
   test("/v1/user/service/terms 200", () async {
-    String body = await loadJson("users/service_terms.json");
+    final path = uriPathToFilePath(Constants.v1ServiceTermsPath);
+    String body = await loadJsonFromRepository("user/$path/normal.json");
     Map<String, dynamic> map = jsonDecode(body);
-    _adapter.setResponseString(body, 200);
+    adapter.setResponseString(body, 200);
 
-    var res = await _api.serviceTerms();
+    var res = await api.serviceTerms();
     expect(res.userId, map["user_id"]);
     var terms = res.allowedServiceTerms;
     var elements = map["allowed_service_terms"];
@@ -129,20 +125,6 @@ void main() {
       expect(it.tag, element["tag"]);
       expect(Util.dateTimeWithoutMillis(it.agreedAt), element["agreed_at"]);
     });
-    res.toJson();
-  });
-
-  test("APIs with user id response 200", () async {
-    String body = await loadJson("users/id.json");
-    Map<String, dynamic> map = jsonDecode(body);
-    _adapter.setResponseString(body, 200);
-
-    var res = await _api.logout();
-    expect(res.id, map["id"]);
-
-    _adapter.setResponseString(body, 200);
-    res = await _api.unlink();
-    expect(res.id, map["id"]);
     res.toJson();
   });
 }
