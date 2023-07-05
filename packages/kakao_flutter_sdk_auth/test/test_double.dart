@@ -6,7 +6,7 @@ OAuthToken testOAuthToken(
     {String accessToken = 'test_access_token',
     required DateTime expiresAt,
     String refreshToken = 'test_refresh_token',
-    DateTime? refreshTokenExpiresAt,
+    required DateTime refreshTokenExpiresAt,
     List<String>? scopes = const ['profile']}) {
   return OAuthToken(
     accessToken,
