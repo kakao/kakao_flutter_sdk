@@ -102,9 +102,10 @@ void main() {
   });
 
   group("/v1/api/story/post", () {
-    Map<String, String>? map;
+    Map<String, dynamic>? map;
     setUp(() async {
-      map = {"id": "AAAAAAA.DDDDDDDDDDD"};
+      final path = uriPathToFilePath('${Constants.postPath}/note');
+      map = await loadJsonIntoMap('story/$path/normal.json');
       adapter.setResponseString(jsonEncode(map), 200);
     });
     test("/note with minimal params", () async {
@@ -172,8 +173,8 @@ void main() {
       };
       adapter.setResponseString(body, 200);
       var files = [
-        File("../../test_resources/images/cat1.png"),
-        File("../../test_resources/images/cat2.png")
+        File("../../example/assets/images/cat1.png"),
+        File("../../example/assets/images/cat2.png")
       ];
 
       var res = await api.upload(files);
