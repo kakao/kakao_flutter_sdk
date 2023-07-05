@@ -12,7 +12,7 @@ void main() {
     void parse(String data) {
       test(data, () async {
         String body =
-            await loadJsonFromRepository('errors/api_errors/$data.json');
+            await loadJson('errors/api_errors/$data.json');
         Map<String, dynamic> expected = jsonDecode(body);
         KakaoApiException actual = KakaoApiException.fromJson(expected);
 

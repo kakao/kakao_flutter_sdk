@@ -11,7 +11,7 @@ void main() {
     void parse(String data) {
       test(data, () async {
         final path = uriPathToFilePath(Constants.v1ServiceTermsPath);
-        var body = await loadJsonFromRepository("user/$path/$data.json");
+        var body = await loadJson("user/$path/$data.json");
         Map<String, dynamic> expected = jsonDecode(body);
         var response = UserServiceTerms.fromJson(expected);
 

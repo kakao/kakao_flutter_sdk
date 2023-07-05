@@ -23,7 +23,7 @@ void main() {
   test("send custom 200", () async {
     final path =
         uriPathToFilePath('${Constants.validatePath}/${Constants.validate}');
-    String body = await loadJsonFromRepository("share/$path/normal.json");
+    String body = await loadJson("share/$path/normal.json");
     var map = jsonDecode(body);
 
     adapter.requestAssertions = (RequestOptions options) {};

@@ -47,7 +47,7 @@ void main() {
     setUp(() async {
       final path = uriPathToFilePath(Constants.tokenPath);
       String body =
-          await loadJsonFromRepository("auth/$path/has_rt_and_scopes.json");
+          await loadJson("auth/$path/has_rt_and_scopes.json");
       adapter.setResponseString(body, 200);
     });
 
@@ -82,7 +82,7 @@ void main() {
 
   test('oauth_token without refresh_token - web spec', () async {
     final path = uriPathToFilePath(Constants.tokenPath);
-    String body = await loadJsonFromRepository("auth/$path/no_rt.json");
+    String body = await loadJson("auth/$path/no_rt.json");
     adapter.setResponseString(body, 200);
     try {
       await authApi.issueAccessToken(
@@ -100,7 +100,7 @@ void main() {
 
     setUp(() async {
       final path = uriPathToFilePath(Constants.tokenPath);
-      String body = await loadJsonFromRepository('auth/$path/no_rt.json');
+      String body = await loadJson('auth/$path/no_rt.json');
       adapter.setResponseString(body, 200);
     });
 
@@ -108,7 +108,7 @@ void main() {
       // setting oldToken
       final path = uriPathToFilePath(Constants.tokenPath);
       var tokenJson =
-          await loadJsonFromRepository("auth/$path/has_rt_and_scopes.json");
+          await loadJson("auth/$path/has_rt_and_scopes.json");
       var tokenResponse = AccessTokenResponse.fromJson(jsonDecode(tokenJson));
       await tokenManager.setToken(OAuthToken.fromResponse(tokenResponse));
       final oldToken = await tokenManager.getToken();
@@ -183,7 +183,7 @@ void main() {
 
     setUp(() async {
       final path = uriPathToFilePath(Constants.tokenPath);
-      String body = await loadJsonFromRepository("auth/$path/has_rt.json");
+      String body = await loadJson("auth/$path/has_rt.json");
       adapter.setResponseString(body, 200);
     });
 
@@ -191,7 +191,7 @@ void main() {
       // setting oldToken
       final path = uriPathToFilePath(Constants.tokenPath);
       var tokenJson =
-          await loadJsonFromRepository("auth/$path/has_rt_and_scopes.json");
+          await loadJson("auth/$path/has_rt_and_scopes.json");
       var tokenResponse = AccessTokenResponse.fromJson(jsonDecode(tokenJson));
       await tokenManager.setToken(OAuthToken.fromResponse(tokenResponse));
       final oldToken = await tokenManager.getToken();

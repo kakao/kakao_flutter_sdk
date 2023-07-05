@@ -10,10 +10,6 @@ String uriPathToFilePath(String uri) {
 }
 
 Future<String> loadJson(String path) async {
-  return await File("../../test_resources/json/$path").readAsString();
-}
-
-Future<String> loadJsonFromRepository(String path) async {
   return await File("../../kakao-sdk-test-data/$path").readAsString();
 }
 

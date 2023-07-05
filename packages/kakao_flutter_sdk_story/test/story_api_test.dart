@@ -23,7 +23,7 @@ void main() {
 
   test("/v1/api/story/isstoryuser 200", () async {
     final path = uriPathToFilePath(Constants.isStoryUserPath);
-    String body = await loadJsonFromRepository('story/$path/normal.json');
+    String body = await loadJson('story/$path/normal.json');
     adapter.setResponseString(body, 200);
     bool isUser = await api.isStoryUser();
     expect(isUser, true);
@@ -31,7 +31,7 @@ void main() {
 
   test("/v1/api/story/profile", () async {
     final path = uriPathToFilePath(Constants.storyProfilePath);
-    String body = await loadJsonFromRepository("story/$path/normal.json");
+    String body = await loadJson("story/$path/normal.json");
     adapter.setResponseString(body, 200);
     var map = jsonDecode(body);
     var profile = await api.profile();
@@ -45,7 +45,7 @@ void main() {
 
   test("/v1/api/story/mystories 200", () async {
     final path = uriPathToFilePath(Constants.getStoriesPath);
-    String body = await loadJsonFromRepository("story/$path/normal.json");
+    String body = await loadJson("story/$path/normal.json");
     adapter.setResponseString(body, 200);
     var stories = await api.stories();
     expect(stories.length, 3);
@@ -53,7 +53,7 @@ void main() {
 
   test("/v1/api/story/mystory 200", () async {
     final path = uriPathToFilePath(Constants.getStoryPath);
-    String body = await loadJsonFromRepository("story/$path/normal.json");
+    String body = await loadJson("story/$path/normal.json");
     adapter.setResponseString(body, 200);
 
     var story = await api.story("AAAAAAA.CCCCCCCCCCC");
@@ -79,7 +79,7 @@ void main() {
 
   test("/v1/api/story/linkinfo 200", () async {
     final path = uriPathToFilePath(Constants.scrapLinkPath);
-    String body = await loadJsonFromRepository("story/$path/normal.json");
+    String body = await loadJson("story/$path/normal.json");
     var map = jsonDecode(body);
     adapter.setResponseString(body, 200);
 
@@ -143,7 +143,7 @@ void main() {
     test("/link", () async {
       final path = uriPathToFilePath(Constants.scrapLinkPath);
       var bodyMap =
-          jsonDecode(await loadJsonFromRepository("story/$path/normal.json"));
+          jsonDecode(await loadJson("story/$path/normal.json"));
       var linkInfo = LinkInfo.fromJson(bodyMap);
       adapter.requestAssertions = (RequestOptions options) {
         expect(options.method, "POST");
@@ -163,7 +163,7 @@ void main() {
   group("/v1/api/story/upload/multi", () {
     test("200", () async {
       final path = uriPathToFilePath(Constants.scrapImagesPath);
-      var body = await loadJsonFromRepository("story/$path/normal.json");
+      var body = await loadJson("story/$path/normal.json");
       var urls = jsonDecode(body);
 
       adapter.requestAssertions = (RequestOptions options) {

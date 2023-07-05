@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
 
 class MockAdapter implements HttpClientAdapter {
@@ -18,11 +19,12 @@ class MockAdapter implements HttpClientAdapter {
   }
 
   @override
-  Future<ResponseBody> fetch(RequestOptions options,
-      Stream<Uint8List>? requestStream, Future<dynamic>? cancelFuture) async {
-    if (requestAssertions != null) {
-      requestAssertions!(options); // TODO: Function null safety not working?
-    }
+  Future<ResponseBody> fetch(
+    RequestOptions options,
+    Stream<Uint8List>? requestStream,
+    Future<dynamic>? cancelFuture,
+  ) async {
+    requestAssertions?.call(options);
     return _responseBody;
   }
 

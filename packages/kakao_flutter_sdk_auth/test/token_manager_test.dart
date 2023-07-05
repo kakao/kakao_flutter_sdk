@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kakao_flutter_sdk_auth/src/constants.dart';
 import 'package:kakao_flutter_sdk_auth/src/model/access_token_response.dart';
 import 'package:kakao_flutter_sdk_auth/src/model/oauth_token.dart';
 import 'package:kakao_flutter_sdk_auth/src/token_manager.dart';
@@ -19,7 +20,8 @@ void main() {
     registerMockMethodChannel();
     registerMockSharedPreferencesMethodChannel();
 
-    map = await loadJsonIntoMap('oauth/token_with_rt_and_scopes.json');
+    final path = uriPathToFilePath(Constants.tokenPath);
+    map = await loadJsonIntoMap('auth/$path/has_rt_and_scopes.json');
     response = AccessTokenResponse.fromJson(map!);
     tokenManager = DefaultTokenManager();
   });

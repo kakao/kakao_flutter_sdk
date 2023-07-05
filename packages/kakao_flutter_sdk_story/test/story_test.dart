@@ -78,7 +78,7 @@ void main() {
     void story(String data) {
       test(Constants.getStoryPath, () async {
         final path = uriPathToFilePath(Constants.getStoryPath);
-        String body = await loadJsonFromRepository("story/$path/$data.json");
+        String body = await loadJson("story/$path/$data.json");
         var expected = jsonDecode(body);
         var response = Story.fromJson(expected);
 
@@ -89,7 +89,7 @@ void main() {
     void stories(String data) async {
       test(Constants.getStoriesPath, () async {
         final path = uriPathToFilePath(Constants.getStoriesPath);
-        String body = await loadJsonFromRepository("story/$path/$data.json");
+        String body = await loadJson("story/$path/$data.json");
         var expected = jsonDecode(body);
 
         var length = (expected as List).length;

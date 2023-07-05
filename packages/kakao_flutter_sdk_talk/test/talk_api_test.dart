@@ -123,7 +123,7 @@ void main() {
 
     test("custom without failure infos", () async {
       final path = uriPathToFilePath('${Constants.v1OpenTalkMessagePath}send');
-      final body = await loadJsonFromRepository("talk/$path/success.json");
+      final body = await loadJson("talk/$path/success.json");
       map = jsonDecode(body);
       adapter.setResponseString(body, 200);
 
@@ -142,7 +142,7 @@ void main() {
     test("custom with failure infos", () async {
       final path = uriPathToFilePath('${Constants.v1OpenTalkMessagePath}send');
       final body =
-          await loadJsonFromRepository("talk/$path/partial_success.json");
+          await loadJson("talk/$path/partial_success.json");
       map = jsonDecode(body);
       adapter.setResponseString(body, 200);
 
@@ -166,7 +166,7 @@ void main() {
 
     setUp(() async {
       var path = uriPathToFilePath(Constants.v1ChannelsPath);
-      var body = await loadJsonFromRepository("talk/$path/normal.json");
+      var body = await loadJson("talk/$path/normal.json");
       map = jsonDecode(body);
       adapter.setResponseString(body, 200);
     });

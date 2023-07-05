@@ -12,7 +12,7 @@ void main() {
     void parse(String data) {
       test(data, () async {
         String path = uriPathToFilePath(Constants.profilePath);
-        String body = await loadJsonFromRepository('talk/$path/$data.json');
+        String body = await loadJson('talk/$path/$data.json');
         Map<String, dynamic> expected = jsonDecode(body);
         TalkProfile actual = TalkProfile.fromJson(expected);
 

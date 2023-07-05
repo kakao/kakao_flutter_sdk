@@ -10,7 +10,7 @@ void main() {
     void parse(String data) {
       test(data, () async {
         final path = uriPathToFilePath(Constants.isStoryUserPath);
-        String body = await loadJsonFromRepository("story/$path/$data.json");
+        String body = await loadJson("story/$path/$data.json");
         var expected = jsonDecode(body);
         expect(expected['isStoryUser'] is bool, true);
       });

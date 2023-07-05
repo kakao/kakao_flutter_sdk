@@ -12,7 +12,7 @@ void main() {
       test(data, () async {
         String path = uriPathToFilePath(
             '${Constants.validatePath}/${Constants.defaultTemplate}');
-        String body = await loadJsonFromRepository('share/$path/$data.json');
+        String body = await loadJson('share/$path/$data.json');
         var expected = jsonDecode(body);
         var response = SharingResult.fromJson(expected);
 

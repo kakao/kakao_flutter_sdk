@@ -14,7 +14,7 @@ void main() {
     void parse(String data) {
       test(data, () async {
         final path = uriPathToFilePath(Constants.v2ScopesPath);
-        var body = await loadJsonFromRepository("user/$path/$data.json");
+        var body = await loadJson("user/$path/$data.json");
         Map<String, dynamic> expected = jsonDecode(body);
         var response = ScopeInfo.fromJson(expected);
 

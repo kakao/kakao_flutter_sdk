@@ -32,7 +32,7 @@ void main() {
 
   test('/v2/user/me 200', () async {
     var path = uriPathToFilePath(Constants.v2MePath);
-    String body = await loadJsonFromRepository("user/$path/max.json");
+    String body = await loadJson("user/$path/max.json");
     Map<String, dynamic> map = jsonDecode(body);
     adapter.setResponseString(body, 200);
     User user = await api.me();
@@ -72,7 +72,7 @@ void main() {
 
   test("/v1/user/access_token_info 200", () async {
     final path = uriPathToFilePath(Constants.v1AccessTokenInfoPath);
-    var body = await loadJsonFromRepository("user/$path/normal.json");
+    var body = await loadJson("user/$path/normal.json");
     Map<String, dynamic> map = jsonDecode(body);
     adapter.setResponseString(body, 200);
 
@@ -85,7 +85,7 @@ void main() {
 
   test("/v1/user/shipping_addresses 200", () async {
     final path = uriPathToFilePath(Constants.v1ShippingAddressesPath);
-    String body = await loadJsonFromRepository("user/$path/normal.json");
+    String body = await loadJson("user/$path/normal.json");
     Map<String, dynamic> map = jsonDecode(body);
     adapter.setResponseString(body, 200);
 
@@ -110,7 +110,7 @@ void main() {
 
   test("/v1/user/service/terms 200", () async {
     final path = uriPathToFilePath(Constants.v1ServiceTermsPath);
-    String body = await loadJsonFromRepository("user/$path/normal.json");
+    String body = await loadJson("user/$path/normal.json");
     Map<String, dynamic> map = jsonDecode(body);
     adapter.setResponseString(body, 200);
 

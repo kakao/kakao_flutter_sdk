@@ -11,7 +11,7 @@ void main() {
     void parse(String data) {
       test(data, () async {
         String path = uriPathToFilePath(Constants.tokenPath);
-        String body = await loadJsonFromRepository('auth/$path/$data.json');
+        String body = await loadJson('auth/$path/$data.json');
         Map<String, dynamic> expected = jsonDecode(body);
         AccessTokenResponse actual = AccessTokenResponse.fromJson(expected);
 
