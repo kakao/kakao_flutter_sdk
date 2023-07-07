@@ -51,7 +51,7 @@ flutter:
         pluginClass: KakaoFlutterSdkPlugin
       web:
         pluginClass: KakaoFlutterSdkPlugin
-        fileName: kakao_flutter_sdk_plugin.dart
+        fileName: src/web/kakao_flutter_sdk_plugin.dart
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
