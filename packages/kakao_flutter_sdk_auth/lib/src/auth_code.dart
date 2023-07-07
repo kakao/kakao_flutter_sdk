@@ -27,7 +27,7 @@ class AuthCodeClient {
   /// 사용자가 앱에 로그인할 수 있도록 인가 코드를 요청하는 함수입니다. 인가 코드를 받을 수 있는 서버 개발이 필요합니다.
   Future<String> authorize({
     String? clientId,
-    String? redirectUri,
+    required String redirectUri,
     List<String>? scopes,
     String? agt,
     List<String>? channelPublicIds,
@@ -40,12 +40,11 @@ class AuthCodeClient {
     String? settleId,
     bool webPopupLogin = false,
   }) async {
-    final finalRedirectUri = redirectUri ?? "kakao${_platformKey()}://oauth";
     String? codeChallenge =
         codeVerifier != null ? _codeChallenge(codeVerifier) : null;
     final params = {
-      Constants.clientId: clientId ?? _platformKey(),
-      Constants.redirectUri: finalRedirectUri,
+      Constants.clientId: clientId ?? KakaoSdk.appKey,
+      Constants.redirectUri: redirectUri,
       Constants.responseType: Constants.code,
       // "approval_type": "individual",
       Constants.scope: scopes?.join(" "),
@@ -72,7 +71,7 @@ class AuthCodeClient {
     try {
       final authCode = await launchBrowserTab(
         url,
-        redirectUri: finalRedirectUri,
+        redirectUri: redirectUri,
         popupOpen: webPopupLogin,
       );
 
@@ -87,7 +86,7 @@ class AuthCodeClient {
   /// 인가 코드를 받을 수 있는 서버 개발이 필요합니다.
   Future<String> authorizeWithTalk({
     String? clientId,
-    String? redirectUri,
+    required String redirectUri,
     List<Prompt>? prompts,
     List<String>? channelPublicId,
     List<String>? serviceTerms,
@@ -103,8 +102,8 @@ class AuthCodeClient {
           stateToken ?? (kIsWeb ? generateRandomString(20) : null);
 
       var response = await _openKakaoTalk(
-        clientId ?? _platformKey(),
-        redirectUri ?? "kakao${_platformKey()}://oauth",
+        clientId ?? KakaoSdk.appKey,
+        redirectUri,
         channelPublicId,
         serviceTerms,
         codeVerifier,
@@ -139,8 +138,8 @@ class AuthCodeClient {
   /// 인가 코드를 받을 수 있는 서버 개발이 필요합니다.
   Future<String> authorizeWithNewScopes({
     required List<String> scopes,
+    required String redirectUri,
     String? clientId,
-    String? redirectUri,
     String? codeVerifier,
     String? nonce,
     bool webPopupLogin = false,
@@ -275,10 +274,6 @@ class AuthCodeClient {
       parsedPrompt += '${describeEnum(element).toSnakeCase()} ';
     }
     return parsedPrompt;
-  }
-
-  String _platformKey() {
-    return KakaoSdk.appKey;
   }
 
   /// @nodoc

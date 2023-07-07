@@ -13,11 +13,11 @@ import 'package:platform/platform.dart';
 
 /// Kakao SDK의 카카오 로그인 내부 동작에 사용되는 클라이언트
 class AuthApi {
-  AuthApi(
-      {Dio? dio,
-      Platform? platform,
-      TokenManagerProvider? tokenManagerProvider})
-      : _dio = dio ?? AuthApiFactory.kauthApi,
+  AuthApi({
+    Dio? dio,
+    Platform? platform,
+    TokenManagerProvider? tokenManagerProvider,
+  })  : _dio = dio ?? AuthApiFactory.kauthApi,
         _platform = platform ?? const LocalPlatform(),
         _tokenManagerProvider =
             tokenManagerProvider ?? TokenManagerProvider.instance;
@@ -177,6 +177,6 @@ class AuthApi {
 
   Future<String> _platformRedirectUri() async {
     if (kIsWeb) return await KakaoSdk.origin;
-    return "kakao${KakaoSdk.appKey}://oauth";
+    return KakaoSdk.redirectUri;
   }
 }

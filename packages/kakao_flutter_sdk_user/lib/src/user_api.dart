@@ -27,7 +27,6 @@ class UserApi {
   /// 발급된 토큰은 [TokenManagerProvider]에 지정된 토큰 저장소에 자동으로 저장됨
   /// ID 토큰 재생 공격 방지를 위한 검증 값은 [nonce]로 전달. 임의의 문자열, ID 토큰 검증 시 사용
   Future<OAuthToken> loginWithKakaoTalk({
-    String? redirectUri,
     List<String>? channelPublicIds,
     List<String>? serviceTerms,
     String? nonce,
@@ -42,7 +41,7 @@ class UserApi {
     }
 
     final authCode = await AuthCodeClient.instance.authorizeWithTalk(
-      redirectUri: redirectUrl,
+      redirectUri: redirectUrl ?? KakaoSdk.redirectUri,
       channelPublicId: channelPublicIds,
       serviceTerms: serviceTerms,
       codeVerifier: codeVerifier,
@@ -85,7 +84,7 @@ class UserApi {
     }
 
     final authCode = await AuthCodeClient.instance.authorizeWithTalk(
-      redirectUri: redirectUrl,
+      redirectUri: redirectUrl ?? KakaoSdk.redirectUri,
       prompts: prompts,
       state: state,
       channelPublicId: channelPublicIds,
@@ -118,6 +117,7 @@ class UserApi {
   }) async {
     String codeVerifier = AuthCodeClient.codeVerifier();
     final authCode = await AuthCodeClient.instance.authorize(
+      redirectUri: KakaoSdk.redirectUri,
       prompts: prompts,
       channelPublicIds: channelPublicIds,
       serviceTerms: serviceTerms,
@@ -153,6 +153,7 @@ class UserApi {
   }) async {
     var codeVerifier = AuthCodeClient.codeVerifier();
     final authCode = await AuthCodeClient.instance.authorize(
+      redirectUri: KakaoSdk.redirectUri,
       prompts: prompts,
       state: state,
       channelPublicIds: channelPublicIds,
@@ -180,6 +181,7 @@ class UserApi {
       {String? nonce}) async {
     String codeVerifier = AuthCodeClient.codeVerifier();
     final authCode = await AuthCodeClient.instance.authorizeWithNewScopes(
+      redirectUri: KakaoSdk.redirectUri,
       scopes: scopes,
       codeVerifier: codeVerifier,
       nonce: nonce,

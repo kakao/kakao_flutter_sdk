@@ -79,12 +79,17 @@ class KakaoSdk {
     return await _channel.invokeMethod(CommonConstants.packageName);
   }
 
+  static String get redirectUri => "$_customScheme://oauth";
+
+  static late String _customScheme;
+
   /// [내 애플리케이션]에서 확인한 앱 키로 Flutter SDK 초기화, 서비스 환경별 앱 키 사용
   /// 웹: javaScriptAppKey에 JavaScript 키 전달
   /// 앱: nativeAppKey에 네이티브 앱 키 전달
   static void init({
     String? nativeAppKey,
     String? javaScriptAppKey,
+    String? customScheme,
     ServerHosts? serviceHosts,
     PlatformSupport? platformSupport,
     bool? loggingEnabled,
@@ -96,6 +101,7 @@ class KakaoSdk {
 
     _nativeKey = nativeAppKey ?? "";
     _jsKey = javaScriptAppKey ?? "";
+    _customScheme = customScheme ?? "kakao$appKey";
     hosts = serviceHosts ?? ServerHosts();
     platforms = platformSupport ?? PlatformSupport();
     logging = loggingEnabled ?? false;
