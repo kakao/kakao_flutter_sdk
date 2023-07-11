@@ -9,6 +9,7 @@ export 'package:kakao_flutter_sdk_user/src/model/profile.dart';
 export 'package:kakao_flutter_sdk_user/src/model/scope.dart';
 export 'package:kakao_flutter_sdk_user/src/model/scope_info.dart';
 export 'package:kakao_flutter_sdk_user/src/model/service_terms.dart';
+export 'package:kakao_flutter_sdk_user/src/model/service_terms_response.dart';
 export 'package:kakao_flutter_sdk_user/src/model/shipping_address.dart';
 export 'package:kakao_flutter_sdk_user/src/model/user.dart';
 export 'package:kakao_flutter_sdk_user/src/model/user_id_response.dart';

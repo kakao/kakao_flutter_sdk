@@ -5,12 +5,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_user/src/constants.dart';
+import 'package:kakao_flutter_sdk_user/src/model/service_terms_response.dart';
 
 import 'model/access_token_info.dart';
 import 'model/scope_info.dart';
 import 'model/user.dart';
 import 'model/user_id_response.dart';
-import 'model/user_service_terms.dart';
 import 'model/user_shipping_addresses.dart';
 
 /// 사용자관리 API 호출을 담당하는 클라이언트
@@ -260,13 +260,21 @@ class UserApi {
   }
 
   /// 사용자가 카카오 간편가입을 통해 동의한 서비스 약관 내역 반환
-  Future<UserServiceTerms> serviceTerms({String? extra}) async {
-    Map<String, dynamic> param = {Constants.extra: extra};
+  Future<ServiceTermsResponse> serviceTerms({
+    List<String>? tags,
+    String? result,
+  }) async {
+    Map<String, dynamic> param = {
+      Constants.tags: tags,
+      Constants.result: result,
+    };
     param.removeWhere((k, v) => v == null);
     return ApiFactory.handleApiError(() async {
       Response response =
-          await _dio.get(Constants.v1ServiceTermsPath, queryParameters: param);
-      return UserServiceTerms.fromJson(response.data);
+          await _dio.get(Constants.v2ServiceTermsPath, queryParameters: param);
+      return ServiceTermsResponse.fromJson(response.data);
+    });
+  }
     });
   }
 

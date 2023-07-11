@@ -6,6 +6,7 @@ class Constants {
   static const String v1AccessTokenInfoPath = '/v1/user/access_token_info';
   static const String v1ShippingAddressesPath = '/v1/user/shipping_address';
   static const String v1ServiceTermsPath = '/v1/user/service/terms';
+  static const String v2ServiceTermsPath = '/v2/user/service_terms';
   static const String v1UpdateProfilePath = '/v1/user/update_profile';
   static const String v1SignupPath = '/v1/user/signup';
   static const String v2ScopesPath = '/v2/user/scopes';
@@ -15,6 +16,8 @@ class Constants {
   static const String fromUpdatedAt = 'from_updated_at';
   static const String pageSize = 'page_size';
   static const String extra = 'extra';
+  static const String tags = 'tags';
+  static const String result = 'result';
   static const String properties = 'properties';
   static const String scopes = 'scopes';
 }

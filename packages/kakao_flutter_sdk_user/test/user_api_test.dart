@@ -108,22 +108,25 @@ void main() {
     res.toJson();
   });
 
-  test("/v1/user/service/terms 200", () async {
-    final path = uriPathToFilePath(Constants.v1ServiceTermsPath);
-    String body = await loadJson("user/$path/normal.json");
+  test('/v2/user/service_terms 200', () async {
+    final path = uriPathToFilePath(Constants.v2ServiceTermsPath);
+    String body = await loadJson('user/$path/normal.json');
     Map<String, dynamic> map = jsonDecode(body);
     adapter.setResponseString(body, 200);
 
     var res = await api.serviceTerms();
-    expect(res.userId, map["user_id"]);
-    var terms = res.allowedServiceTerms;
-    var elements = map["allowed_service_terms"];
+    expect(res.id, map['id']);
+    var terms = res.serviceTerms;
+    var elements = map['service_terms'];
 
     expect(terms?.length, elements.length);
     terms?.asMap().forEach((index, it) {
       var element = elements[index];
-      expect(it.tag, element["tag"]);
-      expect(Util.dateTimeWithoutMillis(it.agreedAt), element["agreed_at"]);
+      expect(it.tag, element['tag']);
+      expect(it.required, element['required']);
+      expect(it.agreed, element['agreed']);
+      expect(it.revocable, element['revocable']);
+      expect(Util.dateTimeWithoutMillis(it.agreedAt), element['agreed_at']);
     });
     res.toJson();
   });
