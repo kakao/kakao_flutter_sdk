@@ -7,6 +7,7 @@ class Constants {
   static const String v1ShippingAddressesPath = '/v1/user/shipping_address';
   static const String v1ServiceTermsPath = '/v1/user/service/terms';
   static const String v2ServiceTermsPath = '/v2/user/service_terms';
+  static const String v2RevokeServiceTermsPath = '/v2/user/revoke/service_terms';
   static const String v1UpdateProfilePath = '/v1/user/update_profile';
   static const String v1SignupPath = '/v1/user/signup';
   static const String v2ScopesPath = '/v2/user/scopes';

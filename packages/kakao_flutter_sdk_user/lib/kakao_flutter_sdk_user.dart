@@ -6,6 +6,7 @@ export 'package:kakao_flutter_sdk_user/src/model/access_token_info.dart';
 export 'package:kakao_flutter_sdk_user/src/model/account.dart';
 export 'package:kakao_flutter_sdk_user/src/model/app_service_terms.dart';
 export 'package:kakao_flutter_sdk_user/src/model/profile.dart';
+export 'package:kakao_flutter_sdk_user/src/model/revoke_service_terms_response.dart';
 export 'package:kakao_flutter_sdk_user/src/model/scope.dart';
 export 'package:kakao_flutter_sdk_user/src/model/scope_info.dart';
 export 'package:kakao_flutter_sdk_user/src/model/service_terms.dart';
