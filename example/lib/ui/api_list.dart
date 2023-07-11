@@ -443,6 +443,18 @@ class _ApiListState extends State<ApiList> {
           Log.e(context, tag, '약관 확인하기 실패', e);
         }
       }),
+      ApiItem('revokeServiceTerms()', () async {
+        // 약관 철회하기
+
+        try {
+          RevokeServiceTermsResponse response =
+              await UserApi.instance.revokeServiceTerms(tags: ['test']);
+          Log.i(context, tag,
+              '약관 철회하기 성공\n회원정보: ${response.id}\n철회한 약관: \n${response.revokedServiceTerms?.join('\n')}');
+        } catch (e) {
+          Log.e(context, tag, '약관 철회하기 실패', e);
+        }
+      }),
       ApiItem('logout()', () async {
         // 로그아웃
 
