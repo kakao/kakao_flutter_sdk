@@ -412,12 +412,35 @@ class _ApiListState extends State<ApiList> {
         // 동의한 약관 확인하기
 
         try {
-          UserServiceTerms userServiceTerms =
-              await UserApi.instance.serviceTerms();
+          ServiceTermsResponse response = await UserApi.instance.serviceTerms();
           Log.i(context, tag,
-              '동의한 약관 확인하기 성공\n회원정보: ${userServiceTerms.userId}\n동의한 약관: \n${userServiceTerms.allowedServiceTerms?.join('\n')}');
+              '동의한 약관 확인하기 성공\n회원정보: ${response.id}\n동의한 약관: \n${response.serviceTerms?.join('\n')}');
         } catch (e) {
           Log.e(context, tag, '동의한 약관 확인하기 실패', e);
+        }
+      }),
+      ApiItem('serviceTerms(app_service_terms)', () async {
+        // 전체 약관 확인하기
+
+        try {
+          ServiceTermsResponse response =
+              await UserApi.instance.serviceTerms(result: 'app_service_terms');
+          Log.i(context, tag,
+              '전체 약관 확인하기 성공\n회원정보: ${response.id}\n약관: \n${response.serviceTerms?.join('\n')}');
+        } catch (e) {
+          Log.e(context, tag, '전체 약관 확인하기 실패', e);
+        }
+      }),
+      ApiItem('serviceTerms(tags)', () async {
+        // 특정 약관 확인하기
+
+        try {
+          ServiceTermsResponse response =
+              await UserApi.instance.serviceTerms(tags: ['policy']);
+          Log.i(context, tag,
+              '약관 확인하기 성공\n회원정보: ${response.id}\n약관: \n${response.serviceTerms?.join('\n')}');
+        } catch (e) {
+          Log.e(context, tag, '약관 확인하기 실패', e);
         }
       }),
       ApiItem('logout()', () async {
