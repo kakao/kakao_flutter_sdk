@@ -260,7 +260,10 @@ class UserApi {
     });
   }
 
-  /// 사용자가 카카오 간편가입을 통해 동의한 서비스 약관 내역 반환
+  /// 서비스 약관 내역 반환.
+  ///
+  /// [tags]로 조회할 서비스 약관에 설정된 tag 목록을 지정함
+  /// [result]에 app_service_terms를 지정해 앱에 사용 설정된 서비스 약관 목록 요청 가능
   Future<UserServiceTerms> serviceTerms({
     List<String>? tags,
     String? result,
@@ -277,6 +280,7 @@ class UserApi {
     });
   }
 
+  /// 특정 서비스 약관에 대한 동의를 철회하고, 동의 철회가 반영된 서비스 약관 목록 반환
   Future<UserRevokedServiceTerms> revokeServiceTerms(
       {required List<String> tags}) async {
     Map<String, dynamic> param = {Constants.tags: tags.join(',')};

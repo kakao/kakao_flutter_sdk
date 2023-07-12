@@ -5,17 +5,19 @@ part 'service_terms.g.dart';
 /// 3rd party 서비스 약관 정보 클래스
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class ServiceTerms {
-  /// 동의한 약관의 tag. 3rd 에서 설정한 값
+  /// 3rd 에서 설정한 서비스 약관의 tag
   String tag;
 
+  /// 필수 동의 여부
   bool required;
 
+  /// 동의 여부
   bool agreed;
 
+  /// 철회 가능 여부
   bool revocable;
 
-  /// 동의한 시간
-  /// 약관이 여러번 뜨는 구조라면, 마지막으로 동의한 시간
+  /// 최근 동의 시각
   DateTime? agreedAt;
 
   /// @nodoc
