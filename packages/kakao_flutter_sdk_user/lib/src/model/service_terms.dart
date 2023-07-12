@@ -8,11 +8,11 @@ class ServiceTerms {
   /// 동의한 약관의 tag. 3rd 에서 설정한 값
   String tag;
 
-  bool? required;
+  bool required;
 
   bool agreed;
 
-  bool? revocable;
+  bool revocable;
 
   /// 동의한 시간
   /// 약관이 여러번 뜨는 구조라면, 마지막으로 동의한 시간

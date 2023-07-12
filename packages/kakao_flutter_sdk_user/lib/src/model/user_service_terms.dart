@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk_user/src/model/app_service_terms.dart';
 import 'package:kakao_flutter_sdk_user/src/model/service_terms.dart';
 
 part 'user_service_terms.g.dart';
@@ -9,14 +8,12 @@ part 'user_service_terms.g.dart';
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class UserServiceTerms {
   /// 회원번호
-  int? userId;
+  int id;
 
-  /// 사용자가 동의한 3rd의 약관 항목들
-  List<ServiceTerms>? allowedServiceTerms;
-  List<AppServiceTerms>? appServiceTerms;
+  List<ServiceTerms>? serviceTerms;
 
   /// @nodoc
-  UserServiceTerms(this.userId, this.allowedServiceTerms);
+  UserServiceTerms(this.id, this.serviceTerms);
 
   /// @nodoc
   factory UserServiceTerms.fromJson(Map<String, dynamic> json) =>

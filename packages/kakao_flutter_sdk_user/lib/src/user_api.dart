@@ -5,8 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_user/src/constants.dart';
-import 'package:kakao_flutter_sdk_user/src/model/revoke_service_terms_response.dart';
-import 'package:kakao_flutter_sdk_user/src/model/service_terms_response.dart';
+import 'package:kakao_flutter_sdk_user/src/model/user_revoked_service_terms.dart';
+import 'package:kakao_flutter_sdk_user/src/model/user_service_terms.dart';
 
 import 'model/access_token_info.dart';
 import 'model/scope_info.dart';
@@ -261,7 +261,7 @@ class UserApi {
   }
 
   /// 사용자가 카카오 간편가입을 통해 동의한 서비스 약관 내역 반환
-  Future<ServiceTermsResponse> serviceTerms({
+  Future<UserServiceTerms> serviceTerms({
     List<String>? tags,
     String? result,
   }) async {
@@ -273,17 +273,17 @@ class UserApi {
     return ApiFactory.handleApiError(() async {
       Response response =
           await _dio.get(Constants.v2ServiceTermsPath, queryParameters: param);
-      return ServiceTermsResponse.fromJson(response.data);
+      return UserServiceTerms.fromJson(response.data);
     });
   }
 
-  Future<RevokeServiceTermsResponse> revokeServiceTerms(
+  Future<UserRevokedServiceTerms> revokeServiceTerms(
       {required List<String> tags}) async {
     Map<String, dynamic> param = {Constants.tags: tags.join(',')};
     return ApiFactory.handleApiError(() async {
       Response response = await _dio.post(Constants.v2RevokeServiceTermsPath,
           queryParameters: param);
-      return RevokeServiceTermsResponse.fromJson(response.data);
+      return UserRevokedServiceTerms.fromJson(response.data);
     });
   }
 

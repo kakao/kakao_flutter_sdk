@@ -412,9 +412,10 @@ class _ApiListState extends State<ApiList> {
         // 동의한 약관 확인하기
 
         try {
-          ServiceTermsResponse response = await UserApi.instance.serviceTerms();
+          UserServiceTerms userServiceTerms =
+              await UserApi.instance.serviceTerms();
           Log.i(context, tag,
-              '동의한 약관 확인하기 성공\n회원정보: ${response.id}\n동의한 약관: \n${response.serviceTerms?.join('\n')}');
+              '동의한 약관 확인하기 성공\n회원정보: ${userServiceTerms.id}\n동의한 약관: \n${userServiceTerms.serviceTerms?.join('\n')}');
         } catch (e) {
           Log.e(context, tag, '동의한 약관 확인하기 실패', e);
         }
@@ -423,10 +424,10 @@ class _ApiListState extends State<ApiList> {
         // 전체 약관 확인하기
 
         try {
-          ServiceTermsResponse response =
+          UserServiceTerms userServiceTerms =
               await UserApi.instance.serviceTerms(result: 'app_service_terms');
           Log.i(context, tag,
-              '전체 약관 확인하기 성공\n회원정보: ${response.id}\n약관: \n${response.serviceTerms?.join('\n')}');
+              '전체 약관 확인하기 성공\n회원정보: ${userServiceTerms.id}\n약관: \n${userServiceTerms.serviceTerms?.join('\n')}');
         } catch (e) {
           Log.e(context, tag, '전체 약관 확인하기 실패', e);
         }
@@ -435,10 +436,10 @@ class _ApiListState extends State<ApiList> {
         // 특정 약관 확인하기
 
         try {
-          ServiceTermsResponse response =
+          UserServiceTerms userServiceTerms =
               await UserApi.instance.serviceTerms(tags: ['policy']);
           Log.i(context, tag,
-              '약관 확인하기 성공\n회원정보: ${response.id}\n약관: \n${response.serviceTerms?.join('\n')}');
+              '약관 확인하기 성공\n회원정보: ${userServiceTerms.id}\n약관: \n${userServiceTerms.serviceTerms?.join('\n')}');
         } catch (e) {
           Log.e(context, tag, '약관 확인하기 실패', e);
         }
@@ -447,10 +448,10 @@ class _ApiListState extends State<ApiList> {
         // 약관 철회하기
 
         try {
-          RevokeServiceTermsResponse response =
+          UserRevokedServiceTerms userRevokedServiceTerms =
               await UserApi.instance.revokeServiceTerms(tags: ['test']);
           Log.i(context, tag,
-              '약관 철회하기 성공\n회원정보: ${response.id}\n철회한 약관: \n${response.revokedServiceTerms?.join('\n')}');
+              '약관 철회하기 성공\n회원정보: ${userRevokedServiceTerms.id}\n철회한 약관: \n${userRevokedServiceTerms.revokedServiceTerms?.join('\n')}');
         } catch (e) {
           Log.e(context, tag, '약관 철회하기 실패', e);
         }

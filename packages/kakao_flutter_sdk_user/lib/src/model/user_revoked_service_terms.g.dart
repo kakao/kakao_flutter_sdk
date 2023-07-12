@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'service_terms_response.dart';
+part of 'user_revoked_service_terms.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ServiceTermsResponse _$ServiceTermsResponseFromJson(
+UserRevokedServiceTerms _$UserRevokedServiceTermsFromJson(
         Map<String, dynamic> json) =>
-    ServiceTermsResponse(
+    UserRevokedServiceTerms(
       json['id'] as int,
-      (json['service_terms'] as List<dynamic>?)
-          ?.map((e) => ServiceTerms.fromJson(e as Map<String, dynamic>))
+      (json['revoked_service_terms'] as List<dynamic>?)
+          ?.map((e) => RevokedServiceTerms.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$ServiceTermsResponseToJson(
-    ServiceTermsResponse instance) {
+Map<String, dynamic> _$UserRevokedServiceTermsToJson(
+    UserRevokedServiceTerms instance) {
   final val = <String, dynamic>{
     'id': instance.id,
   };
@@ -27,7 +27,7 @@ Map<String, dynamic> _$ServiceTermsResponseToJson(
     }
   }
 
-  writeNotNull(
-      'service_terms', instance.serviceTerms?.map((e) => e.toJson()).toList());
+  writeNotNull('revoked_service_terms',
+      instance.revokedServiceTerms?.map((e) => e.toJson()).toList());
   return val;
 }
