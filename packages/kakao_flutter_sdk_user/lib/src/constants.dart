@@ -5,7 +5,6 @@ class Constants {
   static const String v1UnlinkPath = '/v1/user/unlink';
   static const String v1AccessTokenInfoPath = '/v1/user/access_token_info';
   static const String v1ShippingAddressesPath = '/v1/user/shipping_address';
-  static const String v1ServiceTermsPath = '/v1/user/service/terms';
   static const String v2ServiceTermsPath = '/v2/user/service_terms';
   static const String v2RevokeServiceTermsPath = '/v2/user/revoke/service_terms';
   static const String v1UpdateProfilePath = '/v1/user/update_profile';

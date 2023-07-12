@@ -4,7 +4,6 @@ library kakao_flutter_sdk_user;
 export 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 export 'package:kakao_flutter_sdk_user/src/model/access_token_info.dart';
 export 'package:kakao_flutter_sdk_user/src/model/account.dart';
-export 'package:kakao_flutter_sdk_user/src/model/app_service_terms.dart';
 export 'package:kakao_flutter_sdk_user/src/model/profile.dart';
 export 'package:kakao_flutter_sdk_user/src/model/revoked_service_terms.dart';
 export 'package:kakao_flutter_sdk_user/src/model/scope.dart';
