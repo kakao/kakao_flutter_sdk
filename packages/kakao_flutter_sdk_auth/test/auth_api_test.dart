@@ -1,87 +1,65 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
-import 'package:kakao_flutter_sdk_auth/src/model/access_token_response.dart';
+import 'package:kakao_flutter_sdk_auth/src/constants.dart';
 import 'package:platform/platform.dart';
 
 import '../../kakao_flutter_sdk_common/test/helper.dart';
 import '../../kakao_flutter_sdk_common/test/mock_adapter.dart';
+import 'test_double.dart';
 
 void main() {
-  late Dio _dio;
-  late MockAdapter _adapter;
-  late AuthApi _authApi;
-  late TokenManager _tokenManager;
+  late Dio dio;
+  late MockAdapter adapter;
+  late AuthApi authApi;
+  late TokenManager tokenManager;
 
   var appKey = "sample_app_key";
   KakaoSdk.init(nativeAppKey: appKey);
 
   TestWidgetsFlutterBinding.ensureInitialized();
-  const MethodChannel channel = MethodChannel(CommonConstants.methodChannel);
+  registerMockMethodChannel();
 
-  const MethodChannel('plugins.flutter.io/shared_preferences')
-      .setMockMethodCallHandler((MethodCall methodCall) async {
-    if (methodCall.method == 'getAll') {
-      return <String, dynamic>{}; // set initial values here if desired
-    }
-    if (methodCall.method.startsWith("set") || methodCall.method == 'remove') {
-      return true;
-    }
-    return null;
-  });
-  const MethodChannel('plugins.flutter.io/shared_preferences_macos')
-      .setMockMethodCallHandler((MethodCall methodCall) async {
-    if (methodCall.method == 'getAll') {
-      return <String, dynamic>{}; // set initial values here if desired
-    }
-    if (methodCall.method.startsWith("set") || methodCall.method == 'remove') {
-      return true;
-    }
-    return null;
-  });
+  DateTime expiresAt = DateTime.fromMillisecondsSinceEpoch(
+      DateTime.now().millisecondsSinceEpoch + 1000 * 60 * 60 * 12);
+  DateTime refreshTokenExpiresAt = DateTime.fromMillisecondsSinceEpoch(
+      DateTime.now().millisecondsSinceEpoch + 1000 * 60 * 60 * 24 * 30 * 2);
 
   setUp(() {
-    _dio = Dio();
-    _adapter = MockAdapter();
-    _dio.httpClientAdapter = _adapter;
-    _dio.interceptors.add(ApiFactory.kaInterceptor);
-    _dio.options.baseUrl = "https://${KakaoSdk.hosts.kauth}";
-    _authApi = AuthApi(dio: _dio);
-    _tokenManager = DefaultTokenManager();
-    channel.setMockMethodCallHandler((MethodCall methodCall) async {
-      if (methodCall.method == 'platformId') {
-        return Uint8List.fromList([1, 2, 3, 4, 5]);
-      }
-      return "sample_origin";
-    });
-  });
-
-  tearDown(() {
-    channel.setMockMethodCallHandler(null);
+    dio = Dio();
+    adapter = MockAdapter();
+    dio.httpClientAdapter = adapter;
+    dio.interceptors.add(ApiFactory.kaInterceptor);
+    dio.options.baseUrl = "https://${KakaoSdk.hosts.kauth}";
+    authApi = AuthApi(dio: dio);
+    tokenManager = TestTokenManager(testOAuthToken(
+      expiresAt: expiresAt,
+      refreshTokenExpiresAt: refreshTokenExpiresAt,
+    ));
+    TokenManagerProvider.instance.manager = tokenManager;
   });
 
   group("/oauth/token 200", () {
     OAuthToken token;
     setUp(() async {
-      String body = await loadJson("oauth/token_with_rt_and_scopes.json");
-      _adapter.setResponseString(body, 200);
+      final path = uriPathToFilePath(Constants.tokenPath);
+      String body = await loadJson("auth/$path/has_rt_and_scopes.json");
+      adapter.setResponseString(body, 200);
     });
 
     tearDown(() async {
       // before checking token, clear tokenManager
-      await _tokenManager.clear();
+      await tokenManager.clear();
 
-      token = await _authApi.issueAccessToken(
+      token = await authApi.issueAccessToken(
           authCode: "auth_code",
           redirectUri: "kakaosample_app_key://oauth",
           appKey: "sample_app_key");
-      await _tokenManager.setToken(token);
-      final newToken = await _tokenManager.getToken();
+      await tokenManager.setToken(token);
+      final newToken = await tokenManager.getToken();
       expect(true, newToken != null);
       expect(true, token.accessToken == newToken!.accessToken);
       expect(true, token.expiresAt == newToken.expiresAt);
@@ -91,66 +69,53 @@ void main() {
       expect(true, listEquals(token.scopes, newToken.scopes));
     });
     test('on android', () async {
-      _authApi = AuthApi(
-          dio: _dio, platform: FakePlatform(operatingSystem: "android"));
+      authApi =
+          AuthApi(dio: dio, platform: FakePlatform(operatingSystem: "android"));
     });
 
     test("on ios", () async {
-      _authApi =
-          AuthApi(dio: _dio, platform: FakePlatform(operatingSystem: "ios"));
+      authApi =
+          AuthApi(dio: dio, platform: FakePlatform(operatingSystem: "ios"));
     });
   });
 
-  test('/oauth/token 400', () async {
-    String body = await loadJson("errors/misconfigured.json");
-    _adapter.setResponseString(body, 401);
-    try {
-      await _authApi.issueAccessToken(
-          authCode: "authCode",
-          redirectUri: "kakaosample_app_key://oauth",
-          appKey: "sample_app_key");
-      fail("Should not reach here");
-    } on KakaoAuthException catch (e) {
-      expect(e.error, AuthErrorCause.misconfigured);
-    } catch (e) {
-      expect(e, isInstanceOf<KakaoAuthException>());
-    }
-  });
-
   test('oauth_token without refresh_token - web spec', () async {
-    String body = await loadJson("oauth/token.json");
-    _adapter.setResponseString(body, 200);
+    final path = uriPathToFilePath(Constants.tokenPath);
+    String body = await loadJson("auth/$path/no_rt.json");
+    adapter.setResponseString(body, 200);
     try {
-      OAuthToken token = await _authApi.issueAccessToken(
+      await authApi.issueAccessToken(
           authCode: "authCode",
           redirectUri: "kakaosample_app_key://oauth",
           appKey: "sample_app_key");
-      print(jsonEncode(token));
     } catch (e) {
       fail("Should not reach here");
     }
   });
 
   group("/oauth/token refresh access token only", () {
-    var refreshToken = "e8sAQWpgBDWPGcvN1_tJR24QVcdAcHgopdtYAAAFi_FnbLAiMpaTTZ";
+    var refreshToken = "iMpaTTZe8sAQWpgBDWPGcvN1_tJR24QVcdAcHgopdtYAAAFi_FnbLA";
     var redirectUri = "kakaosample_app_key://oauth";
 
     setUp(() async {
-      String body = await loadJson("oauth/token.json");
-      _adapter.setResponseString(body, 200);
+      final path = uriPathToFilePath(Constants.tokenPath);
+      String body = await loadJson('auth/$path/no_rt.json');
+      adapter.setResponseString(body, 200);
     });
 
     tearDown(() async {
       // setting oldToken
-      var tokenJson = await loadJson("oauth/token_with_rt_and_scopes.json");
+      final path = uriPathToFilePath(Constants.tokenPath);
+      var tokenJson = await loadJson("auth/$path/has_rt_and_scopes.json");
       var tokenResponse = AccessTokenResponse.fromJson(jsonDecode(tokenJson));
-      await _tokenManager.setToken(OAuthToken.fromResponse(tokenResponse));
-      final oldToken = await _tokenManager.getToken();
+      await tokenManager.setToken(OAuthToken.fromResponse(tokenResponse));
+      final oldToken = await tokenManager.getToken();
 
       expect(true, oldToken != null);
 
-      var newToken = await _authApi.refreshToken(
+      var newToken = await authApi.refreshToken(
           oldToken: oldToken!, redirectUri: redirectUri, appKey: appKey);
+
       expect(true, oldToken.accessToken != newToken.accessToken);
       expect(true, oldToken.expiresAt != newToken.expiresAt);
       expect(true, oldToken.refreshToken == newToken.refreshToken);
@@ -160,9 +125,9 @@ void main() {
     });
 
     test("on android", () async {
-      _authApi = AuthApi(
-          dio: _dio, platform: FakePlatform(operatingSystem: "android"));
-      _adapter.requestAssertions = (RequestOptions options) {
+      authApi =
+          AuthApi(dio: dio, platform: FakePlatform(operatingSystem: "android"));
+      adapter.requestAssertions = (RequestOptions options) {
         expect(options.method, "POST");
         expect(options.path, "/oauth/token");
         Map<String, dynamic> params = options.data;
@@ -173,10 +138,11 @@ void main() {
         expect(params["android_key_hash"], "sample_origin");
       };
     });
+
     test("on ios", () async {
-      _authApi =
-          AuthApi(dio: _dio, platform: FakePlatform(operatingSystem: "ios"));
-      _adapter.requestAssertions = (RequestOptions options) {
+      authApi =
+          AuthApi(dio: dio, platform: FakePlatform(operatingSystem: "ios"));
+      adapter.requestAssertions = (RequestOptions options) {
         expect(options.method, "POST");
         expect(options.path, "/oauth/token");
         Map<String, dynamic> params = options.data;
@@ -193,9 +159,9 @@ void main() {
       "/oauth/token 400 with wrong enum value and missing description should have both fields as null",
       () async {
     String body = jsonEncode({"error": "invalid_credentials"});
-    _adapter.setResponseString(body, 401);
+    adapter.setResponseString(body, 401);
     try {
-      await _authApi.issueAccessToken(
+      await authApi.issueAccessToken(
           authCode: "authCode",
           redirectUri: "kakaosample_app_key://oauth",
           appKey: "sample_app_key");
@@ -208,26 +174,28 @@ void main() {
   });
 
   group("/oauth/token refresh access token and refresh token", () {
-    var refreshToken = "e8sAQWpgBDWPGcvN1_tJR24QVcdAcHgopdtYAAAFi_FnbLAiMpaTTZ";
+    var refreshToken = "iMpaTTZe8sAQWpgBDWPGcvN1_tJR24QVcdAcHgopdtYAAAFi_FnbLA";
     var redirectUri = "kakaosample_app_key://oauth";
     var clientId = "sample_app_key";
     OAuthToken? newToken;
 
     setUp(() async {
-      String body = await loadJson("oauth/token_with_rt.json");
-      _adapter.setResponseString(body, 200);
+      final path = uriPathToFilePath(Constants.tokenPath);
+      String body = await loadJson("auth/$path/has_rt.json");
+      adapter.setResponseString(body, 200);
     });
 
     tearDown(() async {
       // setting oldToken
-      var tokenJson = await loadJson("oauth/token_with_rt_and_scopes.json");
+      final path = uriPathToFilePath(Constants.tokenPath);
+      var tokenJson = await loadJson("auth/$path/has_rt_and_scopes.json");
       var tokenResponse = AccessTokenResponse.fromJson(jsonDecode(tokenJson));
-      await _tokenManager.setToken(OAuthToken.fromResponse(tokenResponse));
-      final oldToken = await _tokenManager.getToken();
+      await tokenManager.setToken(OAuthToken.fromResponse(tokenResponse));
+      final oldToken = await tokenManager.getToken();
 
       expect(true, oldToken != null);
 
-      newToken = await _authApi.refreshToken(
+      newToken = await authApi.refreshToken(
           oldToken: oldToken!, redirectUri: redirectUri, appKey: clientId);
 
       expect(true, newToken != null);
@@ -240,9 +208,9 @@ void main() {
     });
 
     test("on android", () async {
-      _authApi = AuthApi(
-          dio: _dio, platform: FakePlatform(operatingSystem: "android"));
-      _adapter.requestAssertions = (RequestOptions options) {
+      authApi =
+          AuthApi(dio: dio, platform: FakePlatform(operatingSystem: "android"));
+      adapter.requestAssertions = (RequestOptions options) {
         expect(options.method, "POST");
         expect(options.path, "/oauth/token");
         Map<String, dynamic> params = options.data;
@@ -253,10 +221,11 @@ void main() {
         expect(params["android_key_hash"], "sample_origin");
       };
     });
+
     test("on ios", () async {
-      _authApi =
-          AuthApi(dio: _dio, platform: FakePlatform(operatingSystem: "ios"));
-      _adapter.requestAssertions = (RequestOptions options) {
+      authApi =
+          AuthApi(dio: dio, platform: FakePlatform(operatingSystem: "ios"));
+      adapter.requestAssertions = (RequestOptions options) {
         expect(options.method, "POST");
         expect(options.path, "/oauth/token");
         Map<String, dynamic> params = options.data;

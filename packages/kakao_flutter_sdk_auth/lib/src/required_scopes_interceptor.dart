@@ -25,7 +25,8 @@ class RequiredScopesInterceptor extends Interceptor {
 
     var requiredScopes = error.requiredScopes;
 
-    if(error.code != ApiErrorCause.insufficientScope || requiredScopes == null) {
+    if (error.code != ApiErrorCause.insufficientScope ||
+        requiredScopes == null) {
       handler.next(err);
       return;
     }
@@ -49,7 +50,9 @@ class RequiredScopesInterceptor extends Interceptor {
       try {
         // get additional consents
         final authCode = await _authCodeClient.authorizeWithNewScopes(
-            scopes: requiredScopes);
+          redirectUri: KakaoSdk.redirectUri,
+          scopes: requiredScopes,
+        );
         final token =
             await AuthApi.instance.issueAccessToken(authCode: authCode);
         await _tokenManagerProvider.manager.setToken(token);
@@ -62,7 +65,7 @@ class RequiredScopesInterceptor extends Interceptor {
       } catch (error) {
         if (error is DioError) {
           handler.reject(error);
-        } else if(error is KakaoAuthException){
+        } else if (error is KakaoAuthException) {
           // KakaoAuthException is thrown when the 'Cancel' button is pressed in the additional consent page
           handler.reject(DioError(requestOptions: options, error: error));
         } else {

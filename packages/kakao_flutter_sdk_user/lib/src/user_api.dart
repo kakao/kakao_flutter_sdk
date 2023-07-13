@@ -5,12 +5,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_user/src/constants.dart';
+import 'package:kakao_flutter_sdk_user/src/model/user_revoked_service_terms.dart';
+import 'package:kakao_flutter_sdk_user/src/model/user_service_terms.dart';
 
 import 'model/access_token_info.dart';
 import 'model/scope_info.dart';
 import 'model/user.dart';
 import 'model/user_id_response.dart';
-import 'model/user_service_terms.dart';
 import 'model/user_shipping_addresses.dart';
 
 /// 사용자관리 API 호출을 담당하는 클라이언트
@@ -27,7 +28,6 @@ class UserApi {
   /// 발급된 토큰은 [TokenManagerProvider]에 지정된 토큰 저장소에 자동으로 저장됨
   /// ID 토큰 재생 공격 방지를 위한 검증 값은 [nonce]로 전달. 임의의 문자열, ID 토큰 검증 시 사용
   Future<OAuthToken> loginWithKakaoTalk({
-    String? redirectUri,
     List<String>? channelPublicIds,
     List<String>? serviceTerms,
     String? nonce,
@@ -42,7 +42,7 @@ class UserApi {
     }
 
     final authCode = await AuthCodeClient.instance.authorizeWithTalk(
-      redirectUri: redirectUrl,
+      redirectUri: redirectUrl ?? KakaoSdk.redirectUri,
       channelPublicId: channelPublicIds,
       serviceTerms: serviceTerms,
       codeVerifier: codeVerifier,
@@ -85,7 +85,7 @@ class UserApi {
     }
 
     final authCode = await AuthCodeClient.instance.authorizeWithTalk(
-      redirectUri: redirectUrl,
+      redirectUri: redirectUrl ?? KakaoSdk.redirectUri,
       prompts: prompts,
       state: state,
       channelPublicId: channelPublicIds,
@@ -118,6 +118,7 @@ class UserApi {
   }) async {
     String codeVerifier = AuthCodeClient.codeVerifier();
     final authCode = await AuthCodeClient.instance.authorize(
+      redirectUri: KakaoSdk.redirectUri,
       prompts: prompts,
       channelPublicIds: channelPublicIds,
       serviceTerms: serviceTerms,
@@ -153,6 +154,7 @@ class UserApi {
   }) async {
     var codeVerifier = AuthCodeClient.codeVerifier();
     final authCode = await AuthCodeClient.instance.authorize(
+      redirectUri: KakaoSdk.redirectUri,
       prompts: prompts,
       state: state,
       channelPublicIds: channelPublicIds,
@@ -180,6 +182,7 @@ class UserApi {
       {String? nonce}) async {
     String codeVerifier = AuthCodeClient.codeVerifier();
     final authCode = await AuthCodeClient.instance.authorizeWithNewScopes(
+      redirectUri: KakaoSdk.redirectUri,
       scopes: scopes,
       codeVerifier: codeVerifier,
       nonce: nonce,
@@ -257,14 +260,34 @@ class UserApi {
     });
   }
 
-  /// 사용자가 카카오 간편가입을 통해 동의한 서비스 약관 내역 반환
-  Future<UserServiceTerms> serviceTerms({String? extra}) async {
-    Map<String, dynamic> param = {Constants.extra: extra};
+  /// 서비스 약관 내역 반환.
+  ///
+  /// [tags]로 조회할 서비스 약관에 설정된 tag 목록을 지정함
+  /// [result]에 app_service_terms를 지정해 앱에 사용 설정된 서비스 약관 목록 요청 가능
+  Future<UserServiceTerms> serviceTerms({
+    List<String>? tags,
+    String? result,
+  }) async {
+    Map<String, dynamic> param = {
+      Constants.tags: tags,
+      Constants.result: result,
+    };
     param.removeWhere((k, v) => v == null);
     return ApiFactory.handleApiError(() async {
       Response response =
-          await _dio.get(Constants.v1ServiceTermsPath, queryParameters: param);
+          await _dio.get(Constants.v2ServiceTermsPath, queryParameters: param);
       return UserServiceTerms.fromJson(response.data);
+    });
+  }
+
+  /// 특정 서비스 약관에 대한 동의를 철회하고, 동의 철회가 반영된 서비스 약관 목록 반환
+  Future<UserRevokedServiceTerms> revokeServiceTerms(
+      {required List<String> tags}) async {
+    Map<String, dynamic> param = {Constants.tags: tags.join(',')};
+    return ApiFactory.handleApiError(() async {
+      Response response = await _dio.post(Constants.v2RevokeServiceTermsPath,
+          queryParameters: param);
+      return UserRevokedServiceTerms.fromJson(response.data);
     });
   }
 

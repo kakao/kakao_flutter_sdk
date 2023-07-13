@@ -1,8 +1,0 @@
-{
-  "access_token": "hgwYLqnO_sgKTmYGes8s3E_LQopdtYAAAFi_FnbLQYWKe9JcmM-gYB",
-  "token_type": "bearer",
-  "refresh_token": "e8sAQWpgBDWPGcvN1_tJR24QVcdAcHgopdtYAAAFi_FnbLAiMpaTTZ",
-  "expires_in": 43199,
-  "scope": "account_email story_read talk_message gender account_ci talk_profile_home profile talk_chats account_birthdate story_publish emoticon friends",
-  "refresh_token_expires_in": 2591999
-}

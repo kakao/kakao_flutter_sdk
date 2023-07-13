@@ -11,6 +11,8 @@ import 'package:kakao_flutter_sdk_auth/src/utils.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:platform/platform.dart';
 
+import 'model/prompt.dart';
+
 const MethodChannel _channel = MethodChannel(CommonConstants.methodChannel);
 
 /// Kakao SDK의 카카오 로그인 내부 동작에 사용되는 클라이언트
@@ -25,7 +27,7 @@ class AuthCodeClient {
   /// 사용자가 앱에 로그인할 수 있도록 인가 코드를 요청하는 함수입니다. 인가 코드를 받을 수 있는 서버 개발이 필요합니다.
   Future<String> authorize({
     String? clientId,
-    String? redirectUri,
+    required String redirectUri,
     List<String>? scopes,
     String? agt,
     List<String>? channelPublicIds,
@@ -38,12 +40,11 @@ class AuthCodeClient {
     String? settleId,
     bool webPopupLogin = false,
   }) async {
-    final finalRedirectUri = redirectUri ?? "kakao${_platformKey()}://oauth";
     String? codeChallenge =
         codeVerifier != null ? _codeChallenge(codeVerifier) : null;
     final params = {
-      Constants.clientId: clientId ?? _platformKey(),
-      Constants.redirectUri: finalRedirectUri,
+      Constants.clientId: clientId ?? KakaoSdk.appKey,
+      Constants.redirectUri: redirectUri,
       Constants.responseType: Constants.code,
       // "approval_type": "individual",
       Constants.scope: scopes?.join(" "),
@@ -70,7 +71,7 @@ class AuthCodeClient {
     try {
       final authCode = await launchBrowserTab(
         url,
-        redirectUri: finalRedirectUri,
+        redirectUri: redirectUri,
         popupOpen: webPopupLogin,
       );
 
@@ -85,7 +86,7 @@ class AuthCodeClient {
   /// 인가 코드를 받을 수 있는 서버 개발이 필요합니다.
   Future<String> authorizeWithTalk({
     String? clientId,
-    String? redirectUri,
+    required String redirectUri,
     List<Prompt>? prompts,
     List<String>? channelPublicId,
     List<String>? serviceTerms,
@@ -101,8 +102,8 @@ class AuthCodeClient {
           stateToken ?? (kIsWeb ? generateRandomString(20) : null);
 
       var response = await _openKakaoTalk(
-        clientId ?? _platformKey(),
-        redirectUri ?? "kakao${_platformKey()}://oauth",
+        clientId ?? KakaoSdk.appKey,
+        redirectUri,
         channelPublicId,
         serviceTerms,
         codeVerifier,
@@ -137,8 +138,8 @@ class AuthCodeClient {
   /// 인가 코드를 받을 수 있는 서버 개발이 필요합니다.
   Future<String> authorizeWithNewScopes({
     required List<String> scopes,
+    required String redirectUri,
     String? clientId,
-    String? redirectUri,
     String? codeVerifier,
     String? nonce,
     bool webPopupLogin = false,
@@ -270,13 +271,9 @@ class AuthCodeClient {
   String _parsePrompts(List<Prompt> prompts) {
     var parsedPrompt = '';
     for (var element in prompts) {
-      parsedPrompt += '${describeEnum(element).toLowerCase()} ';
+      parsedPrompt += '${describeEnum(element).toSnakeCase()} ';
     }
     return parsedPrompt;
-  }
-
-  String _platformKey() {
-    return KakaoSdk.appKey;
   }
 
   /// @nodoc
@@ -293,16 +290,4 @@ class AuthCodeClient {
             sha512.convert(utf8.encode(UniqueKey().toString())).bytes)
         .split('=')[0];
   }
-}
-
-/// 동의 화면 요청 시 추가 상호작용을 요청하고자 할 때 전달하는 파라미터
-enum Prompt {
-  /// 기본 웹 브라우저에 카카오계정 cookie 가 이미 있더라도 이를 무시하고 무조건 로그인 화면을 보여주도록 함
-  login,
-
-  /// 카카오계정 가입 페이지로 이동 후, 카카오계정 가입 완료 후 동의 화면 출력
-  create,
-
-  /// @nodoc
-  cert,
 }
