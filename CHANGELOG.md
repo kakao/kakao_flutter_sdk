@@ -1,3 +1,12 @@
+## 1.5.0
+- Supports Kakao Account easy login.
+- Added Revoke consent for service terms API.
+- Updated Retrieve consent details for service terms API to v2.
+- Supports the multi app.
+- Fixed an issue that a deep link or universal link can not be received in a specific iOS environment.
+  - When using a plugin that provides a feature receiving a deep link or universal link.
+  - When launched the app through a deep link or universal link.
+
 ## 1.4.3
 - Updated to build on Android Gradle Plugin 8.0.
 - Changed Dart minimum support version to 2.18.0 or higher.
