@@ -64,10 +64,8 @@ void main() {
     final profile = account?.profile;
     expect(profileMap?["nickname"], profile?.nickname);
     expect(profileMap?["nickname"], profile?.nickname);
-    expect(profileMap?["thumbnail_image_url"],
-        profile?.thumbnailImageUrl);
-    expect(
-        profileMap?["profile_image_url"], profile?.profileImageUrl);
+    expect(profileMap?["thumbnail_image_url"], profile?.thumbnailImageUrl);
+    expect(profileMap?["profile_image_url"], profile?.profileImageUrl);
   });
 
   test("/v1/user/access_token_info 200", () async {

@@ -116,7 +116,7 @@ class PickerApi {
     bool isSingle = false,
     required PickerFriendRequestParams params,
   }) async {
-    if(!context.mounted) throw KakaoClientException("Context is not mouned");
+    if (!context.mounted) throw KakaoClientException("Context is not mouned");
 
     Map<String, String>? result = await Navigator.push(
       context,

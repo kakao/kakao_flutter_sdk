@@ -46,8 +46,7 @@ void main() {
     OAuthToken token;
     setUp(() async {
       final path = uriPathToFilePath(Constants.tokenPath);
-      String body =
-          await loadJson("auth/$path/has_rt_and_scopes.json");
+      String body = await loadJson("auth/$path/has_rt_and_scopes.json");
       adapter.setResponseString(body, 200);
     });
 
@@ -107,8 +106,7 @@ void main() {
     tearDown(() async {
       // setting oldToken
       final path = uriPathToFilePath(Constants.tokenPath);
-      var tokenJson =
-          await loadJson("auth/$path/has_rt_and_scopes.json");
+      var tokenJson = await loadJson("auth/$path/has_rt_and_scopes.json");
       var tokenResponse = AccessTokenResponse.fromJson(jsonDecode(tokenJson));
       await tokenManager.setToken(OAuthToken.fromResponse(tokenResponse));
       final oldToken = await tokenManager.getToken();
@@ -190,8 +188,7 @@ void main() {
     tearDown(() async {
       // setting oldToken
       final path = uriPathToFilePath(Constants.tokenPath);
-      var tokenJson =
-          await loadJson("auth/$path/has_rt_and_scopes.json");
+      var tokenJson = await loadJson("auth/$path/has_rt_and_scopes.json");
       var tokenResponse = AccessTokenResponse.fromJson(jsonDecode(tokenJson));
       await tokenManager.setToken(OAuthToken.fromResponse(tokenResponse));
       final oldToken = await tokenManager.getToken();

@@ -143,8 +143,7 @@ void main() {
 
     test("/link", () async {
       final path = uriPathToFilePath(Constants.scrapLinkPath);
-      var bodyMap =
-          jsonDecode(await loadJson("story/$path/normal.json"));
+      var bodyMap = jsonDecode(await loadJson("story/$path/normal.json"));
       var linkInfo = LinkInfo.fromJson(bodyMap);
       adapter.requestAssertions = (RequestOptions options) {
         expect(options.method, "POST");

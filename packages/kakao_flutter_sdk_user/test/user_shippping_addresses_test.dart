@@ -18,7 +18,8 @@ void main() {
         var response = UserShippingAddresses.fromJson(expected);
 
         expect(response.userId, expected['user_id']);
-        expect(response.needsAgreement, expected['shipping_addresses_needs_agreement']);
+        expect(response.needsAgreement,
+            expected['shipping_addresses_needs_agreement']);
 
         for (int i = 0; i < (response.shippingAddresses?.length ?? 0); i++) {
           var shippingAddress = response.shippingAddresses![i];
@@ -36,11 +37,16 @@ void main() {
           }
 
           expect(shippingAddress.type, expectedShippingAddress['type']);
-          expect(shippingAddress.baseAddress, expectedShippingAddress['base_address']);
-          expect(shippingAddress.receiverName, expectedShippingAddress['receiver_name']);
-          expect(shippingAddress.receiverPhoneNumber1, expectedShippingAddress['receiver_phone_number1']);
-          expect(shippingAddress.receiverPhoneNumber2, expectedShippingAddress['receiver_phone_number2']);
-          expect(shippingAddress.zoneNumber, expectedShippingAddress['zone_number']);
+          expect(shippingAddress.baseAddress,
+              expectedShippingAddress['base_address']);
+          expect(shippingAddress.receiverName,
+              expectedShippingAddress['receiver_name']);
+          expect(shippingAddress.receiverPhoneNumber1,
+              expectedShippingAddress['receiver_phone_number1']);
+          expect(shippingAddress.receiverPhoneNumber2,
+              expectedShippingAddress['receiver_phone_number2']);
+          expect(shippingAddress.zoneNumber,
+              expectedShippingAddress['zone_number']);
           expect(shippingAddress.zipCode, expectedShippingAddress['zip_code']);
         }
       });

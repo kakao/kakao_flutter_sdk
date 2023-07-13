@@ -27,7 +27,7 @@ void main() {
           expect(serviceTerm.agreed, expectedServiceTerm['agreed']);
           expect(serviceTerm.revocable, expectedServiceTerm['revocable']);
 
-          if(serviceTerm.agreedAt != null) {
+          if (serviceTerm.agreedAt != null) {
             expect(serviceTerm.agreedAt,
                 DateTime.parse(expectedServiceTerm['agreed_at']));
           }

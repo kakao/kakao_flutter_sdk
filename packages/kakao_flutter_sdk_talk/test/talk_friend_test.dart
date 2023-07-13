@@ -27,7 +27,8 @@ void main() {
           expect(friend.id, expectedFriend['id']);
           expect(friend.uuid, expectedFriend['uuid']);
           expect(friend.profileNickname, expectedFriend['profile_nickname']);
-          expect(friend.profileThumbnailImage, expectedFriend['profile_thumbnail_image']);
+          expect(friend.profileThumbnailImage,
+              expectedFriend['profile_thumbnail_image']);
           expect(friend.favorite, expectedFriend['favorite']);
           expect(friend.allowedMsg, expectedFriend['allowed_msg']);
         }

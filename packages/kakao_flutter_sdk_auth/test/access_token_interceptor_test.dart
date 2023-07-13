@@ -74,7 +74,8 @@ void main() {
 
       // before refresh access token
       expect((await tokenManager.getToken())?.accessToken, 'test_access_token');
-      expect((await tokenManager.getToken())?.refreshToken, 'test_refresh_token');
+      expect(
+          (await tokenManager.getToken())?.refreshToken, 'test_refresh_token');
 
       var jsonString =
           '{"access_token":"$accessToken", "token_type":"bearer", "expires_in":43199}';
@@ -91,7 +92,8 @@ void main() {
 
       // after refresh access token
       expect((await tokenManager.getToken())?.accessToken, accessToken);
-      expect((await tokenManager.getToken())?.refreshToken, 'test_refresh_token');
+      expect(
+          (await tokenManager.getToken())?.refreshToken, 'test_refresh_token');
     });
 
     test('refresh - only access_token', () async {
@@ -100,7 +102,8 @@ void main() {
 
       // before refresh tokens
       expect((await tokenManager.getToken())?.accessToken, 'test_access_token');
-      expect((await tokenManager.getToken())?.refreshToken, 'test_refresh_token');
+      expect(
+          (await tokenManager.getToken())?.refreshToken, 'test_refresh_token');
 
       var jsonString =
           '{"access_token":"$accessToken","token_type":"bearer","refresh_token":"$refreshToken", "expires_in":43199, "refresh_token_expires_in":2591999}';

@@ -117,9 +117,12 @@ void main() {
     });
 
     test('permission', () {
-      expect(StoryPermission.public, $enumDecode($StoryPermissionEnumMap, 'PUBLIC'));
-      expect(StoryPermission.onlyMe, $enumDecode($StoryPermissionEnumMap, 'ONLY_ME'));
-      expect(StoryPermission.friend, $enumDecode($StoryPermissionEnumMap, 'FRIEND'));
+      expect(StoryPermission.public,
+          $enumDecode($StoryPermissionEnumMap, 'PUBLIC'));
+      expect(StoryPermission.onlyMe,
+          $enumDecode($StoryPermissionEnumMap, 'ONLY_ME'));
+      expect(StoryPermission.friend,
+          $enumDecode($StoryPermissionEnumMap, 'FRIEND'));
     });
   });
 }

@@ -11,8 +11,7 @@ void main() {
   group('parse test', () {
     void parse(String data) {
       test(data, () async {
-        String body =
-            await loadJson('errors/auth_errors/$data.json');
+        String body = await loadJson('errors/auth_errors/$data.json');
         Map<String, dynamic> expected = jsonDecode(body);
         KakaoAuthException actual = KakaoAuthException.fromJson(expected);
 

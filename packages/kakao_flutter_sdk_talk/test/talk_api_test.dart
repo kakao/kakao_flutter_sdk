@@ -141,8 +141,7 @@ void main() {
 
     test("custom with failure infos", () async {
       final path = uriPathToFilePath('${Constants.v1OpenTalkMessagePath}send');
-      final body =
-          await loadJson("talk/$path/partial_success.json");
+      final body = await loadJson("talk/$path/partial_success.json");
       map = jsonDecode(body);
       adapter.setResponseString(body, 200);
 
