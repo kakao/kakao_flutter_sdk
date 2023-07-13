@@ -10,7 +10,7 @@ scripts:
     description: Run all test codes
 
   format:
-    run: flutter format .
+    run: dart format .
     description: Reformat all codes
 
   analyze:
