@@ -34,7 +34,6 @@ class AuthApiFactory {
     dio.options.contentType = CommonConstants.contentType;
 
     var interceptors = [
-      AccessTokenInterceptor(dio, AuthApi.instance),
       ApiFactory.kaInterceptor,
       LogInterceptor(
         logPrint: SdkLog.i,
@@ -43,6 +42,7 @@ class AuthApiFactory {
       )
     ];
     if (!kIsWeb) {
+      interceptors.add(AccessTokenInterceptor(dio, AuthApi.instance));
       interceptors.add(RequiredScopesInterceptor(dio));
     }
     dio.interceptors.addAll(interceptors);
