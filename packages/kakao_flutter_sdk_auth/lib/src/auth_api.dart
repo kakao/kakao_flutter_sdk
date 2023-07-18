@@ -79,12 +79,19 @@ class AuthApi {
 
   /// 기존 토큰([oldToken])을 갱신합니다.
   Future<OAuthToken> refreshToken({
-    required OAuthToken oldToken,
+    OAuthToken? oldToken,
     String? redirectUri,
     String? appKey,
   }) async {
+    var token = oldToken ?? await _tokenManagerProvider.manager.getToken();
+
+    if (token == null || token.refreshToken == null) {
+      throw KakaoClientException(
+          'Refresh token not found. You must login first.');
+    }
+
     final data = {
-      Constants.refreshToken: oldToken.refreshToken,
+      Constants.refreshToken: token.refreshToken,
       Constants.grantType: Constants.refreshToken,
       Constants.clientId: appKey ?? KakaoSdk.appKey,
       Constants.redirectUri: redirectUri ?? await _platformRedirectUri(),
