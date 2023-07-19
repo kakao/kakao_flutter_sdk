@@ -1,6 +1,6 @@
 dartdoc:
   linkTo:
-    remote: true
+    remote: false
   output: "docs"
   exclude:
     - "dart:ui"
