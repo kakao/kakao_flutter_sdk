@@ -195,10 +195,18 @@ class UserApi {
   }
 
   /// 사용자 정보 요청
-  Future<User> me({bool secureResource = true}) async {
+  Future<User> me(
+      {List<String>? properties, bool secureResource = true}) async {
+    var params = {
+      Constants.propertyKeys:
+          properties != null ? jsonEncode(properties) : null,
+      Constants.secureResource: secureResource,
+    };
+    params.removeWhere((k, v) => v == null);
+
     return ApiFactory.handleApiError(() async {
-      Response response = await _dio.get(Constants.v2MePath,
-          queryParameters: {Constants.secureResource: secureResource});
+      Response response =
+          await _dio.get(Constants.v2MePath, queryParameters: params);
       return User.fromJson(response.data);
     });
   }
