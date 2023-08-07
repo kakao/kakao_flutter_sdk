@@ -1,6 +1,5 @@
 package com.kakao.sdk.flutter
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.BroadcastReceiver
@@ -8,9 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Bundle
-import android.provider.Settings
-import android.util.Base64
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -21,7 +17,6 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry
-import java.security.MessageDigest
 
 class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
     PluginRegistry.ActivityResultListener, EventChannel.StreamHandler,
@@ -65,15 +60,12 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
 
             "launchBrowserTab" -> {
                 @Suppress("UNCHECKED_CAST")
-                val args = call.arguments as Map<String, String?>
-                val uri = args["url"] as String
-                val redirectUrl = args["redirect_uri"]
-                val intent = Intent(activity, AuthCodeCustomTabsActivity::class.java)
-                    .putExtra(Constants.KEY_FULL_URI, uri)
-                    .putExtra(Constants.KEY_REDIRECT_URL, redirectUrl)
-                activity?.startActivityForResult(intent, Constants.REQUEST_KAKAO_LOGIN)
-                    ?: result.error("Error", "Plugin is not attached to Activity", null)
-
+                applicationContext?.let {
+                    val args = call.arguments as Map<String, String?>
+                    val intent = IntentFactory.customTabs(it, args)
+                    activity?.startActivityForResult(intent, Constants.REQUEST_KAKAO_LOGIN)
+                        ?: result.error("Error", "Plugin is not attached to Activity", null)
+                }
             }
 
             "authorizeWithTalk" -> {
@@ -87,11 +79,7 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                         return
                     }
 
-                    if (!Utility.isKakaoTalkInstalled(
-                            applicationContext!!,
-                            talkPackageName
-                        )
-                    ) {
+                    if (!Utility.isKakaoTalkInstalled(applicationContext!!, talkPackageName)) {
                         result.error(
                             "Error",
                             "KakaoTalk is not installed. If you want KakaoTalk Login, please install KakaoTalk",
@@ -99,41 +87,7 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                         )
                         return
                     }
-                    val sdkVersion = args["sdk_version"]
-                        ?: throw IllegalArgumentException("Sdk version id is required.")
-                    val clientId = args["client_id"]
-                        ?: throw IllegalArgumentException("Client id is required.")
-                    val redirectUri = args["redirect_uri"]
-                        ?: throw IllegalArgumentException("Redirect uri is required.")
-                    val channelPublicIds = args["channel_public_ids"]
-                    val serviceTerms = args["service_terms"]
-                    val approvalType = args["approval_type"]
-                    val codeVerifier = args["code_verifier"]
-                    val prompts = args["prompt"]
-                    val state = args["state"]
-                    val nonce = args["nonce"]
-                    val settleId = args["settle_id"]
-                    val extras = Bundle().apply {
-                        channelPublicIds?.let { putString(Constants.CHANNEL_PUBLIC_ID, it) }
-                        serviceTerms?.let { putString(Constants.SERVICE_TERMS, it) }
-                        approvalType?.let { putString(Constants.APPROVAL_TYPE, it) }
-                        codeVerifier?.let {
-                            putString(Constants.CODE_CHALLENGE, codeChallenge(it.toByteArray()))
-                            putString(
-                                Constants.CODE_CHALLENGE_METHOD,
-                                Constants.CODE_CHALLENGE_METHOD_VALUE
-                            )
-                        }
-                        prompts?.let { putString(Constants.PROMPT, it) }
-                        state?.let { putString(Constants.STATE, it) }
-                        nonce?.let { putString(Constants.NONCE, it) }
-                        settleId?.let { putString(Constants.SETTLE_ID, it) }
-                    }
-                    val intent = Intent(activity, TalkAuthCodeActivity::class.java)
-                        .putExtra(Constants.KEY_SDK_VERSION, sdkVersion)
-                        .putExtra(Constants.KEY_CLIENT_ID, clientId)
-                        .putExtra(Constants.KEY_REDIRECT_URI, redirectUri)
-                        .putExtra(Constants.KEY_EXTRAS, extras)
+                    val intent = IntentFactory.talkAuthCode(applicationContext!!, args)
                     activity?.startActivityForResult(intent, Constants.REQUEST_KAKAO_LOGIN)
                         ?: result.error("Error", "Plugin is not attached to Activity", null)
                 } catch (e: Exception) {
@@ -174,8 +128,10 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                 }
                 val uri = args["uri"]
                     ?: throw IllegalArgumentException("KakaoTalk uri scheme is required.")
-                val intent = Intent(Intent.ACTION_SEND, Uri.parse(uri))
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                val intent = Intent(
+                    Intent.ACTION_SEND,
+                    Uri.parse(uri)
+                ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 applicationContext?.startActivity(intent)
                 result.success(true)
             }
@@ -201,7 +157,8 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                 val appKey = args["app_key"]
                 val extras = args["extras"]
                 val params = args["navi_params"]
-                val uri = naviBaseUriBuilder(scheme, authority, appKey, extras, params).build()
+                val uri =
+                    Utility.naviBaseUriBuilder(scheme, authority, appKey, extras, params).build()
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 try {
@@ -221,9 +178,12 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                 val appKey = args["app_key"]
                 val extras = args["extras"]
                 val params = args["navi_params"]
-                val uri = naviBaseUriBuilder(scheme, authority, appKey, extras, params).build()
-                val intent = Intent(Intent.ACTION_VIEW, uri)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                val uri =
+                    Utility.naviBaseUriBuilder(scheme, authority, appKey, extras, params).build()
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    uri
+                ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 try {
                     applicationContext?.startActivity(intent)
                     result.success(true)
@@ -234,16 +194,9 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
 
             "platformId" -> {
                 try {
-                    @SuppressLint("HardwareIds")
-                    val androidId = Settings.Secure.getString(
-                        applicationContext?.contentResolver,
-                        Settings.Secure.ANDROID_ID
-                    )
-                    val stripped = androidId.replace("[0\\s]".toRegex(), "")
-                    val md = MessageDigest.getInstance("SHA-256")
-                    md.reset()
-                    md.update("SDK-$stripped".toByteArray())
-                    result.success(md.digest())
+                    applicationContext?.let {
+                        result.success(Utility.platformId(it))
+                    } ?: result.error("Error", "Application is not attached to FlutterEngine", null)
                 } catch (e: Exception) {
                     result.error("Error", "Can't get androidId", null)
                 }
@@ -344,26 +297,6 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
         } else {
             null
         }
-    }
-
-    private fun codeChallenge(codeVerifier: ByteArray): String =
-        Base64.encodeToString(
-            MessageDigest.getInstance(Constants.CODE_CHALLENGE_ALGORITHM).digest(codeVerifier),
-            Base64.NO_WRAP or Base64.NO_PADDING or Base64.URL_SAFE
-        )
-
-    private fun naviBaseUriBuilder(
-        scheme: String,
-        authority: String,
-        appKey: String?,
-        extras: String?,
-        params: String?,
-    ): Uri.Builder {
-        return Uri.Builder().scheme(scheme).authority(authority)
-            .appendQueryParameter(Constants.PARAM, params)
-            .appendQueryParameter(Constants.APIVER, Constants.APIVER_10)
-            .appendQueryParameter(Constants.APPKEY, appKey)
-            .appendQueryParameter(Constants.EXTRAS, extras)
     }
 
     override fun onNewIntent(intent: Intent): Boolean {
