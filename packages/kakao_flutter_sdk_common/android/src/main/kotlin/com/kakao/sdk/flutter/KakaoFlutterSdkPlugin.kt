@@ -26,17 +26,11 @@ import java.security.MessageDigest
 class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
     PluginRegistry.ActivityResultListener, EventChannel.StreamHandler,
     PluginRegistry.NewIntentListener {
-    private var _applicationContext: Context? = null
-    private val applicationContext get() = _applicationContext!!
+    private var applicationContext: Context? = null
+    private var activity: Activity? = null
 
-    private var _methodChannel: MethodChannel? = null
-    private val methodChannel get() = _methodChannel!!
-
-    private var _eventChannel: EventChannel? = null
-    private val eventChannel get() = _eventChannel!!
-
-    private var _activity: Activity? = null
-    private val activity get() = _activity!!
+    private var methodChannel: MethodChannel? = null
+    private var eventChannel: EventChannel? = null
 
     private var result: Result? = null
 
@@ -48,14 +42,27 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
         when (call.method) {
             "appVer" -> {
                 try {
-                    result.success(Utility.getAppVer(applicationContext))
+                    applicationContext?.let {
+                        result.success(Utility.getAppVer(it))
+                    } ?: result.error("Error", "Application is not attached to FlutterEngine", null)
                 } catch (e: PackageManager.NameNotFoundException) {
                     result.error("Name not found", e.message, null)
                 }
             }
-            "packageName" -> result.success(applicationContext.packageName)
-            "getOrigin" -> result.success(Utility.getKeyHash(applicationContext))
-            "getKaHeader" -> result.success(Utility.getKAHeader(applicationContext))
+
+            "packageName" -> result.success(applicationContext?.packageName)
+            "getOrigin" -> {
+                applicationContext?.let {
+                    result.success(Utility.getKeyHash(it))
+                } ?: result.error("Error", "Application is not attached to FlutterEngine", null)
+            }
+
+            "getKaHeader" -> {
+                applicationContext?.let {
+                    result.success(Utility.getKAHeader(it))
+                } ?: result.error("Error", "Application is not attached to FlutterEngine", null)
+            }
+
             "launchBrowserTab" -> {
                 @Suppress("UNCHECKED_CAST")
                 val args = call.arguments as Map<String, String?>
@@ -64,14 +71,27 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                 val intent = Intent(activity, AuthCodeCustomTabsActivity::class.java)
                     .putExtra(Constants.KEY_FULL_URI, uri)
                     .putExtra(Constants.KEY_REDIRECT_URL, redirectUrl)
-                activity.startActivityForResult(intent, Constants.REQUEST_KAKAO_LOGIN)
+                activity?.startActivityForResult(intent, Constants.REQUEST_KAKAO_LOGIN)
+                    ?: result.error("Error", "Plugin is not attached to Activity", null)
+
             }
+
             "authorizeWithTalk" -> {
                 try {
                     @Suppress("UNCHECKED_CAST")
                     val args = call.arguments as Map<String, String>
                     val talkPackageName = args["talkPackageName"] ?: Constants.TALK_PACKAGE
-                    if (!Utility.isKakaoTalkInstalled(applicationContext, talkPackageName)) {
+
+                    if (applicationContext == null) {
+                        result.error("Error", "Application is not attached to FlutterEngine", null)
+                        return
+                    }
+
+                    if (!Utility.isKakaoTalkInstalled(
+                            applicationContext!!,
+                            talkPackageName
+                        )
+                    ) {
                         result.error(
                             "Error",
                             "KakaoTalk is not installed. If you want KakaoTalk Login, please install KakaoTalk",
@@ -114,28 +134,41 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                         .putExtra(Constants.KEY_CLIENT_ID, clientId)
                         .putExtra(Constants.KEY_REDIRECT_URI, redirectUri)
                         .putExtra(Constants.KEY_EXTRAS, extras)
-                    activity.startActivityForResult(intent, Constants.REQUEST_KAKAO_LOGIN)
+                    activity?.startActivityForResult(intent, Constants.REQUEST_KAKAO_LOGIN)
+                        ?: result.error("Error", "Plugin is not attached to Activity", null)
                 } catch (e: Exception) {
                     result.error(e.javaClass.simpleName, e.localizedMessage, e)
                 }
             }
+
             "isKakaoTalkInstalled" -> {
                 @Suppress("UNCHECKED_CAST")
                 val args = call.arguments as Map<String, String>
                 val talkPackageName = args["talkPackageName"] ?: Constants.TALK_PACKAGE
-                result.success(Utility.isKakaoTalkInstalled(applicationContext, talkPackageName))
+                applicationContext?.let {
+                    result.success(Utility.isKakaoTalkInstalled(it, talkPackageName))
+                } ?: result.error("Error", "Application is not attached to FlutterEngine", null)
             }
+
             "isKakaoNaviInstalled" -> {
                 @Suppress("UNCHECKED_CAST")
                 val args = call.arguments as Map<String, String>
                 val naviPackageName = args["navi_origin"] ?: "com.locnall.KimGiSa"
-                result.success(Utility.isKakaoNaviInstalled(applicationContext, naviPackageName))
+                applicationContext?.let {
+                    result.success(Utility.isKakaoNaviInstalled(it, naviPackageName))
+                } ?: result.error("Error", "Application is not attached to FlutterEngine", null)
             }
+
             "launchKakaoTalk" -> {
                 @Suppress("UNCHECKED_CAST")
                 val args = call.arguments as Map<String, String>
                 val talkPackageName = args["talkPackageName"] ?: Constants.TALK_PACKAGE
-                if (!Utility.isKakaoTalkInstalled(applicationContext, talkPackageName)) {
+                if (applicationContext == null) {
+                    result.error("Error", "Application is not attached to FlutterEngine", null)
+                    return
+                }
+
+                if (!Utility.isKakaoTalkInstalled(applicationContext!!, talkPackageName)) {
                     result.success(false)
                     return
                 }
@@ -143,22 +176,28 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                     ?: throw IllegalArgumentException("KakaoTalk uri scheme is required.")
                 val intent = Intent(Intent.ACTION_SEND, Uri.parse(uri))
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                activity.startActivity(intent)
+                applicationContext?.startActivity(intent)
                 result.success(true)
             }
+
             "isKakaoTalkSharingAvailable" -> {
-                val uriBuilder = Uri.Builder().scheme("kakaolink").authority("send")
-                val kakaotalkIntentClient = IntentResolveClient.instance
-                val isKakaoTalkSharingAvailable = kakaotalkIntentClient.resolveTalkIntent(
-                    applicationContext,
-                    Intent(Intent.ACTION_VIEW, uriBuilder.build())
-                ) != null
-                result.success(isKakaoTalkSharingAvailable)
+                applicationContext?.let {
+                    val uriBuilder = Uri.Builder().scheme("kakaolink").authority("send")
+                    val kakaotalkIntentClient = IntentResolveClient.instance
+                    val isKakaoTalkSharingAvailable = kakaotalkIntentClient.resolveTalkIntent(
+                        it,
+                        Intent(Intent.ACTION_VIEW, uriBuilder.build())
+                    ) != null
+                    result.success(isKakaoTalkSharingAvailable)
+                } ?: result.error("Error", "Application is not attached to FlutterEngine", null)
             }
+
             "navigate" -> {
                 @Suppress("UNCHECKED_CAST")
                 val args = call.arguments as Map<String, String>
-                val (scheme, authority) = (args["navi_scheme"] ?: "kakaonavi-sdk://navigate").split("://")
+                val (scheme, authority) = (args["navi_scheme"] ?: "kakaonavi-sdk://navigate").split(
+                    "://"
+                )
                 val appKey = args["app_key"]
                 val extras = args["extras"]
                 val params = args["navi_params"]
@@ -166,16 +205,19 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 try {
-                    applicationContext.startActivity(intent)
+                    applicationContext?.startActivity(intent)
                     result.success(true)
                 } catch (e: ActivityNotFoundException) {
                     result.error("Error", "KakaoNavi not installed", null)
                 }
             }
+
             "shareDestination" -> {
                 @Suppress("UNCHECKED_CAST")
                 val args = call.arguments as Map<String, String>
-                val (scheme, authority) = (args["navi_scheme"] ?: "kakaonavi-sdk://navigate").split("://")
+                val (scheme, authority) = (args["navi_scheme"] ?: "kakaonavi-sdk://navigate").split(
+                    "://"
+                )
                 val appKey = args["app_key"]
                 val extras = args["extras"]
                 val params = args["navi_params"]
@@ -183,17 +225,18 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 try {
-                    applicationContext.startActivity(intent)
+                    applicationContext?.startActivity(intent)
                     result.success(true)
                 } catch (e: ActivityNotFoundException) {
                     result.error("Error", "KakaoNavi not installed", null)
                 }
             }
+
             "platformId" -> {
                 try {
                     @SuppressLint("HardwareIds")
                     val androidId = Settings.Secure.getString(
-                        applicationContext.contentResolver,
+                        applicationContext?.contentResolver,
                         Settings.Secure.ANDROID_ID
                     )
                     val stripped = androidId.replace("[0\\s]".toRegex(), "")
@@ -205,8 +248,13 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                     result.error("Error", "Can't get androidId", null)
                 }
             }
-            "receiveKakaoScheme" -> result.success(handleTalkSharingIntent(activity,
-                activity.intent))
+
+            "receiveKakaoScheme" -> {
+                activity?.let {
+                    result.success(handleTalkSharingIntent(it, it.intent))
+                } ?: result.error("Error", "Plugin is not attached to Activity", null)
+            }
+
             else -> result.notImplemented()
         }
     }
@@ -219,12 +267,14 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                     result?.success(url)
                     true
                 }
+
                 Activity.RESULT_CANCELED -> {
                     val errorCode = data.getStringExtra(Constants.KEY_ERROR_CODE) ?: "ERROR"
                     val errorMessage = data.getStringExtra(Constants.KEY_ERROR_MESSAGE)
                     result?.error(errorCode, errorMessage, null)
                     true
                 }
+
                 else -> false
             }
         }
@@ -244,38 +294,42 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
     }
 
     private fun onAttachedToEngine(applicationContext: Context, messenger: BinaryMessenger) {
-        _applicationContext = applicationContext
-        _methodChannel = MethodChannel(messenger, Constants.METHOD_CHANNEL)
-        methodChannel.setMethodCallHandler(this)
+        this.applicationContext = applicationContext
+        methodChannel = MethodChannel(messenger, Constants.METHOD_CHANNEL)
+        methodChannel?.setMethodCallHandler(this)
 
-        _eventChannel = EventChannel(messenger, Constants.EVENT_CHANNEL)
-        eventChannel.setStreamHandler(this)
+        eventChannel = EventChannel(messenger, Constants.EVENT_CHANNEL)
+        eventChannel?.setStreamHandler(this)
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-        _applicationContext = null
-        methodChannel.setMethodCallHandler(null)
-        _methodChannel = null
+        applicationContext = null
+        methodChannel?.setMethodCallHandler(null)
+        methodChannel = null
+
+        eventChannel?.setStreamHandler(null)
+        eventChannel = null
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-        _activity = binding.activity
+        activity = binding.activity
         binding.addActivityResultListener(this)
         binding.addOnNewIntentListener(this)
-    }
-
-    override fun onDetachedFromActivityForConfigChanges() {
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-        _activity = binding.activity
+        activity = binding.activity
         binding.addActivityResultListener(this)
         binding.addOnNewIntentListener(this)
-        handleTalkSharingIntent(activity, activity.intent)
+        handleTalkSharingIntent(binding.activity, binding.activity.intent)
+    }
+
+    override fun onDetachedFromActivityForConfigChanges() {
+        activity = null
     }
 
     override fun onDetachedFromActivity() {
-        _activity = null
+        activity = null
     }
 
     private fun handleTalkSharingIntent(context: Context, intent: Intent): String? {
@@ -298,7 +352,13 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
             Base64.NO_WRAP or Base64.NO_PADDING or Base64.URL_SAFE
         )
 
-    private fun naviBaseUriBuilder(scheme: String, authority: String, appKey: String?, extras: String?, params: String?): Uri.Builder {
+    private fun naviBaseUriBuilder(
+        scheme: String,
+        authority: String,
+        appKey: String?,
+        extras: String?,
+        params: String?,
+    ): Uri.Builder {
         return Uri.Builder().scheme(scheme).authority(authority)
             .appendQueryParameter(Constants.PARAM, params)
             .appendQueryParameter(Constants.APIVER, Constants.APIVER_10)
@@ -307,7 +367,7 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
     }
 
     override fun onNewIntent(intent: Intent): Boolean {
-        if (handleTalkSharingIntent(activity, intent) != null) {
+        if (activity != null && handleTalkSharingIntent(activity!!, intent) != null) {
             return true
         }
         return false
