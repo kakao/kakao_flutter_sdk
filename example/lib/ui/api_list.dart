@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -15,15 +17,15 @@ import 'package:path_provider/path_provider.dart';
 const String tag = "KakaoSdkSample";
 
 class ApiList extends StatefulWidget {
-  Map<String, dynamic> customData;
+  final Map<String, dynamic> customData;
 
-  ApiList({Key? key, required this.customData}) : super(key: key);
+  const ApiList({Key? key, required this.customData}) : super(key: key);
 
   @override
-  _ApiListState createState() => _ApiListState();
+  ApiListState createState() => ApiListState();
 }
 
-class _ApiListState extends State<ApiList> {
+class ApiListState extends State<ApiList> {
   List<ApiItem> apiList = [];
   Function(Friends?, Object?)? recursiveAppFriendsCompletion;
 
