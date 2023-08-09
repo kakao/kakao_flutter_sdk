@@ -11,6 +11,8 @@ import 'package:kakao_flutter_sdk_example/message_template.dart';
 import 'package:kakao_flutter_sdk_example/model/api_item.dart';
 import 'package:kakao_flutter_sdk_example/model/picker_item.dart';
 import 'package:kakao_flutter_sdk_example/ui/friend_page.dart';
+import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/dialog_item/login_parameter_result.dart';
+import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/login_parameter_dialog.dart';
 import 'package:kakao_flutter_sdk_example/util/log.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -65,6 +67,129 @@ class ApiListState extends State<ApiList> {
         bool result = await isKakaoTalkInstalled();
         String msg = result ? '카카오톡으로 로그인 가능' : '카카오톡 미설치: 카카오계정으로 로그인 사용 권장';
         Log.i(context, tag, msg);
+      }),
+      ApiItem('+loginWithKakaoTalk()', () async {
+        ParameterResult? parameters = await showDialog(
+          context: context,
+          builder: (context) => LoginParameterDialog('loginWithKakaoTalk'),
+        );
+
+        if (parameters == null) return;
+
+        // 카카오톡으로 로그인
+
+        try {
+          OAuthToken token = await UserApi.instance.loginWithKakaoTalk(
+            nonce: parameters.nonce,
+            channelPublicIds: parameters.channelPublicIds,
+            serviceTerms: parameters.serviceTerms,
+          );
+          Log.i(context, tag, '로그인 성공 ${token.accessToken}');
+        } catch (e) {
+          Log.e(context, tag, '로그인 실패', e);
+        }
+      }),
+      ApiItem('+loginWithKakaoAccount()', () async {
+        ParameterResult? parameters = await showDialog(
+          context: context,
+          builder: (context) => LoginParameterDialog('loginWithKakaoAccount'),
+        );
+
+        if (parameters == null) return;
+
+        // 카카오계정으로 로그인
+        try {
+          OAuthToken token = await UserApi.instance.loginWithKakaoAccount(
+            prompts: parameters.prompts,
+            loginHint: parameters.loginHint,
+            channelPublicIds: parameters.channelPublicIds,
+            serviceTerms: parameters.serviceTerms,
+            nonce: parameters.nonce,
+          );
+          Log.i(context, tag, '로그인 성공 ${token.accessToken}');
+        } catch (e) {
+          Log.e(context, tag, '로그인 실패', e);
+        }
+      }),
+      ApiItem('+certLoginWithKakaoTalk()', () async {
+        final settleId = customData['settle_id'];
+
+        ParameterResult? parameters = await showDialog(
+          context: context,
+          builder: (context) => LoginParameterDialog(
+            'certLoginWithKakaoTalk',
+            settleId: settleId,
+          ),
+        );
+
+        if (parameters == null) return;
+
+        try {
+          CertTokenInfo certTokenInfo =
+              await UserApi.instance.certLoginWithKakaoTalk(
+            prompts: parameters.prompts,
+            state: parameters.state ?? '',
+            settleId: settleId,
+            nonce: parameters.nonce,
+            channelPublicIds: parameters.channelPublicIds,
+            serviceTerms: parameters.serviceTerms,
+          );
+          Log.i(context, tag,
+              '로그인 성공 ${certTokenInfo.token.accessToken} ${certTokenInfo.txId}');
+        } catch (e) {
+          Log.e(context, tag, '로그인 실패', e);
+        }
+      }),
+      ApiItem('+certLoginWithKakaoAccount()', () async {
+        final settleId = customData['settle_id'];
+
+        ParameterResult? parameters = await showDialog(
+          context: context,
+          builder: (context) => LoginParameterDialog(
+              'certLoginWithKakaoAccount',
+              settleId: settleId),
+        );
+
+        if (parameters == null) return;
+
+        // 카카오계정으로 인증서 로그인
+
+        try {
+          CertTokenInfo certTokenInfo =
+              await UserApi.instance.certLoginWithKakaoAccount(
+            prompts: parameters.prompts,
+            state: parameters.state ?? '',
+            settleId: settleId,
+            loginHint: parameters.loginHint,
+            nonce: parameters.nonce,
+            channelPublicIds: parameters.channelPublicIds,
+            serviceTerms: parameters.serviceTerms,
+          );
+          Log.i(context, tag,
+              '로그인 성공 ${certTokenInfo.token.accessToken} ${certTokenInfo.txId}');
+        } catch (e) {
+          Log.e(context, tag, '로그인 실패', e);
+        }
+      }),
+      ApiItem('+loginWithNewScopes()', () async {
+        ParameterResult? parameters = await showDialog(
+          context: context,
+          builder: (context) => LoginParameterDialog('loginWithNewScopes'),
+        );
+
+        if (parameters == null) return;
+
+        // 새로운 동의항목으로 로그인
+
+        try {
+          OAuthToken token = await UserApi.instance.loginWithNewScopes(
+            parameters.scopes,
+            nonce: parameters.nonce,
+          );
+          Log.i(context, tag, '로그인 성공 ${token.accessToken}');
+        } catch (e) {
+          Log.e(context, tag, '로그인 실패', e);
+        }
       }),
       ApiItem('loginWithKakaoTalk()', () async {
         // 카카오톡으로 로그인
