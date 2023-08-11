@@ -28,7 +28,8 @@ class ApiList extends StatefulWidget {
 }
 
 class ApiListState extends State<ApiList> {
-  List<ApiItem> apiList = [];
+  final List<ApiItem> apiList = [];
+  final Color plusColor = Colors.black12;
   Function(Friends?, Object?)? recursiveAppFriendsCompletion;
 
   @override
@@ -42,16 +43,17 @@ class ApiListState extends State<ApiList> {
     return ListView.separated(
         itemBuilder: (context, index) {
           ApiItem item = apiList[index];
-          bool isHeader = item.apiFunction == null;
+          bool isHeader = item.api == null;
           return ListTile(
             dense: isHeader,
+            tileColor: item.backgroundColor,
             title: Text(
               item.label,
               style: TextStyle(
                   color:
                       isHeader ? Theme.of(context).primaryColor : Colors.black),
             ),
-            onTap: apiList[index].apiFunction,
+            onTap: apiList[index].api,
           );
         },
         separatorBuilder: (context, index) => const Divider(height: 1.0),
@@ -59,16 +61,16 @@ class ApiListState extends State<ApiList> {
   }
 
   _initApiList(Map<String, dynamic> customData) {
-    apiList = [
+    apiList.addAll([
       ApiItem('User API'),
-      ApiItem('isKakaoTalkInstalled()', () async {
+      ApiItem('isKakaoTalkInstalled()', api: () async {
         // 카카오톡 설치여부 확인
 
         bool result = await isKakaoTalkInstalled();
         String msg = result ? '카카오톡으로 로그인 가능' : '카카오톡 미설치: 카카오계정으로 로그인 사용 권장';
         Log.i(context, tag, msg);
       }),
-      ApiItem('+loginWithKakaoTalk()', () async {
+      ApiItem('+loginWithKakaoTalk()', backgroundColor: plusColor, api: () async {
         ParameterResult? parameters = await showDialog(
           context: context,
           builder: (context) => LoginParameterDialog('loginWithKakaoTalk'),
@@ -89,7 +91,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('+loginWithKakaoAccount()', () async {
+      ApiItem('+loginWithKakaoAccount()', backgroundColor: plusColor, api: () async {
         ParameterResult? parameters = await showDialog(
           context: context,
           builder: (context) => LoginParameterDialog('loginWithKakaoAccount'),
@@ -111,7 +113,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('+certLoginWithKakaoTalk()', () async {
+      ApiItem('+certLoginWithKakaoTalk()', backgroundColor: plusColor, api: () async {
         final settleId = customData['settle_id'];
 
         ParameterResult? parameters = await showDialog(
@@ -140,7 +142,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('+certLoginWithKakaoAccount()', () async {
+      ApiItem('+certLoginWithKakaoAccount()', backgroundColor: plusColor, api: () async {
         final settleId = customData['settle_id'];
 
         ParameterResult? parameters = await showDialog(
@@ -171,7 +173,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('+loginWithNewScopes()', () async {
+      ApiItem('+loginWithNewScopes()', backgroundColor: plusColor, api: () async {
         ParameterResult? parameters = await showDialog(
           context: context,
           builder: (context) => LoginParameterDialog('loginWithNewScopes'),
@@ -191,7 +193,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('loginWithKakaoTalk()', () async {
+      ApiItem('loginWithKakaoTalk()', api: () async {
         // 카카오톡으로 로그인
 
         try {
@@ -201,7 +203,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('certLoginWithKakaoTalk()', () async {
+      ApiItem('certLoginWithKakaoTalk()', api: () async {
         // 카카오톡으로 인증서 로그인
 
         try {
@@ -213,7 +215,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('certLoginWithKakaoTalk(settleId)', () async {
+      ApiItem('certLoginWithKakaoTalk(settleId)', api: () async {
         // 카카오톡으로 인증서 로그인
         final settleId = customData['settle_id'];
 
@@ -226,7 +228,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('loginWithKakaoAccount()', () async {
+      ApiItem('loginWithKakaoAccount()', api: () async {
         // 카카오계정으로 로그인
 
         try {
@@ -236,7 +238,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('loginWithKakaoAccount(prompts:login)', () async {
+      ApiItem('loginWithKakaoAccount(prompts:login)', api: () async {
         // 카카오계정으로 로그인 - 재인증
 
         try {
@@ -247,7 +249,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('certLoginWithKakaoAccount()', () async {
+      ApiItem('certLoginWithKakaoAccount()', api: () async {
         // 카카오계정으로 인증서 로그인
 
         try {
@@ -259,7 +261,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('certLoginWithKakaoAccount(settleId)', () async {
+      ApiItem('certLoginWithKakaoAccount(settleId)', api: () async {
         // 카카오계정으로 인증서 로그인
         final settleId = customData['settle_id'];
 
@@ -272,7 +274,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('Combination Login', () async {
+      ApiItem('Combination Login', api: () async {
         // 로그인 조합 예제
 
         bool talkInstalled = await isKakaoTalkInstalled();
@@ -307,7 +309,7 @@ class ApiListState extends State<ApiList> {
           }
         }
       }),
-      ApiItem('Combination Login (Verbose)', () async {
+      ApiItem('Combination Login (Verbose)', api: () async {
         // 로그인 조합 예제 + 상세한 에러처리 콜백
         try {
           bool talkInstalled = await isKakaoTalkInstalled();
@@ -335,7 +337,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '기타 에러 (네트워크 장애 등..)', e);
         }
       }),
-      ApiItem('me()', () async {
+      ApiItem('me()', api: () async {
         // 사용자 정보 요청 (기본)
 
         try {
@@ -352,7 +354,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '사용자 정보 요청 실패', e);
         }
       }),
-      ApiItem('me() - new scopes', () async {
+      ApiItem('me() - new scopes', api: () async {
         // 사용자 정보 요청 (추가 동의)
 
         // 사용자가 로그인 시 제3자 정보제공에 동의하지 않은 개인정보 항목 중 어떤 정보가 반드시 필요한 시나리오에 진입한다면
@@ -430,7 +432,7 @@ class ApiListState extends State<ApiList> {
           }
         }
       }),
-      ApiItem('signup()', () async {
+      ApiItem('signup()', api: () async {
         try {
           await UserApi.instance.signup();
           Log.i(context, tag, 'signup 성공');
@@ -438,7 +440,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, 'signup 실패', e);
         }
       }),
-      ApiItem('scopes()', () async {
+      ApiItem('scopes()', api: () async {
         // 동의 항목 확인하기
 
         try {
@@ -449,7 +451,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '동의 정보 확인 실패', e);
         }
       }),
-      ApiItem('scopes() - optional', () async {
+      ApiItem('scopes() - optional', api: () async {
         // 특정 동의 항목 확인하기
 
         List<String> scopes = ['account_email', 'friends'];
@@ -461,7 +463,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '동의 정보 확인 실패', e);
         }
       }),
-      ApiItem('revokeScopes()', () async {
+      ApiItem('revokeScopes()', api: () async {
         List<String> scopes = ['account_email', 'friends'];
         try {
           ScopeInfo scopeInfo =
@@ -471,7 +473,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '동의 철회 실패', e);
         }
       }),
-      ApiItem('accessTokenInfo()', () async {
+      ApiItem('accessTokenInfo()', api: () async {
         // 토큰 정보 보기
 
         try {
@@ -482,7 +484,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '동의 철회 실패', e);
         }
       }),
-      ApiItem('updateProfile()', () async {
+      ApiItem('updateProfile()', api: () async {
         // 사용자 정보 저장
 
         try {
@@ -494,7 +496,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '사용자 정보 저장 실패', e);
         }
       }),
-      ApiItem('shippingAddresses()', () async {
+      ApiItem('shippingAddresses()', api: () async {
         // 배송지 조회 (추가 동의)
 
         UserShippingAddresses userShippingAddress;
@@ -535,7 +537,7 @@ class ApiListState extends State<ApiList> {
           }
         }
       }),
-      ApiItem('serviceTerms()', () async {
+      ApiItem('serviceTerms()', api: () async {
         // 동의한 약관 확인하기
 
         try {
@@ -547,7 +549,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '동의한 약관 확인하기 실패', e);
         }
       }),
-      ApiItem('serviceTerms(app_service_terms)', () async {
+      ApiItem('serviceTerms(app_service_terms)', api: () async {
         // 전체 약관 확인하기
 
         try {
@@ -559,7 +561,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '전체 약관 확인하기 실패', e);
         }
       }),
-      ApiItem('serviceTerms(tags)', () async {
+      ApiItem('serviceTerms(tags)', api: () async {
         // 특정 약관 확인하기
 
         try {
@@ -571,7 +573,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '약관 확인하기 실패', e);
         }
       }),
-      ApiItem('revokeServiceTerms()', () async {
+      ApiItem('revokeServiceTerms()', api: () async {
         // 약관 철회하기
 
         try {
@@ -583,7 +585,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '약관 철회하기 실패', e);
         }
       }),
-      ApiItem('logout()', () async {
+      ApiItem('logout()', api: () async {
         // 로그아웃
 
         try {
@@ -593,7 +595,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그아웃 실패. SDK에서 토큰 삭제 됨', e);
         }
       }),
-      ApiItem('unlink()', () async {
+      ApiItem('unlink()', api: () async {
         // 연결 끊기
 
         try {
@@ -604,7 +606,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('KakaoTalk API'),
-      ApiItem('profile()', () async {
+      ApiItem('profile()', api: () async {
         // 카카오톡 프로필 받기
 
         try {
@@ -615,7 +617,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오톡 프로필 받기 실패', e);
         }
       }),
-      ApiItem('sendCustomMemo()', () async {
+      ApiItem('sendCustomMemo()', api: () async {
         // 커스텀 템플릿으로 나에게 보내기
 
         // 메시지 템플릿 아이디
@@ -629,7 +631,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '나에게 보내기 실패', e);
         }
       }),
-      ApiItem('sendDefaultMemo()', () async {
+      ApiItem('sendDefaultMemo()', api: () async {
         // 디폴트 템플릿으로 나에게 보내기 - Feed
 
         try {
@@ -639,7 +641,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '나에게 보내기 실패', e);
         }
       }),
-      ApiItem('sendScrapMemo()', () async {
+      ApiItem('sendScrapMemo()', api: () async {
         // 스크랩 템플릿으로 나에게 보내기
 
         // 공유할 웹페이지 URL
@@ -653,7 +655,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '나에게 보내기 실패', e);
         }
       }),
-      ApiItem('friends()', () async {
+      ApiItem('friends()', api: () async {
         // 카카오톡 친구 목록 받기 (기본)
 
         try {
@@ -666,7 +668,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오톡 친구 목록 받기 실패', e);
         }
       }),
-      ApiItem("friends(order:) - desc", () async {
+      ApiItem("friends(order:) - desc", api: () async {
         // 카카오톡 친구 목록 받기 (파라미터)
 
         try {
@@ -680,7 +682,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오톡 친구 목록 받기 실패', e);
         }
       }),
-      ApiItem('friends(context:) - recursive', () async {
+      ApiItem('friends(context:) - recursive', api: () async {
         FriendsContext nextFriendsContext = FriendsContext(
           offset: 0,
           limit: 3,
@@ -716,7 +718,7 @@ class ApiListState extends State<ApiList> {
 
         recursiveAppFriendsCompletion?.call(null, null);
       }),
-      ApiItem('friends(context:) - FriendContext', () async {
+      ApiItem('friends(context:) - FriendContext', api: () async {
         try {
           Friends friends = await TalkApi.instance.friends(
               context: FriendsContext(offset: 0, limit: 1, order: Order.desc));
@@ -726,7 +728,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오톡 친구 목록 받기 실패', e);
         }
       }),
-      ApiItem('sendCustomMessage()', () async {
+      ApiItem('sendCustomMessage()', api: () async {
         // 커스텀 템플릿으로 친구에게 메시지 보내기
 
         // 카카오톡 친구 목록 받기
@@ -789,7 +791,7 @@ class ApiListState extends State<ApiList> {
           }
         }
       }),
-      ApiItem('sendDefaultMessage()', () async {
+      ApiItem('sendDefaultMessage()', api: () async {
         // 디폴트 템플릿으로 친구에게 메시지 보내기 - Feed
 
         // 카카오톡 친구 목록 받기
@@ -852,7 +854,7 @@ class ApiListState extends State<ApiList> {
           }
         }
       }),
-      ApiItem('sendDefaultMessage() - calendar', () async {
+      ApiItem('sendDefaultMessage() - calendar', api: () async {
         // 디폴트 템플릿으로 친구에게 메시지 보내기 - calendar
 
         // 카카오톡 친구 목록 받기
@@ -916,7 +918,7 @@ class ApiListState extends State<ApiList> {
           }
         }
       }),
-      ApiItem('sendScrapMessage()', () async {
+      ApiItem('sendScrapMessage()', api: () async {
         // 스크랩 템플릿으로 친구에게 메시지 보내기
 
         // 카카오톡 친구 목록 받기
@@ -979,7 +981,7 @@ class ApiListState extends State<ApiList> {
           }
         }
       }),
-      ApiItem('channels()', () async {
+      ApiItem('channels()', api: () async {
         // 카카오톡 채널 관계 확인하기
 
         try {
@@ -989,7 +991,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '채널 관계 확인 실패', e);
         }
       }),
-      ApiItem('addChannelUrl()', () async {
+      ApiItem('addChannelUrl()', api: () async {
         // 카카오톡 채널 추가하기 URL
         String channelId = customData['channelId'];
         Uri url = await TalkApi.instance.addChannelUrl(channelId);
@@ -1001,7 +1003,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오톡 채널 추가 실패', e);
         }
       }),
-      ApiItem('channelChatUrl()', () async {
+      ApiItem('channelChatUrl()', api: () async {
         // 카카오톡 채널 채팅 URL
         String channelId = customData['channelId'];
         Uri url = await TalkApi.instance.channelChatUrl(channelId);
@@ -1014,9 +1016,9 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('Friend API'),
-      ApiItem('Picker Page', () => Navigator.pushNamed(context, '/picker')),
+      ApiItem('Picker Page', api: () => Navigator.pushNamed(context, '/picker')),
       ApiItem('KakaoStory API'),
-      ApiItem('isStoryUser()', () async {
+      ApiItem('isStoryUser()', api: () async {
         // 카카오스토리 사용자 확인하기
 
         try {
@@ -1026,7 +1028,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오스토리 사용자 확인 실패', e);
         }
       }),
-      ApiItem('profile()', () async {
+      ApiItem('profile()', api: () async {
         // 카카오스토리 프로필 받기
 
         try {
@@ -1037,7 +1039,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오스토리 프로필 받기 실패', e);
         }
       }),
-      ApiItem('stories()', () async {
+      ApiItem('stories()', api: () async {
         // 여러 개의 스토리 받기
 
         try {
@@ -1047,7 +1049,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '스토리 받기 실패', e);
         }
       }),
-      ApiItem('story(id:) - first of stories', () async {
+      ApiItem('story(id:) - first of stories', api: () async {
         // 지정 스토리 받기
 
         // 이 샘플에서는 받고자 하는 스토리 아이디를 얻기 위해 전체 목록을 조회하고 첫번째 스토리 아이디를 사용했습니다.
@@ -1075,7 +1077,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '스토리 받기 실패', e);
         }
       }),
-      ApiItem('delete(id:) - first of stories', () async {
+      ApiItem('delete(id:) - first of stories', api: () async {
         // 내 스토리 삭제하기
 
         // 이 샘플에서는 삭제하고자 하는 스토리 아이디를 얻기 위해 전체 목록을 조회하고 첫번째 스토리 아이디를 사용했습니다.
@@ -1104,7 +1106,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '스토리 삭제 실패', e);
         }
       }),
-      ApiItem('postNote()', () async {
+      ApiItem('postNote()', api: () async {
         // 글 스토리 쓰기
 
         try {
@@ -1116,7 +1118,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '스토리 쓰기 실패', e);
         }
       }),
-      ApiItem('postLink()', () async {
+      ApiItem('postLink()', api: () async {
         // 링크 스토리 쓰기
 
         LinkInfo linkInfo;
@@ -1139,7 +1141,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '스토리 쓰기 실패', e);
         }
       }),
-      ApiItem('postPhoto()', () async {
+      ApiItem('postPhoto()', api: () async {
         // 사진 스토리 쓰기
 
         // 이 샘플에서는 프로젝트 리소스로 추가한 이미지 파일을 사용했습니다. 갤러리 등 서비스 니즈에 맞는 사진 파일을 준비하세요.
@@ -1174,7 +1176,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('KakaoTalk Sharing API'),
-      ApiItem('isKakaoTalkSharingAvailable()', () async {
+      ApiItem('isKakaoTalkSharingAvailable()', api: () async {
         // 카카오톡 설치여부 확인
         bool result = await ShareClient.instance.isKakaoTalkSharingAvailable();
         if (result) {
@@ -1183,7 +1185,7 @@ class ApiListState extends State<ApiList> {
           Log.i(context, tag, '카카오톡 미설치: 웹 공유 사용 권장');
         }
       }),
-      ApiItem('customTemplate()', () async {
+      ApiItem('customTemplate()', api: () async {
         // 커스텀 템플릿으로 카카오톡 공유하기
         //  * 만들기 가이드: https://developers.kakao.com/docs/latest/ko/message/message-template
         int templateId = customData['customMemo']!;
@@ -1197,7 +1199,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
-      ApiItem('scrapTemplate()', () async {
+      ApiItem('scrapTemplate()', api: () async {
         // 스크랩 템플릿으로 카카오톡 공유하기
 
         // 공유할 웹페이지 URL
@@ -1212,7 +1214,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
-      ApiItem('defaultTemplate() - feed', () async {
+      ApiItem('defaultTemplate() - feed', api: () async {
         // 디폴트 템플릿으로 카카오톡 공유하기 - Feed
 
         try {
@@ -1224,7 +1226,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
-      ApiItem('defaultTemplate() - list', () async {
+      ApiItem('defaultTemplate() - list', api: () async {
         // 디폴트 템플릿으로 카카오톡 공유하기 - List
 
         try {
@@ -1236,7 +1238,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
-      ApiItem('defaultTemplate() - location', () async {
+      ApiItem('defaultTemplate() - location', api: () async {
         // 디폴트 템플릿으로 카카오톡 공유하기 - Location
 
         try {
@@ -1248,7 +1250,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
-      ApiItem('defaultTemplate() - commerce', () async {
+      ApiItem('defaultTemplate() - commerce', api: () async {
         // 디폴트 템플릿으로 카카오톡 공유하기 - Commerce
 
         try {
@@ -1260,7 +1262,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
-      ApiItem('defaultTemplate() - text', () async {
+      ApiItem('defaultTemplate() - text', api: () async {
         // 디폴트 템플릿으로 카카오톡 공유하기 - Text
 
         try {
@@ -1272,7 +1274,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
-      ApiItem('defaultTemplate() - calendar', () async {
+      ApiItem('defaultTemplate() - calendar', api: () async {
         // 디폴트 템플릿으로 카카오톡 공유하기 - Calendar
 
         try {
@@ -1284,7 +1286,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
-      ApiItem('customTemplateUri() - web sharer', () async {
+      ApiItem('customTemplateUri() - web sharer', api: () async {
         // 커스텀 템플릿으로 웹에서 카카오톡 공유하기
 
         // 메시지 템플릿 아이디
@@ -1299,7 +1301,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
-      ApiItem('scrapTemplateUri() - web sharer', () async {
+      ApiItem('scrapTemplateUri() - web sharer', api: () async {
         // 스크랩 템플릿으로 웹에서 카카오톡 공유하기
 
         // 공유할 웹페이지 URL
@@ -1314,7 +1316,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
-      ApiItem('defaultTemplateUri() - web sharer - feed', () async {
+      ApiItem('defaultTemplateUri() - web sharer - feed', api: () async {
         // 커스텀 템플릿으로 웹에서 카카오톡 공유하기 - Feed
 
         try {
@@ -1325,7 +1327,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
-      ApiItem('defaultTemplateUri() - web sharer - location', () async {
+      ApiItem('defaultTemplateUri() - web sharer - location', api: () async {
         // 커스텀 템플릿으로 웹에서 카카오톡 공유하기 - Location
 
         try {
@@ -1336,7 +1338,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
-      ApiItem('defaultTemplateUri() - web sharer - calendar', () async {
+      ApiItem('defaultTemplateUri() - web sharer - calendar', api: () async {
         // 커스텀 템플릿으로 웹에서 카카오톡 공유하기 - Feed
 
         try {
@@ -1347,7 +1349,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
-      ApiItem('uploadImage() - File', () async {
+      ApiItem('uploadImage() - File', api: () async {
         // 이미지 업로드
 
         // 로컬 이미지 파일
@@ -1370,7 +1372,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '이미지 업로드 실패', e);
         }
       }),
-      ApiItem('uploadImage() - ByteData', () async {
+      ApiItem('uploadImage() - ByteData', api: () async {
         // 이미지 업로드
 
         // 이 샘플에서는 file_picker를 사용해 이미지 파일을 가져왔습니다.
@@ -1391,7 +1393,7 @@ class ApiListState extends State<ApiList> {
           }
         }
       }),
-      ApiItem('scrapImage()', () async {
+      ApiItem('scrapImage()', api: () async {
         // 이미지 스크랩
 
         // 원본 원격 이미지 URL
@@ -1409,7 +1411,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('KakaoNavi API'),
-      ApiItem('isKakaoNaviInstalled()', () async {
+      ApiItem('isKakaoNaviInstalled()', api: () async {
         // 카카오내비 설치여부 확인
         bool result = await NaviApi.instance.isKakaoNaviInstalled();
         if (result) {
@@ -1418,7 +1420,7 @@ class ApiListState extends State<ApiList> {
           Log.i(context, tag, '카카오내비 미설치');
         }
       }),
-      ApiItem('shareDestination - KATEC', () async {
+      ApiItem('shareDestination - KATEC', api: () async {
         if (await NaviApi.instance.isKakaoNaviInstalled()) {
           // 카카오내비 앱으로 목적지 공유하기 - KATEC
           await NaviApi.instance.shareDestination(
@@ -1429,7 +1431,7 @@ class ApiListState extends State<ApiList> {
           launchBrowserTab(Uri.parse(NaviApi.webNaviInstall));
         }
       }),
-      ApiItem('shareDestination - WGS84', () async {
+      ApiItem('shareDestination - WGS84', api: () async {
         if (await NaviApi.instance.isKakaoNaviInstalled()) {
           // 카카오내비 앱으로 목적지 공유하기 - WGS84
           await NaviApi.instance.shareDestination(
@@ -1442,7 +1444,7 @@ class ApiListState extends State<ApiList> {
           launchBrowserTab(Uri.parse(NaviApi.webNaviInstall));
         }
       }),
-      ApiItem('navigate - KATEC - viaList', () async {
+      ApiItem('navigate - KATEC - viaList', api: () async {
         if (await NaviApi.instance.isKakaoNaviInstalled()) {
           // 카카오내비 앱으로 목적지 공유하기 - KATEC - 경유지 추가
           await NaviApi.instance.navigate(
@@ -1456,7 +1458,7 @@ class ApiListState extends State<ApiList> {
           launchBrowserTab(Uri.parse(NaviApi.webNaviInstall));
         }
       }),
-      ApiItem('navigate - WGS84 - viaList', () async {
+      ApiItem('navigate - WGS84 - viaList', api: () async {
         if (await NaviApi.instance.isKakaoNaviInstalled()) {
           // 카카오내비 앱으로 목적지 공유하기 - WGS84 - 경유지 추가
           await NaviApi.instance.navigate(
@@ -1472,7 +1474,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('Kakao Sync'),
-      ApiItem('login(serviceTerms:) - select one', () async {
+      ApiItem('login(serviceTerms:) - select one', api: () async {
         // 약관 선택해 동의 받기
 
         // 개발자사이트 간편가입 설정에 등록한 약관 목록 중, 동의 받기를 원하는 약관의 태그 값을 지정합니다.
@@ -1486,7 +1488,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('login(serviceTerms:) - empty', () async {
+      ApiItem('login(serviceTerms:) - empty', api: () async {
         // 약관 동의 받지 않기
 
         try {
@@ -1499,7 +1501,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('OIDC'),
-      ApiItem('loginWithKakaoTalk(nonce:openidtest)', () async {
+      ApiItem('loginWithKakaoTalk(nonce:openidtest)', api: () async {
         // 카카오톡으로 로그인 - openId
 
         try {
@@ -1510,7 +1512,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('certLoginWithKakaoTalk(nonce:openidtest)', () async {
+      ApiItem('certLoginWithKakaoTalk(nonce:openidtest)', api: () async {
         // 카카오톡으로 인증서 로그인 - openId
 
         try {
@@ -1522,7 +1524,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('loginWithKakaoAccount(nonce:openidtest)', () async {
+      ApiItem('loginWithKakaoAccount(nonce:openidtest)', api: () async {
         // 카카오계정으로 로그인 - openId
 
         try {
@@ -1533,7 +1535,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('certLoginWithKakaoAccount(nonce:openidtest)', () async {
+      ApiItem('certLoginWithKakaoAccount(nonce:openidtest)', api: () async {
         // 카카오계정으로 인증서 로그인 - openId
 
         try {
@@ -1545,7 +1547,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('me() - new scopes(nonce:openidtest)', () async {
+      ApiItem('me() - new scopes(nonce:openidtest)', api: () async {
         // 사용자 정보 요청 (추가 동의)
 
         // 사용자가 로그인 시 제3자 정보제공에 동의하지 않은 개인정보 항목 중 어떤 정보가 반드시 필요한 시나리오에 진입한다면
@@ -1632,22 +1634,22 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('ETC'),
-      ApiItem('Get Current Token', () async {
+      ApiItem('Get Current Token', api: () async {
         // 현재 토큰 저장소에서 토큰 가져오기
         Log.i(context, tag,
             '${await TokenManagerProvider.instance.manager.getToken()}');
       }),
-      ApiItem('Set Custom TokenManager', () async {
+      ApiItem('Set Custom TokenManager', api: () async {
         // 커스텀 토큰 저장소 설정
         TokenManagerProvider.instance.manager = CustomTokenManager();
         Log.i(context, tag, '커스텀 토큰 저장소 사용');
       }),
-      ApiItem('Set Default TokenManager', () async {
+      ApiItem('Set Default TokenManager', api: () async {
         // 기본 저장소 재설정
         TokenManagerProvider.instance.manager = DefaultTokenManager();
         Log.i(context, tag, '기본 토큰 저장소 설정');
       }),
-      ApiItem('hasToken() usage', () async {
+      ApiItem('hasToken() usage', api: () async {
         if (await AuthApi.instance.hasToken()) {
           try {
             AccessTokenInfo tokenInfo =
@@ -1679,6 +1681,6 @@ class ApiListState extends State<ApiList> {
           }
         }
       }),
-    ];
+    ]);
   }
 }

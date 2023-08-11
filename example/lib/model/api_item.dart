@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 class ApiItem {
   String label;
-  Function()? apiFunction;
+  Color? backgroundColor;
+  Function()? api;
 
-  ApiItem(this.label, [this.apiFunction]);
+  ApiItem(this.label, {this.backgroundColor, this.api});
 }
