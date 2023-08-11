@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
-import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/dialog_item/login_methods.dart';
-import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/dialog_item/login_parameter.dart';
+import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/login/login_methods.dart';
+import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/login/login_parameter.dart';
 import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/dialog_item/prompts_item.dart';
 import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/dialog_item/text_field_item.dart';
 import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/parameter_dialog.dart';

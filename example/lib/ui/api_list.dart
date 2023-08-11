@@ -11,10 +11,10 @@ import 'package:kakao_flutter_sdk_example/message_template.dart';
 import 'package:kakao_flutter_sdk_example/model/api_item.dart';
 import 'package:kakao_flutter_sdk_example/model/picker_item.dart';
 import 'package:kakao_flutter_sdk_example/ui/friend_page.dart';
-import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/dialog_item/login_parameter.dart';
-import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/dialog_item/user_api_parameter.dart';
-import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/login_dialog.dart';
-import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/user_api_dialog.dart';
+import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/login/login_dialog.dart';
+import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/login/login_parameter.dart';
+import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/user/user_api_dialog.dart';
+import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/user/user_api_parameter.dart';
 import 'package:kakao_flutter_sdk_example/util/log.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -352,7 +352,8 @@ class ApiListState extends State<ApiList> {
         // 사용자 정보 요청 (기본)
 
         try {
-          User user = await UserApi.instance.me(properties: parameters.properties);
+          User user =
+              await UserApi.instance.me(properties: parameters.properties);
           Log.i(
               context,
               tag,
@@ -537,25 +538,26 @@ class ApiListState extends State<ApiList> {
             context: context,
             builder: (context) => UserApiDialog('serviceTerms'));
 
-        if(parameters == null) return;
+        if (parameters == null) return;
 
         // 동의한 약관 확인하기
 
         try {
-          UserServiceTerms userServiceTerms =
-              await UserApi.instance.serviceTerms(tags: parameters.tags, result: parameters.result);
+          UserServiceTerms userServiceTerms = await UserApi.instance
+              .serviceTerms(tags: parameters.tags, result: parameters.result);
           Log.i(context, tag,
               '동의한 약관 확인하기 성공\n회원정보: ${userServiceTerms.id}\n동의한 약관: \n${userServiceTerms.serviceTerms?.join('\n')}');
         } catch (e) {
           Log.e(context, tag, '동의한 약관 확인하기 실패', e);
         }
       }),
-      ApiItem('+revokeServiceTerms()', backgroundColor: plusColor, api: () async {
+      ApiItem('+revokeServiceTerms()', backgroundColor: plusColor,
+          api: () async {
         UserApiParameter? parameters = await showDialog(
             context: context,
             builder: (context) => UserApiDialog('revokeServiceTerms'));
 
-        if(parameters == null) return;
+        if (parameters == null) return;
 
         // 약관 철회하기
 
@@ -570,15 +572,15 @@ class ApiListState extends State<ApiList> {
       }),
       ApiItem('+scopes()', backgroundColor: plusColor, api: () async {
         UserApiParameter? parameters = await showDialog(
-            context: context,
-            builder: (context) => UserApiDialog('scopes'));
+            context: context, builder: (context) => UserApiDialog('scopes'));
 
-        if(parameters == null) return;
+        if (parameters == null) return;
 
         // 동의 항목 확인하기
 
         try {
-          ScopeInfo scopeInfo = await UserApi.instance.scopes(scopes: parameters.scopes);
+          ScopeInfo scopeInfo =
+              await UserApi.instance.scopes(scopes: parameters.scopes);
           Log.i(
               context, tag, '동의 정보 확인 성공\n현재 가지고 있는 동의 항목 ${scopeInfo.scopes}');
         } catch (e) {
@@ -590,11 +592,11 @@ class ApiListState extends State<ApiList> {
             context: context,
             builder: (context) => UserApiDialog('revokeScopes'));
 
-        if(parameters == null) return;
+        if (parameters == null) return;
 
         try {
           ScopeInfo scopeInfo =
-          await UserApi.instance.revokeScopes(scopes: parameters.scopes);
+              await UserApi.instance.revokeScopes(scopes: parameters.scopes);
           Log.i(context, tag, '동의 철회 성공\n현재 가지고 있는 동의 항목 ${scopeInfo.scopes}');
         } catch (e) {
           Log.e(context, tag, '동의 철회 실패', e);
