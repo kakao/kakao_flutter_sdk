@@ -1,6 +1,6 @@
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
-class ParameterResult {
+class LoginParameter {
   final List<Prompt> prompts;
   final String? loginHint;
   final List<String> scopes;
@@ -10,7 +10,7 @@ class ParameterResult {
   final List<String> channelPublicIds;
   final List<String> serviceTerms;
 
-  ParameterResult({
+  LoginParameter({
     this.prompts = const [],
     this.loginHint,
     this.scopes = const [],

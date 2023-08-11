@@ -11,8 +11,8 @@ import 'package:kakao_flutter_sdk_example/message_template.dart';
 import 'package:kakao_flutter_sdk_example/model/api_item.dart';
 import 'package:kakao_flutter_sdk_example/model/picker_item.dart';
 import 'package:kakao_flutter_sdk_example/ui/friend_page.dart';
-import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/dialog_item/login_parameter_result.dart';
-import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/login_parameter_dialog.dart';
+import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/dialog_item/login_parameter.dart';
+import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/login_dialog.dart';
 import 'package:kakao_flutter_sdk_example/util/log.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -71,9 +71,9 @@ class ApiListState extends State<ApiList> {
         Log.i(context, tag, msg);
       }),
       ApiItem('+loginWithKakaoTalk()', backgroundColor: plusColor, api: () async {
-        ParameterResult? parameters = await showDialog(
+        LoginParameter? parameters = await showDialog(
           context: context,
-          builder: (context) => LoginParameterDialog('loginWithKakaoTalk'),
+          builder: (context) => LoginDialog('loginWithKakaoTalk'),
         );
 
         if (parameters == null) return;
@@ -92,9 +92,9 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('+loginWithKakaoAccount()', backgroundColor: plusColor, api: () async {
-        ParameterResult? parameters = await showDialog(
+        LoginParameter? parameters = await showDialog(
           context: context,
-          builder: (context) => LoginParameterDialog('loginWithKakaoAccount'),
+          builder: (context) => LoginDialog('loginWithKakaoAccount'),
         );
 
         if (parameters == null) return;
@@ -116,9 +116,9 @@ class ApiListState extends State<ApiList> {
       ApiItem('+certLoginWithKakaoTalk()', backgroundColor: plusColor, api: () async {
         final settleId = customData['settle_id'];
 
-        ParameterResult? parameters = await showDialog(
+        LoginParameter? parameters = await showDialog(
           context: context,
-          builder: (context) => LoginParameterDialog(
+          builder: (context) => LoginDialog(
             'certLoginWithKakaoTalk',
             settleId: settleId,
           ),
@@ -145,9 +145,9 @@ class ApiListState extends State<ApiList> {
       ApiItem('+certLoginWithKakaoAccount()', backgroundColor: plusColor, api: () async {
         final settleId = customData['settle_id'];
 
-        ParameterResult? parameters = await showDialog(
+        LoginParameter? parameters = await showDialog(
           context: context,
-          builder: (context) => LoginParameterDialog(
+          builder: (context) => LoginDialog(
               'certLoginWithKakaoAccount',
               settleId: settleId),
         );
@@ -174,9 +174,9 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('+loginWithNewScopes()', backgroundColor: plusColor, api: () async {
-        ParameterResult? parameters = await showDialog(
+        LoginParameter? parameters = await showDialog(
           context: context,
-          builder: (context) => LoginParameterDialog('loginWithNewScopes'),
+          builder: (context) => LoginDialog('loginWithNewScopes'),
         );
 
         if (parameters == null) return;

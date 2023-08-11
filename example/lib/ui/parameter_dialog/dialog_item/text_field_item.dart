@@ -5,17 +5,17 @@ class TextFieldItem extends StatefulWidget {
   final double fontSize;
   final String? hintText;
   final bool switchChecked;
-  final ValueChanged<String> onValueChanged;
+  final ValueChanged<String>? onValueChanged;
   final bool visible;
-  final bool editing;
+  final bool editable;
 
   const TextFieldItem({
     required this.title,
     required this.fontSize,
-    required this.onValueChanged,
+    this.onValueChanged,
     this.switchChecked = false,
     this.hintText,
-    this.editing = true,
+    this.editable = true,
     this.visible = false,
     super.key,
   });
@@ -45,7 +45,7 @@ class _TextFieldItemState extends State<TextFieldItem> {
                 });
 
                 if (_isChecked) {
-                  widget.onValueChanged(_controller.text);
+                  widget.onValueChanged?.call(_controller.text);
                 }
               },
             ),
@@ -60,7 +60,7 @@ class _TextFieldItemState extends State<TextFieldItem> {
           Expanded(
             flex: 3,
             child: TextField(
-              enabled: widget.editing,
+              enabled: widget.editable,
               decoration: InputDecoration(
                 hintText: widget.hintText,
                 isDense: true,
@@ -69,7 +69,7 @@ class _TextFieldItemState extends State<TextFieldItem> {
               ),
               onChanged: (value) {
                 if (_isChecked) {
-                  widget.onValueChanged(value);
+                  widget.onValueChanged?.call(value);
                 }
               },
             ),

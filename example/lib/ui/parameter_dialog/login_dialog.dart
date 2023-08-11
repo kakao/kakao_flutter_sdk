@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/dialog_item/login_methods.dart';
-import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/dialog_item/login_parameter_result.dart';
+import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/dialog_item/login_parameter.dart';
 import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/dialog_item/prompts_item.dart';
 import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/dialog_item/text_field_item.dart';
 import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/parameter_dialog.dart';
 
-class LoginParameterDialog extends StatelessWidget {
+class LoginDialog extends StatelessWidget {
   final String title;
   final String settleId;
 
@@ -20,7 +20,7 @@ class LoginParameterDialog extends StatelessWidget {
   final bool settleIdVisibility;
   final Map<String, Object> result = {};
 
-  LoginParameterDialog(this.title, {this.settleId = '', super.key})
+  LoginDialog(this.title, {this.settleId = '', super.key})
       : promptsVisibility =
             {accountLogin, talkCertLogin, accountCertLogin}.contains(title),
         loginHintVisibility = {accountLogin, accountCertLogin}.contains(title),
@@ -51,7 +51,7 @@ class LoginParameterDialog extends StatelessWidget {
         TextFieldItem(
             visible: scopesVisibility,
             title: 'scopes',
-            hintText: "seperate string by ','",
+            hintText: "separate string by ','",
             fontSize: 12.0,
             onValueChanged: (value) => result['scopes'] = value),
         TextFieldItem(
@@ -83,15 +83,14 @@ class LoginParameterDialog extends StatelessWidget {
             visible: settleIdVisibility,
             title: 'settleId',
             hintText: settleId,
-            editing: false,
-            fontSize: 12.0,
-            onValueChanged: (value) => result['settleId'] = value),
+            editable: false,
+            fontSize: 12.0),
       ],
     );
   }
 
-  ParameterResult _parameterResult() {
-    return ParameterResult(
+  LoginParameter _parameterResult() {
+    return LoginParameter(
       prompts: (result['prompts'] as List<Prompt>?) ?? [],
       loginHint: result['loginHint'] as String?,
       scopes: (result['scopes'] as String?)?.split(',') ?? [],
