@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/dialog_item/checkbox_item.dart';
+import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/dialog_item/text_field_item.dart';
 import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/login/login_methods.dart';
 import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/login/login_parameter.dart';
-import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/dialog_item/prompts_item.dart';
-import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/dialog_item/text_field_item.dart';
 import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/parameter_dialog.dart';
 
 class LoginDialog extends StatelessWidget {
@@ -37,10 +37,11 @@ class LoginDialog extends StatelessWidget {
       title: title,
       callback: (parameters) => _parameterResult(),
       items: [
-        CheckboxItem(
+        CheckboxItem<Prompt>(
             visible: promptsVisibility,
             title: 'prompts',
             fontSize: 12.0,
+            items: const [Prompt.login, Prompt.create, Prompt.selectAccount],
             onValueChanged: (value) => result['prompts'] = value),
         TextFieldItem(
             visible: loginHintVisibility,
