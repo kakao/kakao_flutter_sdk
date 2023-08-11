@@ -12,7 +12,9 @@ import 'package:kakao_flutter_sdk_example/model/api_item.dart';
 import 'package:kakao_flutter_sdk_example/model/picker_item.dart';
 import 'package:kakao_flutter_sdk_example/ui/friend_page.dart';
 import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/dialog_item/login_parameter.dart';
+import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/dialog_item/user_api_parameter.dart';
 import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/login_dialog.dart';
+import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/user_api_dialog.dart';
 import 'package:kakao_flutter_sdk_example/util/log.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -70,7 +72,8 @@ class ApiListState extends State<ApiList> {
         String msg = result ? '카카오톡으로 로그인 가능' : '카카오톡 미설치: 카카오계정으로 로그인 사용 권장';
         Log.i(context, tag, msg);
       }),
-      ApiItem('+loginWithKakaoTalk()', backgroundColor: plusColor, api: () async {
+      ApiItem('+loginWithKakaoTalk()', backgroundColor: plusColor,
+          api: () async {
         LoginParameter? parameters = await showDialog(
           context: context,
           builder: (context) => LoginDialog('loginWithKakaoTalk'),
@@ -91,7 +94,8 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('+loginWithKakaoAccount()', backgroundColor: plusColor, api: () async {
+      ApiItem('+loginWithKakaoAccount()', backgroundColor: plusColor,
+          api: () async {
         LoginParameter? parameters = await showDialog(
           context: context,
           builder: (context) => LoginDialog('loginWithKakaoAccount'),
@@ -113,7 +117,8 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('+certLoginWithKakaoTalk()', backgroundColor: plusColor, api: () async {
+      ApiItem('+certLoginWithKakaoTalk()', backgroundColor: plusColor,
+          api: () async {
         final settleId = customData['settle_id'];
 
         LoginParameter? parameters = await showDialog(
@@ -142,14 +147,14 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('+certLoginWithKakaoAccount()', backgroundColor: plusColor, api: () async {
+      ApiItem('+certLoginWithKakaoAccount()', backgroundColor: plusColor,
+          api: () async {
         final settleId = customData['settle_id'];
 
         LoginParameter? parameters = await showDialog(
           context: context,
-          builder: (context) => LoginDialog(
-              'certLoginWithKakaoAccount',
-              settleId: settleId),
+          builder: (context) =>
+              LoginDialog('certLoginWithKakaoAccount', settleId: settleId),
         );
 
         if (parameters == null) return;
@@ -173,7 +178,8 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('+loginWithNewScopes()', backgroundColor: plusColor, api: () async {
+      ApiItem('+loginWithNewScopes()', backgroundColor: plusColor,
+          api: () async {
         LoginParameter? parameters = await showDialog(
           context: context,
           builder: (context) => LoginDialog('loginWithNewScopes'),
@@ -337,6 +343,28 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '기타 에러 (네트워크 장애 등..)', e);
         }
       }),
+      ApiItem('+me()', backgroundColor: plusColor, api: () async {
+        UserApiParameter? parameters = await showDialog(
+            context: context, builder: (context) => UserApiDialog('me'));
+
+        if (parameters == null) return;
+
+        // 사용자 정보 요청 (기본)
+
+        try {
+          User user = await UserApi.instance.me(properties: parameters.properties);
+          Log.i(
+              context,
+              tag,
+              '사용자 정보 요청 성공'
+              '\n회원번호: ${user.id}'
+              '\n이메일: ${user.kakaoAccount?.email}'
+              '\n닉네임: ${user.kakaoAccount?.profile?.nickname}'
+              '\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}');
+        } catch (e) {
+          Log.e(context, tag, '사용자 정보 요청 실패', e);
+        }
+      }),
       ApiItem('me()', api: () async {
         // 사용자 정보 요청 (기본)
 
@@ -440,39 +468,6 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, 'signup 실패', e);
         }
       }),
-      ApiItem('scopes()', api: () async {
-        // 동의 항목 확인하기
-
-        try {
-          ScopeInfo scopeInfo = await UserApi.instance.scopes();
-          Log.i(
-              context, tag, '동의 정보 확인 성공\n현재 가지고 있는 동의 항목 ${scopeInfo.scopes}');
-        } catch (e) {
-          Log.e(context, tag, '동의 정보 확인 실패', e);
-        }
-      }),
-      ApiItem('scopes() - optional', api: () async {
-        // 특정 동의 항목 확인하기
-
-        List<String> scopes = ['account_email', 'friends'];
-        try {
-          ScopeInfo scopeInfo = await UserApi.instance.scopes(scopes: scopes);
-          Log.i(
-              context, tag, '동의 정보 확인 성공\n현재 가지고 있는 동의 항목 ${scopeInfo.scopes}');
-        } catch (e) {
-          Log.e(context, tag, '동의 정보 확인 실패', e);
-        }
-      }),
-      ApiItem('revokeScopes()', api: () async {
-        List<String> scopes = ['account_email', 'friends'];
-        try {
-          ScopeInfo scopeInfo =
-              await UserApi.instance.revokeScopes(scopes: scopes);
-          Log.i(context, tag, '동의 철회 성공\n현재 가지고 있는 동의 항목 ${scopeInfo.scopes}');
-        } catch (e) {
-          Log.e(context, tag, '동의 철회 실패', e);
-        }
-      }),
       ApiItem('accessTokenInfo()', api: () async {
         // 토큰 정보 보기
 
@@ -537,52 +532,72 @@ class ApiListState extends State<ApiList> {
           }
         }
       }),
-      ApiItem('serviceTerms()', api: () async {
+      ApiItem('+serviceTerms()', backgroundColor: plusColor, api: () async {
+        UserApiParameter? parameters = await showDialog(
+            context: context,
+            builder: (context) => UserApiDialog('serviceTerms'));
+
+        if(parameters == null) return;
+
         // 동의한 약관 확인하기
 
         try {
           UserServiceTerms userServiceTerms =
-              await UserApi.instance.serviceTerms();
+              await UserApi.instance.serviceTerms(tags: parameters.tags, result: parameters.result);
           Log.i(context, tag,
               '동의한 약관 확인하기 성공\n회원정보: ${userServiceTerms.id}\n동의한 약관: \n${userServiceTerms.serviceTerms?.join('\n')}');
         } catch (e) {
           Log.e(context, tag, '동의한 약관 확인하기 실패', e);
         }
       }),
-      ApiItem('serviceTerms(app_service_terms)', api: () async {
-        // 전체 약관 확인하기
+      ApiItem('+revokeServiceTerms()', backgroundColor: plusColor, api: () async {
+        UserApiParameter? parameters = await showDialog(
+            context: context,
+            builder: (context) => UserApiDialog('revokeServiceTerms'));
 
-        try {
-          UserServiceTerms userServiceTerms =
-              await UserApi.instance.serviceTerms(result: 'app_service_terms');
-          Log.i(context, tag,
-              '전체 약관 확인하기 성공\n회원정보: ${userServiceTerms.id}\n약관: \n${userServiceTerms.serviceTerms?.join('\n')}');
-        } catch (e) {
-          Log.e(context, tag, '전체 약관 확인하기 실패', e);
-        }
-      }),
-      ApiItem('serviceTerms(tags)', api: () async {
-        // 특정 약관 확인하기
+        if(parameters == null) return;
 
-        try {
-          UserServiceTerms userServiceTerms =
-              await UserApi.instance.serviceTerms(tags: ['policy']);
-          Log.i(context, tag,
-              '약관 확인하기 성공\n회원정보: ${userServiceTerms.id}\n약관: \n${userServiceTerms.serviceTerms?.join('\n')}');
-        } catch (e) {
-          Log.e(context, tag, '약관 확인하기 실패', e);
-        }
-      }),
-      ApiItem('revokeServiceTerms()', api: () async {
         // 약관 철회하기
 
         try {
           UserRevokedServiceTerms userRevokedServiceTerms =
-              await UserApi.instance.revokeServiceTerms(tags: ['test']);
+              await UserApi.instance.revokeServiceTerms(tags: parameters.tags);
           Log.i(context, tag,
               '약관 철회하기 성공\n회원정보: ${userRevokedServiceTerms.id}\n철회한 약관: \n${userRevokedServiceTerms.revokedServiceTerms?.join('\n')}');
         } catch (e) {
           Log.e(context, tag, '약관 철회하기 실패', e);
+        }
+      }),
+      ApiItem('+scopes()', backgroundColor: plusColor, api: () async {
+        UserApiParameter? parameters = await showDialog(
+            context: context,
+            builder: (context) => UserApiDialog('scopes'));
+
+        if(parameters == null) return;
+
+        // 동의 항목 확인하기
+
+        try {
+          ScopeInfo scopeInfo = await UserApi.instance.scopes(scopes: parameters.scopes);
+          Log.i(
+              context, tag, '동의 정보 확인 성공\n현재 가지고 있는 동의 항목 ${scopeInfo.scopes}');
+        } catch (e) {
+          Log.e(context, tag, '동의 정보 확인 실패', e);
+        }
+      }),
+      ApiItem('+revokeScopes()', backgroundColor: plusColor, api: () async {
+        UserApiParameter? parameters = await showDialog(
+            context: context,
+            builder: (context) => UserApiDialog('revokeScopes'));
+
+        if(parameters == null) return;
+
+        try {
+          ScopeInfo scopeInfo =
+          await UserApi.instance.revokeScopes(scopes: parameters.scopes);
+          Log.i(context, tag, '동의 철회 성공\n현재 가지고 있는 동의 항목 ${scopeInfo.scopes}');
+        } catch (e) {
+          Log.e(context, tag, '동의 철회 실패', e);
         }
       }),
       ApiItem('logout()', api: () async {
@@ -1016,7 +1031,8 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('Friend API'),
-      ApiItem('Picker Page', api: () => Navigator.pushNamed(context, '/picker')),
+      ApiItem('Picker Page',
+          api: () => Navigator.pushNamed(context, '/picker')),
       ApiItem('KakaoStory API'),
       ApiItem('isStoryUser()', api: () async {
         // 카카오스토리 사용자 확인하기
