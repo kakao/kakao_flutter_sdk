@@ -5,6 +5,7 @@ class TextFieldItem extends StatefulWidget {
   final double fontSize;
   final String? hintText;
   final bool switchChecked;
+  final String? text;
   final ValueChanged<String>? onValueChanged;
   final bool visible;
   final bool editable;
@@ -15,6 +16,7 @@ class TextFieldItem extends StatefulWidget {
     this.onValueChanged,
     this.switchChecked = false,
     this.hintText,
+    this.text,
     this.editable = true,
     this.visible = false,
     super.key,
@@ -27,6 +29,12 @@ class TextFieldItem extends StatefulWidget {
 class _TextFieldItemState extends State<TextFieldItem> {
   late var _isChecked = widget.switchChecked;
   final _controller = TextEditingController();
+
+  @override
+  void initState() {
+    _controller.text = widget.text ?? '';
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +68,7 @@ class _TextFieldItemState extends State<TextFieldItem> {
           Expanded(
             flex: 3,
             child: TextField(
+              controller: _controller,
               enabled: widget.editable,
               decoration: InputDecoration(
                 hintText: widget.hintText,
