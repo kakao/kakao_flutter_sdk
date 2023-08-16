@@ -13,6 +13,8 @@ import 'package:kakao_flutter_sdk_example/model/picker_item.dart';
 import 'package:kakao_flutter_sdk_example/ui/friend_page.dart';
 import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/login/login_dialog.dart';
 import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/login/login_parameter.dart';
+import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/talk/talk_api_dialog.dart';
+import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/talk/talk_api_parameter.dart';
 import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/user/user_api_dialog.dart';
 import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/user/user_api_parameter.dart';
 import 'package:kakao_flutter_sdk_example/util/log.dart';
@@ -672,11 +674,21 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '나에게 보내기 실패', e);
         }
       }),
-      ApiItem('friends()', api: () async {
+      ApiItem('+friends()', backgroundColor: plusColor, api: () async {
+        TalkApiParameter? parameters = await showDialog(
+            context: context, builder: (context) => TalkApiDialog('friends'));
+
+        if (parameters == null) return;
+
         // 카카오톡 친구 목록 받기 (기본)
 
         try {
-          Friends friends = await TalkApi.instance.friends();
+          Friends friends = await TalkApi.instance.friends(
+            offset: parameters.offset,
+            limit: parameters.limit,
+            order: parameters.order,
+            friendOrder: parameters.friendOrder,
+          );
           Log.i(context, tag,
               '카카오톡 친구 목록 받기 성공\n${friends.elements?.map((e) => e.profileNickname).join('\n')}');
 
@@ -998,19 +1010,35 @@ class ApiListState extends State<ApiList> {
           }
         }
       }),
-      ApiItem('channels()', api: () async {
+      ApiItem('+channels()', backgroundColor: plusColor, api: () async {
+        TalkApiParameter? parameters = await showDialog(
+            context: context, builder: (context) => TalkApiDialog('channels'));
+
+        if (parameters == null) return;
+
         // 카카오톡 채널 관계 확인하기
 
         try {
-          Channels relations = await TalkApi.instance.channels();
+          Channels relations =
+              await TalkApi.instance.channels(parameters.publicIds);
           Log.i(context, tag, '채널 관계 확인 성공\n${relations.channels}');
         } catch (e) {
           Log.e(context, tag, '채널 관계 확인 실패', e);
         }
       }),
-      ApiItem('addChannelUrl()', api: () async {
+      ApiItem('+addChannelUrl()', backgroundColor: plusColor, api: () async {
+        TalkApiParameter? parameters = await showDialog(
+          context: context,
+          builder: (context) => TalkApiDialog(
+            'addChannelUrl',
+            publicIds: customData['channelId'],
+          ),
+        );
+
+        if (parameters == null) return;
+
         // 카카오톡 채널 추가하기 URL
-        String channelId = customData['channelId'];
+        String channelId = parameters.channelPublicId;
         Uri url = await TalkApi.instance.addChannelUrl(channelId);
 
         // 디바이스 브라우저 열기
@@ -1020,9 +1048,19 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '카카오톡 채널 추가 실패', e);
         }
       }),
-      ApiItem('channelChatUrl()', api: () async {
+      ApiItem('+channelChatUrl()', backgroundColor: plusColor, api: () async {
+        TalkApiParameter? parameters = await showDialog(
+          context: context,
+          builder: (context) => TalkApiDialog(
+            'channelChatUrl',
+            publicIds: customData['channelId'],
+          ),
+        );
+
+        if (parameters == null) return;
+
         // 카카오톡 채널 채팅 URL
-        String channelId = customData['channelId'];
+        String channelId = parameters.channelPublicId;
         Uri url = await TalkApi.instance.channelChatUrl(channelId);
 
         // 디바이스 브라우저 열기
