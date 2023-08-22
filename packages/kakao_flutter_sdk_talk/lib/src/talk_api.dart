@@ -75,11 +75,17 @@ class TalkApi {
 
   /// 사용자가 특정 카카오톡 채널을 추가했는지 확인
   Future<Channels> channels([List<String>? publicIds]) async {
+    var queryParameters = {
+      Constants.channelIds: publicIds?.join(','),
+      Constants.channelIdType: Constants.channelPublicId,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+
     return ApiFactory.handleApiError(() async {
-      Response response = await _dio.get(Constants.v1ChannelsPath,
-          queryParameters: publicIds == null
-              ? {}
-              : {Constants.channelPublicIds: jsonEncode(publicIds)});
+      Response response = await _dio.get(
+        Constants.v2ChannelsPath,
+        queryParameters: queryParameters,
+      );
       return Channels.fromJson(response.data);
     });
   }

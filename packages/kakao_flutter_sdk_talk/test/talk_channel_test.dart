@@ -10,7 +10,7 @@ void main() {
   group('parse test', () {
     void parse(String data) {
       test(data, () async {
-        String path = uriPathToFilePath(Constants.v1ChannelsPath);
+        String path = uriPathToFilePath(Constants.v2ChannelsPath);
         String body = await loadJson('talk/$path/$data.json');
         Map<String, dynamic> expected = jsonDecode(body);
         Channels actual = Channels.fromJson(expected);

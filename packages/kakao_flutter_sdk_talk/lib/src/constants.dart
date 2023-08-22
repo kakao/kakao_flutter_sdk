@@ -2,7 +2,7 @@
 class Constants {
   static const String profilePath = '/v1/api/talk/profile';
   static const String v2MemoPath = '/v2/api/talk/memo/';
-  static const String v1ChannelsPath = '/v1/api/talk/channels';
+  static const String v2ChannelsPath = '/v2/api/talk/channels';
   static const String v1FriendsPath = '/v1/api/talk/friends';
   static const String v1OpenTalkMessagePath = '/v1/api/talk/friends/message/';
   static const String defaultPath = 'default/';
@@ -21,7 +21,9 @@ class Constants {
   static const String templateArgs = 'template_args';
   static const String templateObject = 'template_object';
   static const String requestUrl = 'request_url';
-  static const String channelPublicIds = 'channel_public_ids';
+  static const String channelIds = 'channel_ids';
+  static const String channelIdType = 'channel_id_type';
+  static const String channelPublicId = 'channel_public_id';
   static const String receiverUuids = 'receiver_uuids';
 
   static const String appKey = 'app_key';
