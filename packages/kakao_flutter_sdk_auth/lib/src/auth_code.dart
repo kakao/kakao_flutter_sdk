@@ -34,10 +34,9 @@ class AuthCodeClient {
     List<String>? serviceTerms,
     List<Prompt>? prompts,
     String? loginHint,
-    String? state,
     String? codeVerifier,
     String? nonce,
-    String? settleId,
+    String? kauthTxId,
     bool webPopupLogin = false,
   }) async {
     String? codeChallenge =
@@ -51,17 +50,16 @@ class AuthCodeClient {
       Constants.agt: agt,
       Constants.channelPublicId: channelPublicIds?.join(','),
       Constants.serviceTerms: serviceTerms?.join(','),
-      Constants.prompt: state == null
+      Constants.prompt: kauthTxId == null
           ? (prompts == null ? null : _parsePrompts(prompts))
           : _parsePrompts(_makeCertPrompts(prompts)),
       Constants.loginHint: loginHint,
-      Constants.state: state,
       Constants.codeChallenge: codeChallenge,
       Constants.codeChallengeMethod:
           codeChallenge != null ? Constants.codeChallengeMethodValue : null,
       Constants.kaHeader: await KakaoSdk.kaHeader,
       Constants.nonce: nonce,
-      Constants.settleId: settleId,
+      Constants.kauthTxId: kauthTxId,
     };
     params.removeWhere((k, v) => v == null);
     final url =
@@ -90,10 +88,9 @@ class AuthCodeClient {
     List<Prompt>? prompts,
     List<String>? channelPublicId,
     List<String>? serviceTerms,
-    String? state,
     String? codeVerifier,
     String? nonce,
-    String? settleId,
+    String? kauthTxId,
     String? stateToken,
     bool webPopupLogin = false,
   }) async {
@@ -108,9 +105,8 @@ class AuthCodeClient {
         serviceTerms,
         codeVerifier,
         prompts,
-        state,
         nonce,
-        settleId,
+        kauthTxId,
         stateToken: webStateToken,
         webPopupLogin: webPopupLogin,
       );
@@ -184,9 +180,8 @@ class AuthCodeClient {
     List<String>? serviceTerms,
     String? codeVerifier,
     List<Prompt>? prompts,
-    String? state,
     String? nonce,
-    String? settleId, {
+    String? kauthTxId, {
     String? stateToken,
     bool webPopupLogin = false,
   }) async {
@@ -198,12 +193,11 @@ class AuthCodeClient {
       Constants.codeVerifier: codeVerifier,
       Constants.channelPublicId: channelPublicId?.join(','),
       Constants.serviceTerms: serviceTerms?.join(','),
-      Constants.prompt: state == null
+      Constants.prompt: kauthTxId == null
           ? (prompts == null ? null : _parsePrompts(prompts))
           : _parsePrompts(_makeCertPrompts(prompts)),
-      Constants.state: state,
       Constants.nonce: nonce,
-      Constants.settleId: settleId,
+      Constants.kauthTxId: kauthTxId,
       Constants.stateToken: stateToken,
       Constants.isPopup: webPopupLogin,
     };

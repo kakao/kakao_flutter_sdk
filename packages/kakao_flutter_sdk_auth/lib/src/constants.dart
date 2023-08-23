@@ -3,6 +3,7 @@ class Constants {
   static const String agtPath = '/api/agt';
   static const String tokenPath = '/oauth/token';
   static const String authorizePath = '/oauth/authorize';
+  static const String preparePath = '/oauth/authorize/prepare';
   static const String apiWebCodeJson = '/apiweb/code.json';
 
   static const String sdkVersion = "sdk_version";
@@ -30,6 +31,7 @@ class Constants {
   static const String iosBundleId = 'ios_bundle_id';
   static const String isPopup = 'is_popup';
   static const String stateToken = 'state_token';
+  static const String kauthTxId = 'kauth_tx_id';
 
   static const String codeChallenge = 'code_challenge';
   static const String codeChallengeMethod = 'code_challenge_method';

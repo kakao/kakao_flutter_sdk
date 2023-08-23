@@ -6,6 +6,7 @@ import 'package:kakao_flutter_sdk_auth/src/auth_api_factory.dart';
 import 'package:kakao_flutter_sdk_auth/src/constants.dart';
 import 'package:kakao_flutter_sdk_auth/src/model/access_token_response.dart';
 import 'package:kakao_flutter_sdk_auth/src/model/cert_token_info.dart';
+import 'package:kakao_flutter_sdk_auth/src/model/cert_type.dart';
 import 'package:kakao_flutter_sdk_auth/src/model/oauth_token.dart';
 import 'package:kakao_flutter_sdk_auth/src/token_manager.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
@@ -149,6 +150,27 @@ class AuthApi {
         return 'error';
       }
       return response.data['code'];
+    });
+  }
+
+  Future<String> prepare({
+    required CertType certType,
+    String? settleId,
+    String? signData,
+    String? txId,
+  }) async {
+    var data = {
+      'client_id': KakaoSdk.appKey,
+      'settle_id': settleId,
+      'sign_data': signData,
+      'tx_id': txId,
+      'cert_type': certType.name,
+    };
+    data.removeWhere((k, v) => v == null);
+
+    return await ApiFactory.handleApiError(() async {
+      final response = await _dio.post(Constants.preparePath, data: data);
+      return response.data['kauth_tx_id'];
     });
   }
 

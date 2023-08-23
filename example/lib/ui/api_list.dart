@@ -137,7 +137,7 @@ class ApiListState extends State<ApiList> {
           CertTokenInfo certTokenInfo =
               await UserApi.instance.certLoginWithKakaoTalk(
             prompts: parameters.prompts,
-            state: parameters.state ?? '',
+            signData: parameters.signData ?? '',
             settleId: settleId,
             nonce: parameters.nonce,
             channelPublicIds: parameters.channelPublicIds,
@@ -167,7 +167,7 @@ class ApiListState extends State<ApiList> {
           CertTokenInfo certTokenInfo =
               await UserApi.instance.certLoginWithKakaoAccount(
             prompts: parameters.prompts,
-            state: parameters.state ?? '',
+            signData: parameters.signData ?? '',
             settleId: settleId,
             loginHint: parameters.loginHint,
             nonce: parameters.nonce,
@@ -216,7 +216,7 @@ class ApiListState extends State<ApiList> {
 
         try {
           CertTokenInfo certTokenInfo =
-              await UserApi.instance.certLoginWithKakaoTalk(state: "test");
+              await UserApi.instance.certLoginWithKakaoTalk(signData: "test");
           Log.i(context, tag,
               '로그인 성공 ${certTokenInfo.token.accessToken} ${certTokenInfo.txId}');
         } catch (e) {
@@ -229,7 +229,7 @@ class ApiListState extends State<ApiList> {
 
         try {
           CertTokenInfo certTokenInfo = await UserApi.instance
-              .certLoginWithKakaoTalk(state: "test", settleId: settleId);
+              .certLoginWithKakaoTalk(signData: "test", settleId: settleId);
           Log.i(context, tag,
               '로그인 성공 ${certTokenInfo.token.accessToken} ${certTokenInfo.txId}');
         } catch (e) {
@@ -262,7 +262,7 @@ class ApiListState extends State<ApiList> {
 
         try {
           CertTokenInfo certTokenInfo =
-              await UserApi.instance.certLoginWithKakaoAccount(state: "test");
+              await UserApi.instance.certLoginWithKakaoAccount(signData: "test");
           Log.i(context, tag,
               '로그인 성공 ${certTokenInfo.token.accessToken} ${certTokenInfo.txId}');
         } catch (e) {
@@ -275,7 +275,7 @@ class ApiListState extends State<ApiList> {
 
         try {
           CertTokenInfo certTokenInfo = await UserApi.instance
-              .certLoginWithKakaoAccount(state: "test", settleId: settleId);
+              .certLoginWithKakaoAccount(signData: "test", settleId: settleId);
           Log.i(context, tag,
               '로그인 성공 ${certTokenInfo.token.accessToken} ${certTokenInfo.txId}');
         } catch (e) {
@@ -1573,7 +1573,7 @@ class ApiListState extends State<ApiList> {
 
         try {
           CertTokenInfo certTokenInfo = await UserApi.instance
-              .certLoginWithKakaoTalk(state: 'test', nonce: 'openidtest');
+              .certLoginWithKakaoTalk(signData: 'test', nonce: 'openidtest');
           Log.i(context, tag,
               '로그인 성공\nidToken: ${certTokenInfo.token.idToken}\ntxId: ${certTokenInfo.txId}');
         } catch (e) {
@@ -1596,7 +1596,7 @@ class ApiListState extends State<ApiList> {
 
         try {
           CertTokenInfo certTokenInfo = await UserApi.instance
-              .certLoginWithKakaoAccount(state: 'test', nonce: 'openidtest');
+              .certLoginWithKakaoAccount(signData: 'test', nonce: 'openidtest');
           Log.i(context, tag,
               '로그인 성공\nidToken: ${certTokenInfo.token.idToken}\ntxId:${certTokenInfo.txId}');
         } catch (e) {

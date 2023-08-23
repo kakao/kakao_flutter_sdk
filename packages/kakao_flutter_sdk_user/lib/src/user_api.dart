@@ -65,16 +65,20 @@ class UserApi {
   ///
   /// 동의 화면 요청 시 추가 상호작용을 요청하고자 할 때는 [prompts] 전달, 사용할 수 있는 옵션의 종류는 [Prompt] 참고
   /// ID 토큰 재생 공격 방지를 위한 검증 값은 [nonce] 전달. 임의의 문자열, ID 토큰 검증 시 사용
-  /// 전자서명 원문은 [state]로 전달
+  /// 전자서명 원문은 [signData]로 전달
   /// 정산 ID는 [settleId]로 전달
   Future<CertTokenInfo> certLoginWithKakaoTalk({
+    required String signData,
     List<Prompt>? prompts,
-    required String state,
     List<String>? channelPublicIds,
     List<String>? serviceTerms,
     String? nonce,
     String? settleId,
   }) async {
+    var kauthTxId = await AuthApi.instance.prepare(
+      certType: CertType.k2100,
+      settleId: settleId,
+    );
     var codeVerifier = AuthCodeClient.codeVerifier();
 
     String? stateToken;
@@ -87,13 +91,12 @@ class UserApi {
     final authCode = await AuthCodeClient.instance.authorizeWithTalk(
       redirectUri: redirectUrl ?? KakaoSdk.redirectUri,
       prompts: prompts,
-      state: state,
       channelPublicId: channelPublicIds,
       serviceTerms: serviceTerms,
       codeVerifier: codeVerifier,
       nonce: nonce,
+      kauthTxId: kauthTxId,
       stateToken: stateToken,
-      settleId: settleId,
       webPopupLogin: true,
     );
     final certTokenInfo = await AuthApi.instance.issueAccessTokenWithCert(
@@ -141,28 +144,31 @@ class UserApi {
   /// 동의 화면 요청 시 추가 상호작용을 요청하고자 할 때는 [prompts] 전달, 사용할 수 있는 옵션의 종류는 [Prompt] 참고
   /// 카카오계정 로그인 페이지의 ID에 자동 입력할 이메일 또는 전화번호(+82 00-0000-0000 형식)는 [loginHint]에 전달
   /// ID 토큰 재생 공격 방지를 위한 검증 값은 [nonce]로 전달. 임의의 문자열, ID 토큰 검증 시 사용
-  /// 전자서명 원문은 [state]로 전달
+  /// 전자서명 원문은 [signData]로 전달
   /// 정산 ID는 [settleId]로 전달
   Future<CertTokenInfo> certLoginWithKakaoAccount({
+    required String signData,
     List<Prompt>? prompts,
     List<String>? channelPublicIds,
     List<String>? serviceTerms,
     String? loginHint,
-    required String state,
     String? nonce,
     String? settleId,
   }) async {
+    var kauthTxId = await AuthApi.instance.prepare(
+      certType: CertType.k2100,
+      settleId: settleId,
+    );
     var codeVerifier = AuthCodeClient.codeVerifier();
     final authCode = await AuthCodeClient.instance.authorize(
       redirectUri: KakaoSdk.redirectUri,
       prompts: prompts,
-      state: state,
       channelPublicIds: channelPublicIds,
       serviceTerms: serviceTerms,
       codeVerifier: codeVerifier,
       loginHint: loginHint,
       nonce: nonce,
-      settleId: settleId,
+      kauthTxId: kauthTxId,
       webPopupLogin: true,
     );
     final certTokenInfo = await AuthApi.instance.issueAccessTokenWithCert(
