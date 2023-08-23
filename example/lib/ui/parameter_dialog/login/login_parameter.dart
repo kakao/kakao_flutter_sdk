@@ -4,7 +4,7 @@ class LoginParameter {
   final List<Prompt> prompts;
   final String? loginHint;
   final List<String> scopes;
-  final String? state;
+  final String? signData;
   final String? nonce;
   final String? settleId;
   final List<String> channelPublicIds;
@@ -14,7 +14,7 @@ class LoginParameter {
     this.prompts = const [],
     this.loginHint,
     this.scopes = const [],
-    this.state,
+    this.signData,
     this.nonce,
     this.settleId,
     this.channelPublicIds = const [],

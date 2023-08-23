@@ -13,7 +13,7 @@ class LoginDialog extends StatelessWidget {
   final bool promptsVisibility;
   final bool loginHintVisibility;
   final bool scopesVisibility;
-  final bool stateVisibility;
+  final bool signDataVisibility;
   final bool nonceVisibility;
   final bool channelPublicIdsVisibility;
   final bool serviceTermsVisibility;
@@ -25,7 +25,7 @@ class LoginDialog extends StatelessWidget {
             {accountLogin, talkCertLogin, accountCertLogin}.contains(title),
         loginHintVisibility = {accountLogin, accountCertLogin}.contains(title),
         scopesVisibility = title == newScopes,
-        stateVisibility = {talkCertLogin, accountCertLogin}.contains(title),
+        signDataVisibility = {talkCertLogin, accountCertLogin}.contains(title),
         nonceVisibility = true,
         channelPublicIdsVisibility = title != newScopes,
         serviceTermsVisibility = title != newScopes,
@@ -56,11 +56,11 @@ class LoginDialog extends StatelessWidget {
             fontSize: 12.0,
             onValueChanged: (value) => result['scopes'] = value),
         TextFieldItem(
-            visible: stateVisibility,
-            title: 'state',
-            hintText: "write state here",
+            visible: signDataVisibility,
+            title: 'signData',
+            hintText: "write signData here",
             fontSize: 12.0,
-            onValueChanged: (value) => result['state'] = value),
+            onValueChanged: (value) => result['signData'] = value),
         TextFieldItem(
             visible: nonceVisibility,
             title: 'nonce',
@@ -95,7 +95,7 @@ class LoginDialog extends StatelessWidget {
       prompts: (result['prompts'] as List<Prompt>?) ?? [],
       loginHint: result['loginHint'] as String?,
       scopes: (result['scopes'] as String?)?.split(',') ?? [],
-      state: result['state'] as String?,
+      signData: result['signData'] as String?,
       nonce: result['nonce'] as String?,
       settleId: result['settleId'] as String?,
       channelPublicIds:
