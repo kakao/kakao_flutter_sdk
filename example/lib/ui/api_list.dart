@@ -1523,6 +1523,7 @@ class ApiListState extends State<ApiList> {
             viaList: [
               Location(name: '판교역 1번출구', x: '127.111492', y: '37.395225'),
             ],
+            option: NaviOption(coordType: CoordType.wgs84),
           );
         } else {
           // 카카오내비 설치 페이지로 이동
