@@ -47,11 +47,15 @@ object IntentFactory {
     }
 
     fun customTabs(context: Context, args: Map<String, String?>): Intent {
-        val uri = args["url"] as String
-        val redirectUrl = args["redirect_uri"]
         return Intent(context, AuthCodeCustomTabsActivity::class.java)
-            .putExtra(Constants.KEY_FULL_URI, uri)
-            .putExtra(Constants.KEY_REDIRECT_URL, redirectUrl)
+            .putExtra(Constants.KEY_FULL_URI, args["url"] as String)
+    }
+
+    fun customTabsForLogin(context: Context, args: Map<String, String?>): Intent {
+        return customTabs(context, args).apply {
+            val redirectUrl = args["redirect_uri"]
+            putExtra(Constants.KEY_REDIRECT_URL, redirectUrl)
+        }
     }
 
     private fun codeChallenge(codeVerifier: ByteArray): String =

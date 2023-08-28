@@ -59,13 +59,31 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
             }
 
             "launchBrowserTab" -> {
-                @Suppress("UNCHECKED_CAST")
-                applicationContext?.let {
-                    val args = call.arguments as Map<String, String?>
-                    val intent = IntentFactory.customTabs(it, args)
-                    activity?.startActivityForResult(intent, Constants.REQUEST_KAKAO_LOGIN)
-                        ?: result.error("Error", "Plugin is not attached to Activity", null)
+                val context = applicationContext ?: run {
+                    result.error("Error", "Application is not attached to FlutterEngine", null)
+                    return
                 }
+
+                val activity = activity ?: run {
+                    result.error("Error", "Plugin is not attached to Activity", null)
+                    return
+                }
+
+                @Suppress("UNCHECKED_CAST")
+                val args = call.arguments as Map<String, String?>
+
+                val intent: Intent
+                val requestCode: Int
+
+                if (args.contains("redirect_uri")) {
+                    intent = IntentFactory.customTabsForLogin(context, args)
+                    requestCode = Constants.REQUEST_KAKAO_LOGIN
+                } else {
+                    intent = IntentFactory.customTabs(context, args)
+                    requestCode = Constants.REQUEST_CUSTOM_TABS
+                }
+
+                activity.startActivityForResult(intent, requestCode)
             }
 
             "authorizeWithTalk" -> {
@@ -216,15 +234,26 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
         if (requestCode == Constants.REQUEST_KAKAO_LOGIN && data != null) {
             return when (resultCode) {
                 Activity.RESULT_OK -> {
-                    val url = data.getStringExtra(Constants.KEY_RETURN_URL)
-                    result?.success(url)
+                    resultOk(result, data)
+                    return true
+                }
+
+                Activity.RESULT_CANCELED -> {
+                    resultCanceled(result, data)
+                    return true
+                }
+
+                else -> false
+            }
+        } else if (requestCode == Constants.REQUEST_CUSTOM_TABS) {
+            return when (resultCode) {
+                Activity.RESULT_OK -> {
+                    resultOk(result, data)
                     true
                 }
 
                 Activity.RESULT_CANCELED -> {
-                    val errorCode = data.getStringExtra(Constants.KEY_ERROR_CODE) ?: "ERROR"
-                    val errorMessage = data.getStringExtra(Constants.KEY_ERROR_MESSAGE)
-                    result?.error(errorCode, errorMessage, null)
+                    resultCanceled(result, data)
                     true
                 }
 
@@ -304,5 +333,16 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
             return true
         }
         return false
+    }
+
+    private fun resultOk(result: Result?, data: Intent?) {
+        val url = data?.getStringExtra(Constants.KEY_RETURN_URL)
+        result?.success(url)
+    }
+
+    private fun resultCanceled(result: Result?, data: Intent?) {
+        val errorCode = data?.getStringExtra(Constants.KEY_ERROR_CODE) ?: "ERROR"
+        val errorMessage = data?.getStringExtra(Constants.KEY_ERROR_MESSAGE)
+        result?.error(errorCode, errorMessage, null)
     }
 }
