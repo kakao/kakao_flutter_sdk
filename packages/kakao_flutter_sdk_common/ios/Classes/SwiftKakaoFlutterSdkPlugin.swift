@@ -76,6 +76,27 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
             let args = castArguments(call.arguments)
             let uri = args["uri"]
             launchKakaoTalk(uri: uri!, result: result)
+        
+        case "addChannel":
+            let args = castArguments(call.arguments)
+            let scheme = args["channel_scheme"] ?? "kakaoplus:plusfriend"
+            let channelPublicId = args["channel_public_id"] ?? ""
+            let urlObject = URL(string: "\(scheme)/home/\(channelPublicId)/add")!
+            
+            if (UIApplication.shared.canOpenURL(urlObject)) {
+                UIApplication.shared.open(urlObject, options: [:])
+            }
+        
+        case "channelChat":
+            let args = castArguments(call.arguments)
+            let scheme = args["channel_scheme"] ?? "kakaoplus:plusfriend"
+            let channelPublicId = args["channel_public_id"] ?? ""
+            
+            let urlObject = URL(string: "\(scheme)/talk/chat/\(channelPublicId)")!
+            if (UIApplication.shared.canOpenURL(urlObject)) {
+                UIApplication.shared.open(urlObject, options: [:])
+            }
+            
         case "isKakaoTalkSharingAvailable":
             let args = castArguments(call.arguments)
             let talkSharingScheme = args["talkSharingScheme"] ?? "kakaolink://send"
@@ -117,7 +138,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
             UIApplication.shared.open(urlObject, options: [:]) { (openResult) in
                 result(openResult)
             }
-        }
+    }
     }
     
     private func authorizeWithTalk(loginScheme: String, sdkVersion: String, clientId: String, redirectUri: String, codeVerifier: String?, prompt: String?, state: String?, nonce: String?, settleId: String?, result: @escaping FlutterResult) {
