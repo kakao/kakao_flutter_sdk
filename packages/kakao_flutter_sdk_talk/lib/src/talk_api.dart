@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_talk/src/constants.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/channels.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/friend.dart';
@@ -17,6 +18,9 @@ class TalkApi {
   TalkApi(this._dio);
 
   final Dio _dio;
+
+  static const MethodChannel _channel =
+      MethodChannel(CommonConstants.methodChannel);
 
   /// 간편한 API 호출을 위해 기본 제공되는 singleton 객체
   static final TalkApi instance = TalkApi(AuthApiFactory.authApi);
@@ -165,6 +169,46 @@ class TalkApi {
     return _message(Constants.scrapPath, params);
   }
 
+  /// 카카오톡 채널 추가
+  ///
+  /// [channelPublicId]는 카카오톡 채널 홈 URL 에 들어간 {_영문}으로 구성된 고유 아이디
+  /// 홈 URL 은 카카오톡 채널 관리자센터 > 관리 > 상세설정 페이지에서 확인
+  Future addChannel(final String channelPublicId) async {
+    final scheme = isAndroid()
+        ? KakaoSdk.platforms.android.talkChannelScheme
+        : KakaoSdk.platforms.ios.talkChannelScheme;
+
+    if (!kIsWeb || (kIsWeb && (isAndroid() || isiOS()))) {
+      await _validate('/sdk/channel/add', channelPublicId);
+    }
+
+    await _channel.invokeMethod('addChannel', {
+      'channel_scheme': scheme,
+      'channel_public_id': channelPublicId,
+    });
+  }
+
+  /// 카카오톡 채널 1:1 대화방 실행
+  ///
+  /// [channelPublicId]는 카카오톡 채널 홈 URL 에 들어간 {_영문}으로 구성된 고유 아이디
+  /// 홈 URL 은 카카오톡 채널 관리자센터 > 관리 > 상세설정 페이지에서 확인
+  Future channelChat(final String channelPublicId) async {
+    final scheme = isAndroid()
+        ? KakaoSdk.platforms.android.talkChannelScheme
+        : KakaoSdk.platforms.ios.talkChannelScheme;
+
+    if (!kIsWeb || (kIsWeb && (isAndroid() || isiOS()))) {
+      await _validate('/sdk/channel/chat', channelPublicId);
+    }
+
+    var args = {
+      'channel_scheme': scheme,
+      'channel_public_id': channelPublicId,
+    };
+
+    await _channel.invokeMethod('channelChat', args);
+  }
+
   /// 카카오톡 채널을 추가하기 위한 URL 반환. URL 을 브라우저나 웹뷰에서 로드하면 브릿지 웹페이지를 통해 카카오톡 실행
   ///
   /// [channelPublicId]는 카카오톡 채널 홈 URL 에 들어간 {_영문}으로 구성된 고유 아이디
@@ -188,6 +232,16 @@ class TalkApi {
         host: KakaoSdk.hosts.pf,
         path: "/$channelPublicId/${Constants.chat}",
         queryParameters: await _channelBaseParams());
+  }
+
+  Future _validate(final String path, final String channelPublicId) async {
+    var dio = ApiFactory.appKeyApi;
+
+    return ApiFactory.handleApiError(() async {
+      String data =
+          'quota_properties=${Uri.encodeComponent('{"uri":"$path","channel_public_id":"$channelPublicId"}')}';
+      await dio.post("/v1/app/validate/sdk", data: data);
+    });
   }
 
   Future<MessageSendResult> _message(
