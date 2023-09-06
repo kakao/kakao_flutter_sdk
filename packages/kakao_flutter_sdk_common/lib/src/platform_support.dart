@@ -17,14 +17,14 @@ class PlatformSupport {
 
 /// @nodoc
 class PlatformSupportValues {
-  final String talkPackage = '';
-  final String talkLoginScheme = '';
-  final String talkSharingScheme = '';
-  final String kakaoNaviScheme = '';
-  final String kakaoNaviInstallPage = '';
-  final String kakaoNaviOrigin = '';
-  final String iosLoginUniversalLink = '';
-  final String iosInAppLoginScheme = '';
+  late final String talkPackage;
+  late final String talkLoginScheme;
+  late final String talkSharingScheme;
+  late final String kakaoNaviScheme;
+  late final String kakaoNaviInstallPage;
+  late final String kakaoNaviOrigin;
+  late final String iosLoginUniversalLink;
+  late final String iosInAppLoginScheme;
 }
 
 /// @nodoc
