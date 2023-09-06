@@ -10,6 +10,7 @@ import 'package:kakao_flutter_sdk_common/src/util.dart';
 import 'package:kakao_flutter_sdk_common/src/web/login.dart';
 import 'package:kakao_flutter_sdk_common/src/web/navi.dart';
 import 'package:kakao_flutter_sdk_common/src/web/picker.dart';
+import 'package:kakao_flutter_sdk_common/src/web/talk.dart';
 import 'package:kakao_flutter_sdk_common/src/web/ua_parser.dart';
 import 'package:kakao_flutter_sdk_common/src/web/utility.dart';
 
@@ -144,6 +145,47 @@ class KakaoFlutterSdkPlugin {
         } else if (isiOS()) {
           html.window.location.href = uri;
           return true;
+        }
+        break;
+      case "addChannel":
+        var scheme = call.arguments['channel_scheme'];
+        var channelPublicId = call.arguments['channel_public_id'];
+
+        if (!isMobileDevice()) {
+          var url = await webChannelUrl('$channelPublicId/friend');
+          windowOpen(url, 'channel_add_sociel_plugin');
+          return;
+        }
+
+        final path = 'home/$channelPublicId/add';
+        if (isAndroid()) {
+          html.window.location.href =
+              androidChannelIntent(scheme, channelPublicId, path);
+        } else if (isiOS()) {
+          html.window.location.href =
+              iosChannelScheme(scheme, channelPublicId, path);
+        }
+        break;
+      case "channelChat":
+        var scheme = call.arguments['channel_scheme'];
+        var channelPublicId = call.arguments['channel_public_id'];
+
+        if (!isMobileDevice()) {
+          var url = await webChannelUrl('$channelPublicId/chat');
+          windowOpen(url, 'channel_chat_sociel_plugin');
+          return;
+        }
+
+        final path = 'talk/chat/$channelPublicId';
+        final extra = 'extra={"referer": "${html.window.location.href}"}';
+        if (isAndroid()) {
+          html.window.location.href = androidChannelIntent(
+              scheme, channelPublicId, path,
+              queryParameters: extra);
+        } else if (isiOS()) {
+          html.window.location.href = iosChannelScheme(
+              scheme, channelPublicId, path,
+              queryParameters: extra);
         }
         break;
       case "navigate":
