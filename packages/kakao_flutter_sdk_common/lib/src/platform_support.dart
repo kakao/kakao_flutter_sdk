@@ -20,6 +20,7 @@ class PlatformSupportValues {
   late final String talkPackage;
   late final String talkLoginScheme;
   late final String talkSharingScheme;
+  late final String talkChannelScheme;
   late final String kakaoNaviScheme;
   late final String kakaoNaviInstallPage;
   late final String kakaoNaviOrigin;
@@ -34,6 +35,9 @@ class DefaultAndroid extends PlatformSupportValues {
 
   @override
   String get talkSharingScheme => 'kakaolink';
+
+  @override
+  String get talkChannelScheme => 'kakaoplus://plusfriend';
 
   @override
   String get kakaoNaviScheme => 'kakaonavi-sdk://navigate';
@@ -55,6 +59,9 @@ class DefaultiOS extends PlatformSupportValues {
   String get talkSharingScheme => 'kakaolink';
 
   @override
+  String get talkChannelScheme => 'kakaoplus://plusfriend';
+
+  @override
   String get kakaoNaviScheme => 'kakaonavi-sdk://navigate';
 
   @override
@@ -70,6 +77,9 @@ class DefaultWeb extends PlatformSupportValues {
 
   @override
   String get talkSharingScheme => 'kakaolink';
+
+  @override
+  String get talkChannelScheme => 'kakaoplus://plusfriend';
 
   @override
   String get kakaoNaviScheme => 'kakaonavi-sdk://navigate';
