@@ -4,7 +4,9 @@ import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
-import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
+import 'package:kakao_flutter_sdk_common/src/constants.dart';
+import 'package:kakao_flutter_sdk_common/src/kakao_sdk.dart';
+import 'package:kakao_flutter_sdk_common/src/util.dart';
 import 'package:kakao_flutter_sdk_common/src/web/login.dart';
 import 'package:kakao_flutter_sdk_common/src/web/navi.dart';
 import 'package:kakao_flutter_sdk_common/src/web/picker.dart';
@@ -71,7 +73,7 @@ class KakaoFlutterSdkPlugin {
       case 'isKakaoTalkSharingAvailable':
       case 'isKakaoNaviInstalled':
       case "isKakaoTalkInstalled":
-        if (_uaParser.isAndroid(userAgent) || _uaParser.isiOS(userAgent)) {
+        if (isMobileDevice()) {
           return true;
         }
         return false;
@@ -85,9 +87,9 @@ class KakaoFlutterSdkPlugin {
         int end = origin.length >= 10 ? 10 : origin.length;
         return Uint8List.fromList(origin.sublist(0, end));
       case "platformRedirectUri":
-        if (_uaParser.isAndroid(userAgent)) {
+        if (isAndroid()) {
           return "${CommonConstants.scheme}://${KakaoSdk.hosts.kapi}${CommonConstants.androidWebRedirectUri}";
-        } else if (_uaParser.isiOS(userAgent)) {
+        } else if (isiOS()) {
           return CommonConstants.iosWebRedirectUri;
         }
         // Returns meaningless values unless Android and iOS.
@@ -100,7 +102,7 @@ class KakaoFlutterSdkPlugin {
             '$redirectUri?code=${Uri.encodeComponent(code)}&state=${Uri.encodeComponent(state)}';
         return;
       case "authorizeWithTalk":
-        if (!_uaParser.isAndroid(userAgent) && !_uaParser.isiOS(userAgent)) {
+        if (!isMobileDevice()) {
           throw PlatformException(
               code: 'NotImplemented',
               message:
@@ -110,11 +112,11 @@ class KakaoFlutterSdkPlugin {
         var arguments = call.arguments;
         final kaHeader = await KakaoSdk.kaHeader;
 
-        if (_uaParser.isAndroid(userAgent)) {
+        if (isAndroid()) {
           String intent =
               androidLoginIntent(kaHeader, userAgent, Map.castFrom(arguments));
           html.window.location.href = intent;
-        } else if (_uaParser.isiOS(userAgent)) {
+        } else if (isiOS()) {
           final universalLink =
               iosLoginUniversalLink(kaHeader, Map.castFrom(arguments));
 
@@ -128,28 +130,33 @@ class KakaoFlutterSdkPlugin {
       case 'launchKakaoTalk':
         String uri = call.arguments['uri'];
 
-        if (_uaParser.isAndroid(userAgent)) {
+        if (!isMobileDevice()) {
+          throw PlatformException(
+            code: 'NotImplemented',
+            message:
+                'KakaoTalk can only be launched on Android or iOS devices.',
+          );
+        }
+
+        if (isAndroid()) {
           final intent = _getAndroidShareIntent(userAgent, uri);
           html.window.location.href = intent;
           return true;
-        } else if (_uaParser.isiOS(userAgent)) {
+        } else if (isiOS()) {
           html.window.location.href = uri;
           return true;
         }
-        throw PlatformException(
-            code: 'NotImplemented',
-            message:
-                'KakaoTalk can only be launched on Android or iOS devices.');
+        break;
       case "navigate":
       case "shareDestination":
         String scheme = call.arguments['navi_scheme'];
         String queries =
             'apiver=1.0&appkey=${KakaoSdk.appKey}&param=${Uri.encodeComponent(call.arguments['navi_params'])}&extras=${Uri.encodeComponent(call.arguments['extras'])}';
 
-        if (_uaParser.isAndroid(userAgent)) {
+        if (isAndroid()) {
           html.window.location.href = androidNaviIntent(scheme, queries);
           return true;
-        } else if (_uaParser.isiOS(userAgent)) {
+        } else if (isiOS()) {
           bindPageHideEvent(deferredFallback(
               '${KakaoSdk.platforms.web.kakaoNaviInstallPage}?$queries',
               (storeUrl) {

@@ -2,7 +2,14 @@ import 'dart:convert';
 import 'dart:html';
 
 import 'package:dio/dio.dart';
+import 'package:kakao_flutter_sdk_common/src/util.dart';
 
+/// @nodoc
+bool isMobileDevice() {
+  return isAndroid() || isiOS();
+}
+
+/// @nodoc
 class Utility {
   static Future<String> getAppVersion() async {
     var json = await _getVersionJson();
