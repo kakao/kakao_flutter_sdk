@@ -154,6 +154,30 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                 result.success(true)
             }
 
+            "addChannel" -> {
+                @Suppress("UNCHECKED_CAST")
+                val args = call.arguments as Map<String, String>
+                val scheme = args["channel_scheme"] ?: Constants.CHANNEL_SCHEME
+                val channelPublicId = args["channel_public_id"]
+                val uri = Uri.parse("$scheme/home/$channelPublicId/add")
+
+                activity?.startActivity(Intent(Intent.ACTION_VIEW, uri)) ?: run {
+                    result.error("Error", "Plugin is not attached to Activity", null)
+                }
+            }
+
+            "channelChat" -> {
+                @Suppress("UNCHECKED_CAST")
+                val args = call.arguments as Map<String, String>
+                val scheme = args["channel_scheme"] ?: Constants.CHANNEL_SCHEME
+                val channelPublicId = args["channel_public_id"]
+                val uri = Uri.parse("$scheme/talk/chat/$channelPublicId")
+
+                activity?.startActivity(Intent(Intent.ACTION_VIEW, uri)) ?: run {
+                    result.error("Error", "Plugin is not attached to Activity", null)
+                }
+            }
+
             "isKakaoTalkSharingAvailable" -> {
                 applicationContext?.let {
                     val uriBuilder = Uri.Builder().scheme("kakaolink").authority("send")
