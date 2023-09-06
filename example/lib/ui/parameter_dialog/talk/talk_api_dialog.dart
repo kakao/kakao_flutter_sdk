@@ -25,8 +25,12 @@ class TalkApiDialog extends StatelessWidget {
         limitVisibility = friends == title,
         orderVisibility = friends == title,
         friendOrderVisibility = friends == title,
-        channelPublicIdVisibility =
-            {addChannelUrl, channelChatUrl}.contains(title),
+        channelPublicIdVisibility = {
+          addChannel,
+          channelChat,
+          addChannelUrl,
+          channelChatUrl
+        }.contains(title),
         publicIdsVisibility = channels == title;
 
   @override

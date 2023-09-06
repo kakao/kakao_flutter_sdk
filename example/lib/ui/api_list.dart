@@ -1026,6 +1026,36 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '채널 관계 확인 실패', e);
         }
       }),
+      ApiItem('+addChannel()', backgroundColor: plusColor, api: () async {
+        TalkApiParameter? parameters = await showDialog(
+          context: context,
+          builder: (context) => TalkApiDialog(
+            'addChannel',
+            publicIds: customData['channelId'],
+          ),
+        );
+
+        if (parameters == null) return;
+
+        String channelId = parameters.channelPublicId;
+        // 카카오톡 채널 추가하기
+        await TalkApi.instance.addChannel(channelId);
+      }),
+      ApiItem('+channelChat()', backgroundColor: plusColor, api: () async {
+        TalkApiParameter? parameters = await showDialog(
+          context: context,
+          builder: (context) => TalkApiDialog(
+            'channelChat',
+            publicIds: customData['channelId'],
+          ),
+        );
+
+        if (parameters == null) return;
+
+        String channelId = parameters.channelPublicId;
+        // 카카오톡 채널 채팅하기
+        await TalkApi.instance.channelChat(channelId);
+      }),
       ApiItem('+addChannelUrl()', backgroundColor: plusColor, api: () async {
         TalkApiParameter? parameters = await showDialog(
           context: context,
