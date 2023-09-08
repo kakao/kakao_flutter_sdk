@@ -161,8 +161,16 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                 val channelPublicId = args["channel_public_id"]
                 val uri = Uri.parse("$scheme/home/$channelPublicId/add")
 
-                activity?.startActivity(Intent(Intent.ACTION_VIEW, uri)) ?: run {
-                    result.error("Error", "Plugin is not attached to Activity", null)
+                try {
+                    activity?.startActivity(Intent(Intent.ACTION_VIEW, uri)) ?: run {
+                        result.error("Error", "Plugin is not attached to Activity", null)
+                    }
+                } catch (e: ActivityNotFoundException) {
+                    result.error(
+                        "Error",
+                        "KakaoTalk is not installed. please install KakaoTalk",
+                        null
+                    )
                 }
             }
 
@@ -173,8 +181,16 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                 val channelPublicId = args["channel_public_id"]
                 val uri = Uri.parse("$scheme/talk/chat/$channelPublicId")
 
-                activity?.startActivity(Intent(Intent.ACTION_VIEW, uri)) ?: run {
-                    result.error("Error", "Plugin is not attached to Activity", null)
+                try {
+                    activity?.startActivity(Intent(Intent.ACTION_VIEW, uri)) ?: run {
+                        result.error("Error", "Plugin is not attached to Activity", null)
+                    }
+                } catch (e: ActivityNotFoundException) {
+                    result.error(
+                        "Error",
+                        "KakaoTalk is not installed. please install KakaoTalk",
+                        null
+                    )
                 }
             }
 

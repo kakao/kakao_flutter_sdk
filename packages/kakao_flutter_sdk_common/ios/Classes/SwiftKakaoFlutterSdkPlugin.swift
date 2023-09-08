@@ -85,6 +85,8 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
             
             if (UIApplication.shared.canOpenURL(urlObject)) {
                 UIApplication.shared.open(urlObject, options: [:])
+            } else {
+                result(FlutterError(code: "Error", message: "KakaoTalk is not installed. please install KakaoTalk", details: nil))
             }
         
         case "channelChat":
@@ -95,6 +97,8 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
             let urlObject = URL(string: "\(scheme)/talk/chat/\(channelPublicId)")!
             if (UIApplication.shared.canOpenURL(urlObject)) {
                 UIApplication.shared.open(urlObject, options: [:])
+            } else {
+                result(FlutterError(code: "Error", message: "KakaoTalk is not installed. please install KakaoTalk", details: nil))
             }
             
         case "isKakaoTalkSharingAvailable":

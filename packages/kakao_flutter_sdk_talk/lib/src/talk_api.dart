@@ -174,6 +174,10 @@ class TalkApi {
   /// [channelPublicId]는 카카오톡 채널 홈 URL 에 들어간 {_영문}으로 구성된 고유 아이디
   /// 홈 URL 은 카카오톡 채널 관리자센터 > 관리 > 상세설정 페이지에서 확인
   Future addChannel(final String channelPublicId) async {
+    if(!await isKakaoTalkInstalled()) {
+      throw KakaoClientException("KakaoTalk is not installed");
+    }
+
     final scheme = isAndroid()
         ? KakaoSdk.platforms.android.talkChannelScheme
         : KakaoSdk.platforms.ios.talkChannelScheme;
@@ -193,6 +197,10 @@ class TalkApi {
   /// [channelPublicId]는 카카오톡 채널 홈 URL 에 들어간 {_영문}으로 구성된 고유 아이디
   /// 홈 URL 은 카카오톡 채널 관리자센터 > 관리 > 상세설정 페이지에서 확인
   Future channelChat(final String channelPublicId) async {
+    if(!await isKakaoTalkInstalled()) {
+      throw KakaoClientException("KakaoTalk is not installed");
+    }
+
     final scheme = isAndroid()
         ? KakaoSdk.platforms.android.talkChannelScheme
         : KakaoSdk.platforms.ios.talkChannelScheme;
