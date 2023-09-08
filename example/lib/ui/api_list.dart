@@ -1038,8 +1038,13 @@ class ApiListState extends State<ApiList> {
         if (parameters == null) return;
 
         String channelId = parameters.channelPublicId;
-        // 카카오톡 채널 추가하기
-        await TalkApi.instance.addChannel(channelId);
+
+        try {
+          // 카카오톡 채널 추가하기
+          await TalkApi.instance.addChannel(channelId);
+        } catch(e) {
+          Log.e(context, tag, '채널 추가 실패', e);
+        }
       }),
       ApiItem('+channelChat()', backgroundColor: plusColor, api: () async {
         TalkApiParameter? parameters = await showDialog(
@@ -1053,8 +1058,13 @@ class ApiListState extends State<ApiList> {
         if (parameters == null) return;
 
         String channelId = parameters.channelPublicId;
-        // 카카오톡 채널 채팅하기
-        await TalkApi.instance.channelChat(channelId);
+
+        try {
+          // 카카오톡 채널 채팅하기
+          await TalkApi.instance.channelChat(channelId);
+        } catch(e) {
+          Log.e(context, tag, '채널 채팅 실패', e);
+        }
       }),
       ApiItem('+addChannelUrl()', backgroundColor: plusColor, api: () async {
         TalkApiParameter? parameters = await showDialog(
