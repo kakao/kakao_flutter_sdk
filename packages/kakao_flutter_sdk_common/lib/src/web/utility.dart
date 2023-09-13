@@ -16,12 +16,20 @@ class Utility {
 
   static Future<String> _getVersionJson() async {
     final cacheBuster = DateTime.now().millisecondsSinceEpoch;
-    String baseUri = window.document.baseUri!;
-    var dio = Dio()..options.baseUrl = window.document.baseUri!;
+    String baseUri = _removeEndSlash(window.document.baseUri!);
+    var dio = Dio()..options.baseUrl = baseUri;
     Response<String> response = await dio.get(
       '${Uri.parse(baseUri).path}/version.json',
       queryParameters: {'cachebuster': cacheBuster},
     );
     return response.data!;
+  }
+
+  static String _removeEndSlash(String url) {
+    if (url.endsWith('/')) {
+      int length = url.length;
+      return url.substring(0, length - 1);
+    }
+    return url;
   }
 }
