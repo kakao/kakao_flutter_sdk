@@ -1046,7 +1046,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '채널 추가 실패', e);
         }
       }),
-      ApiItem('+channelChat()', backgroundColor: plusColor, api: () async {
+      ApiItem('+chatChannel()', backgroundColor: plusColor, api: () async {
         TalkApiParameter? parameters = await showDialog(
           context: context,
           builder: (context) => TalkApiDialog(
@@ -1061,7 +1061,7 @@ class ApiListState extends State<ApiList> {
 
         try {
           // 카카오톡 채널 채팅하기
-          await TalkApi.instance.channelChat(channelId);
+          await TalkApi.instance.chatChannel(channelId);
         } catch(e) {
           Log.e(context, tag, '채널 채팅 실패', e);
         }
@@ -1101,7 +1101,7 @@ class ApiListState extends State<ApiList> {
 
         // 카카오톡 채널 채팅 URL
         String channelId = parameters.channelPublicId;
-        Uri url = await TalkApi.instance.channelChatUrl(channelId);
+        Uri url = await TalkApi.instance.chatChannelUrl(channelId);
 
         // 디바이스 브라우저 열기
         try {
