@@ -51,6 +51,7 @@ object Constants {
 
 //    const val NAVI_WEB_SCHEME = "https"
 //    const val NAVI_HOST = "kakaonavi-wguide.kakao.com"
+    const val CHANNEL_SCHEME = "kakaoplus://plusfriend"
     const val NAVI_SCHEME = "kakaonavi-sdk"
     const val NAVIGATE = "navigate"
     const val SHARE_POI = "sharePoi"

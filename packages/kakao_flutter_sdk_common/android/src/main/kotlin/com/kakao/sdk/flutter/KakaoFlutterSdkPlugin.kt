@@ -154,6 +154,46 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                 result.success(true)
             }
 
+            "addChannel" -> {
+                @Suppress("UNCHECKED_CAST")
+                val args = call.arguments as Map<String, String>
+                val scheme = args["channel_scheme"] ?: Constants.CHANNEL_SCHEME
+                val channelPublicId = args["channel_public_id"]
+                val uri = Uri.parse("$scheme/home/$channelPublicId/add")
+
+                try {
+                    activity?.startActivity(Intent(Intent.ACTION_VIEW, uri)) ?: run {
+                        result.error("Error", "Plugin is not attached to Activity", null)
+                    }
+                } catch (e: ActivityNotFoundException) {
+                    result.error(
+                        "Error",
+                        "KakaoTalk is not installed. please install KakaoTalk",
+                        null
+                    )
+                }
+            }
+
+            "channelChat" -> {
+                @Suppress("UNCHECKED_CAST")
+                val args = call.arguments as Map<String, String>
+                val scheme = args["channel_scheme"] ?: Constants.CHANNEL_SCHEME
+                val channelPublicId = args["channel_public_id"]
+                val uri = Uri.parse("$scheme/talk/chat/$channelPublicId")
+
+                try {
+                    activity?.startActivity(Intent(Intent.ACTION_VIEW, uri)) ?: run {
+                        result.error("Error", "Plugin is not attached to Activity", null)
+                    }
+                } catch (e: ActivityNotFoundException) {
+                    result.error(
+                        "Error",
+                        "KakaoTalk is not installed. please install KakaoTalk",
+                        null
+                    )
+                }
+            }
+
             "isKakaoTalkSharingAvailable" -> {
                 applicationContext?.let {
                     val uriBuilder = Uri.Builder().scheme("kakaolink").authority("send")
