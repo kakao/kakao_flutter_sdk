@@ -261,8 +261,8 @@ class ApiListState extends State<ApiList> {
         // 카카오계정으로 인증서 로그인
 
         try {
-          CertTokenInfo certTokenInfo =
-              await UserApi.instance.certLoginWithKakaoAccount(signData: "test");
+          CertTokenInfo certTokenInfo = await UserApi.instance
+              .certLoginWithKakaoAccount(signData: "test");
           Log.i(context, tag,
               '로그인 성공 ${certTokenInfo.token.accessToken} ${certTokenInfo.txId}');
         } catch (e) {
@@ -1042,7 +1042,7 @@ class ApiListState extends State<ApiList> {
         try {
           // 카카오톡 채널 추가하기
           await TalkApi.instance.addChannel(channelId);
-        } catch(e) {
+        } catch (e) {
           Log.e(context, tag, '채널 추가 실패', e);
         }
       }),
@@ -1062,7 +1062,7 @@ class ApiListState extends State<ApiList> {
         try {
           // 카카오톡 채널 채팅하기
           await TalkApi.instance.chatChannel(channelId);
-        } catch(e) {
+        } catch (e) {
           Log.e(context, tag, '채널 채팅 실패', e);
         }
       }),
