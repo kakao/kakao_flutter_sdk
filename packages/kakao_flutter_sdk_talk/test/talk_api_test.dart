@@ -159,12 +159,12 @@ void main() {
       });
     });
   });
-  group("/v1/api/talk/channels", () {
+  group("/v2/api/talk/channels", () {
     Map<String, dynamic>? map;
     late Channels res;
 
     setUp(() async {
-      var path = uriPathToFilePath(Constants.v1ChannelsPath);
+      var path = uriPathToFilePath(Constants.v2ChannelsPath);
       var body = await loadJson("talk/$path/normal.json");
       map = jsonDecode(body);
       adapter.setResponseString(body, 200);
@@ -193,7 +193,7 @@ void main() {
       var publicId = "_frxjem";
       adapter.requestAssertions = (RequestOptions options) {
         var params = options.queryParameters;
-        expect(params["channel_public_ids"], jsonEncode([publicId]));
+        expect(params["channel_ids"], publicId);
       };
       res = await api.channels([publicId]);
     });

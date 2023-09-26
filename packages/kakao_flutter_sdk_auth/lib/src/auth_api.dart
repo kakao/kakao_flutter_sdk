@@ -6,6 +6,7 @@ import 'package:kakao_flutter_sdk_auth/src/auth_api_factory.dart';
 import 'package:kakao_flutter_sdk_auth/src/constants.dart';
 import 'package:kakao_flutter_sdk_auth/src/model/access_token_response.dart';
 import 'package:kakao_flutter_sdk_auth/src/model/cert_token_info.dart';
+import 'package:kakao_flutter_sdk_auth/src/model/cert_type.dart';
 import 'package:kakao_flutter_sdk_auth/src/model/oauth_token.dart';
 import 'package:kakao_flutter_sdk_auth/src/token_manager.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
@@ -79,12 +80,19 @@ class AuthApi {
 
   /// 기존 토큰([oldToken])을 갱신합니다.
   Future<OAuthToken> refreshToken({
-    required OAuthToken oldToken,
+    OAuthToken? oldToken,
     String? redirectUri,
     String? appKey,
   }) async {
+    var token = oldToken ?? await _tokenManagerProvider.manager.getToken();
+
+    if (token == null || token.refreshToken == null) {
+      throw KakaoClientException(
+          'Refresh token not found. You must login first.');
+    }
+
     final data = {
-      Constants.refreshToken: oldToken.refreshToken,
+      Constants.refreshToken: token.refreshToken,
       Constants.grantType: Constants.refreshToken,
       Constants.clientId: appKey ?? KakaoSdk.appKey,
       Constants.redirectUri: redirectUri ?? await _platformRedirectUri(),
@@ -142,6 +150,27 @@ class AuthApi {
         return 'error';
       }
       return response.data['code'];
+    });
+  }
+
+  Future<String> prepare({
+    required CertType certType,
+    String? settleId,
+    String? signData,
+    String? txId,
+  }) async {
+    var data = {
+      'client_id': KakaoSdk.appKey,
+      'settle_id': settleId,
+      'sign_data': signData,
+      'tx_id': txId,
+      'cert_type': certType.name,
+    };
+    data.removeWhere((k, v) => v == null);
+
+    return await ApiFactory.handleApiError(() async {
+      final response = await _dio.post(Constants.preparePath, data: data);
+      return response.data['kauth_tx_id'];
     });
   }
 

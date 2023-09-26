@@ -51,6 +51,7 @@ object Constants {
 
 //    const val NAVI_WEB_SCHEME = "https"
 //    const val NAVI_HOST = "kakaonavi-wguide.kakao.com"
+    const val CHANNEL_SCHEME = "kakaoplus://plusfriend"
     const val NAVI_SCHEME = "kakaonavi-sdk"
     const val NAVIGATE = "navigate"
     const val SHARE_POI = "sharePoi"
@@ -64,6 +65,7 @@ object Constants {
 
     // SDK Internal Key
     const val REQUEST_KAKAO_LOGIN = 50001
+    const val REQUEST_CUSTOM_TABS = 50003
     const val KEY_RETURN_URL = "key_return_url"
     const val KEY_ERROR_CODE = "key_error_code"
     const val KEY_ERROR_MESSAGE = "key_error_message"

@@ -1,3 +1,16 @@
+## 1.6.0
+- Added the properties parameter to Retrieve user information API.
+- Added new APIs of Add Kakao Talk Channel, Start Kakao Talk Channel chat.
+  - The user moves directly to the Kakao Talk without any bridge page. (Kakao Talk v10.0.5 or higher required)
+  - Existing APIs that return a bridge page URL are also provided.
+- Changed the name of Start Kakao Talk Channel chat API that returns a bridge page URL.
+  - channelChatUrl() → chatChannelUrl()
+- Fixed a bug.
+  - Web: Fixed the issue that fails to get the app version when the URL ends with /.
+- Improved the test cases for the sample app.
+- Updated the internal source code.
+
+
 ## 1.5.0
 - Supports Kakao Account easy login.
 - Added Revoke consent for service terms API.

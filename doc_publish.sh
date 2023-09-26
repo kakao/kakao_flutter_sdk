@@ -28,7 +28,7 @@ cp "./README.md" packages/kakao_flutter_sdk/
 
 # 레퍼런스 생성
 cd ./packages/kakao_flutter_sdk || exit
-dartdoc
+dartdoc --no-link-to-remote
 
 # 레퍼런스 zip (루트에서 zip 하면 서브 디렉토리까지 다 포함되므로 cd 로 디렉토리 이동 후 zip)
 cd doc/api || exit

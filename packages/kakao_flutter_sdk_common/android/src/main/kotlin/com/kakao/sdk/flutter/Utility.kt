@@ -1,10 +1,10 @@
 package com.kakao.sdk.flutter
 
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -14,7 +14,6 @@ import java.security.NoSuchAlgorithmException
 import java.util.*
 
 object Utility {
-    @TargetApi(Build.VERSION_CODES.P)
     fun getKeyHash(context: Context): String {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             val packageInfo = context.packageManager
@@ -133,5 +132,32 @@ object Utility {
         } catch (e: Exception) {
             ("xxxx" + Build.PRODUCT + "a23456789012345bcdefg").toByteArray()
         }
+    }
+
+    fun naviBaseUriBuilder(
+        scheme: String,
+        authority: String,
+        appKey: String?,
+        extras: String?,
+        params: String?,
+    ): Uri.Builder {
+        return Uri.Builder().scheme(scheme).authority(authority)
+            .appendQueryParameter(Constants.PARAM, params)
+            .appendQueryParameter(Constants.APIVER, Constants.APIVER_10)
+            .appendQueryParameter(Constants.APPKEY, appKey)
+            .appendQueryParameter(Constants.EXTRAS, extras)
+    }
+
+    fun platformId(context: Context): ByteArray {
+        @SuppressLint("HardwareIds")
+        val androidId = Settings.Secure.getString(
+            context.contentResolver,
+            Settings.Secure.ANDROID_ID
+        )
+        val stripped = androidId.replace("[0\\s]".toRegex(), "")
+        val md = MessageDigest.getInstance("SHA-256")
+        md.reset()
+        md.update("SDK-$stripped".toByteArray())
+        return md.digest()
     }
 }

@@ -76,6 +76,14 @@ Future<Uint8List> platformId() async {
   return await _methodChannel.invokeMethod("platformId");
 }
 
+bool isAndroid() {
+  return defaultTargetPlatform == TargetPlatform.android;
+}
+
+bool isiOS() {
+  return defaultTargetPlatform == TargetPlatform.iOS;
+}
+
 /// @nodoc
 // Collection of utility methods, usually for converting data types
 class Util {

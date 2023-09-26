@@ -13,6 +13,7 @@ class Constants {
   static const String v2ScopesPath = '/v2/user/scopes';
   static const String v2RevokeScopesPath = '/v2/user/revoke/scopes';
 
+  static const String propertyKeys = 'property_keys';
   static const String secureResource = 'secure_resource';
   static const String fromUpdatedAt = 'from_updated_at';
   static const String pageSize = 'page_size';

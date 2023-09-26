@@ -3,22 +3,18 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:kakao_flutter_sdk_example/ui/api_list.dart';
 
 class MainPage extends StatelessWidget {
-  Map<String, dynamic> customData;
+  final Map<String, dynamic> customData;
 
-  MainPage({Key? key, required this.customData}) : super(key: key);
-
-  Future _navigateInitialLink(BuildContext context) async {
-    var url = await receiveKakaoScheme();
-
-    if (url != null) {
-      Navigator.of(context)
-          .pushNamed('/talkSharing', arguments: Uri.parse(url).queryParameters);
-    }
-  }
+  const MainPage({Key? key, required this.customData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    _navigateInitialLink(context);
+    receiveKakaoScheme().then((url) {
+      if (url == null) return;
+
+      Navigator.of(context)
+          .pushNamed('/talkSharing', arguments: Uri.parse(url).queryParameters);
+    });
 
     kakaoSchemeStream.listen((link) {
       if (link != null) {

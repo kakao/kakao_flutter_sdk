@@ -12,23 +12,6 @@ enum Browser {
 }
 
 class UaParser {
-  final _androidRegExp = RegExp('^.*(android)', caseSensitive: false);
-  final _iOSRegExp = RegExp('iphone|ipod', caseSensitive: false);
-
-  bool isAndroid(String userAgent) {
-    if (userAgent.contains(_androidRegExp)) {
-      return true;
-    }
-    return false;
-  }
-
-  bool isiOS(String userAgent) {
-    if (userAgent.contains(_iOSRegExp)) {
-      return true;
-    }
-    return false;
-  }
-
   Browser detectBrowser(String ua) {
     if (ua.contains('KAKAOTALK')) {
       return Browser.kakaotalk;

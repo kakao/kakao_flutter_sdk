@@ -13,18 +13,21 @@ class Log {
   }
 
   static void i(BuildContext context, String tag, String msg, [Object? error]) {
-    developer.log(msg, name: tag, level: 3);
-    _showSnackBar(context, error == null ? msg : "$msg\n$error");
+    var message = error == null ? msg : "$msg\n$error";
+    developer.log(message, name: tag, level: 3);
+    _showSnackBar(context, message);
   }
 
   static void w(BuildContext context, String tag, String msg, [Object? error]) {
-    developer.log(msg, name: tag, level: 4);
-    _showSnackBar(context, error == null ? msg : "$msg\n$error");
+    var message = error == null ? msg : "$msg\n$error";
+    developer.log(message, name: tag, level: 4);
+    _showSnackBar(context, message);
   }
 
   static void e(BuildContext context, String tag, String msg, [Object? error]) {
-    developer.log(msg, name: tag, level: 5);
-    _showSnackBar(context, error == null ? msg : "$msg\n$error");
+    var message = error == null ? msg : "$msg\n$error";
+    developer.log(message, name: tag, level: 5);
+    _showSnackBar(context, message);
   }
 
   static void _showSnackBar(BuildContext context, String message) {

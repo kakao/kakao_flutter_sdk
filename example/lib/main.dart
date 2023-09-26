@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
           var data = Uri.parse(settings.name!);
           switch (data.path) {
             case '/':
-              pageView = MainPage(customData: customData);
+              pageView = const MainPage(customData: customData);
               break;
             case '/debug':
               pageView = const DebugPage();
