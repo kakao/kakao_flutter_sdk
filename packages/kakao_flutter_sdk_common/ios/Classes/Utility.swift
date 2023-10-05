@@ -19,9 +19,20 @@ class Utility {
         return components.url?.absoluteString
     }
     
-    static func makeUrlWithParameters(_ url:String, parameters:[String:Any]?) -> URL? {
-        guard let finalStringUrl = makeUrlStringWithParameters(url, parameters:parameters) else { return nil }
-        return URL(string:finalStringUrl)
+    static func makeUrlWithParameters(_ url:String, universalLink: String? = nil, parameters:[String:Any]?) -> URL? {
+        guard let finalStringUrl = makeUrlStringWithParameters(url, parameters:parameters) else { return nil
+        }
+        
+        guard let universalLink = universalLink else {
+            return URL(string: finalStringUrl)
+        }
+        
+        let customSchemeStringUrl = "\(finalStringUrl)"
+        let escapedStringUrl = finalStringUrl.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+        
+        let universalLinkStringUrl = "\(universalLink)\(escapedStringUrl ?? "")"
+        
+        return URL(string:universalLinkStringUrl)
     }
     
     private static func os() -> String {

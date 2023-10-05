@@ -45,17 +45,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
             launchBrowserTab(url: url!, redirectUri: redirectUri, result: result)
         case "authorizeWithTalk":
             let args = castArguments(call.arguments)
-            let loginScheme = args["loginScheme"] ?? "kakaokompassauth://authorize"
-            
-            let sdkVersion = args["sdk_version"]
-            let clientId = args["client_id"]
-            let redirectUri = args["redirect_uri"]
-            let codeVerifier = args["code_verifier"]
-            let prompt = args["prompt"]
-            let state = args["state"]
-            let nonce = args["nonce"]
-            let settleId = args["settle_id"]
-            authorizeWithTalk(loginScheme: loginScheme, sdkVersion: sdkVersion!, clientId: clientId!, redirectUri: redirectUri!, codeVerifier: codeVerifier, prompt: prompt, state: state, nonce: nonce, settleId: settleId, result: result)
+            authorizeWithTalk(parameters: args, result: result)
         case "isKakaoTalkInstalled":
             let args = castArguments(call.arguments)
             let loginScheme = args["loginScheme"] ?? "kakaokompassauth://authorize"
@@ -145,7 +135,19 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
     }
     }
     
-    private func authorizeWithTalk(loginScheme: String, sdkVersion: String, clientId: String, redirectUri: String, codeVerifier: String?, prompt: String?, state: String?, nonce: String?, settleId: String?, result: @escaping FlutterResult) {
+    private func authorizeWithTalk(parameters: [String:String], result: @escaping FlutterResult) {
+        let loginScheme = parameters["loginScheme"] ?? "kakaokompassauth://authorize"
+        let universalLink = parameters["universalLink"] ?? "https://talk-apps.kakao.com/scheme/"
+        
+        let sdkVersion = parameters["sdk_version"]!
+        let clientId = parameters["client_id"]
+        let redirectUri = parameters["redirect_uri"]
+        let codeVerifier = parameters["code_verifier"]
+        let prompt = parameters["prompt"]
+        let state = parameters["state"]
+        let nonce = parameters["nonce"]
+        let settleId = parameters["settle_id"]
+        
         self.result = result
         self.redirectUri = redirectUri
         self.authorizeTalkCompletionHandler = {
@@ -191,7 +193,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
             parameters["settle_id"] = settleId
         }
         
-        guard let url = Utility.makeUrlWithParameters(loginScheme, parameters: parameters) else {
+        guard let url = Utility.makeUrlWithParameters(loginScheme, universalLink: universalLink, parameters: parameters) else {
             result(FlutterError(code: "makeURL", message: "This is probably a bug in Kakao Flutter SDK.", details: nil))
             return
         }
