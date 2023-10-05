@@ -1,22 +1,15 @@
-import 'dart:js_interop';
-
 import 'package:kakao_flutter_sdk_common/src/kakao_sdk.dart';
 
-String androidChannelIntent(String scheme, String channelPublicId, String path,
-    {String? queryParameters}) {
+String androidChannelIntent(String scheme, String channelPublicId, String path, {String? queryParameters}) {
   var customScheme = Uri.parse(scheme);
 
-  final query = queryParameters.isNull ? '' : '?$queryParameters';
-  final intent = [
-    'intent://${customScheme.authority}/$path$query#Intent',
-    'scheme=${customScheme.scheme}',
-    'end'
-  ].join(';');
+  final query = queryParameters ?? '';
+  final intent =
+      ['intent://${customScheme.authority}/$path$query#Intent', 'scheme=${customScheme.scheme}', 'end'].join(';');
   return intent;
 }
 
-String iosChannelScheme(String scheme, String channelPublicId, String path,
-    {String? queryParameters}) {
+String iosChannelScheme(String scheme, String channelPublicId, String path, {String? queryParameters}) {
   var query = queryParameters == null ? '' : '?$queryParameters';
   return '$scheme/$path$query';
 
@@ -24,18 +17,10 @@ String iosChannelScheme(String scheme, String channelPublicId, String path,
 }
 
 Future<String> webChannelUrl(String path) async {
-  return Uri(
-          scheme: 'https',
-          host: KakaoSdk.hosts.pf,
-          path: path,
-          queryParameters: await _channelBaseParams())
+  return Uri(scheme: 'https', host: KakaoSdk.hosts.pf, path: path, queryParameters: await _channelBaseParams())
       .toString();
 }
 
 Future<Map<String, String>> _channelBaseParams() async {
-  return {
-    'app_key': KakaoSdk.appKey,
-    'kakao_agent': await KakaoSdk.kaHeader,
-    'api_ver': '1.0'
-  };
+  return {'app_key': KakaoSdk.appKey, 'kakao_agent': await KakaoSdk.kaHeader, 'api_ver': '1.0'};
 }
