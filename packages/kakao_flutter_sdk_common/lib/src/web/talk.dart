@@ -1,12 +1,10 @@
-import 'dart:js_interop';
-
 import 'package:kakao_flutter_sdk_common/src/kakao_sdk.dart';
 
 String androidChannelIntent(String scheme, String channelPublicId, String path,
     {String? queryParameters}) {
   var customScheme = Uri.parse(scheme);
 
-  final query = queryParameters.isNull ? '' : '?$queryParameters';
+  final query = queryParameters == null ? '' : '?$queryParameters';
   final intent = [
     'intent://${customScheme.authority}/$path$query#Intent',
     'scheme=${customScheme.scheme}',
@@ -19,8 +17,6 @@ String iosChannelScheme(String scheme, String channelPublicId, String path,
     {String? queryParameters}) {
   var query = queryParameters == null ? '' : '?$queryParameters';
   return '$scheme/$path$query';
-
-  // 'home/$channelPublicId/add
 }
 
 Future<String> webChannelUrl(String path) async {
