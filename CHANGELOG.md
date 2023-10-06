@@ -1,3 +1,7 @@
+## 1.6.1
+- Fixed a bug.
+  - Web: Fixed the build error in Flutter 3.13.0 or higher.
+
 ## 1.6.0
 - Added the properties parameter to Retrieve user information API.
 - Added new APIs of Add Kakao Talk Channel, Start Kakao Talk Channel chat.
