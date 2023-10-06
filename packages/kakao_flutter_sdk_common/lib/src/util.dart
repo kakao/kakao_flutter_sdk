@@ -3,9 +3,9 @@ import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:kakao_flutter_sdk_common/src/constants.dart';
 import 'package:kakao_flutter_sdk_common/src/kakao_exception.dart';
+import 'package:kakao_flutter_sdk_common/src/kakao_sdk.dart';
 import 'package:platform/platform.dart';
 
 const MethodChannel _methodChannel =
