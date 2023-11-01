@@ -24,8 +24,6 @@ dependencies:
     path: ../kakao_flutter_sdk_share
   kakao_flutter_sdk_navi:
     path: ../kakao_flutter_sdk_navi
-  kakao_flutter_sdk_story:
-    path: ../kakao_flutter_sdk_story
   kakao_flutter_sdk_talk:
     path: ../kakao_flutter_sdk_talk
   kakao_flutter_sdk_template:

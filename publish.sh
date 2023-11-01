@@ -6,7 +6,7 @@
 # 모듈 의존성 때문에 PACKAGE_LIST의 순서대로 로컬 의존성이 제거되어야함
 SDK_NAME="kakao_flutter_sdk"
 
-PACKAGE_LIST=("_common" "_auth" "_navi" "_template" "_share" "_user" "_friend" "_story" "_talk" "")
+PACKAGE_LIST=("_common" "_auth" "_navi" "_template" "_share" "_user" "_friend" "_talk" "")
 
 echo "Do you want to publish kakao_flutter_sdk?"
 select yn in "Yes" "No"; do
