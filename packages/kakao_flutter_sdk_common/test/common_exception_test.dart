@@ -32,17 +32,12 @@ void main() {
     parse('illegal_param');
     parse('insufficient_scope');
     parse('internal_error');
-    parse('invalid_activity_id');
     parse('invalid_app_key');
-    parse('invalid_scrap_url');
     parse('invalid_token');
     parse('not_exist_account');
     parse('not_exist_prop');
-    parse('not_exist_story_user');
-    parse('not_exist_talk_user');
     parse('not_registered_user');
     parse('permission_denied');
-    parse('story_upload_fail');
     parse('unsupported_api');
     parse('upload_number_exceeded');
     parse('upload_size_exceeded');

@@ -76,7 +76,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
             let args = castArguments(call.arguments)
             let uri = args["uri"]
             launchKakaoTalk(uri: uri!, result: result)
-        
+            
         case "addChannel":
             let args = castArguments(call.arguments)
             let scheme = args["channel_scheme"] ?? "kakaoplus:plusfriend"
@@ -88,7 +88,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
             } else {
                 result(FlutterError(code: "Error", message: "KakaoTalk is not installed. please install KakaoTalk", details: nil))
             }
-        
+            
         case "channelChat":
             let args = castArguments(call.arguments)
             let scheme = args["channel_scheme"] ?? "kakaoplus:plusfriend"
@@ -142,7 +142,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
             UIApplication.shared.open(urlObject, options: [:]) { (openResult) in
                 result(openResult)
             }
-    }
+        }
     }
     
     private func authorizeWithTalk(loginScheme: String, sdkVersion: String, clientId: String, redirectUri: String, codeVerifier: String?, prompt: String?, state: String?, nonce: String?, settleId: String?, result: @escaping FlutterResult) {
@@ -260,7 +260,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
             } else {
                 self.authorizeTalkCompletionHandler?(nil, FlutterError(code: "REDIRET_URL_MISMATCH", message: "Expected: \(redirectUri!), Actual: \(url.absoluteString)", details: nil))
             }
-        } else if(urlString.starts(with: "kakao") && (urlString.contains(Constants.talkSharingPath) || urlString.contains(Constants.storyPath))) {
+        } else if(urlString.starts(with: "kakao") && (urlString.contains(Constants.talkSharingPath))) {
             eventSink?(urlString)
         }
         // This results are treated as an OR, so it returns false so as not to affect the results of other plugin delegates.
@@ -269,8 +269,8 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
     
     public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [AnyHashable : Any] = [:]) -> Bool {
         let url = (launchOptions[UIApplication.LaunchOptionsKey.url] as? URL)
-        if(url != nil && url!.scheme != nil && url!.scheme!.starts(with: "kakao")
-           && (url!.host == Constants.talkSharingPath || url!.host == Constants.storyPath)) {
+        if (url != nil && url!.scheme != nil && url!.scheme!.starts(with: "kakao")
+           && url!.host == Constants.talkSharingPath) {
             self.initialLink = url?.absoluteString
             eventSink?(url?.absoluteString)
         }

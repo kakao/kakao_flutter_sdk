@@ -6,5 +6,4 @@ struct Constants {
     
     static let talkSharingPath = "kakaolink"
     static let oauthPath = "oauth"
-    static let storyPath = "kakaostory"
 }
