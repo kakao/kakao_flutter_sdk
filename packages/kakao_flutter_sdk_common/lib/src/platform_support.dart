@@ -56,6 +56,9 @@ class DefaultiOS extends PlatformSupportValues {
   String get talkLoginScheme => 'kakaokompassauth://authorize';
 
   @override
+  String get iosLoginUniversalLink => 'https://talk-apps.kakao.com/scheme/';
+
+  @override
   String get talkSharingScheme => 'kakaolink';
 
   @override
