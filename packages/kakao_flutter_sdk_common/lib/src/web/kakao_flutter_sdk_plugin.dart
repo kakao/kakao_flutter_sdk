@@ -42,28 +42,29 @@ class KakaoFlutterSdkPlugin {
         Map<String, dynamic> queryParameters =
             Map.from(fullUri.queryParameters);
 
-        if (popupLogin) {
-          queryParameters[CommonConstants.redirectUri] =
-              html.window.location.origin;
-          final finalUri = fullUri.replace(queryParameters: queryParameters);
-          html.window.open(finalUri.toString(), "KakaoAccountLogin");
-        } else {
+        if (!popupLogin) {
           queryParameters[CommonConstants.redirectUri] =
               args[CommonConstants.redirectUri];
           final finalUri = fullUri.replace(queryParameters: queryParameters);
           html.window.location.href = finalUri.toString();
         }
-        final completer = Completer();
-        html.window.addEventListener("message", (html.Event e) {
-          if (e is html.MessageEvent) {
-            return completer.complete(e.data);
-          } else {
-            return completer.completeError(PlatformException(
-                code: "NotMessageEvent",
-                details: "Received wrong type of event ${e.runtimeType}"));
-          }
+
+        queryParameters[CommonConstants.redirectUri] =
+            html.window.location.origin;
+        final finalUri = fullUri.replace(queryParameters: queryParameters);
+        final popupWindow =
+            html.window.open(finalUri.toString(), "KakaoAccountLogin");
+
+        final msg = await html.window.onMessage.firstWhere((evt) {
+          if (evt.data.runtimetype != String) return false;
+
+          return evt.origin ==
+              Uri.parse(queryParameters[CommonConstants.redirectUri]).origin;
         });
-        return completer.future;
+
+        popupWindow.close();
+
+        return msg.data;
       case "retrieveAuthCode":
         _retrieveAuthCode();
         break;
