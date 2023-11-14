@@ -38,6 +38,7 @@ void main() {
     parse('not_exist_prop');
     parse('not_registered_user');
     parse('permission_denied');
+    parse('server_timeout');
     parse('unsupported_api');
     parse('upload_number_exceeded');
     parse('upload_size_exceeded');
