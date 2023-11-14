@@ -132,29 +132,17 @@ enum ApiErrorCause {
   @JsonValue(-532)
   talkSendMessageDailyLimitExceed,
 
-  /// 카카오스토리 가입 사용자에게만 허용된 API에서 카카오스토리 미가입 사용자가 요청한 경우
-  @JsonValue(-601)
-  notStoryUser,
-
-  /// 카카오스토리 이미지 업로드 사이즈 제한 초과
+  /// 이미지 업로드 사이즈 제한 초과
   @JsonValue(-602)
-  storyImageUploadSizeExceeded,
+  imageUploadSizeExceeded,
 
   /// 업로드,스크랩 등 오래 걸리는 API의 타임아웃
   @JsonValue(-603)
-  timeOut,
+  serverTimeOut,
 
-  /// 카카오스토리에서 스크랩이 실패하였을 경우
-  @JsonValue(-604)
-  storyInvalidScrapUrl,
-
-  /// 카카오스토리에 존재하지 않는 내스토리를 요청했을 경우
-  @JsonValue(-605)
-  storyInvalidPostId,
-
-  /// 카카오스토리에서 업로드할 수 있는 최대 이미지 개수(현재 5개. 단, gif 파일은 1개)를 초과하였을 경우
+  /// 업로드할 수 있는 최대 이미지 개수(현재 5개. 단, gif 파일은 1개)를 초과하였을 경우
   @JsonValue(-606)
-  storyMaxUploadCountExceed,
+  imageMaxUploadCountExceed,
 
   /// 등록되지 않은 개발자의 앱키나 등록되지 않은 개발자의 앱키로 구성된 액세스 토큰으로 요청한 경우
   @JsonValue(-903)

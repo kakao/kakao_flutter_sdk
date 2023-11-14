@@ -205,8 +205,10 @@ class AuthCodeClient {
 
     if (!kIsWeb) {
       if (_platform.isIOS) {
-        arguments
-            .addAll({'loginScheme': KakaoSdk.platforms.ios.talkLoginScheme});
+        arguments.addAll({
+          'loginScheme': KakaoSdk.platforms.ios.talkLoginScheme,
+          'universalLink': KakaoSdk.platforms.ios.iosLoginUniversalLink,
+        });
       } else if (_platform.isAndroid) {
         arguments.addAll(
             {'talkPackageName': KakaoSdk.platforms.android.talkPackage});

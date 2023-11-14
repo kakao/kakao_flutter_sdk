@@ -24,6 +24,30 @@ class Utility {
         return URL(string:finalStringUrl)
     }
     
+    static func makeLoginUrlWithParameters(_ url: String, universalLink: String? = nil, parameters: [String:Any]?) -> URL? {
+        var parametersWithLaunchMethod: [String:Any]
+        if (universalLink != nil) {
+            parametersWithLaunchMethod = ["deep_link_method" : LaunchMethod.UniversalLink.rawValue]
+        } else {
+            parametersWithLaunchMethod = ["deep_link_method" : LaunchMethod.CustomScheme.rawValue]
+        }
+        parametersWithLaunchMethod.merge(parameters ?? [:], uniquingKeysWith: {(current, _) in current })
+        
+        guard let finalStringUrl = makeUrlStringWithParameters(url, parameters:parametersWithLaunchMethod) else {
+            return nil
+        }
+        guard let universalLink = universalLink else {
+            return URL(string: finalStringUrl)
+        }
+        
+        let customSchemeStringUrl = "\(finalStringUrl)"
+        let escapedStringUrl = finalStringUrl.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+        
+        let universalLinkStringUrl = "\(universalLink)\(escapedStringUrl ?? "")"
+        
+        return URL(string:universalLinkStringUrl)
+    }
+    
     private static func os() -> String {
         return "ios-\(UIDevice.current.systemVersion)"
     }

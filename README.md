@@ -24,7 +24,6 @@ To integrate the Kakao APIs with the Flutter SDK, read the following documentati
 - [Kakao Talk Social](https://developers.kakao.com/docs/latest/kakaotalk-social/flutter)
 - [Kakao Talk Sharing](https://developers.kakao.com/docs/latest/message/flutter-link)
 - [Kakao Talk Messaging](https://developers.kakao.com/docs/latest/message/flutter)
-- [Kakao Story](https://developers.kakao.com/docs/latest/kakaostory/flutter)
 - [Kakao Talk Channel](https://developers.kakao.com/docs/latest/kakaotalk-channel/flutter)
 - [Kakao Sync](https://developers.kakao.com/docs/latest/kakaosync/terms#flutter)
 - [Kakao Navi](https://developers.kakao.com/docs/latest/kakaonavi/flutter)
