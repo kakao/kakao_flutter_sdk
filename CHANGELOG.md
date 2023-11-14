@@ -1,3 +1,7 @@
+## 1.7.0
+- Deprecated the Kakao Story module (`kakao_flutter_sdk_story`).
+- Supports Universal Link to the Login with Kakao Talk feature in the iOS environment.
+
 ## 1.6.1
 - Fixed a bug.
   - Web: Fixed the build error in Flutter 3.13.0 or higher.
