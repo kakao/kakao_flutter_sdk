@@ -53,7 +53,6 @@ Future<String> addMessageEvent(
         return completer.complete(event.data);
       }
     }
-    return completer.completeError(PlatformException(code: 'error'));
   };
 
   html.window.addEventListener('message', callback);
