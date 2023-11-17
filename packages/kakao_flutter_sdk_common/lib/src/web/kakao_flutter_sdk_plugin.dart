@@ -47,6 +47,8 @@ class KakaoFlutterSdkPlugin {
               args[CommonConstants.redirectUri];
           final finalUri = fullUri.replace(queryParameters: queryParameters);
           html.window.location.href = finalUri.toString();
+
+          return null;
         }
 
         queryParameters[CommonConstants.redirectUri] =
