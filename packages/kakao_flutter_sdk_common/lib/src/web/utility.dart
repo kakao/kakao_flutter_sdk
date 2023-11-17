@@ -40,3 +40,17 @@ class Utility {
     return url;
   }
 }
+
+extension WindowExtension on WindowBase {
+  void afterClosed(Function() action, {checkIntervalSecond = 1}) {
+    Future.doWhile(() async {
+      await Future.delayed(Duration(seconds: checkIntervalSecond));
+
+      if (closed == true) {
+        action();
+        return false;
+      }
+      return true;
+    });
+  }
+}
