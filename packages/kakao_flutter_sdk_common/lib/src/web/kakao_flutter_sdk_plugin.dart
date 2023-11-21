@@ -57,7 +57,7 @@ class KakaoFlutterSdkPlugin {
             html.window.open(finalUri.toString(), "KakaoAccountLogin");
 
         final msg = await html.window.onMessage.firstWhere((evt) {
-          if (evt.data.runtimetype != String) return false;
+          if (evt.data.runtimeType != String) return false;
 
           return evt.origin ==
               Uri.parse(queryParameters[CommonConstants.redirectUri]).origin;
