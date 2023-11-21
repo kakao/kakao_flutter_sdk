@@ -175,7 +175,10 @@ class TalkApi {
   /// 홈 URL 은 카카오톡 채널 관리자센터 > 관리 > 상세설정 페이지에서 확인
   Future addChannel(final String channelPublicId) async {
     if (!await isKakaoTalkInstalled()) {
-      throw KakaoClientException("KakaoTalk is not installed");
+      throw KakaoClientException(
+        ClientErrorCause.notSupported,
+        "KakaoTalk is not installed",
+      );
     }
 
     final scheme = isAndroid()
@@ -198,7 +201,10 @@ class TalkApi {
   /// 홈 URL 은 카카오톡 채널 관리자센터 > 관리 > 상세설정 페이지에서 확인
   Future chatChannel(final String channelPublicId) async {
     if (!await isKakaoTalkInstalled()) {
-      throw KakaoClientException("KakaoTalk is not installed");
+      throw KakaoClientException(
+        ClientErrorCause.notSupported,
+        "KakaoTalk is not installed",
+      );
     }
 
     final scheme = isAndroid()

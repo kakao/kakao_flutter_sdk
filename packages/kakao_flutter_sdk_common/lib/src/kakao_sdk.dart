@@ -96,7 +96,9 @@ class KakaoSdk {
   }) {
     if (nativeAppKey == null && javaScriptAppKey == null) {
       throw KakaoClientException(
-          "A Native App Key or JavaScript App Key is required");
+        ClientErrorCause.badParameter,
+        "A Native App Key or JavaScript App Key is required",
+      );
     }
 
     _nativeKey = nativeAppKey ?? "";

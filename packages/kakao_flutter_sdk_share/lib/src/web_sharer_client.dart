@@ -62,7 +62,9 @@ class WebSharerClient {
   }) async {
     if (image == null && byteData == null) {
       throw KakaoClientException(
-          'Either parameter image or byteData must not be null.');
+        ClientErrorCause.badParameter,
+        'Either parameter image or byteData must not be null.',
+      );
     }
     return await api.uploadImage(image, byteData,
         secureResource: secureResource);

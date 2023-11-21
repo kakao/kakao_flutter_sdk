@@ -79,7 +79,9 @@ class ShareClient {
   }) async {
     if (image == null && byteData == null) {
       throw KakaoClientException(
-          'Either parameter image or byteData must not be null.');
+        ClientErrorCause.badParameter,
+        'Either parameter image or byteData must not be null.',
+      );
     }
     return await api.uploadImage(image, byteData,
         secureResource: secureResource);
@@ -104,7 +106,9 @@ class ShareClient {
         appKey: appKey, serverCallbackArgs: serverCallbackArgs);
     if (attachmentSize > 10 * 1024) {
       throw KakaoClientException(
-          "Exceeded message template v2 size limit (${attachmentSize / 1024}kb > 10kb).");
+        ClientErrorCause.badParameter,
+        "Exceeded message template v2 size limit (${attachmentSize / 1024}kb > 10kb).",
+      );
     }
     Map<String, String> params = {
       Constants.linkVer: Constants.linkVersion_40,
