@@ -228,24 +228,33 @@ class KakaoFlutterSdkPlugin {
         );
 
         Completer<String> completer = Completer();
-        addMessageEvent(url, completer);
+
+        // redirect picker
         if (params.containsKey('returnUrl')) {
           submitForm('$url/select/$pickerType', params);
-          return completer.future;
-        } else {
-          var popup = windowOpen(
-            '$url/select/$pickerType',
-            'friend_picker',
-            features:
-                'location=no,resizable=no,status=no,scrollbars=no,width=460,height=608',
-          );
-          submitForm(
-            '$url/select/$pickerType',
-            params,
-            popupName: 'friend_picker',
-          );
-          return completer.future;
+          return;
         }
+
+        // popup picker
+        html.EventListener callback = addMessageEventListener(url, completer);
+        var popup = windowOpen(
+          '$url/select/$pickerType',
+          'friend_picker',
+          features:
+              'location=no,resizable=no,status=no,scrollbars=no,width=460,height=608',
+        );
+
+        submitForm(
+          '$url/select/$pickerType',
+          params,
+          popupName: 'friend_picker',
+        );
+
+        popup.afterClosed(
+          () => html.window.removeEventListener('message', callback),
+        );
+
+        return completer.future;
       default:
         throw PlatformException(
             code: "NotImplemented",

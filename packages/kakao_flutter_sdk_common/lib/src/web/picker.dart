@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:html' as html;
 
-import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_common/src/kakao_sdk.dart';
 
 Future<Map> createPickerParams(
@@ -34,30 +33,25 @@ html.IFrameElement createIFrame(String transId, String source) {
   return iframe;
 }
 
-Future<String> addMessageEvent(
+html.EventListener addMessageEventListener(
   String requestDomain,
   Completer<String> completer,
 ) {
-  html.EventListener? callback;
+  callback(event) {
+    if (event is! html.MessageEvent) return;
 
-  callback = (event) {
-    if (event is html.MessageEvent) {
-      if (event.data != null && event.origin == requestDomain) {
-        html.window.removeEventListener('message', callback);
-        Map response = jsonDecode(event.data);
+    if (event.data != null && event.origin == requestDomain) {
+      Map response = jsonDecode(event.data);
 
-        // picker error
-        if (response.containsKey('code')) {
-          return completer.completeError(event.data);
-        }
-        return completer.complete(event.data);
+      // picker error
+      if (response.containsKey('code')) {
+        completer.completeError(event.data);
       }
+      completer.complete(event.data);
     }
-    return completer.completeError(PlatformException(code: 'error'));
-  };
-
+  }
   html.window.addEventListener('message', callback);
-  return completer.future;
+  return callback;
 }
 
 void submitForm(String url, Map pickerParams, {String popupName = ''}) {
