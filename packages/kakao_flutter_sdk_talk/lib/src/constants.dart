@@ -26,6 +26,10 @@ class Constants {
   static const String channelPublicId = 'channel_public_id';
   static const String receiverUuids = 'receiver_uuids';
 
+  static const String followChannelStatusSuccess = 'success';
+  static const String followChannelStatusFail = 'fail';
+  static const String followChannelStatusError = 'error';
+
   static const String appKey = 'app_key';
   static const String kakaoAgent = 'kakao_agent';
   static const String apiVersion = 'api_ver';
