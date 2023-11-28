@@ -5,12 +5,16 @@ class Constants {
   static const String v2ChannelsPath = '/v2/api/talk/channels';
   static const String v1FriendsPath = '/v1/api/talk/friends';
   static const String v1OpenTalkMessagePath = '/v1/api/talk/friends/message/';
+  static const String followChannelPath = 'talk/channel/add';
   static const String defaultPath = 'default/';
   static const String scrapPath = 'scrap/';
   static const String send = 'send';
   static const String friend = 'friend';
   static const String chat = 'chat';
   static const String scheme = 'https';
+  static const String ka = 'ka';
+  static const String agt = 'agt';
+  static const String url = 'url';
 
   static const String offset = 'offset';
   static const String limit = 'limit';
@@ -26,9 +30,13 @@ class Constants {
   static const String channelPublicId = 'channel_public_id';
   static const String receiverUuids = 'receiver_uuids';
 
+  static const String status = 'status';
+  static const String followChannel = 'followChannel';
   static const String followChannelStatusSuccess = 'success';
   static const String followChannelStatusFail = 'fail';
   static const String followChannelStatusError = 'error';
+  static const String returnUrl = 'return_url';
+  static const String followChannelScheme = 'channel';
 
   static const String appKey = 'app_key';
   static const String kakaoAgent = 'kakao_agent';

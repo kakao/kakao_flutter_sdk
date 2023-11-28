@@ -4,8 +4,10 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_talk/src/constants.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/channels.dart';
+import 'package:kakao_flutter_sdk_talk/src/model/follow_channel_result.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/friend.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/friends.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/message_send_result.dart';
@@ -167,6 +169,45 @@ class TalkApi {
           templateArgs == null ? null : jsonEncode(templateArgs)
     };
     return _message(Constants.scrapPath, params);
+  }
+
+  Future followChannel(final String channelPublicId) async {
+    if (kIsWeb) {
+      throw UnimplementedError();
+    }
+
+    String? agt;
+    try {
+      agt = await AuthApi.instance.agt();
+    } catch (e) {
+      if (!(e is KakaoClientException &&
+          e.reason == ClientErrorCause.tokenNotFound)) {
+        rethrow;
+      }
+    }
+
+    final params = {
+      Constants.appKey: KakaoSdk.appKey,
+      Constants.channelPublicId: channelPublicId,
+      Constants.returnUrl:
+          '${KakaoSdk.customScheme}://${Constants.followChannelScheme}',
+      Constants.ka: await KakaoSdk.kaHeader,
+      Constants.agt: agt,
+    };
+    params.removeWhere((k, v) => v == null);
+
+    final url =
+        Uri.https(KakaoSdk.hosts.apps, Constants.followChannelPath, params)
+            .toString();
+    final String result = await _channel
+        .invokeMethod(Constants.followChannel, {Constants.url: url});
+    final resultUri = Uri.parse(result);
+
+    if (resultUri.queryParameters[Constants.status] ==
+        Constants.followChannelStatusError) {
+      throw KakaoAppsException.fromJson(resultUri.queryParameters);
+    }
+    return FollowChannelResult.fromJson(resultUri.queryParameters);
   }
 
   /// 카카오톡 채널 추가
