@@ -66,6 +66,11 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
             let args = castArguments(call.arguments)
             let uri = args["uri"]
             launchKakaoTalk(uri: uri!, result: result)
+
+        case "followChannel":
+            let args = castArguments(call.arguments)
+            let url = args["url"]
+            launchBrowserTab(url: url!, redirectUri: nil, result: result)
             
         case "addChannel":
             let args = castArguments(call.arguments)
