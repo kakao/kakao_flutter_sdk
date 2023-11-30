@@ -21,18 +21,6 @@ Future<Map> createPickerParams(
   return params;
 }
 
-html.IFrameElement createIFrame(String transId, String source) {
-  var iframe = html.document.createElement('iframe') as html.IFrameElement;
-  iframe.id = transId;
-  iframe.name = transId;
-  iframe.src = '$source/proxy?transId=$transId';
-  iframe.setAttribute(
-    'style',
-    'border:none; width:0; height:0; display:none; overflow:hidden;',
-  );
-  return iframe;
-}
-
 html.EventListener addMessageEventListener(
   String requestDomain,
   Completer<String> completer,
@@ -50,26 +38,7 @@ html.EventListener addMessageEventListener(
       completer.complete(event.data);
     }
   }
+
   html.window.addEventListener('message', callback);
   return callback;
-}
-
-void submitForm(String url, Map pickerParams, {String popupName = ''}) {
-  final form = html.document.createElement('form') as html.FormElement;
-  form.setAttribute('accept-charset', 'utf-8');
-  form.setAttribute('method', 'post');
-  form.setAttribute('action', url);
-  form.setAttribute('target', popupName);
-  form.setAttribute('style', 'display:none');
-
-  pickerParams.forEach((key, value) {
-    final input = html.document.createElement('input') as html.InputElement;
-    input.type = 'hidden';
-    input.name = key;
-    input.value = value is String ? value : jsonEncode(value);
-    form.append(input);
-  });
-  html.document.body!.append(form);
-  form.submit();
-  form.remove();
 }

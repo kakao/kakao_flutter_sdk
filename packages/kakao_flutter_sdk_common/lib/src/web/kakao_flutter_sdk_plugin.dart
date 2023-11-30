@@ -217,7 +217,7 @@ class KakaoFlutterSdkPlugin {
 
         var url = 'https://${KakaoSdk.hosts.picker}';
 
-        var iframe = createIFrame(transId, url);
+        final iframe = createHiddenIframe(transId, '$url/proxy?transId=$transId');
         html.document.body?.append(iframe);
 
         var params = await createPickerParams(
