@@ -171,43 +171,23 @@ class TalkApi {
     return _message(Constants.scrapPath, params);
   }
 
-  Future followChannel(final String channelPublicId) async {
+  Future<FollowChannelResult> followChannel(
+    final String channelPublicId,
+  ) async {
     if (kIsWeb) {
       throw UnimplementedError();
     }
 
+    if (!await AuthApi.instance.hasToken()) {
+      return _followChannel(channelPublicId, null);
+    }
+
     String? agt;
     try {
+      await AuthApi.instance.refreshToken();
       agt = await AuthApi.instance.agt();
-    } catch (e) {
-      if (!(e is KakaoClientException &&
-          e.reason == ClientErrorCause.tokenNotFound)) {
-        rethrow;
-      }
-    }
-
-    final params = {
-      Constants.appKey: KakaoSdk.appKey,
-      Constants.channelPublicId: channelPublicId,
-      Constants.returnUrl:
-          '${KakaoSdk.customScheme}://${Constants.followChannelScheme}',
-      Constants.ka: await KakaoSdk.kaHeader,
-      Constants.agt: agt,
-    };
-    params.removeWhere((k, v) => v == null);
-
-    final url =
-        Uri.https(KakaoSdk.hosts.apps, Constants.followChannelPath, params)
-            .toString();
-    final String result = await _channel
-        .invokeMethod(Constants.followChannel, {Constants.url: url});
-    final resultUri = Uri.parse(result);
-
-    if (resultUri.queryParameters[Constants.status] ==
-        Constants.followChannelStatusError) {
-      throw KakaoAppsException.fromJson(resultUri.queryParameters);
-    }
-    return FollowChannelResult.fromJson(resultUri.queryParameters);
+    } catch (_) {}
+    return await _followChannel(channelPublicId, agt);
   }
 
   /// 카카오톡 채널 추가
@@ -323,5 +303,36 @@ class TalkApi {
       Constants.kakaoAgent: await KakaoSdk.kaHeader,
       Constants.apiVersion: Constants.apiVersion_10
     };
+  }
+
+  Future<FollowChannelResult> _followChannel(
+    final String channelPublicId,
+    final String? agt,
+  ) async {
+    final params = {
+      Constants.appKey: KakaoSdk.appKey,
+      Constants.channelPublicId: channelPublicId,
+      Constants.returnUrl:
+          '${KakaoSdk.customScheme}://${Constants.followChannelScheme}',
+      Constants.ka: await KakaoSdk.kaHeader,
+      Constants.agt: agt,
+    };
+    params.removeWhere((k, v) => v == null);
+
+    final url = Uri.https(
+      KakaoSdk.hosts.apps,
+      Constants.followChannelPath,
+      params,
+    ).toString();
+    final result = await _channel
+        .invokeMethod(Constants.followChannel, {Constants.url: url});
+
+    final resultUri = Uri.parse(result);
+
+    if (resultUri.queryParameters[Constants.status] ==
+        Constants.followChannelStatusError) {
+      throw KakaoAppsException.fromJson(resultUri.queryParameters);
+    }
+    return FollowChannelResult.fromJson(resultUri.queryParameters);
   }
 }
