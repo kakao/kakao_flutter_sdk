@@ -210,24 +210,22 @@ class KakaoFlutterSdkPlugin {
         }
         return false;
       case "requestWebPicker":
-        String pickerType = call.arguments['picker_type'];
-        String transId = call.arguments['trans_id'];
-        String accessToken = call.arguments['access_token'];
-        Map pickerParams = call.arguments['picker_params'];
+        final String pickerType = call.arguments['picker_type'];
+        final String transId = call.arguments['trans_id'];
+        final String accessToken = call.arguments['access_token'];
+        final Map pickerParams = call.arguments['picker_params'];
 
-        var url = 'https://${KakaoSdk.hosts.picker}';
+        final url = 'https://${KakaoSdk.hosts.picker}';
 
-        final iframe = createHiddenIframe(transId, '$url/proxy?transId=$transId');
+        final iframe =
+            createHiddenIframe(transId, '$url/proxy?transId=$transId');
         html.document.body?.append(iframe);
 
-        var params = await createPickerParams(
-          pickerType,
-          transId,
+        final params = await createPickerParams(
           accessToken,
+          transId,
           Map.castFrom(pickerParams),
         );
-
-        Completer<String> completer = Completer();
 
         // redirect picker
         if (params.containsKey('returnUrl')) {
@@ -236,8 +234,11 @@ class KakaoFlutterSdkPlugin {
         }
 
         // popup picker
-        html.EventListener callback = addMessageEventListener(url, completer);
-        var popup = windowOpen(
+        final completer = Completer<String>();
+        final callback = addMessageEventListener(
+            url, completer, (response) => response.containsKey('code'));
+
+        final popup = windowOpen(
           '$url/select/$pickerType',
           'friend_picker',
           features:

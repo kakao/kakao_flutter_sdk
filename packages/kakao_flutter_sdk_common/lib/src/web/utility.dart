@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:html';
 
@@ -38,6 +39,26 @@ IFrameElement createHiddenIframe(String transId, String source) {
       'style',
       'border:none; width:0; height:0; display:none; overflow:hidden;',
     );
+}
+
+EventListener addMessageEventListener(
+    String requestDomain,
+    Completer<String> completer,
+    bool Function(Map response) isError,
+    ) {
+  callback(event) {
+    if (event is! MessageEvent) return;
+
+    if (event.data != null && event.origin == requestDomain) {
+      if (isError(jsonDecode(event.data))) {
+        completer.completeError(event.data);
+      }
+      completer.complete(event.data);
+    }
+  }
+
+  window.addEventListener('message', callback);
+  return callback;
 }
 
 /// @nodoc
