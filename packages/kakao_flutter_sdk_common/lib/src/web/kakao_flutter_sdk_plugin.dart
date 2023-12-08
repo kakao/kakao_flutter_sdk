@@ -149,6 +149,37 @@ class KakaoFlutterSdkPlugin {
           return true;
         }
         break;
+      case 'followChannel':
+        final String? accessToken = call.arguments['access_token'];
+        final String channelPublicId = call.arguments['channel_public_id'];
+        final String transId = call.arguments['trans_id'];
+
+        final Map params = await createFollowChannelParams(
+            accessToken, channelPublicId, transId);
+
+        final url = 'https://${KakaoSdk.hosts.apps}';
+        const path = '/talk/channel/add';
+
+        final iframe =
+            createHiddenIframe(transId, '$url/proxy?trans_id=$transId');
+        html.document.body?.append(iframe);
+
+        final completer = Completer<String>();
+        final callback = addMessageEventListener(
+            url, completer, (response) => response.containsKey('error_code'));
+
+        final popup = windowOpen(
+          url + path,
+          'follow_channel',
+          features:
+              'location=no,resizable=no,status=no,scrollbars=no,width=460,height=608',
+        );
+
+        submitForm(url + path, params, popupName: 'follow_channel');
+
+        popup.afterClosed(
+            () => html.window.removeEventListener('message', callback));
+        return completer.future;
       case "addChannel":
         var scheme = call.arguments['channel_scheme'];
         var channelPublicId = call.arguments['channel_public_id'];

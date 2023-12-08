@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:kakao_flutter_sdk_common/src/kakao_sdk.dart';
 
 String androidChannelIntent(String scheme, String channelPublicId, String path,
@@ -26,6 +28,22 @@ Future<String> webChannelUrl(String path) async {
           path: path,
           queryParameters: await _channelBaseParams())
       .toString();
+}
+
+Future<Map> createFollowChannelParams(
+  final String? accessToken,
+  final String channelPublicId,
+  final String transId,
+) async {
+  final params = {
+    'access_token': accessToken,
+    'ka': await KakaoSdk.kaHeader,
+    'app_key': KakaoSdk.appKey,
+    'channel_public_id': channelPublicId,
+    'trans_id': transId,
+  };
+  params.removeWhere((k, v) => v == null);
+  return params;
 }
 
 Future<Map<String, String>> _channelBaseParams() async {

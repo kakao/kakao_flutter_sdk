@@ -175,7 +175,22 @@ class TalkApi {
     final String channelPublicId,
   ) async {
     if (kIsWeb) {
-      throw UnimplementedError();
+      final token = await TokenManagerProvider.instance.manager.getToken();
+      final params = {
+        'access_token': token?.accessToken,
+        'channel_public_id': channelPublicId,
+        'trans_id': generateRandomString(60),
+      };
+
+      final String response =
+          await _channel.invokeMethod('followChannel', params);
+
+      final Map<String, dynamic> result = jsonDecode(response);
+
+      if (result.containsKey('error_code')) {
+        throw KakaoAppsException.fromJson(result);
+      }
+      return FollowChannelResult.fromJson(result);
     }
 
     if (!await AuthApi.instance.hasToken()) {

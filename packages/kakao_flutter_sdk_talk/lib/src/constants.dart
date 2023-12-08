@@ -14,6 +14,8 @@ class Constants {
   static const String scheme = 'https';
   static const String ka = 'ka';
   static const String agt = 'agt';
+  static const String accessToken = 'accessToken';
+  static const String transId = 'trans_id';
   static const String url = 'url';
 
   static const String offset = 'offset';
