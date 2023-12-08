@@ -47,7 +47,7 @@ EventListener addMessageEventListener(
   bool Function(Map response) isError,
 ) {
   callback(event) {
-    if (event is! MessageEvent) return;
+    if (event is! MessageEvent || completer.isCompleted) return;
 
     if (event.data != null && event.origin == requestDomain) {
       if (isError(jsonDecode(event.data))) {
