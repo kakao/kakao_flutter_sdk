@@ -155,7 +155,7 @@ class KakaoFlutterSdkPlugin {
 
         if (!isMobileDevice()) {
           var url = await webChannelUrl('$channelPublicId/friend');
-          windowOpen(url, 'channel_add_sociel_plugin');
+          windowOpen(url, 'channel_add_social_plugin');
           return;
         }
 
