@@ -158,7 +158,7 @@ class KakaoFlutterSdkPlugin {
             accessToken, channelPublicId, transId);
 
         final url = 'https://${KakaoSdk.hosts.apps}';
-        const path = '/talk/channel/add';
+        const path = '/talk/channel/follow';
 
         final iframe =
             createHiddenIframe(transId, '$url/proxy?trans_id=$transId');

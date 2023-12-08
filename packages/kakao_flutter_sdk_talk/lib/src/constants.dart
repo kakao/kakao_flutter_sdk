@@ -5,7 +5,7 @@ class Constants {
   static const String v2ChannelsPath = '/v2/api/talk/channels';
   static const String v1FriendsPath = '/v1/api/talk/friends';
   static const String v1OpenTalkMessagePath = '/v1/api/talk/friends/message/';
-  static const String followChannelPath = 'talk/channel/add';
+  static const String followChannelPath = 'talk/channel/follow';
   static const String defaultPath = 'default/';
   static const String scrapPath = 'scrap/';
   static const String send = 'send';
