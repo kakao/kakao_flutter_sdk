@@ -13,7 +13,7 @@ Here are what you need to use the Flutter SDK:
 - Xcode 11.0 or higher
 - iOS 11.0 or higher
 - iOS Deployment Target 11.0 or higher
-- [Web browser support](https://developers.kakao.com/docs/latest/getting-started/sdk-flutter#supported-browser)
+- [Web browser support](https://developers.kakao.com/docs/latest/flutter/getting-started#before-you-begin-supported-browser)
 
 ## How to develop
 
