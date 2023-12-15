@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:html' as html;
 import 'dart:typed_data';
 
@@ -150,6 +151,14 @@ class KakaoFlutterSdkPlugin {
         }
         break;
       case 'followChannel':
+        Browser currentBrowser = _uaParser.detectBrowser(userAgent);
+        if ({Browser.facebook, Browser.instagram}.contains(currentBrowser)) {
+          return jsonEncode({
+            'error_code': 'KAE007',
+            'error_msg': 'unsupported environment.',
+          });
+        }
+
         final String channelPublicId = call.arguments['channel_public_id'];
         final String transId = call.arguments['trans_id'];
         final String? agt = call.arguments['agt'];
