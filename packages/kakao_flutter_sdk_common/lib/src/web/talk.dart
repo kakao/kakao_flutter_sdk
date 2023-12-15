@@ -30,20 +30,14 @@ Future<String> webChannelUrl(String path) async {
       .toString();
 }
 
-Future<Map> createFollowChannelParams(
-  final String? accessToken,
-  final String channelPublicId,
-  final String transId,
-) async {
-  final params = {
-    'access_token': accessToken,
-    'ka': await KakaoSdk.kaHeader,
-    'app_key': KakaoSdk.appKey,
-    'channel_public_id': channelPublicId,
-    'trans_id': transId,
-  };
-  params.removeWhere((k, v) => v == null);
-  return params;
+String createFollowChannelUrl(final Map params) {
+  const path = '/talk/channel/follow';
+
+  var url = 'https://${KakaoSdk.hosts.apps}$path?';
+  params.forEach((k, v) => url = '$url$k=$v&');
+
+  url.substring(0, url.length - 1);
+  return url;
 }
 
 Future<Map<String, String>> _channelBaseParams() async {

@@ -174,35 +174,20 @@ class TalkApi {
   Future<FollowChannelResult> followChannel(
     final String channelPublicId,
   ) async {
-    if (kIsWeb) {
-      final token = await TokenManagerProvider.instance.manager.getToken();
-      final params = {
-        'access_token': token?.accessToken,
-        'channel_public_id': channelPublicId,
-        'trans_id': generateRandomString(60),
-      };
-
-      final String response =
-          await _channel.invokeMethod('followChannel', params);
-
-      final Map<String, dynamic> result = jsonDecode(response);
-
-      if (result.containsKey('error_code')) {
-        throw KakaoAppsException.fromJson(result);
-      }
-      return FollowChannelResult.fromJson(result);
-    }
-
     if (!await AuthApi.instance.hasToken()) {
       return _followChannel(channelPublicId, null);
     }
 
     String? agt;
     try {
-      await AuthApi.instance.refreshToken();
+      if (!kIsWeb) {
+        await AuthApi.instance.refreshToken();
+      }
       agt = await AuthApi.instance.agt();
-    } catch (_) {}
-    return await _followChannel(channelPublicId, agt);
+      return await _followChannel(channelPublicId, agt);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   /// 카카오톡 채널 추가
@@ -324,6 +309,16 @@ class TalkApi {
     final String channelPublicId,
     final String? agt,
   ) async {
+    if (kIsWeb) {
+      return _followChannelForWeb(channelPublicId, agt);
+    }
+    return _followChannelForNative(channelPublicId, agt);
+  }
+
+  Future<FollowChannelResult> _followChannelForNative(
+    final String channelPublicId,
+    final String? agt,
+  ) async {
     final params = {
       Constants.appKey: KakaoSdk.appKey,
       Constants.channelPublicId: channelPublicId,
@@ -349,5 +344,26 @@ class TalkApi {
       throw KakaoAppsException.fromJson(resultUri.queryParameters);
     }
     return FollowChannelResult.fromJson(resultUri.queryParameters);
+  }
+
+  Future<FollowChannelResult> _followChannelForWeb(
+    final String channelPublicId,
+    final String? agt,
+  ) async {
+    final params = {
+      'channel_public_id': channelPublicId,
+      'trans_id': generateRandomString(60),
+      'agt': agt,
+    };
+
+    final String response =
+        await _channel.invokeMethod('followChannel', params);
+
+    final Map<String, dynamic> result = jsonDecode(response);
+
+    if (result.containsKey('error_code')) {
+      throw KakaoAppsException.fromJson(result);
+    }
+    return FollowChannelResult.fromJson(result);
   }
 }
