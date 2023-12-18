@@ -78,7 +78,7 @@ enum AppsErrorCause {
 
   /// Access Token, KPIDT, 톡세션 등으로 앱 유저 인증에 실패하는 경우
   @JsonValue("KAE201")
-  authFailed,
+  authError,
 
   /// 앱에 연결되지 않은 유저가 API를 호출하는 경우
   @JsonValue("KAE202")
@@ -90,7 +90,7 @@ enum AppsErrorCause {
 
   /// API 사용에 필요한 계정 약관 동의가 되어 있지 않은 경우
   @JsonValue("KAE204")
-  accountTermsAgreeRequired,
+  accountTermsError,
 
   /// 계정 페이지에서 배송지 콜백으로 로그인 필요 응답을 전달하는 경우
   @JsonValue("KAE205")
