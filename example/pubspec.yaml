@@ -12,16 +12,16 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  path_provider: ^2.0.8
-  shared_preferences: ^2.0.20
-  file_picker: ^4.6.1
+  path_provider: ^2.1.1
+  shared_preferences: ^2.2.2
+  file_picker: ^6.1.1
   kakao_flutter_sdk:
     path: ../packages/kakao_flutter_sdk
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1
+  flutter_lints: ^3.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.devs/tools/pub/pubspec
