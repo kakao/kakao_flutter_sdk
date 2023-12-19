@@ -25,7 +25,7 @@ const String tag = "KakaoSdkSample";
 class ApiList extends StatefulWidget {
   final Map<String, dynamic> customData;
 
-  const ApiList({Key? key, required this.customData}) : super(key: key);
+  const ApiList({super.key, required this.customData});
 
   @override
   ApiListState createState() => ApiListState();

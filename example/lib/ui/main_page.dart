@@ -5,7 +5,7 @@ import 'package:kakao_flutter_sdk_example/ui/api_list.dart';
 class MainPage extends StatelessWidget {
   final Map<String, dynamic> customData;
 
-  const MainPage({Key? key, required this.customData}) : super(key: key);
+  const MainPage({super.key, required this.customData});
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,7 @@ class PickerPage extends StatefulWidget {
   final String? result;
   final String? error;
 
-  const PickerPage({Key? key, this.result, this.error}) : super(key: key);
+  const PickerPage({super.key, this.result, this.error});
 
   @override
   State<PickerPage> createState() => _PickerPageState();
@@ -236,11 +236,10 @@ class BoolRadioListTile extends StatefulWidget {
   final Function(bool) callback;
 
   const BoolRadioListTile(
-      {Key? key,
+      {super.key,
       required this.title,
       required this.defaultValue,
-      required this.callback})
-      : super(key: key);
+      required this.callback});
 
   @override
   State<BoolRadioListTile> createState() => _BoolRadioListTileState();

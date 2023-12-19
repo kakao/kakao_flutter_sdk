@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_common.dart';
 
 class DebugPage extends StatefulWidget {
-  const DebugPage({Key? key}) : super(key: key);
+  const DebugPage({super.key});
 
   @override
   State<DebugPage> createState() => _DebugPageState();
