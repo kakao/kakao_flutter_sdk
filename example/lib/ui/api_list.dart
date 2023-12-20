@@ -1026,7 +1026,7 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '채널 관계 확인 실패', e);
         }
       }),
-      ApiItem('+followChannel', api: () async {
+      ApiItem('+followChannel', backgroundColor: plusColor, api: () async {
         TalkApiParameter? parameters = await showDialog(
           context: context,
           builder: (context) => TalkApiDialog(
