@@ -171,6 +171,10 @@ class TalkApi {
     return _message(Constants.scrapPath, params);
   }
 
+  /// 카카오톡 채널 간편 추가하기.
+  ///
+  /// [channelPublicId]는 카카오톡 채널 홈 URL 에 들어간 {_영문}으로 구성된 고유 아이디
+  /// 홈 URL 은 카카오톡 채널 관리자센터 > 관리 > 상세설정 페이지에서 확인.
   Future<FollowChannelResult> followChannel(
     final String channelPublicId,
   ) async {
