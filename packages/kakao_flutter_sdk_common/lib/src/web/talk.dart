@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:kakao_flutter_sdk_common/src/kakao_sdk.dart';
 
 String androidChannelIntent(String scheme, String channelPublicId, String path,
@@ -26,6 +28,16 @@ Future<String> webChannelUrl(String path) async {
           path: path,
           queryParameters: await _channelBaseParams())
       .toString();
+}
+
+String createFollowChannelUrl(final Map params) {
+  const path = '/talk/channel/follow';
+
+  var url = 'https://${KakaoSdk.hosts.apps}$path?';
+  params.forEach((k, v) => url = '$url$k=$v&');
+
+  url.substring(0, url.length - 1);
+  return url;
 }
 
 Future<Map<String, String>> _channelBaseParams() async {

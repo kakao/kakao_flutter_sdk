@@ -12,6 +12,12 @@
             android:exported="true"
             android:launchMode="singleTask"
             android:theme="@style/TransparentCompat" />
+
+        <activity
+            android:name=".FollowChannelHandlerActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@style/TransparentCompat" />
     </application>
 
     <queries>

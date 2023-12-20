@@ -26,6 +26,7 @@ class TalkApiDialog extends StatelessWidget {
         orderVisibility = friends == title,
         friendOrderVisibility = friends == title,
         channelPublicIdVisibility = {
+          followChannel,
           addChannel,
           channelChat,
           addChannelUrl,

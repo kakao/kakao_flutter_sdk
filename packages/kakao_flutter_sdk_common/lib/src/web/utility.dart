@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:html';
 
@@ -7,6 +8,59 @@ import 'package:kakao_flutter_sdk_common/src/util.dart';
 /// @nodoc
 bool isMobileDevice() {
   return isAndroid() || isiOS();
+}
+
+void submitForm(String url, Map params, {String popupName = ''}) {
+  final form = document.createElement('form') as FormElement;
+  form.setAttribute('accept-charset', 'utf-8');
+  form.setAttribute('method', 'post');
+  form.setAttribute('action', url);
+  form.setAttribute('target', popupName);
+  form.setAttribute('style', 'display:none');
+
+  params.forEach((key, value) {
+    final input = document.createElement('input') as InputElement;
+    input.type = 'hidden';
+    input.name = key;
+    input.value = value is String ? value : jsonEncode(value);
+    form.append(input);
+  });
+  document.body!.append(form);
+  form.submit();
+  form.remove();
+}
+
+IFrameElement createHiddenIframe(String transId, String source) {
+  return document.createElement('iframe') as IFrameElement
+    ..id = transId
+    ..name = transId
+    ..src = source
+    ..setAttribute(
+      'style',
+      'border:none; width:0; height:0; display:none; overflow:hidden;',
+    );
+}
+
+EventListener addMessageEventListener(
+  String requestDomain,
+  Completer<String> completer,
+  bool Function(Map response) isError,
+) {
+  callback(event) {
+    if (event is! MessageEvent || completer.isCompleted) return;
+
+    if (event.data != null && event.origin == requestDomain) {
+      if (isError(jsonDecode(event.data))) {
+        completer.complete(event.data);
+        return;
+      }
+
+      completer.complete(event.data);
+    }
+  }
+
+  window.addEventListener('message', callback);
+  return callback;
 }
 
 /// @nodoc

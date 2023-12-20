@@ -66,6 +66,11 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
             let args = castArguments(call.arguments)
             let uri = args["uri"]
             launchKakaoTalk(uri: uri!, result: result)
+
+        case "followChannel":
+            let args = castArguments(call.arguments)
+            let url = args["url"]
+            launchBrowserTab(url: url!, redirectUri: nil, result: result)
             
         case "addChannel":
             let args = castArguments(call.arguments)
@@ -255,15 +260,17 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
     }
 
     public func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-
         let urlString = url.absoluteString
-        if(redirectUri != nil && urlString.starts(with: "kakao") && urlString.contains(Constants.oauthPath)) {
-            if(urlString.hasPrefix(redirectUri!)) {
+        
+        guard urlString.starts(with: "kakao") else { return false }
+        
+        if redirectUri != nil && urlString.contains(Constants.oauthPath) {
+            if urlString.hasPrefix(redirectUri!) {
                 self.authorizeTalkCompletionHandler?(url, nil)
             } else {
                 self.authorizeTalkCompletionHandler?(nil, FlutterError(code: "REDIRET_URL_MISMATCH", message: "Expected: \(redirectUri!), Actual: \(url.absoluteString)", details: nil))
             }
-        } else if(urlString.starts(with: "kakao") && (urlString.contains(Constants.talkSharingPath))) {
+        } else if urlString.contains(Constants.talkSharingPath) {
             eventSink?(urlString)
         }
         // This results are treated as an OR, so it returns false so as not to affect the results of other plugin delegates.

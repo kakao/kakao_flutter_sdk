@@ -1026,6 +1026,25 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '채널 관계 확인 실패', e);
         }
       }),
+      ApiItem('+followChannel', api: () async {
+        TalkApiParameter? parameters = await showDialog(
+          context: context,
+          builder: (context) => TalkApiDialog(
+            'followChannel',
+            publicIds: customData['channelId'],
+          ),
+        );
+
+        if (parameters == null) return;
+
+        try {
+          var result =
+              await TalkApi.instance.followChannel(parameters.channelPublicId);
+          Log.i(context, tag, '채널 추가 성공 $result');
+        } catch (e) {
+          Log.e(context, tag, '채널 추가 실패', e);
+        }
+      }),
       ApiItem('+addChannel()', backgroundColor: plusColor, api: () async {
         TalkApiParameter? parameters = await showDialog(
           context: context,

@@ -117,12 +117,15 @@ class PickerApi {
 
   Future _invokeWebPicker(
       PickerFriendRequestParams params, String pickerType) async {
-    var response = await _channel.invokeMethod('requestWebPicker', {
+    final token = await TokenManagerProvider.instance.manager.getToken()!;
+    final response = await _channel.invokeMethod('requestWebPicker', {
+      'app_key': KakaoSdk.appKey,
+      'ka': await KakaoSdk.kaHeader,
       'picker_type': pickerType,
       'trans_id': generateRandomString(60),
-      'access_token':
-          (await TokenManagerProvider.instance.manager.getToken())!.accessToken,
+      'access_token': token?.accessToken,
       'picker_params': params.toJson(),
+      'request_url': 'https://${KakaoSdk.hosts.picker}',
     });
     if (params.returnUrl == null) {
       return SelectedUsers.fromJson(jsonDecode(response));
