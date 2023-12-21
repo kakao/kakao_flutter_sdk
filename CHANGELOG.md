@@ -1,3 +1,9 @@
+## 1.8.0
+- Supports Follow Kakao Talk Channel(`followChannel()`).
+- Fixed a bug.
+  - Web: Resolved an issue where message events could not be received when installing certain Chrome extensions.
+- Updated the internal source code.
+
 ## 1.7.0
 - Deprecated the Kakao Story module (`kakao_flutter_sdk_story`).
 - Supports Universal Link to the Login with Kakao Talk feature in the iOS environment.
