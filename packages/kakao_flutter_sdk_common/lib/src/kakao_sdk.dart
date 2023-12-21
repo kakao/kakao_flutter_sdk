@@ -16,7 +16,7 @@ class KakaoSdk {
   static late String _nativeKey;
   static late String _jsKey;
 
-  static String sdkVersion = "1.7.0";
+  static String sdkVersion = "1.8.0";
 
   static String get appKey => kIsWeb ? _jsKey : _nativeKey;
 
@@ -79,9 +79,11 @@ class KakaoSdk {
     return await _channel.invokeMethod(CommonConstants.packageName);
   }
 
-  static String get redirectUri => "$_customScheme://oauth";
+  static String get redirectUri => "$customScheme://oauth";
 
   static late String _customScheme;
+
+  static String get customScheme => _customScheme;
 
   /// [내 애플리케이션]에서 확인한 앱 키로 Flutter SDK 초기화, 서비스 환경별 앱 키 사용
   /// 웹: javaScriptAppKey에 JavaScript 키 전달
@@ -96,7 +98,9 @@ class KakaoSdk {
   }) {
     if (nativeAppKey == null && javaScriptAppKey == null) {
       throw KakaoClientException(
-          "A Native App Key or JavaScript App Key is required");
+        ClientErrorCause.badParameter,
+        "A Native App Key or JavaScript App Key is required",
+      );
     }
 
     _nativeKey = nativeAppKey ?? "";

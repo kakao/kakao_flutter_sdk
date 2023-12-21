@@ -79,7 +79,7 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                     intent = IntentFactory.customTabsForLogin(context, args)
                     requestCode = Constants.REQUEST_KAKAO_LOGIN
                 } else {
-                    intent = IntentFactory.customTabs(context, args)
+                    intent = IntentFactory.customTabs<AuthCodeCustomTabsActivity>(context, args)
                     requestCode = Constants.REQUEST_CUSTOM_TABS
                 }
 
@@ -152,6 +152,24 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                 ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 applicationContext?.startActivity(intent)
                 result.success(true)
+            }
+
+            "followChannel" -> {
+                val context = applicationContext ?: run {
+                    result.error("Error", "Application is not attached to FlutterEngine", null)
+                    return
+                }
+
+                val activity = activity ?: run {
+                    result.error("Error", "Plugin is not attached to Activity", null)
+                    return
+                }
+
+                @Suppress("UNCHECKED_CAST")
+                val args = call.arguments as Map<String, String>
+
+                val intent = IntentFactory.customTabs<FollowChannelHandlerActivity>(context, args)
+                activity.startActivityForResult(intent, Constants.REQUEST_CUSTOM_TABS)
             }
 
             "addChannel" -> {

@@ -38,6 +38,7 @@ Future<String> launchBrowserTab(Uri uri,
   if (uri.scheme != CommonConstants.http &&
       uri.scheme != CommonConstants.scheme) {
     throw KakaoClientException(
+      ClientErrorCause.notSupported,
       'Default browsers only supports URL of http or https scheme.',
     );
   }
@@ -52,7 +53,9 @@ Future<String> launchBrowserTab(Uri uri,
 
   if (redirectUriWithParams != null) return redirectUriWithParams;
   throw KakaoClientException(
-      "OAuth 2.0 redirect uri was null, which should not happen.");
+    ClientErrorCause.unknown,
+    "OAuth 2.0 redirect uri was null, which should not happen.",
+  );
 }
 
 /// 카카오톡 앱 실행 가능 여부 확인

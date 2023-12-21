@@ -23,7 +23,10 @@ class PickerApi {
     BuildContext? context,
   }) async {
     if (await TokenManagerProvider.instance.manager.getToken() == null) {
-      throw KakaoClientException('You must log in before using FriendPicker.');
+      throw KakaoClientException(
+        ClientErrorCause.tokenNotFound,
+        'You must log in before using FriendPicker.',
+      );
     }
 
     if (params.minPickableCount != DefaultValues.minPickableCount) {
@@ -39,7 +42,10 @@ class PickerApi {
     }
 
     if (context == null) {
-      throw KakaoClientException('FriendPicker requires context.');
+      throw KakaoClientException(
+        ClientErrorCause.badParameter,
+        'FriendPicker requires context.',
+      );
     }
 
     return await _navigateToWebView(
@@ -52,7 +58,10 @@ class PickerApi {
     BuildContext? context,
   }) async {
     if (await TokenManagerProvider.instance.manager.getToken() == null) {
-      throw KakaoClientException('You must log in before using FriendPicker.');
+      throw KakaoClientException(
+        ClientErrorCause.tokenNotFound,
+        'You must log in before using FriendPicker.',
+      );
     }
 
     var exception = _isParameterCorrect(params);
@@ -70,7 +79,10 @@ class PickerApi {
     }
 
     if (context == null) {
-      throw KakaoClientException('FriendPicker requires context.');
+      throw KakaoClientException(
+        ClientErrorCause.badParameter,
+        'FriendPicker requires context.',
+      );
     }
 
     return await _navigateToWebView(context: context, params: params);
@@ -84,27 +96,36 @@ class PickerApi {
 
     if (minPickableCount < 1) {
       return KakaoClientException(
-          'Parameter minPickableCount must be greater than 1.');
+        ClientErrorCause.badParameter,
+        'Parameter minPickableCount must be greater than 1.',
+      );
     }
     if (maxPickableCount > 100) {
       return KakaoClientException(
-          'Parameter maxPickableCount must be 100 or less.');
+        ClientErrorCause.badParameter,
+        'Parameter maxPickableCount must be 100 or less.',
+      );
     }
     if (minPickableCount > maxPickableCount) {
       return KakaoClientException(
-          'Parameter maxPickableCount must be greater than or equal to parameter minPickableCount.');
+        ClientErrorCause.badParameter,
+        'Parameter maxPickableCount must be greater than or equal to parameter minPickableCount.',
+      );
     }
     return null;
   }
 
   Future _invokeWebPicker(
       PickerFriendRequestParams params, String pickerType) async {
-    var response = await _channel.invokeMethod('requestWebPicker', {
+    final token = await TokenManagerProvider.instance.manager.getToken()!;
+    final response = await _channel.invokeMethod('requestWebPicker', {
+      'app_key': KakaoSdk.appKey,
+      'ka': await KakaoSdk.kaHeader,
       'picker_type': pickerType,
       'trans_id': generateRandomString(60),
-      'access_token':
-          (await TokenManagerProvider.instance.manager.getToken())!.accessToken,
+      'access_token': token?.accessToken,
       'picker_params': params.toJson(),
+      'request_url': 'https://${KakaoSdk.hosts.picker}',
     });
     if (params.returnUrl == null) {
       return SelectedUsers.fromJson(jsonDecode(response));
@@ -116,7 +137,12 @@ class PickerApi {
     bool isSingle = false,
     required PickerFriendRequestParams params,
   }) async {
-    if (!context.mounted) throw KakaoClientException("Context is not mouned");
+    if (!context.mounted) {
+      throw KakaoClientException(
+        ClientErrorCause.illegalState,
+        "Context is not mouned",
+      );
+    }
 
     Map<String, String>? result = await Navigator.push(
       context,
@@ -126,7 +152,10 @@ class PickerApi {
     );
 
     if (result == null) {
-      throw KakaoClientException('User Cancelled');
+      throw KakaoClientException(
+        ClientErrorCause.cancelled,
+        'User Cancelled',
+      );
     }
 
     if (result.containsKey('selected')) {

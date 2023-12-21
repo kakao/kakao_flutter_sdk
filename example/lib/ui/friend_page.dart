@@ -4,7 +4,7 @@ import 'package:kakao_flutter_sdk_example/model/picker_item.dart';
 class FriendPage extends StatefulWidget {
   final List<PickerItem> items;
 
-  const FriendPage({required this.items, Key? key}) : super(key: key);
+  const FriendPage({required this.items, super.key});
 
   @override
   State<FriendPage> createState() => _FriendPageState();

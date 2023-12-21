@@ -4,8 +4,10 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_talk/src/constants.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/channels.dart';
+import 'package:kakao_flutter_sdk_talk/src/model/follow_channel_result.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/friend.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/friends.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/message_send_result.dart';
@@ -169,13 +171,39 @@ class TalkApi {
     return _message(Constants.scrapPath, params);
   }
 
+  /// 카카오톡 채널 간편 추가하기.
+  ///
+  /// [channelPublicId]는 카카오톡 채널 홈 URL 에 들어간 {_영문}으로 구성된 고유 아이디
+  /// 홈 URL 은 카카오톡 채널 관리자센터 > 관리 > 상세설정 페이지에서 확인.
+  Future<FollowChannelResult> followChannel(
+    final String channelPublicId,
+  ) async {
+    if (!await AuthApi.instance.hasToken()) {
+      return _followChannel(channelPublicId, null);
+    }
+
+    String? agt;
+    try {
+      if (!kIsWeb) {
+        await AuthApi.instance.refreshToken();
+      }
+      agt = await AuthApi.instance.agt();
+      return await _followChannel(channelPublicId, agt);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   /// 카카오톡 채널 추가
   ///
   /// [channelPublicId]는 카카오톡 채널 홈 URL 에 들어간 {_영문}으로 구성된 고유 아이디
   /// 홈 URL 은 카카오톡 채널 관리자센터 > 관리 > 상세설정 페이지에서 확인
   Future addChannel(final String channelPublicId) async {
     if (!await isKakaoTalkInstalled()) {
-      throw KakaoClientException("KakaoTalk is not installed");
+      throw KakaoClientException(
+        ClientErrorCause.notSupported,
+        "KakaoTalk is not installed",
+      );
     }
 
     final scheme = isAndroid()
@@ -198,7 +226,10 @@ class TalkApi {
   /// 홈 URL 은 카카오톡 채널 관리자센터 > 관리 > 상세설정 페이지에서 확인
   Future chatChannel(final String channelPublicId) async {
     if (!await isKakaoTalkInstalled()) {
-      throw KakaoClientException("KakaoTalk is not installed");
+      throw KakaoClientException(
+        ClientErrorCause.notSupported,
+        "KakaoTalk is not installed",
+      );
     }
 
     final scheme = isAndroid()
@@ -276,5 +307,67 @@ class TalkApi {
       Constants.kakaoAgent: await KakaoSdk.kaHeader,
       Constants.apiVersion: Constants.apiVersion_10
     };
+  }
+
+  Future<FollowChannelResult> _followChannel(
+    final String channelPublicId,
+    final String? agt,
+  ) async {
+    if (kIsWeb) {
+      return _followChannelForWeb(channelPublicId, agt);
+    }
+    return _followChannelForNative(channelPublicId, agt);
+  }
+
+  Future<FollowChannelResult> _followChannelForNative(
+    final String channelPublicId,
+    final String? agt,
+  ) async {
+    final params = {
+      Constants.appKey: KakaoSdk.appKey,
+      Constants.channelPublicId: channelPublicId,
+      Constants.returnUrl:
+          '${KakaoSdk.customScheme}://${Constants.followChannelScheme}',
+      Constants.ka: await KakaoSdk.kaHeader,
+      Constants.agt: agt,
+    };
+    params.removeWhere((k, v) => v == null);
+
+    final url = Uri.https(
+      KakaoSdk.hosts.apps,
+      Constants.followChannelPath,
+      params,
+    ).toString();
+    final result = await _channel
+        .invokeMethod(Constants.followChannel, {Constants.url: url});
+
+    final resultUri = Uri.parse(result);
+
+    if (resultUri.queryParameters[Constants.status] ==
+        Constants.followChannelStatusError) {
+      throw KakaoAppsException.fromJson(resultUri.queryParameters);
+    }
+    return FollowChannelResult.fromJson(resultUri.queryParameters);
+  }
+
+  Future<FollowChannelResult> _followChannelForWeb(
+    final String channelPublicId,
+    final String? agt,
+  ) async {
+    final params = {
+      'channel_public_id': channelPublicId,
+      'trans_id': generateRandomString(60),
+      'agt': agt,
+    };
+
+    final String response =
+        await _channel.invokeMethod('followChannel', params);
+
+    final Map<String, dynamic> result = jsonDecode(response);
+
+    if (result.containsKey('error_code')) {
+      throw KakaoAppsException.fromJson(result);
+    }
+    return FollowChannelResult.fromJson(result);
   }
 }

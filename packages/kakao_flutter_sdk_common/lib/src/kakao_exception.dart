@@ -20,12 +20,35 @@ class KakaoException implements Exception {
 
 /// SDK 내에서 발생하는 클라이언트 에러
 class KakaoClientException extends KakaoException {
-  KakaoClientException(this.msg) : super(msg);
+  final ClientErrorCause reason;
   final String msg;
+
+  KakaoClientException(this.reason, this.msg) : super(msg);
 
   /// @nodoc
   @override
   String toString() {
-    return "KakaoClientException: $msg";
+    return "KakaoClientException ${reason.name}: $msg";
   }
+}
+
+/// [KakaoClientException]의 발생 원인
+enum ClientErrorCause {
+  /// 기타 에러
+  unknown,
+
+  /// 요청 취소
+  cancelled,
+
+  /// API 요청에 사용할 토큰이 없음
+  tokenNotFound,
+
+  /// 지원되지 않는 기능
+  notSupported,
+
+  /// 잘못된 파라미터
+  badParameter,
+
+  /// 정상적으로 실행할 수 없는 상태
+  illegalState
 }

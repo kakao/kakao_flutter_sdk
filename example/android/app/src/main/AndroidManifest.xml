@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.kakao.sdk.flutter.example">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!--
          io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -67,6 +66,21 @@
 
                 <data
                     android:host="oauth"
+                    android:scheme="kakao030ba7c59137629e86e8721eb1a22fd6" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.kakao.sdk.flutter.FollowChannelHandlerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="channel"
                     android:scheme="kakao030ba7c59137629e86e8721eb1a22fd6" />
             </intent-filter>
         </activity>

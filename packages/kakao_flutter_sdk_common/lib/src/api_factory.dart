@@ -61,10 +61,16 @@ class ApiFactory {
           return e.error as PlatformException;
         }
       }
-      return KakaoClientException(e.message ?? "Unknown");
+      return KakaoClientException(
+        ClientErrorCause.unknown,
+        e.message ?? "Unknown",
+      );
     }
     if (response.statusCode == 404) {
-      return KakaoClientException(e.message ?? "404 Not Found");
+      return KakaoClientException(
+        ClientErrorCause.notSupported,
+        e.message ?? "404 Not Found",
+      );
     }
     if (Uri.parse(request.baseUrl).host == KakaoSdk.hosts.kauth) {
       return KakaoAuthException.fromJson(response.data);

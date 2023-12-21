@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:html' as html;
 import 'dart:typed_data';
 
@@ -42,28 +43,30 @@ class KakaoFlutterSdkPlugin {
         Map<String, dynamic> queryParameters =
             Map.from(fullUri.queryParameters);
 
-        if (popupLogin) {
-          queryParameters[CommonConstants.redirectUri] =
-              html.window.location.origin;
-          final finalUri = fullUri.replace(queryParameters: queryParameters);
-          html.window.open(finalUri.toString(), "KakaoAccountLogin");
-        } else {
+        if (!popupLogin) {
           queryParameters[CommonConstants.redirectUri] =
               args[CommonConstants.redirectUri];
           final finalUri = fullUri.replace(queryParameters: queryParameters);
           html.window.location.href = finalUri.toString();
+          return;
         }
-        final completer = Completer();
-        html.window.addEventListener("message", (html.Event e) {
-          if (e is html.MessageEvent) {
-            return completer.complete(e.data);
-          } else {
-            return completer.completeError(PlatformException(
-                code: "NotMessageEvent",
-                details: "Received wrong type of event ${e.runtimeType}"));
-          }
+
+        queryParameters[CommonConstants.redirectUri] =
+            html.window.location.origin;
+        final finalUri = fullUri.replace(queryParameters: queryParameters);
+        final popupWindow =
+            html.window.open(finalUri.toString(), "KakaoAccountLogin");
+
+        final msg = await html.window.onMessage.firstWhere((evt) {
+          if (evt.data.runtimeType != String) return false;
+
+          return evt.origin ==
+              Uri.parse(queryParameters[CommonConstants.redirectUri]).origin;
         });
-        return completer.future;
+
+        popupWindow.close();
+
+        return msg.data;
       case "retrieveAuthCode":
         _retrieveAuthCode();
         break;
@@ -147,13 +150,55 @@ class KakaoFlutterSdkPlugin {
           return true;
         }
         break;
+      case 'followChannel':
+        Browser currentBrowser = _uaParser.detectBrowser(userAgent);
+        if ({Browser.facebook, Browser.instagram}.contains(currentBrowser)) {
+          return jsonEncode({
+            'error_code': 'KAE007',
+            'error_msg': 'unsupported environment.',
+          });
+        }
+
+        final String channelPublicId = call.arguments['channel_public_id'];
+        final String transId = call.arguments['trans_id'];
+        final String? agt = call.arguments['agt'];
+
+        final params = {
+          'ka': await KakaoSdk.kaHeader,
+          'app_key': KakaoSdk.appKey,
+          'channel_public_id': channelPublicId,
+          'trans_id': transId,
+          'agt': agt,
+        };
+        params.removeWhere((k, v) => v == null);
+
+        final url = 'https://${KakaoSdk.hosts.apps}';
+
+        final iframe =
+            createHiddenIframe(transId, '$url/proxy?trans_id=$transId');
+        html.document.body?.append(iframe);
+
+        final completer = Completer<String>();
+        final callback = addMessageEventListener(
+            url, completer, (response) => response.containsKey('error_code'));
+
+        final finalUrl = createFollowChannelUrl(params);
+        final popup = windowOpen(
+          finalUrl,
+          'follow_channel',
+          features:
+              'location=no,resizable=no,status=no,scrollbars=no,width=460,height=608',
+        );
+        popup.afterClosed(
+            () => html.window.removeEventListener('message', callback));
+        return completer.future;
       case "addChannel":
         var scheme = call.arguments['channel_scheme'];
         var channelPublicId = call.arguments['channel_public_id'];
 
         if (!isMobileDevice()) {
           var url = await webChannelUrl('$channelPublicId/friend');
-          windowOpen(url, 'channel_add_sociel_plugin');
+          windowOpen(url, 'channel_add_social_plugin');
           return;
         }
 
@@ -208,42 +253,52 @@ class KakaoFlutterSdkPlugin {
         }
         return false;
       case "requestWebPicker":
-        String pickerType = call.arguments['picker_type'];
-        String transId = call.arguments['trans_id'];
-        String accessToken = call.arguments['access_token'];
-        Map pickerParams = call.arguments['picker_params'];
+        final String pickerType = call.arguments['picker_type'];
+        final String transId = call.arguments['trans_id'];
+        final String accessToken = call.arguments['access_token'];
+        final Map pickerParams = call.arguments['picker_params'];
 
-        var url = 'https://${KakaoSdk.hosts.picker}';
+        final url = 'https://${KakaoSdk.hosts.picker}';
 
-        var iframe = createIFrame(transId, url);
+        final iframe =
+            createHiddenIframe(transId, '$url/proxy?transId=$transId');
         html.document.body?.append(iframe);
 
-        var params = await createPickerParams(
-          pickerType,
-          transId,
+        final params = await createPickerParams(
           accessToken,
+          transId,
           Map.castFrom(pickerParams),
         );
 
-        Completer<String> completer = Completer();
-        addMessageEvent(url, completer);
+        // redirect picker
         if (params.containsKey('returnUrl')) {
           submitForm('$url/select/$pickerType', params);
-          return completer.future;
-        } else {
-          var popup = windowOpen(
-            '$url/select/$pickerType',
-            'friend_picker',
-            features:
-                'location=no,resizable=no,status=no,scrollbars=no,width=460,height=608',
-          );
-          submitForm(
-            '$url/select/$pickerType',
-            params,
-            popupName: 'friend_picker',
-          );
-          return completer.future;
+          return;
         }
+
+        // popup picker
+        final completer = Completer<String>();
+        final callback = addMessageEventListener(
+            url, completer, (response) => response.containsKey('code'));
+
+        final popup = windowOpen(
+          '$url/select/$pickerType',
+          'friend_picker',
+          features:
+              'location=no,resizable=no,status=no,scrollbars=no,width=460,height=608',
+        );
+
+        submitForm(
+          '$url/select/$pickerType',
+          params,
+          popupName: 'friend_picker',
+        );
+
+        popup.afterClosed(
+          () => html.window.removeEventListener('message', callback),
+        );
+
+        return completer.future;
       default:
         throw PlatformException(
             code: "NotImplemented",

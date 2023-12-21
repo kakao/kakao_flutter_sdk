@@ -88,7 +88,9 @@ class AuthApi {
 
     if (token == null || token.refreshToken == null) {
       throw KakaoClientException(
-          'Refresh token not found. You must login first.');
+        ClientErrorCause.tokenNotFound,
+        'Refresh token not found. You must login first.',
+      );
     }
 
     final data = {
@@ -119,7 +121,9 @@ class AuthApi {
     final tokenInfo = await _tokenManagerProvider.manager.getToken();
     if (accessToken == null && tokenInfo == null) {
       throw KakaoClientException(
-          'Token registered in TokenManager does not exist!');
+        ClientErrorCause.tokenNotFound,
+        'Token registered in TokenManager does not exist!',
+      );
     }
     final data = {
       Constants.clientId: appKey ?? KakaoSdk.appKey,
@@ -187,7 +191,10 @@ class AuthApi {
       Response response = await _dio.post(Constants.tokenPath, data: data);
       final tokenResponse = AccessTokenResponse.fromJson(response.data);
       if (tokenResponse.txId == null) {
-        throw KakaoClientException('txId is null');
+        throw KakaoClientException(
+          ClientErrorCause.unknown,
+          'txId is null',
+        );
       }
       return CertTokenInfo(
           OAuthToken.fromResponse(tokenResponse), tokenResponse.txId!);

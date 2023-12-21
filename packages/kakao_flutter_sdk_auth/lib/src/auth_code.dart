@@ -222,7 +222,9 @@ class AuthCodeClient {
       }
 
       throw KakaoClientException(
-          "OAuth 2.0 redirect uri was null, which should not happen.");
+        ClientErrorCause.unknown,
+        "OAuth 2.0 redirect uri was null, which should not happen.",
+      );
     }
 
     await _channel.invokeMethod<String>(

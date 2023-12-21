@@ -23,7 +23,7 @@ class UaParser {
       return Browser.samsung;
     } else if (ua.contains('FxiOS') || ua.contains("Firefox")) {
       return Browser.firefox;
-    } else if (ua.contains('FB_IAB')) {
+    } else if (ua.contains('FB_IAB') || ua.contains('FBIOS')) {
       return Browser.facebook;
     } else if (ua.contains('Instagram')) {
       return Browser.instagram;

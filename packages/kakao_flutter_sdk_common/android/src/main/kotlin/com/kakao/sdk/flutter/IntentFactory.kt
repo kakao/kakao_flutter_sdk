@@ -1,5 +1,6 @@
 package com.kakao.sdk.flutter
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -46,13 +47,16 @@ object IntentFactory {
             .putExtra(Constants.KEY_EXTRAS, extras)
     }
 
-    fun customTabs(context: Context, args: Map<String, String?>): Intent {
-        return Intent(context, AuthCodeCustomTabsActivity::class.java)
+    inline fun <reified T : Activity> customTabs(
+        context: Context,
+        args: Map<String, String?>,
+    ): Intent {
+        return Intent(context, T::class.java)
             .putExtra(Constants.KEY_FULL_URI, args["url"] as String)
     }
 
     fun customTabsForLogin(context: Context, args: Map<String, String?>): Intent {
-        return customTabs(context, args).apply {
+        return customTabs<AuthCodeCustomTabsActivity>(context, args).apply {
             val redirectUrl = args["redirect_uri"]
             putExtra(Constants.KEY_REDIRECT_URL, redirectUrl)
         }
