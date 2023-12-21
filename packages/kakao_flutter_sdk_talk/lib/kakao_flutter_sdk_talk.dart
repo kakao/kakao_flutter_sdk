@@ -4,6 +4,7 @@ library kakao_flutter_sdk_talk;
 
 export 'package:kakao_flutter_sdk_talk/src/model/channel.dart';
 export 'package:kakao_flutter_sdk_talk/src/model/channels.dart';
+export 'package:kakao_flutter_sdk_talk/src/model/follow_channel_result.dart';
 export 'package:kakao_flutter_sdk_talk/src/model/friend.dart';
 export 'package:kakao_flutter_sdk_talk/src/model/friends.dart';
 export 'package:kakao_flutter_sdk_talk/src/model/message_failure_info.dart';
