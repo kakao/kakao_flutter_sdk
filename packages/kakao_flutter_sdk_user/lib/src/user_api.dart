@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_user/src/constants.dart';
 import 'package:kakao_flutter_sdk_user/src/model/user_revoked_service_terms.dart';
@@ -18,10 +19,15 @@ import 'model/user_shipping_addresses.dart';
 class UserApi {
   UserApi(this._dio);
 
+  /// @nodoc
   final Dio _dio;
 
   /// 간편한 API 호출을 위해 기본 제공되는 singleton 객체
   static final UserApi instance = UserApi(AuthApiFactory.authApi);
+
+  /// @nodoc
+  static const MethodChannel _channel =
+      MethodChannel(CommonConstants.methodChannel);
 
   /// 카카오톡으로 로그인
   /// 카카오톡에 연결된 카카오계정으로 사용자를 인증하고 [OAuthToken] 발급
@@ -255,6 +261,21 @@ class UserApi {
     });
   }
 
+  Future<int> selectShippingAddresses({
+    bool? mobileView,
+    bool? enableBackButton,
+  }) async {
+    try {
+      if (!kIsWeb) {
+        await AuthApi.instance.refreshToken();
+      }
+      final agt = await AuthApi.instance.agt();
+      return _selectShippingAddresses(agt);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   /// 사용자의 배송지 정보 획득
   Future<UserShippingAddresses> shippingAddresses({
     DateTime? fromUpdatedAt,
@@ -343,5 +364,62 @@ class UserApi {
           data: {Constants.scopes: jsonEncode(scopes)});
       return ScopeInfo.fromJson(response.data);
     });
+  }
+
+  Future<int> _selectShippingAddresses(
+    final String agt, {
+    final bool? mobileView,
+    final bool? enableBackButton,
+  }) {
+    if (kIsWeb) {
+      return _selectShippingAddressesForWeb(agt,
+          mobileView: mobileView, enableBackButton: enableBackButton);
+    }
+    return _selectShippingAddressesForNative(agt);
+  }
+
+  Future<int> _selectShippingAddressesForWeb(
+    final String agt, {
+    final bool? mobileView,
+    final bool? enableBackButton,
+  }) async {
+    final response =
+        await _channel.invokeMethod(CommonConstants.selectShippingAddresses, {
+      Constants.mobileView: mobileView,
+      Constants.enableBackButton: enableBackButton,
+      Constants.agt: agt,
+      Constants.transId: generateRandomString(20),
+    });
+    final Map<String, dynamic> result = jsonDecode(response);
+
+    if (result[Constants.status] == Constants.error) {
+      throw KakaoAppsException.fromJson(result);
+    }
+    return result[Constants.addressId];
+  }
+
+  Future<int> _selectShippingAddressesForNative(final String agt) async {
+    final continueUrl =
+        Uri.https(KakaoSdk.hosts.apps, Constants.selectShippingAddressesPath, {
+      Constants.appKey: KakaoSdk.appKey,
+      Constants.ka: await KakaoSdk.kaHeader,
+      Constants.returnUrl:
+          '${KakaoSdk.customScheme}://${Constants.shippingAddressesScheme}',
+      Constants.enableBackButton: 'false',
+    }).toString();
+    final url = Uri.https(KakaoSdk.hosts.apps, Constants.kpidtPath, {
+      Constants.appKey: KakaoSdk.appKey,
+      Constants.agt: agt,
+      Constants.continueUrl: continueUrl,
+    }).toString();
+
+    final result = await _channel.invokeMethod(
+        CommonConstants.selectShippingAddresses, {CommonConstants.url: url});
+    final resultUri = Uri.parse(result);
+
+    if (resultUri.queryParameters[Constants.status] == Constants.error) {
+      throw KakaoAppsException.fromJson(resultUri.queryParameters);
+    }
+    return int.parse(resultUri.queryParameters[Constants.addressId]!);
   }
 }
