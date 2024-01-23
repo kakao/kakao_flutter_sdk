@@ -84,5 +84,20 @@
                     android:scheme="kakao030ba7c59137629e86e8721eb1a22fd6" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.kakao.sdk.flutter.AppsHandlerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="address"
+                    android:scheme="kakao030ba7c59137629e86e8721eb1a22fd6" />
+            </intent-filter>
+        </activity>
     </application>
 </manifest>

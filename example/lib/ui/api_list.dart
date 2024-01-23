@@ -494,6 +494,15 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '사용자 정보 저장 실패', e);
         }
       }),
+      ApiItem('selectShippingAddresses()', api: () async {
+        // 배송지 피커 호출
+        try {
+          final addressId = await UserApi.instance.selectShippingAddresses();
+          Log.i(context, tag, '배송지 선택 성공 $addressId');
+        } catch(e) {
+          Log.e(context, tag, '배송지 선택 실패 $e');
+        }
+      }),
       ApiItem('shippingAddresses()', api: () async {
         // 배송지 조회 (추가 동의)
 
