@@ -212,6 +212,24 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                 }
             }
 
+            "selectShippingAddresses" -> {
+                val context = applicationContext ?: run {
+                    result.error("Error", "Application is not attached to FlutterEngine", null)
+                    return
+                }
+
+                val activity = activity ?: run {
+                    result.error("Error", "Plugin is not attached to Activity", null)
+                    return
+                }
+
+                @Suppress("UNCHECKED_CAST")
+                val args = call.arguments as Map<String, String>
+
+                val intent = IntentFactory.customTabs<AppsHandlerActivity>(context, args)
+                activity.startActivityForResult(intent, Constants.REQUEST_CUSTOM_TABS)
+            }
+
             "isKakaoTalkSharingAvailable" -> {
                 applicationContext?.let {
                     val uriBuilder = Uri.Builder().scheme("kakaolink").authority("send")
