@@ -278,10 +278,12 @@ class UserApi {
 
   /// 사용자의 배송지 정보 획득
   Future<UserShippingAddresses> shippingAddresses({
+    int? addressId,
     DateTime? fromUpdatedAt,
     int? pageSize,
   }) async {
     Map<String, dynamic> params = {
+      Constants.addressId: addressId,
       Constants.fromUpdatedAt: fromUpdatedAt == null
           ? null
           : fromUpdatedAt.millisecondsSinceEpoch / 1000,
