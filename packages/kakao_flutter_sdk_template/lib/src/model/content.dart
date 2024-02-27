@@ -8,10 +8,10 @@ part 'content.g.dart';
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class Content {
   /// 콘텐츠의 타이틀
-  final String title;
+  final String? title;
 
   /// 콘텐츠의 이미지 URL
-  final Uri imageUrl;
+  final Uri? imageUrl;
 
   /// 콘텐츠 클릭 시 이동할 링크 정보
   final Link link;
@@ -25,8 +25,8 @@ class Content {
 
   /// @nodoc
   Content({
-    required this.title,
-    required this.imageUrl,
+    this.title,
+    this.imageUrl,
     required this.link,
     this.description,
     this.imageWidth,
