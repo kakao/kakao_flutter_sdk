@@ -261,6 +261,9 @@ class UserApi {
     });
   }
 
+  /// 배송지 선택하기
+  ///
+  /// [enableBackButton]과 [mobileView]는 웹 플랫폼 전용 파라미터.
   Future<int> selectShippingAddresses({
     bool? mobileView,
     bool? enableBackButton,
