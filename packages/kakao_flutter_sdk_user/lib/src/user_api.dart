@@ -270,7 +270,11 @@ class UserApi {
         await AuthApi.instance.refreshToken();
       }
       final agt = await AuthApi.instance.agt();
-      return _selectShippingAddresses(agt);
+      return _selectShippingAddresses(
+        agt,
+        enableBackButton: enableBackButton,
+        mobileView: mobileView,
+      );
     } catch (e) {
       rethrow;
     }
@@ -374,8 +378,11 @@ class UserApi {
     final bool? enableBackButton,
   }) {
     if (kIsWeb) {
-      return _selectShippingAddressesForWeb(agt,
-          mobileView: mobileView, enableBackButton: enableBackButton);
+      return _selectShippingAddressesForWeb(
+        agt,
+        mobileView: mobileView,
+        enableBackButton: enableBackButton,
+      );
     }
     return _selectShippingAddressesForNative(agt);
   }
