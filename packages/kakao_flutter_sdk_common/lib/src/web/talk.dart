@@ -30,14 +30,9 @@ Future<String> webChannelUrl(String path) async {
       .toString();
 }
 
-String createFollowChannelUrl(final Map params) {
+String createFollowChannelUrl(final Map<String, dynamic> params) {
   const path = '/talk/channel/follow';
-
-  var url = 'https://${KakaoSdk.hosts.apps}$path?';
-  params.forEach((k, v) => url = '$url$k=$v&');
-
-  url.substring(0, url.length - 1);
-  return url;
+  return Uri.https(KakaoSdk.hosts.apps, path, params).toString();
 }
 
 Future<Map<String, String>> _channelBaseParams() async {

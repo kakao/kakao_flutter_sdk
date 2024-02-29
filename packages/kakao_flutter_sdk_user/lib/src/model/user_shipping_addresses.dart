@@ -14,7 +14,7 @@ class UserShippingAddresses {
 
   /// 배송지 정보 조회를 위하여 유저에게 제3자 정보제공동의를 받아야 하는지 여부
   @JsonKey(name: "shipping_addresses_needs_agreement")
-  bool needsAgreement;
+  bool? needsAgreement;
 
   /// 사용자의 배송지 정보 리스트
   /// 최신 수정순 (단, 기본 배송지는 수정시각과 상관없이 첫번째에 위치)

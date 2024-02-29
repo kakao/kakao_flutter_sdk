@@ -10,7 +10,7 @@ UserShippingAddresses _$UserShippingAddressesFromJson(
         Map<String, dynamic> json) =>
     UserShippingAddresses(
       json['user_id'] as int?,
-      json['shipping_addresses_needs_agreement'] as bool,
+      json['shipping_addresses_needs_agreement'] as bool?,
       (json['shipping_addresses'] as List<dynamic>?)
           ?.map((e) => ShippingAddress.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -27,7 +27,7 @@ Map<String, dynamic> _$UserShippingAddressesToJson(
   }
 
   writeNotNull('user_id', instance.userId);
-  val['shipping_addresses_needs_agreement'] = instance.needsAgreement;
+  writeNotNull('shipping_addresses_needs_agreement', instance.needsAgreement);
   writeNotNull('shipping_addresses',
       instance.shippingAddresses?.map((e) => e.toJson()).toList());
   return val;
