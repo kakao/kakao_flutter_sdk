@@ -8,8 +8,8 @@ part of 'calendar_template.dart';
 
 CalendarTemplate _$CalendarTemplateFromJson(Map<String, dynamic> json) =>
     CalendarTemplate(
-      idType: $enumDecode(_$IdTypeEnumMap, json['id_type']),
       id: json['id'] as String,
+      idType: $enumDecode(_$IdTypeEnumMap, json['id_type']),
       content: Content.fromJson(json['content'] as Map<String, dynamic>),
       buttons: (json['buttons'] as List<dynamic>?)
           ?.map((e) => Button.fromJson(e as Map<String, dynamic>))
@@ -19,8 +19,8 @@ CalendarTemplate _$CalendarTemplateFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$CalendarTemplateToJson(CalendarTemplate instance) {
   final val = <String, dynamic>{
-    'id_type': _$IdTypeEnumMap[instance.idType]!,
     'id': instance.id,
+    'id_type': _$IdTypeEnumMap[instance.idType]!,
     'content': instance.content.toJson(),
   };
 

@@ -32,4 +32,5 @@ class CommonConstants {
   static const String shareDestination = 'shareDestination';
   static const String isPopup = 'is_popup';
   static const String receiveKakaoScheme = 'receiveKakaoScheme';
+  static const String selectShippingAddresses = 'selectShippingAddresses';
 }

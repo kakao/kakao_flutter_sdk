@@ -8,11 +8,13 @@ import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:kakao_flutter_sdk_common/src/constants.dart';
 import 'package:kakao_flutter_sdk_common/src/kakao_sdk.dart';
 import 'package:kakao_flutter_sdk_common/src/util.dart';
+import 'package:kakao_flutter_sdk_common/src/web/common.dart';
 import 'package:kakao_flutter_sdk_common/src/web/login.dart';
 import 'package:kakao_flutter_sdk_common/src/web/navi.dart';
 import 'package:kakao_flutter_sdk_common/src/web/picker.dart';
 import 'package:kakao_flutter_sdk_common/src/web/talk.dart';
 import 'package:kakao_flutter_sdk_common/src/web/ua_parser.dart';
+import 'package:kakao_flutter_sdk_common/src/web/user.dart';
 import 'package:kakao_flutter_sdk_common/src/web/utility.dart';
 
 class KakaoFlutterSdkPlugin {
@@ -150,6 +152,38 @@ class KakaoFlutterSdkPlugin {
           return true;
         }
         break;
+      case 'selectShippingAddresses':
+        Browser currentBrowser = _uaParser.detectBrowser(userAgent);
+        if ({Browser.facebook, Browser.instagram}.contains(currentBrowser)) {
+          return jsonEncode({
+            'error_code': 'KAE007',
+            'error_msg': 'unsupported environment.',
+          });
+        }
+
+        final String appKey = KakaoSdk.appKey;
+        final String ka = await KakaoSdk.kaHeader;
+        final String transId = call.arguments['trans_id'];
+        final String? mobileView = call.arguments['mobile_view'];
+        final String? enableBackButton = call.arguments['enable_back_button'];
+        final String agt = call.arguments['agt'];
+
+        final continueUrlParams = {
+          'app_key': appKey,
+          'ka': ka,
+          'trans_id': transId,
+          'mobile_view': mobileView,
+          'enable_back_button': enableBackButton,
+        };
+        continueUrlParams.removeWhere((k, v) => v == null);
+
+        final continueUrl = createSelectShippingAddressesUrl(continueUrlParams);
+        final kpidtUrl = createKpidtUrl({
+          'app_key': KakaoSdk.appKey,
+          'agt': agt,
+          'continue': continueUrl,
+        });
+        return handleAppsApi(transId, kpidtUrl, 'select_shipping_addresses');
       case 'followChannel':
         Browser currentBrowser = _uaParser.detectBrowser(userAgent);
         if ({Browser.facebook, Browser.instagram}.contains(currentBrowser)) {
@@ -171,27 +205,8 @@ class KakaoFlutterSdkPlugin {
           'agt': agt,
         };
         params.removeWhere((k, v) => v == null);
-
-        final url = 'https://${KakaoSdk.hosts.apps}';
-
-        final iframe =
-            createHiddenIframe(transId, '$url/proxy?trans_id=$transId');
-        html.document.body?.append(iframe);
-
-        final completer = Completer<String>();
-        final callback = addMessageEventListener(
-            url, completer, (response) => response.containsKey('error_code'));
-
-        final finalUrl = createFollowChannelUrl(params);
-        final popup = windowOpen(
-          finalUrl,
-          'follow_channel',
-          features:
-              'location=no,resizable=no,status=no,scrollbars=no,width=460,height=608',
-        );
-        popup.afterClosed(
-            () => html.window.removeEventListener('message', callback));
-        return completer.future;
+        final requestUrl = createFollowChannelUrl(params);
+        return handleAppsApi(transId, requestUrl, 'follow_channel');
       case "addChannel":
         var scheme = call.arguments['channel_scheme'];
         var channelPublicId = call.arguments['channel_public_id'];
@@ -217,7 +232,7 @@ class KakaoFlutterSdkPlugin {
 
         if (!isMobileDevice()) {
           var url = await webChannelUrl('$channelPublicId/chat');
-          windowOpen(url, 'channel_chat_sociel_plugin');
+          windowOpen(url, 'channel_chat_social_plugin');
           return;
         }
 
@@ -341,9 +356,5 @@ class KakaoFlutterSdkPlugin {
       'end;'
     ].join(';');
     return intent;
-  }
-
-  html.WindowBase windowOpen(String url, String name, {String? features}) {
-    return html.window.open(url, name, features);
   }
 }

@@ -7,8 +7,10 @@ part of 'content.dart';
 // **************************************************************************
 
 Content _$ContentFromJson(Map<String, dynamic> json) => Content(
-      title: json['title'] as String,
-      imageUrl: Uri.parse(json['image_url'] as String),
+      title: json['title'] as String?,
+      imageUrl: json['image_url'] == null
+          ? null
+          : Uri.parse(json['image_url'] as String),
       link: Link.fromJson(json['link'] as Map<String, dynamic>),
       description: json['description'] as String?,
       imageWidth: json['image_width'] as int?,
@@ -16,11 +18,7 @@ Content _$ContentFromJson(Map<String, dynamic> json) => Content(
     );
 
 Map<String, dynamic> _$ContentToJson(Content instance) {
-  final val = <String, dynamic>{
-    'title': instance.title,
-    'image_url': instance.imageUrl.toString(),
-    'link': instance.link.toJson(),
-  };
+  final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -28,6 +26,9 @@ Map<String, dynamic> _$ContentToJson(Content instance) {
     }
   }
 
+  writeNotNull('title', instance.title);
+  writeNotNull('image_url', instance.imageUrl?.toString());
+  val['link'] = instance.link.toJson();
   writeNotNull('description', instance.description);
   writeNotNull('image_width', instance.imageWidth);
   writeNotNull('image_height', instance.imageHeight);

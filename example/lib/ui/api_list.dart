@@ -494,6 +494,15 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '사용자 정보 저장 실패', e);
         }
       }),
+      ApiItem('selectShippingAddresses()', api: () async {
+        // 배송지 피커 호출
+        try {
+          final addressId = await UserApi.instance.selectShippingAddresses();
+          Log.i(context, tag, '배송지 선택 성공 $addressId');
+        } catch (e) {
+          Log.e(context, tag, '배송지 선택 실패 $e');
+        }
+      }),
       ApiItem('shippingAddresses()', api: () async {
         // 배송지 조회 (추가 동의)
 
@@ -508,10 +517,10 @@ class ApiListState extends State<ApiList> {
         if (userShippingAddress.shippingAddresses != null) {
           Log.i(context, tag,
               '배송지 조회 성공\n회원번호: ${userShippingAddress.userId}\n배송지: \n${userShippingAddress.shippingAddresses?.join('\n')}');
-        } else if (!userShippingAddress.needsAgreement) {
+        } else if (userShippingAddress.needsAgreement == false) {
           Log.e(context, tag,
               '사용자 계정에 배송지 없음. 꼭 필요하다면 동의항목 설정에서 수집 기능을 활성화 해보세요.');
-        } else if (userShippingAddress.needsAgreement) {
+        } else if (userShippingAddress.needsAgreement == true) {
           Log.d(context, tag, '사용자에게 배송지 제공 동의를 받아야 합니다.');
 
           List<String> scopes = ['shipping_address'];
