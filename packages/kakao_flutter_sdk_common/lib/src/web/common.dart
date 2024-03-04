@@ -4,7 +4,11 @@ import 'dart:html' as html;
 import 'package:kakao_flutter_sdk_common/src/kakao_sdk.dart';
 import 'package:kakao_flutter_sdk_common/src/web/utility.dart';
 
-Future<String> handleAppsApi(final String transId, final String requestUrl, final String popupTitle) {
+Future<String> handleAppsApi(
+  final String transId,
+  final String requestUrl,
+  final String popupTitle,
+) {
   final url = 'https://${KakaoSdk.hosts.apps}';
   final iframe = createHiddenIframe(transId, '$url/proxy?trans_id=$transId');
   html.document.body?.append(iframe);

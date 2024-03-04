@@ -357,6 +357,4 @@ class KakaoFlutterSdkPlugin {
     ].join(';');
     return intent;
   }
-
-
 }
