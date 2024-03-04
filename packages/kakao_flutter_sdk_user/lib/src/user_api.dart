@@ -264,6 +264,8 @@ class UserApi {
   /// 배송지 선택하기
   ///
   /// [enableBackButton]과 [mobileView]는 웹 플랫폼 전용 파라미터.
+  /// [mobileView]로 배송지 피커를 모바일 디바이스에 맞춘 레이아웃으로 고정할 것인지 지정.
+  /// [enableBackButton]로 배송지 피커의 뒤로 가기 버튼 노출 여부 지정
   Future<int> selectShippingAddresses({
     bool? mobileView,
     bool? enableBackButton,
