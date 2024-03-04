@@ -1,3 +1,10 @@
+## 1.9.0
+
+- Added Select Shipping address API.
+- Changed UserShippingAddresses.needsAgreement in the Retrieve shipping address API response to
+  nullable.
+- Changed Content.title and Content.imageUrl of the message template to nullable.
+
 ## 1.8.0
 - Supports Follow Kakao Talk Channel(`followChannel()`).
 - Fixed a bug.
