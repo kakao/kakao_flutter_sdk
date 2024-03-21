@@ -23,4 +23,5 @@ A new flutter plugin project.
 
   s.ios.deployment_target = '11.0'
   s.swift_version = '5.0'
+  s.resource_bundles = {'kakao_flutter_sdk_common_privacy' => ['Resources/PrivacyInfo.xcprivacy']}
 end

@@ -21,6 +21,7 @@ dependencies:
   json_annotation: ^4.8.0
   dio: ^5.0.3
   shared_preferences: ^2.0.20
+  shared_preferences_foundation: 2.3.5 # for Privacy Manifest on iOS
   platform: ^3.1.0
   crypto: ^3.0.2
   encrypt: ^5.0.1
