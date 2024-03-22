@@ -1,3 +1,7 @@
+## 1.9.1
+
+- Added the Privacy Manifest file for the iOS apps.
+
 ## 1.9.0
 
 - Added Select Shipping address API.
@@ -6,61 +10,74 @@
 - Changed Content.title and Content.imageUrl of the message template to nullable.
 
 ## 1.8.0
+
 - Supports Follow Kakao Talk Channel(`followChannel()`).
 - Fixed a bug.
-  - Web: Resolved an issue where message events could not be received when installing certain Chrome extensions.
+    - Web: Resolved an issue where message events could not be received when installing certain
+      Chrome extensions.
 - Updated the internal source code.
 
 ## 1.7.0
+
 - Deprecated the Kakao Story module (`kakao_flutter_sdk_story`).
 - Supports Universal Link to the Login with Kakao Talk feature in the iOS environment.
 
 ## 1.6.1
+
 - Fixed a bug.
-  - Web: Fixed the build error in Flutter 3.13.0 or higher.
+    - Web: Fixed the build error in Flutter 3.13.0 or higher.
 
 ## 1.6.0
+
 - Added the properties parameter to Retrieve user information API.
 - Added new APIs of Add Kakao Talk Channel, Start Kakao Talk Channel chat.
-  - The user moves directly to the Kakao Talk without any bridge page. (Kakao Talk v10.0.5 or higher required)
-  - Existing APIs that return a bridge page URL are also provided.
+    - The user moves directly to the Kakao Talk without any bridge page. (Kakao Talk v10.0.5 or
+      higher required)
+    - Existing APIs that return a bridge page URL are also provided.
 - Changed the name of Start Kakao Talk Channel chat API that returns a bridge page URL.
-  - channelChatUrl() → chatChannelUrl()
+    - channelChatUrl() → chatChannelUrl()
 - Fixed a bug.
-  - Web: Fixed the issue that fails to get the app version when the URL ends with /.
+    - Web: Fixed the issue that fails to get the app version when the URL ends with /.
 - Improved the test cases for the sample app.
 - Updated the internal source code.
 
-
 ## 1.5.0
+
 - Supports Kakao Account easy login.
 - Added Revoke consent for service terms API.
 - Updated Retrieve consent details for service terms API to v2.
 - Supports the multi app.
-- Fixed an issue that a deep link or universal link can not be received in a specific iOS environment.
-  - When using a plugin that provides a feature receiving a deep link or universal link.
-  - When launched the app through a deep link or universal link.
+- Fixed an issue that a deep link or universal link can not be received in a specific iOS
+  environment.
+    - When using a plugin that provides a feature receiving a deep link or universal link.
+    - When launched the app through a deep link or universal link.
 
 ## 1.4.3
+
 - Updated to build on Android Gradle Plugin 8.0.
 - Changed Dart minimum support version to 2.18.0 or higher.
 - Updated internal package and plugin versions.
 - Fixed a bug.
-  - Web: Fixed UserApiClient.loginWithNewScopes() malfunction issue
+    - Web: Fixed UserApiClient.loginWithNewScopes() malfunction issue
 
 ## 1.4.2
-- Fixed an issue that the app using specific plugins cannot receive deep links or universal links on iOS.
-  - Flutter SDK version 1.4.0 or later.
-  - Using plugins can receive deep link or universal link.
-  - Running the app with a deep link or universal link.
+
+- Fixed an issue that the app using specific plugins cannot receive deep links or universal links on
+  iOS.
+    - Flutter SDK version 1.4.0 or later.
+    - Using plugins can receive deep link or universal link.
+    - Running the app with a deep link or universal link.
 
 ## 1.4.1
+
 - Added `Prompt.create` value to the prompts parameter of Kakao Login.
 - Fixed the following bugs.
-  - iOS: Fixed `isKakaoTalkSharingAvailable()` malfunction issue.
-  - Web: Fixed an issue that the pop-up does not disappear when `loginWithKakaoTalk()` is executed in the Samsung Internet browser of an Android device.
+    - iOS: Fixed `isKakaoTalkSharingAvailable()` malfunction issue.
+    - Web: Fixed an issue that the pop-up does not disappear when `loginWithKakaoTalk()` is executed
+      in the Samsung Internet browser of an Android device.
 
 ## 1.4.0
+
 - Added the `friend` module for the Friend picker function.
 - Improved calling method of Custom URL Scheme.
 - Changed `refreshToken`, `refreshTokenExpiresAt` fields type of `OAuthToken` class to nullable.
@@ -68,9 +85,11 @@
 - Updated the internal source code.
 
 ## 1.3.1
+
 - Fixed an issue that `launchBrowserTab()` does not work on Android devices.
 
 ## 1.3.0
+
 - Supported Flutter Web officially.
 - Added Calendar template for Message APIs.
 - Changed the minimum support version of DART to 2.14.0.
@@ -79,60 +98,73 @@
 - Updated the internal source code.
 
 ## 1.3.0-beta.4
+
 - Fixed issue where app is closed when attempting to log in with Kakao Talk on iOS.
 - Fixed issue where app is closed when attempting Kakao Talk sharing via web on iOS.
 
 ## 1.3.0-beta.3
+
 - Fixed a bug in a web app.
 
 ## 1.3.0-beta.2
+
 - Fixed a bug in a web app.
 
 ## 1.3.0-beta.1
+
 - Added beta support for a web app.
-  - IMPORTANT: This beta version does not affect the existing functions provided for mobile apps in a release phase.
-- Fixed the build error in iOS environment which occurs when Use_frameworks! is not set in Podfile. 
+    - IMPORTANT: This beta version does not affect the existing functions provided for mobile apps
+      in a release phase.
+- Fixed the build error in iOS environment which occurs when Use_frameworks! is not set in Podfile.
 - Improved error handling logic by deleting the stored tokens when token decryption fails.
 
 ## 1.2.2
+
 - Changed the type of fromUpdatedAt parameter for Retrieving shipping address API.
-  - int? → DateTime?
-- Fixed issue where the views for Consent screen are recreated when attempting to log in with Kakao Talk on an Android device.
+    - int? → DateTime?
+- Fixed issue where the views for Consent screen are recreated when attempting to log in with Kakao
+  Talk on an Android device.
 - Added nonce to idToken in response to Login with Kakao Talk.
 
 ## 1.2.1
+
 - Fix the build error related to `UniqueKey` that occurs in Flutter versions of 2.x.x.
 
 ## 1.2.0
+
 - Changed the module name:
-  - kakao_flutter_sdk_link → kakao_flutter_sdk_share
+    - kakao_flutter_sdk_link → kakao_flutter_sdk_share
 - Changed the class name:
-  - LinkClient → ShareClient
-  - LinkResult → SharingResult
+    - LinkClient → ShareClient
+    - LinkResult → SharingResult
 - Changed the method name:
-  - refreshAccessToken() → refreshToken()
-  - isKakaoLinkAvailable() → isKakaoTalkSharingAvailable()
-  - defaultTemplate() → shareDefault()
-  - customTemplate() → shareCustom()
-  - scrapTemplate() → shareScrap()
-  - defaultTemplateUri() → makeDefaultUrl()
-  - customTemplateUri() → makeCustomUrl()
-  - scrapTemplateUri() → makeScrapUrl()
+    - refreshAccessToken() → refreshToken()
+    - isKakaoLinkAvailable() → isKakaoTalkSharingAvailable()
+    - defaultTemplate() → shareDefault()
+    - customTemplate() → shareCustom()
+    - scrapTemplate() → shareScrap()
+    - defaultTemplateUri() → makeDefaultUrl()
+    - customTemplateUri() → makeCustomUrl()
+    - scrapTemplateUri() → makeScrapUrl()
 - Changed the property name:
-  - accessTokenExpiresAt → expiresAt
+    - accessTokenExpiresAt → expiresAt
 
 ## 1.1.1
+
 - Updated to be compatible with Flutter 3.0.
 
 ## 1.1.0
+
 - Added OpenID Connect functionality.
 - Added expiresAt property to OAuthToken.
-    - accessTokenExpiresAt (Validity period of access token) will be replaced with expiresAt in version 1.2.0.
+    - accessTokenExpiresAt (Validity period of access token) will be replaced with expiresAt in
+      version 1.2.0.
 
 ## 1.0.0
 
 - Released the official Kakao SDK for Flutter.
-- For more detailed changes, refer to [What's new in Flutter SDK 1.0](https://developers.kakao.com/docs/latest/getting-started/sdk-flutter-migration).
+- For more detailed changes, refer
+  to [What's new in Flutter SDK 1.0](https://developers.kakao.com/docs/latest/getting-started/sdk-flutter-migration).
 
 ## 0.9.0
 
@@ -155,13 +187,14 @@
 
 ## 0.8.1
 
-- Rename `AccessTokenStore` to `TokenManager` (In version 0.8.0, It was incorrectly renamed to `TokenManageable`)
+- Rename `AccessTokenStore` to `TokenManager` (In version 0.8.0, It was incorrectly renamed
+  to `TokenManageable`)
 
 ## 0.8.0
 
 - Add 'productName', 'currencyUnit' and 'currencyUnitPosition' property in commerce template
 - Rename `AccessTokenStore` to `TokenManageable`
-- Improve to automatically recall the api after additional consent when the scope is insufficient 
+- Improve to automatically recall the api after additional consent when the scope is insufficient
 - Fix the bug in parsing Api error
 - Fix the bug in reissuing access token automatically
 
@@ -235,9 +268,10 @@
 
 ## 0.5.0
 
-- Update KA header according to changed Kakao API specification. This will allow users to change account while logging in.
+- Update KA header according to changed Kakao API specification. This will allow users to change
+  account while logging in.
 - Update library dependencies.
-- Update dev versions (flutter 1.20.0, iOS 14.0, Xcode 12) 
+- Update dev versions (flutter 1.20.0, iOS 14.0, Xcode 12)
 
 ## 0.4.2
 
@@ -260,22 +294,28 @@
 ## 0.3.1
 
 - Minor fixes
-- fix wrong json keys for `androidExecParams` and `iosExecParms` in `Link` class of `template` module.
+- fix wrong json keys for `androidExecParams` and `iosExecParms` in `Link` class of `template`
+  module.
 
 ## 0.3.0
 
 - Release according to recent Kakao API update.
-- Add message send API to `TalkApi`. Also update `Friend` model to include `uuid` and `favorite` field.
+- Add message send API to `TalkApi`. Also update `Friend` model to include `uuid` and `favorite`
+  field.
 - Add live account profile data to `Account` and `groupUserToken` field to `User`.
 
 ## 0.2.3
 
 - Provide `presentationContextProvider` to `ASWebAuthenticationSession` in login. (fix for iOS13.0)
-- Make `isRetriable` method of `AccessTokenInterceptor` public so that the interceptor can be used in a customized way. Third-party can override this method for their own API client if `Authorization` header matches the format `Bearer ${kakao_access_token}` for their API (which is a very uncommon need).
+- Make `isRetriable` method of `AccessTokenInterceptor` public so that the interceptor can be used
+  in a customized way. Third-party can override this method for their own API client
+  if `Authorization` header matches the format `Bearer ${kakao_access_token}` for their API (which
+  is a very uncommon need).
 
 ## 0.2.2
 
-- Update `dio` package to `3.0.0` and fix compile errors due to interface changes. Changes that were merged in 2.2.1 were ported to 3.0.0, presumably to ensure version compatibility in ^2.2.x.
+- Update `dio` package to `3.0.0` and fix compile errors due to interface changes. Changes that were
+  merged in 2.2.1 were ported to 3.0.0, presumably to ensure version compatibility in ^2.2.x.
 
 ## 0.2.1
 
