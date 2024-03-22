@@ -1,3 +1,7 @@
+## 1.9.1+2
+
+- Added missing keys in the Privacy Manifest file for the iOS apps.
+
 ## 1.9.1+1
 
 - Added missing keys in the Privacy Manifest file for the iOS apps.
