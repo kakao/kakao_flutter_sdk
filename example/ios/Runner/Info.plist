@@ -37,6 +37,7 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>kakaoplus</string>
 		<string>kakaokompassauth</string>
 		<string>kakaolink</string>
 		<string>kakaonavi-sdk</string>
