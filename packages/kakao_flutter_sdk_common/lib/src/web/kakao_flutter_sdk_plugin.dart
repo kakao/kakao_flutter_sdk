@@ -309,9 +309,10 @@ class KakaoFlutterSdkPlugin {
           popupName: 'friend_picker',
         );
 
-        popup.afterClosed(
-          () => html.window.removeEventListener('message', callback),
-        );
+        popup.afterClosed(() {
+          html.window.removeEventListener('message', callback);
+          html.document.getElementById(transId)?.remove();
+        });
 
         return completer.future;
       default:

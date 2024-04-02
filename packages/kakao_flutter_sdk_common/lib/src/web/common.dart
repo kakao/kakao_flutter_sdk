@@ -23,7 +23,10 @@ Future<String> handleAppsApi(
     features:
         'location=no,resizable=no,status=no,scrollbars=no,width=460,height=608',
   );
-  popup.afterClosed(() => html.window.removeEventListener('message', callback));
+  popup.afterClosed(() {
+    html.window.removeEventListener('message', callback);
+    html.document.getElementById(transId)?.remove();
+  });
   return completer.future;
 }
 
