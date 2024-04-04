@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:html' as html;
-import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
@@ -293,10 +292,9 @@ class KakaoFlutterSdkPlugin {
 
         // popup picker
         final completer = Completer<String>();
-        final callback = addMessageEventListener(
-            url, completer, (response) => response.containsKey('code'));
+        addMessageEventListener(url, completer, () => iframe.remove());
 
-        final popup = windowOpen(
+        windowOpen(
           '$url/select/$pickerType',
           'friend_picker',
           features:
@@ -308,11 +306,6 @@ class KakaoFlutterSdkPlugin {
           params,
           popupName: 'friend_picker',
         );
-
-        popup.afterClosed(() {
-          html.window.removeEventListener('message', callback);
-          html.document.getElementById(transId)?.remove();
-        });
 
         return completer.future;
       default:

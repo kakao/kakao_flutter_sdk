@@ -44,18 +44,16 @@ IFrameElement createHiddenIframe(String transId, String source) {
 EventListener addMessageEventListener(
   String requestDomain,
   Completer<String> completer,
-  bool Function(Map response) isError,
+  Function afterReceive,
 ) {
   callback(event) {
     if (event is! MessageEvent || completer.isCompleted) return;
 
     if (event.data != null && event.origin == requestDomain) {
-      if (isError(jsonDecode(event.data))) {
-        completer.complete(event.data);
-        return;
-      }
-
       completer.complete(event.data);
+      window.removeEventListener('message', callback);
+      afterReceive();
+      return;
     }
   }
 

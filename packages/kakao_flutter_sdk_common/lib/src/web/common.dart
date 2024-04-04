@@ -14,19 +14,15 @@ Future<String> handleAppsApi(
   html.document.body?.append(iframe);
 
   final completer = Completer<String>();
-  final callback = addMessageEventListener(
-      url, completer, (response) => response.containsKey('error_code'));
 
-  final popup = windowOpen(
+  addMessageEventListener(url, completer, () => iframe.remove());
+
+  windowOpen(
     requestUrl,
     popupTitle,
     features:
         'location=no,resizable=no,status=no,scrollbars=no,width=460,height=608',
   );
-  popup.afterClosed(() {
-    html.window.removeEventListener('message', callback);
-    html.document.getElementById(transId)?.remove();
-  });
   return completer.future;
 }
 
