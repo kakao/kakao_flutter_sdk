@@ -49,7 +49,8 @@ EventListener addMessageEventListener(
   callback(event) {
     if (event is! MessageEvent || completer.isCompleted) return;
 
-    if (event.data != null && event.origin == requestDomain) {
+    if (event.data != null &&
+        {requestDomain, window.origin}.contains(event.origin)) {
       completer.complete(event.data);
       window.removeEventListener('message', callback);
       afterReceive();
