@@ -210,7 +210,7 @@ class TalkApi {
         ? KakaoSdk.platforms.android.talkChannelScheme
         : KakaoSdk.platforms.ios.talkChannelScheme;
 
-    if (!kIsWeb || (kIsWeb && (isAndroid() || isiOS()))) {
+    if (!kIsWeb || isMobileWeb()) {
       await _validate('/sdk/channel/add', channelPublicId);
     }
 
@@ -236,7 +236,7 @@ class TalkApi {
         ? KakaoSdk.platforms.android.talkChannelScheme
         : KakaoSdk.platforms.ios.talkChannelScheme;
 
-    if (!kIsWeb || (kIsWeb && (isAndroid() || isiOS()))) {
+    if (!kIsWeb || isMobileWeb()) {
       await _validate('/sdk/channel/chat', channelPublicId);
     }
 

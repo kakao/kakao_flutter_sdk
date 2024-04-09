@@ -79,6 +79,10 @@ Future<Uint8List> platformId() async {
   return await _methodChannel.invokeMethod("platformId");
 }
 
+bool isMobileWeb() {
+  return kIsWeb && (isAndroid() || isiOS());
+}
+
 bool isAndroid() {
   return defaultTargetPlatform == TargetPlatform.android;
 }
