@@ -65,52 +65,6 @@ class UserApi {
     return token;
   }
 
-  /// 앱투앱(App-to-App) 방식 카카오톡 인증 로그인
-  ///
-  /// 카카오톡을 실행하고, 카카오톡에 연결된 카카오계정으로 사용자 인증 후 동의 및 전자서명을 거쳐 [CertTokenInfo] 반환
-  ///
-  /// 동의 화면 요청 시 추가 상호작용을 요청하고자 할 때는 [prompts] 전달, 사용할 수 있는 옵션의 종류는 [Prompt] 참고
-  /// ID 토큰 재생 공격 방지를 위한 검증 값은 [nonce] 전달. 임의의 문자열, ID 토큰 검증 시 사용
-  /// 전자서명 원문은 [signData]로 전달
-  /// 정산 ID는 [settleId]로 전달
-  Future<CertTokenInfo> certLoginWithKakaoTalk({
-    required String signData,
-    List<Prompt>? prompts,
-    List<String>? channelPublicIds,
-    List<String>? serviceTerms,
-    String? nonce,
-    String? settleId,
-  }) async {
-    var kauthTxId = await AuthApi.instance.prepare(
-      certType: CertType.k2100,
-      settleId: settleId,
-    );
-    var codeVerifier = AuthCodeClient.codeVerifier();
-
-    String? stateToken;
-    String? redirectUrl;
-    if (kIsWeb) {
-      stateToken = generateRandomString(20);
-      redirectUrl = await AuthCodeClient.instance.platformRedirectUri();
-    }
-
-    final authCode = await AuthCodeClient.instance.authorizeWithTalk(
-      redirectUri: redirectUrl ?? KakaoSdk.redirectUri,
-      prompts: prompts,
-      channelPublicId: channelPublicIds,
-      serviceTerms: serviceTerms,
-      codeVerifier: codeVerifier,
-      nonce: nonce,
-      kauthTxId: kauthTxId,
-      stateToken: stateToken,
-      webPopupLogin: true,
-    );
-    final certTokenInfo = await AuthApi.instance.issueAccessTokenWithCert(
-        authCode: authCode, codeVerifier: codeVerifier);
-    await TokenManagerProvider.instance.manager.setToken(certTokenInfo.token);
-    return certTokenInfo;
-  }
-
   /// 카카오계정으로 로그인. 기본 웹 브라우저에 있는 카카오계정 cookie 로 사용자를 인증하고 [OAuthToken] 발급
   ///
   /// 발급된 토큰은 [TokenManagerProvider]에 지정된 토큰 저장소에 자동으로 저장됨
@@ -147,54 +101,6 @@ class UserApi {
     );
     await TokenManagerProvider.instance.manager.setToken(token);
     return token;
-  }
-
-  /// 채널 메시지 방식 카카오톡 인증 로그인
-  ///
-  /// 기본 브라우저의 카카오계정 쿠키(cookie)로 사용자 인증 후, 카카오계정에 연결된 카카오톡으로 카카오톡 인증 로그인을 요청하는 채널 메시지 발송
-  /// 카카오톡의 채널 메시지를 통해 동의 및 전자서명을 거쳐 [CertTokenInfo] 반환
-  ///
-  /// 동의 화면 요청 시 추가 상호작용을 요청하고자 할 때는 [prompts] 전달, 사용할 수 있는 옵션의 종류는 [Prompt] 참고
-  /// 카카오계정 로그인 페이지의 ID에 자동 입력할 이메일 또는 전화번호(+82 00-0000-0000 형식)는 [loginHint]에 전달
-  /// ID 토큰 재생 공격 방지를 위한 검증 값은 [nonce]로 전달. 임의의 문자열, ID 토큰 검증 시 사용
-  /// 전자서명 원문은 [signData]로 전달
-  /// 정산 ID는 [settleId]로 전달
-  Future<CertTokenInfo> certLoginWithKakaoAccount({
-    required String signData,
-    List<Prompt>? prompts,
-    List<String>? channelPublicIds,
-    List<String>? serviceTerms,
-    String? loginHint,
-    String? nonce,
-    String? settleId,
-  }) async {
-    var kauthTxId = await AuthApi.instance.prepare(
-      certType: CertType.k2100,
-      settleId: settleId,
-    );
-    final codeVerifier = AuthCodeClient.codeVerifier();
-    final redirectUri = kIsWeb
-        ? CommonConstants.webAccountLoginRedirectUri
-        : KakaoSdk.redirectUri;
-
-    final authCode = await AuthCodeClient.instance.authorize(
-      redirectUri: redirectUri,
-      prompts: prompts,
-      channelPublicIds: channelPublicIds,
-      serviceTerms: serviceTerms,
-      codeVerifier: codeVerifier,
-      loginHint: loginHint,
-      nonce: nonce,
-      kauthTxId: kauthTxId,
-      webPopupLogin: true,
-    );
-    final certTokenInfo = await AuthApi.instance.issueAccessTokenWithCert(
-      authCode: authCode,
-      codeVerifier: codeVerifier,
-      redirectUri: redirectUri,
-    );
-    await TokenManagerProvider.instance.manager.setToken(certTokenInfo.token);
-    return certTokenInfo;
   }
 
   /// 사용자가 아직 동의하지 않은 개인정보 및 접근권한 동의 항목에 대하여 동의를 요청하는 동의 화면을 출력하고, 사용자 동의 시 동의항목이 업데이트 된 [OAuthToken] 발급

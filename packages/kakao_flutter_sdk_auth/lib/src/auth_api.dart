@@ -5,8 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:kakao_flutter_sdk_auth/src/auth_api_factory.dart';
 import 'package:kakao_flutter_sdk_auth/src/constants.dart';
 import 'package:kakao_flutter_sdk_auth/src/model/access_token_response.dart';
-import 'package:kakao_flutter_sdk_auth/src/model/cert_token_info.dart';
-import 'package:kakao_flutter_sdk_auth/src/model/cert_type.dart';
 import 'package:kakao_flutter_sdk_auth/src/model/oauth_token.dart';
 import 'package:kakao_flutter_sdk_auth/src/token_manager.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
@@ -56,26 +54,6 @@ class AuthApi {
     };
     data.removeWhere((k, v) => v == null);
     return await _issueAccessToken(data);
-  }
-
-  /// @nodoc
-  // Internal Only
-  Future<CertTokenInfo> issueAccessTokenWithCert({
-    required String authCode,
-    String? redirectUri,
-    String? appKey,
-    String? codeVerifier,
-  }) async {
-    final data = {
-      Constants.code: authCode,
-      Constants.grantType: Constants.authorizationCode,
-      Constants.clientId: appKey ?? KakaoSdk.appKey,
-      Constants.redirectUri: redirectUri ?? await _platformRedirectUri(),
-      Constants.codeVerifier: codeVerifier,
-      ...await _platformData()
-    };
-    data.removeWhere((k, v) => v == null);
-    return await _issueAccessTokenWithCert(data);
   }
 
   /// 기존 토큰([oldToken])을 갱신합니다.
@@ -157,47 +135,11 @@ class AuthApi {
     });
   }
 
-  Future<String> prepare({
-    required CertType certType,
-    String? settleId,
-    String? signData,
-    String? txId,
-  }) async {
-    var data = {
-      'client_id': KakaoSdk.appKey,
-      'settle_id': settleId,
-      'sign_data': signData,
-      'tx_id': txId,
-      'cert_type': certType.name,
-    };
-    data.removeWhere((k, v) => v == null);
-
-    return await ApiFactory.handleApiError(() async {
-      final response = await _dio.post(Constants.preparePath, data: data);
-      return response.data['kauth_tx_id'];
-    });
-  }
-
   Future<OAuthToken> _issueAccessToken(data, {OAuthToken? oldToken}) async {
     return await ApiFactory.handleApiError(() async {
       Response response = await _dio.post(Constants.tokenPath, data: data);
       final tokenResponse = AccessTokenResponse.fromJson(response.data);
       return OAuthToken.fromResponse(tokenResponse, oldToken: oldToken);
-    });
-  }
-
-  Future<CertTokenInfo> _issueAccessTokenWithCert(data) async {
-    return await ApiFactory.handleApiError(() async {
-      Response response = await _dio.post(Constants.tokenPath, data: data);
-      final tokenResponse = AccessTokenResponse.fromJson(response.data);
-      if (tokenResponse.txId == null) {
-        throw KakaoClientException(
-          ClientErrorCause.unknown,
-          'txId is null',
-        );
-      }
-      return CertTokenInfo(
-          OAuthToken.fromResponse(tokenResponse), tokenResponse.txId!);
     });
   }
 

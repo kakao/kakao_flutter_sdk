@@ -8,8 +8,4 @@ enum Prompt {
 
   /// 카카오계정 간편 로그인을 요청할 때 사용
   selectAccount,
-
-  /// 인증 로그인을 요청할 때 사용
-  /// @nodoc
-  cert,
 }

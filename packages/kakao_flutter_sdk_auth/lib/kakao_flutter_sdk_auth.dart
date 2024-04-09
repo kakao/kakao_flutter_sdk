@@ -6,8 +6,6 @@ export 'package:kakao_flutter_sdk_auth/src/auth_api.dart';
 export 'package:kakao_flutter_sdk_auth/src/auth_api_factory.dart';
 export 'package:kakao_flutter_sdk_auth/src/auth_code.dart';
 export 'package:kakao_flutter_sdk_auth/src/model/access_token_response.dart';
-export 'package:kakao_flutter_sdk_auth/src/model/cert_token_info.dart';
-export 'package:kakao_flutter_sdk_auth/src/model/cert_type.dart';
 export 'package:kakao_flutter_sdk_auth/src/model/oauth_token.dart';
 export 'package:kakao_flutter_sdk_auth/src/model/prompt.dart';
 export 'package:kakao_flutter_sdk_auth/src/token_manager.dart';

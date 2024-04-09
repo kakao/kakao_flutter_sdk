@@ -212,11 +212,8 @@ class AuthCodeClient {
       Constants.codeVerifier: codeVerifier,
       Constants.channelPublicId: channelPublicId?.join(','),
       Constants.serviceTerms: serviceTerms?.join(','),
-      Constants.prompt: kauthTxId == null
-          ? (prompts == null ? null : _parsePrompts(prompts))
-          : _parsePrompts(_makeCertPrompts(prompts)),
+      Constants.prompt: prompts == null ? null : _parsePrompts(prompts),
       Constants.nonce: nonce,
-      Constants.kauthTxId: kauthTxId,
       Constants.stateToken: stateToken,
       Constants.isPopup: webPopupLogin,
     };
@@ -279,14 +276,6 @@ class AuthCodeClient {
     return completer.future;
   }
 
-  List<Prompt> _makeCertPrompts(List<Prompt>? prompts) {
-    prompts ??= [];
-    if (!prompts.contains(Prompt.cert)) {
-      prompts.add(Prompt.cert);
-    }
-    return prompts;
-  }
-
   String? _parsePrompts(List<Prompt> prompts) {
     if (prompts.isEmpty) return null;
 
@@ -328,16 +317,13 @@ class AuthCodeClient {
       Constants.agt: agt,
       Constants.channelPublicId: channelPublicIds.joinToString(','),
       Constants.serviceTerms: serviceTerms?.joinToString(','),
-      Constants.prompt: kauthTxId == null
-          ? (prompts == null ? null : _parsePrompts(prompts))
-          : _parsePrompts(_makeCertPrompts(prompts)),
+      Constants.prompt: prompts == null ? null : _parsePrompts(prompts),
       Constants.loginHint: loginHint,
       Constants.codeChallenge: codeChallenge,
       Constants.codeChallengeMethod:
           codeChallenge != null ? Constants.codeChallengeMethodValue : null,
       Constants.kaHeader: await KakaoSdk.kaHeader,
       Constants.nonce: nonce,
-      Constants.kauthTxId: kauthTxId,
       Constants.state: stateToken,
       Constants.stateToken: stateToken,
       Constants.isPopup: isPopup,
