@@ -119,67 +119,6 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('+certLoginWithKakaoTalk()', backgroundColor: plusColor,
-          api: () async {
-        final settleId = customData['settle_id'];
-
-        LoginParameter? parameters = await showDialog(
-          context: context,
-          builder: (context) => LoginDialog(
-            'certLoginWithKakaoTalk',
-            settleId: settleId,
-          ),
-        );
-
-        if (parameters == null) return;
-
-        try {
-          CertTokenInfo certTokenInfo =
-              await UserApi.instance.certLoginWithKakaoTalk(
-            prompts: parameters.prompts,
-            signData: parameters.signData ?? '',
-            settleId: settleId,
-            nonce: parameters.nonce,
-            channelPublicIds: parameters.channelPublicIds,
-            serviceTerms: parameters.serviceTerms,
-          );
-          Log.i(context, tag,
-              '로그인 성공 ${certTokenInfo.token.accessToken} ${certTokenInfo.txId}');
-        } catch (e) {
-          Log.e(context, tag, '로그인 실패', e);
-        }
-      }),
-      ApiItem('+certLoginWithKakaoAccount()', backgroundColor: plusColor,
-          api: () async {
-        final settleId = customData['settle_id'];
-
-        LoginParameter? parameters = await showDialog(
-          context: context,
-          builder: (context) =>
-              LoginDialog('certLoginWithKakaoAccount', settleId: settleId),
-        );
-
-        if (parameters == null) return;
-
-        // 카카오계정으로 인증서 로그인
-
-        try {
-          CertTokenInfo certTokenInfo =
-              await UserApi.instance.certLoginWithKakaoAccount(
-            prompts: parameters.prompts,
-            signData: parameters.signData ?? '',
-            settleId: settleId,
-            loginHint: parameters.loginHint,
-            nonce: parameters.nonce,
-            channelPublicIds: parameters.channelPublicIds,
-            serviceTerms: parameters.serviceTerms,
-          );
-          Log.i(context, tag,
-              '로그인 성공 ${certTokenInfo.token.accessToken} ${certTokenInfo.txId}');
-        } catch (e) {
-          Log.e(context, tag, '로그인 실패', e);
-        }
-      }),
       ApiItem('+loginWithNewScopes()', backgroundColor: plusColor,
           api: () async {
         LoginParameter? parameters = await showDialog(
@@ -211,31 +150,6 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('certLoginWithKakaoTalk()', api: () async {
-        // 카카오톡으로 인증서 로그인
-
-        try {
-          CertTokenInfo certTokenInfo =
-              await UserApi.instance.certLoginWithKakaoTalk(signData: "test");
-          Log.i(context, tag,
-              '로그인 성공 ${certTokenInfo.token.accessToken} ${certTokenInfo.txId}');
-        } catch (e) {
-          Log.e(context, tag, '로그인 실패', e);
-        }
-      }),
-      ApiItem('certLoginWithKakaoTalk(settleId)', api: () async {
-        // 카카오톡으로 인증서 로그인
-        final settleId = customData['settle_id'];
-
-        try {
-          CertTokenInfo certTokenInfo = await UserApi.instance
-              .certLoginWithKakaoTalk(signData: "test", settleId: settleId);
-          Log.i(context, tag,
-              '로그인 성공 ${certTokenInfo.token.accessToken} ${certTokenInfo.txId}');
-        } catch (e) {
-          Log.e(context, tag, '로그인 실패', e);
-        }
-      }),
       ApiItem('loginWithKakaoAccount()', api: () async {
         // 카카오계정으로 로그인
 
@@ -253,31 +167,6 @@ class ApiListState extends State<ApiList> {
           OAuthToken token = await UserApi.instance
               .loginWithKakaoAccount(prompts: [Prompt.login]);
           Log.i(context, tag, '로그인 성공 ${token.accessToken}');
-        } catch (e) {
-          Log.e(context, tag, '로그인 실패', e);
-        }
-      }),
-      ApiItem('certLoginWithKakaoAccount()', api: () async {
-        // 카카오계정으로 인증서 로그인
-
-        try {
-          CertTokenInfo certTokenInfo = await UserApi.instance
-              .certLoginWithKakaoAccount(signData: "test");
-          Log.i(context, tag,
-              '로그인 성공 ${certTokenInfo.token.accessToken} ${certTokenInfo.txId}');
-        } catch (e) {
-          Log.e(context, tag, '로그인 실패', e);
-        }
-      }),
-      ApiItem('certLoginWithKakaoAccount(settleId)', api: () async {
-        // 카카오계정으로 인증서 로그인
-        final settleId = customData['settle_id'];
-
-        try {
-          CertTokenInfo certTokenInfo = await UserApi.instance
-              .certLoginWithKakaoAccount(signData: "test", settleId: settleId);
-          Log.i(context, tag,
-              '로그인 성공 ${certTokenInfo.token.accessToken} ${certTokenInfo.txId}');
         } catch (e) {
           Log.e(context, tag, '로그인 실패', e);
         }
@@ -1479,18 +1368,6 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '로그인 실패', e);
         }
       }),
-      ApiItem('certLoginWithKakaoTalk(nonce:openidtest)', api: () async {
-        // 카카오톡으로 인증서 로그인 - openId
-
-        try {
-          CertTokenInfo certTokenInfo = await UserApi.instance
-              .certLoginWithKakaoTalk(signData: 'test', nonce: 'openidtest');
-          Log.i(context, tag,
-              '로그인 성공\nidToken: ${certTokenInfo.token.idToken}\ntxId: ${certTokenInfo.txId}');
-        } catch (e) {
-          Log.e(context, tag, '로그인 실패', e);
-        }
-      }),
       ApiItem('loginWithKakaoAccount(nonce:openidtest)', api: () async {
         // 카카오계정으로 로그인 - openId
 
@@ -1498,18 +1375,6 @@ class ApiListState extends State<ApiList> {
           OAuthToken token =
               await UserApi.instance.loginWithKakaoAccount(nonce: 'openidtest');
           Log.i(context, tag, '로그인 성공 idToken: ${token.idToken}');
-        } catch (e) {
-          Log.e(context, tag, '로그인 실패', e);
-        }
-      }),
-      ApiItem('certLoginWithKakaoAccount(nonce:openidtest)', api: () async {
-        // 카카오계정으로 인증서 로그인 - openId
-
-        try {
-          CertTokenInfo certTokenInfo = await UserApi.instance
-              .certLoginWithKakaoAccount(signData: 'test', nonce: 'openidtest');
-          Log.i(context, tag,
-              '로그인 성공\nidToken: ${certTokenInfo.token.idToken}\ntxId:${certTokenInfo.txId}');
         } catch (e) {
           Log.e(context, tag, '로그인 실패', e);
         }
