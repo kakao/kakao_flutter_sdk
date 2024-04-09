@@ -125,9 +125,13 @@ class UserApi {
     String? loginHint,
     String? nonce,
   }) async {
-    String codeVerifier = AuthCodeClient.codeVerifier();
+    final codeVerifier = AuthCodeClient.codeVerifier();
+    final redirectUri = kIsWeb
+        ? CommonConstants.webAccountLoginRedirectUri
+        : KakaoSdk.redirectUri;
+
     final authCode = await AuthCodeClient.instance.authorize(
-      redirectUri: KakaoSdk.redirectUri,
+      redirectUri: redirectUri,
       prompts: prompts,
       channelPublicIds: channelPublicIds,
       serviceTerms: serviceTerms,
@@ -136,8 +140,11 @@ class UserApi {
       nonce: nonce,
       webPopupLogin: true,
     );
-    final token = await AuthApi.instance
-        .issueAccessToken(authCode: authCode, codeVerifier: codeVerifier);
+    final token = await AuthApi.instance.issueAccessToken(
+      authCode: authCode,
+      codeVerifier: codeVerifier,
+      redirectUri: redirectUri,
+    );
     await TokenManagerProvider.instance.manager.setToken(token);
     return token;
   }
@@ -165,9 +172,13 @@ class UserApi {
       certType: CertType.k2100,
       settleId: settleId,
     );
-    var codeVerifier = AuthCodeClient.codeVerifier();
+    final codeVerifier = AuthCodeClient.codeVerifier();
+    final redirectUri = kIsWeb
+        ? CommonConstants.webAccountLoginRedirectUri
+        : KakaoSdk.redirectUri;
+
     final authCode = await AuthCodeClient.instance.authorize(
-      redirectUri: KakaoSdk.redirectUri,
+      redirectUri: redirectUri,
       prompts: prompts,
       channelPublicIds: channelPublicIds,
       serviceTerms: serviceTerms,
@@ -178,7 +189,10 @@ class UserApi {
       webPopupLogin: true,
     );
     final certTokenInfo = await AuthApi.instance.issueAccessTokenWithCert(
-        authCode: authCode, codeVerifier: codeVerifier);
+      authCode: authCode,
+      codeVerifier: codeVerifier,
+      redirectUri: redirectUri,
+    );
     await TokenManagerProvider.instance.manager.setToken(certTokenInfo.token);
     return certTokenInfo;
   }
@@ -193,15 +207,22 @@ class UserApi {
   Future<OAuthToken> loginWithNewScopes(List<String> scopes,
       {String? nonce}) async {
     String codeVerifier = AuthCodeClient.codeVerifier();
+    final redirectUri = kIsWeb
+        ? CommonConstants.webAccountLoginRedirectUri
+        : KakaoSdk.redirectUri;
+
     final authCode = await AuthCodeClient.instance.authorizeWithNewScopes(
-      redirectUri: KakaoSdk.redirectUri,
+      redirectUri: redirectUri,
       scopes: scopes,
       codeVerifier: codeVerifier,
       nonce: nonce,
       webPopupLogin: true,
     );
-    final token = await AuthApi.instance
-        .issueAccessToken(authCode: authCode, codeVerifier: codeVerifier);
+    final token = await AuthApi.instance.issueAccessToken(
+      authCode: authCode,
+      codeVerifier: codeVerifier,
+      redirectUri: redirectUri,
+    );
     await TokenManagerProvider.instance.manager.setToken(token);
     return token;
   }

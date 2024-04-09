@@ -11,7 +11,7 @@ class Constants {
   static const String scope = 'scope';
   static const String code = 'code';
   static const String channelPublicId = 'channel_public_id';
-  static const String serviceTerms = 'service_terms';
+  static const String serviceTerms = 'extra.service_terms';
   static const String prompt = 'prompt';
   static const String loginHint = 'login_hint';
   static const String state = 'state';

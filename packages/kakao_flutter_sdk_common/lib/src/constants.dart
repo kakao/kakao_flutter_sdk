@@ -14,6 +14,7 @@ class CommonConstants {
   static const String redirectUri = 'redirect_uri';
   static const String androidWebRedirectUri = '/cors/afterlogin.html';
   static const String iosWebRedirectUri = 'JS-SDK';
+  static const String webAccountLoginRedirectUri = 'JS-SDK';
 
   static const String methodChannel = 'kakao_flutter_sdk_method_channel';
   static const String eventChannel = 'kakao_flutter_sdk_event_channel';

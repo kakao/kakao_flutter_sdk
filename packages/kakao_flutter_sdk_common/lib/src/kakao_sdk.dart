@@ -109,9 +109,5 @@ class KakaoSdk {
     hosts = serviceHosts ?? ServerHosts();
     platforms = platformSupport ?? PlatformSupport();
     logging = loggingEnabled ?? false;
-
-    if (kIsWeb) {
-      _channel.invokeMethod("retrieveAuthCode");
-    }
   }
 }

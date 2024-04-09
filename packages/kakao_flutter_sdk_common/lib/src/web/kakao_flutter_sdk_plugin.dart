@@ -55,22 +55,8 @@ class KakaoFlutterSdkPlugin {
         queryParameters[CommonConstants.redirectUri] =
             html.window.location.origin;
         final finalUri = fullUri.replace(queryParameters: queryParameters);
-        final popupWindow =
-            html.window.open(finalUri.toString(), "KakaoAccountLogin");
-
-        final msg = await html.window.onMessage.firstWhere((evt) {
-          if (evt.data.runtimeType != String) return false;
-
-          return evt.origin ==
-              Uri.parse(queryParameters[CommonConstants.redirectUri]).origin;
-        });
-
-        popupWindow.close();
-
-        return msg.data;
-      case "retrieveAuthCode":
-        _retrieveAuthCode();
-        break;
+        windowOpen(finalUri.toString(), "_blank");
+        return;
       case "getOrigin":
         return html.window.location.origin;
       case "getKaHeader":
@@ -308,20 +294,27 @@ class KakaoFlutterSdkPlugin {
         );
 
         return completer.future;
+      case 'popupLogin':
+        final Map<String, dynamic> arguments = Map.castFrom(call.arguments);
+
+        // In the iOS KakaoTalk web view, pressing the Close button on successful login closes the web view.
+        // So we open an additional web view for login
+        Browser currentBrowser = _uaParser.detectBrowser(userAgent);
+        if (isiOS() && currentBrowser == Browser.kakaotalk) {
+          final String kaHeader = arguments['ka'];
+          final String url = iosLoginUniversalLink(kaHeader, arguments);
+          html.window.location.href = url;
+          return;
+        }
+
+        final String url = arguments['url'];
+        html.window.open(url, "_blank");
+        return;
       default:
         throw PlatformException(
             code: "NotImplemented",
             details:
                 "KakaoFlutterSdk for web doesn't implement the method ${call.method}");
-    }
-  }
-
-  void _retrieveAuthCode() {
-    final uri = Uri.parse(html.window.location.search!);
-    final params = uri.queryParameters;
-    if (params.containsKey("code") || params.containsKey("error")) {
-      html.window.opener?.postMessage(html.window.location.href, "*");
-      html.window.close();
     }
   }
 
