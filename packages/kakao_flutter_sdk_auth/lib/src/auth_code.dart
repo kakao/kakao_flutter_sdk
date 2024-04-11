@@ -4,13 +4,9 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:kakao_flutter_sdk_auth/src/auth_api.dart';
+import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_auth/src/constants.dart';
-import 'package:kakao_flutter_sdk_auth/src/utils.dart';
-import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:platform/platform.dart';
-
-import 'model/prompt.dart';
 
 const MethodChannel _channel = MethodChannel(CommonConstants.methodChannel);
 
@@ -82,11 +78,10 @@ class AuthCodeClient {
         });
         return _getAuthCode(stateToken, kaHeader);
       } else {
-        final authCode = await launchBrowserTab(
-          url,
-          redirectUri: redirectUri,
-          popupOpen: webPopupLogin,
-        );
+        final authCode = await _channel.invokeMethod('accountLogin', {
+          CommonConstants.url: url.toString(),
+          CommonConstants.redirectUri: redirectUri,
+        });
         return _parseCode(authCode);
       }
     } catch (e) {

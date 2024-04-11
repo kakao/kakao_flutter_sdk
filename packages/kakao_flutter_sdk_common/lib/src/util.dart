@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -33,8 +32,7 @@ Stream<String?> get kakaoSchemeStream {
 
 /// 플랫폼별 기본 브라우저로 URL 실행
 /// URL을 팝업으로 열고싶을 때 [popupOpen] 사용. 웹에서만 사용 가능
-Future<String> launchBrowserTab(Uri uri,
-    {String? redirectUri, bool popupOpen = false}) async {
+Future launchBrowserTab(Uri uri, {bool popupOpen = false}) async {
   if (uri.scheme != CommonConstants.http &&
       uri.scheme != CommonConstants.scheme) {
     throw KakaoClientException(
@@ -42,20 +40,13 @@ Future<String> launchBrowserTab(Uri uri,
       'Default browsers only supports URL of http or https scheme.',
     );
   }
-  var args = {
+  final args = {
     CommonConstants.url: uri.toString(),
-    CommonConstants.redirectUri: redirectUri,
     CommonConstants.isPopup: popupOpen,
   };
-  args.removeWhere((k, v) => v == null);
-  final redirectUriWithParams = await _methodChannel.invokeMethod<String>(
-      CommonConstants.launchBrowserTab, args);
 
-  if (redirectUriWithParams != null) return redirectUriWithParams;
-  throw KakaoClientException(
-    ClientErrorCause.unknown,
-    "OAuth 2.0 redirect uri was null, which should not happen.",
-  );
+  await _methodChannel.invokeMethod<String>(
+      CommonConstants.launchBrowserTab, args);
 }
 
 /// 카카오톡 앱 실행 가능 여부 확인
