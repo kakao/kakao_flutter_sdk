@@ -2,22 +2,34 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'sharing_result.g.dart';
 
-/// 카카오톡 공유 API 호출 결과
+/// KO: 카카오톡 공유 결과
+/// <br>
+/// EN: Kakao Talk Sharing result
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class SharingResult {
-  /// 메시지 템플릿 도구에서 구성한 사용자 정의 템플릿의 ID
+  /// KO: 사용자 정의 템플릿 ID
+  /// <br>
+  /// EN: Custom template ID
   int templateId;
 
-  /// templateId로 지정한 템플릿에 사용자 인자
+  /// KO: 사용자 인자 키와 값
+  /// <br>
+  /// EN: Keys and values of the user argument
   Map<String, dynamic>? templateArgs;
 
-  /// templateId에 해당하는 template 전체 message
+  /// KO: 사용자 정의 템플릿 ID에 해당하는 메시지 템플릿의 전문
+  /// <br>
+  /// EN: Full message template contents of the custom template ID
   Map<String, dynamic> templateMsg;
 
-  /// 템플릿 검증 결과
+  /// KO: 메시지 템플릿 검증 결과
+  /// <br>
+  /// EN: Message template validation result
   Map<String, dynamic> warningMsg;
 
-  /// templateArgs 검증 결과
+  /// KO: 사용자 인자 검증 결과
+  /// <br>
+  /// EN: User argument validation result
   Map<String, dynamic> argumentMsg;
 
   /// @nodoc
