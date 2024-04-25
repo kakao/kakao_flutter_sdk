@@ -2,17 +2,29 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'location.g.dart';
 
-/// 카카오내비에서 장소를 표현
+/// KO: 장소 정보
+/// <br>
+/// EN: Location information
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class Location {
-  /// name 장소 이름. 예) 우리집, 회사
+  /// KO: 장소 이름
+  /// <br>
+  /// EN: Location name
   final String name;
 
-  /// 경도 좌표
+  /// KO: 경도 좌표
+  /// <br>
+  /// EN: Longitude coordinate
   final String x;
 
-  /// 위도 좌표
+  /// KO: 위도 좌표
+  /// <br>
+  /// EN: Latitude coordinate
   final String y;
+
+  /// KO: 도착 링크(현재 미지원)
+  /// <br>
+  /// EN: Link for the destination (Currently not available)
   @JsonKey(name: "rpflag")
   final String? rpFlag;
 

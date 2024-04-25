@@ -1,5 +1,6 @@
-/// 카카오내비 API 클라이언트를 제공하는 패키지
-/// 길안내, 목적지 공유하기 기능 제공
+/// KO: 카카오내비 API 패키지
+/// <br>
+/// EN: Package for the Kakao Navi APIs
 library kakao_flutter_sdk_navi;
 
 export 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
