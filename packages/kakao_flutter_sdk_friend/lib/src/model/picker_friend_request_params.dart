@@ -3,37 +3,57 @@ import 'package:kakao_flutter_sdk_friend/src/default_values.dart';
 
 part 'picker_friend_request_params.g.dart';
 
+/// KO: 피커 설정
+/// <br>
+/// EN: Options for the picker
 @JsonSerializable()
 class PickerFriendRequestParams {
-  /// 친구 피커의 이름
+  /// KO: 피커 이름
+  /// <br>
+  /// EN: Name of the picker
   String? title;
 
-  /// 친구 검색 기능 사용 여부
+  /// KO: 검색 기능 사용 여부
+  /// <br>
+  /// EN: Enables the search function
   bool? enableSearch;
 
-  /// 내 프로필 표시 여부
+  /// KO: 내 프로필 표시 여부
+  /// <br>
+  /// EN: Displays my profile
   bool? showMyProfile;
 
-  /// 즐겨찾기 친구 표시 여부
+  /// KO: 즐겨찾기 친구 표시 여부
+  /// <br>
+  /// EN: Marks on favorite friends
   bool? showFavorite;
 
-  /// 선택한 친구 표시 여부 (멀티 피커에만 사용 가능)
+  /// KO: 선택한 친구 표시 여부, 멀티 피커에만 사용 가능
+  /// <br>
+  /// EN: Displays selected friends for multi-picker
   bool? showPickedFriend;
 
-  /// 선택 가능한 친구 수의 최대값 (멀티 피커에만 사용 가능)
+  /// KO: 선택 가능한 최대 대상 수
+  /// <br>
+  /// EN: Maximum pickable count
   int? maxPickableCount;
 
-  /// 선택 가능한 친구 수의 최소값 (멀티 피커에만 사용 가능)
+  /// KO: 선택 가능한 최소 대상 수
+  /// <br>
+  /// EN: Minimum pickable count
   int? minPickableCount;
 
-  /// 선택한 친구 정보를 받을 서비스 URL
-  /// flutter web 리다이렉트 방식 사용 시 필수
+  /// KO: 친구 정보를 받을 URL, 리다이렉트 방식 웹 사용 시 필수
+  /// <br>
+  /// EN: URL to get the friend information, required for web with redirect method
   String? returnUrl;
 
-  /// 뒤로가기 버튼 사용 여부 지정
-  /// flutter web 리다이렉트 방식 또는 Android/iOS 앱에서만 사용 가능
+  /// KO: 뒤로 가기 버튼 사용 여부, 리다이렉트 방식 웹 또는 네이티브 앱에서만 사용 가능
+  /// <br>
+  /// EN: Enables the back button, available for web with redirect method or native app
   bool? enableBackButton;
 
+  /// @nodoc
   PickerFriendRequestParams({
     this.title,
     this.enableSearch = DefaultValues.enableSearch,
