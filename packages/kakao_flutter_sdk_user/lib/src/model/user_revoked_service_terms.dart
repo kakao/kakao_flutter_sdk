@@ -1,17 +1,22 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kakao_flutter_sdk_user/src/model/revoked_service_terms.dart';
-import 'package:kakao_flutter_sdk_user/src/model/service_terms.dart';
 
 part 'user_revoked_service_terms.g.dart';
 
-/// 서비스 약관 철회 API 응답 클래스
+/// KO: 서비스 약관 동의 철회하기 응답
+/// <br>
+/// EN: Response for Revoke consent for service terms
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class UserRevokedServiceTerms {
-  /// 회원번호
+  /// KO: 회원번호
+  /// <br>
+  /// EN: Service user ID
   int id;
 
-  /// 동의 철회가 반영된 서비스 약관 목록
+  /// KO: 동의 철회에 성공한 서비스 약관 목록
+  /// <br>
+  /// EN: List of revoked service terms
   List<RevokedServiceTerms>? revokedServiceTerms;
 
   /// @nodoc

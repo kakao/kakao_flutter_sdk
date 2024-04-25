@@ -3,14 +3,20 @@ import 'package:kakao_flutter_sdk_user/src/model/scope.dart';
 
 part 'scope_info.g.dart';
 
-/// 사용자 동의 내역
+/// KO: 사용자 동의 내역
+/// <br>
+/// EN: User consent history
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class ScopeInfo {
-  /// 회원번호
+  /// KO: 회원번호
+  /// <br>
+  /// EN: Service user ID
   final int id;
 
-  /// 해당 앱의 동의 항목 목록
+  /// KO: 앱의 동의항목 목록
+  /// <br>
+  /// EN: List of scopes in the app
   final List<Scope>? scopes;
 
   /// @nodoc

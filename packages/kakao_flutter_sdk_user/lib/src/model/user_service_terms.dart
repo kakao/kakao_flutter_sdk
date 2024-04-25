@@ -3,14 +3,20 @@ import 'package:kakao_flutter_sdk_user/src/model/service_terms.dart';
 
 part 'user_service_terms.g.dart';
 
-/// 서비스 약관 조회 API 응답 클래스
+/// KO: 서비스 약관 동의 내역 확인하기 응답
+/// <br>
+/// EN: Response for Retrieve consent details for service terms
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class UserServiceTerms {
-  /// 회원번호
+  /// KO: 회원번호
+  /// <br>
+  /// EN: Service user ID
   int id;
 
-  /// 조회한 서비스 약관 목록
+  /// KO: 서비스 약관 목록
+  /// <br>
+  /// EN: List of service terms
   List<ServiceTerms>? serviceTerms;
 
   /// @nodoc
