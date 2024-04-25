@@ -1,15 +1,22 @@
-/// 동의 화면 요청 시 추가 상호작용을 요청할 때 사용
+/// KO: 상호작용 추가 요청
+/// <br>
+/// EN: Request to additinal interactivity
 enum Prompt {
-  /// 기존 사용자 인증 여부와 상관없이 사용자에게 카카오계정 로그인 화면을 출력하여 다시 사용자 인증을 수행하고자 할 때 사용
+  /// KO: 사용자 재인증
+  /// <br>
+  /// EN: Reauthenticate users
   login,
 
-  /// 사용자가 카카오계정 신규 가입 후 로그인하도록 할 때 사용
+  /// KO: 카카오계정 신규 가입 후 로그인
+  /// <br>
+  /// EN: Login after signing up for a Kakao Account
   create,
 
-  /// 카카오계정 간편 로그인을 요청할 때 사용
+  /// KO: 카카오계정 간편로그인
+  /// <br>
+  /// EN: Kakao Account easy login
   selectAccount,
 
-  /// 인증 로그인을 요청할 때 사용
   /// @nodoc
   cert,
 }

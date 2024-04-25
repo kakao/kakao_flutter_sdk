@@ -12,8 +12,18 @@ import 'package:kakao_flutter_sdk_auth/src/token_manager.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:platform/platform.dart';
 
-/// Kakao SDK의 카카오 로그인 내부 동작에 사용되는 클라이언트
+/// KO: 카카오 로그인 인증 및 토큰 관리 클래스
+/// <br>
+/// EN: Class for the authentication and token management through Kakao Login
 class AuthApi {
+
+  final Dio _dio;
+  final Platform _platform;
+
+  final TokenManagerProvider _tokenManagerProvider;
+  static final AuthApi instance = AuthApi();
+
+  /// @nodoc
   AuthApi({
     Dio? dio,
     Platform? platform,
@@ -23,23 +33,15 @@ class AuthApi {
         _tokenManagerProvider =
             tokenManagerProvider ?? TokenManagerProvider.instance;
 
-  final Dio _dio;
-  final Platform _platform;
-
-  /// @nodoc
-  final TokenManagerProvider _tokenManagerProvider;
-
-  static final AuthApi instance = AuthApi();
-
-  /// 사용자가 앞서 로그인을 통해 토큰을 발급 받은 상태인지 확인합니다.
-  /// 주의: 기존 토큰 존재 여부를 확인하는 기능으로, 사용자가 현재도 로그인 상태임을 보장하지 않습니다.
+  /// KO: 토큰 존재 여부 확인하기
+  /// <br>
+  /// EN: Check token presence
   Future<bool> hasToken() async {
     final token = await _tokenManagerProvider.manager.getToken();
     return token != null;
   }
 
-  /// 사용자 인증코드([authCode])를 이용하여 신규 토큰 발급을 요청합니다.
-  /// [codeVerifier]는 사용자 인증 코드 verifier로 사용합니다.
+  /// @nodoc
   Future<OAuthToken> issueAccessToken({
     required String authCode,
     String? redirectUri,
@@ -58,8 +60,8 @@ class AuthApi {
     return await _issueAccessToken(data);
   }
 
-  /// @nodoc
   // Internal Only
+  /// @nodoc
   Future<CertTokenInfo> issueAccessTokenWithCert({
     required String authCode,
     String? redirectUri,
@@ -78,7 +80,7 @@ class AuthApi {
     return await _issueAccessTokenWithCert(data);
   }
 
-  /// 기존 토큰([oldToken])을 갱신합니다.
+  /// @nodoc
   Future<OAuthToken> refreshToken({
     OAuthToken? oldToken,
     String? redirectUri,
@@ -105,7 +107,7 @@ class AuthApi {
     return newToken;
   }
 
-  /// 기존 토큰([oldToken])을 갱신합니다.
+  /// @nodoc
   @Deprecated('This method is replaced with \'AuthApi#refreshToken\'')
   Future<OAuthToken> refreshAccessToken({
     required OAuthToken oldToken,
@@ -136,6 +138,7 @@ class AuthApi {
     });
   }
 
+  /// @nodoc
   Future<String> codeForWeb({
     required String stateToken,
     required String kaHeader,
@@ -157,6 +160,15 @@ class AuthApi {
     });
   }
 
+  /// KO: 전자서명 준비하기<br>
+  /// [certType]으로 상품 종류 선택<br>
+  /// [settleId]에 정산 ID 전달<br>
+  /// [signData]에 서명할 데이터 전달<br>
+  /// <br>
+  /// EN: Prepare signature<br>
+  /// Select a product type with [certType]<br>
+  /// Pass the settlement ID to [settleId]<br>
+  /// Pass data to sign to [signData]
   Future<String> prepare({
     required CertType certType,
     String? settleId,

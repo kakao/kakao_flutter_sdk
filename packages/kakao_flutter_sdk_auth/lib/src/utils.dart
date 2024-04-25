@@ -1,5 +1,6 @@
 import 'dart:math';
 
+/// @nodoc
 String generateRandomString(int length) {
   const ch = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   Random r = Random();
