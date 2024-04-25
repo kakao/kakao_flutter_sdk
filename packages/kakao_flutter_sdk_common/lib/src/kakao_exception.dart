@@ -1,9 +1,15 @@
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 
-/// 카카오 SDK 를 사용하면서 발생하는 에러 정보
+/// KO: SDK 내부 동작 에러
+/// <br>
+/// EN: SDK internal operation errors
 class KakaoException implements Exception {
+  /// @nodoc
   KakaoException(this.message);
 
+  /// KO: 에러 메시지
+  /// <br>
+  /// EN: Error message
   final String? message;
 
   bool isInvalidTokenError() {
@@ -18,11 +24,21 @@ class KakaoException implements Exception {
   }
 }
 
-/// SDK 내에서 발생하는 클라이언트 에러
+/// KO: 클라이언트 에러
+/// <br>
+/// EN: Client errors
 class KakaoClientException extends KakaoException {
+  /// KO: 에러 원인
+  /// <br>
+  /// EN: Error cause
   final ClientErrorCause reason;
+
+  /// KO: 에러 메시지
+  /// <br>
+  /// EN: Error message
   final String msg;
 
+  /// @nodoc
   KakaoClientException(this.reason, this.msg) : super(msg);
 
   /// @nodoc
@@ -32,23 +48,37 @@ class KakaoClientException extends KakaoException {
   }
 }
 
-/// [KakaoClientException]의 발생 원인
+/// KO: 클라이언트 에러 원인
+/// <br>
+/// EN: Causes of client errors
 enum ClientErrorCause {
-  /// 기타 에러
+  /// KO: 알 수 없음
+  /// <br>
+  /// EN: Unknown
   unknown,
 
-  /// 요청 취소
+  /// KO: 사용자가 취소한 경우
+  /// <br>
+  /// EN: User canceled
   cancelled,
 
-  /// API 요청에 사용할 토큰이 없음
+  /// KO: API 요청에 사용할 토큰이 없는 경우
+  /// <br>
+  /// EN: A token for API requests not found
   tokenNotFound,
 
-  /// 지원되지 않는 기능
+  /// KO: 지원하지 않는 기능
+  /// <br>
+  /// EN: Not supported feature
   notSupported,
 
-  /// 잘못된 파라미터
+  /// KO: 잘못된 파라미터를 전달한 경우
+  /// <br>
+  /// EN: Passed wrong parameters
   badParameter,
 
-  /// 정상적으로 실행할 수 없는 상태
+  /// KO: 요청을 정상적으로 처리할 수 없는 상태
+  /// <br>
+  /// EN: Illegal state to process the request
   illegalState
 }

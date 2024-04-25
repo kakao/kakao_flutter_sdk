@@ -3,18 +3,24 @@ import 'package:kakao_flutter_sdk_common/src/kakao_exception.dart';
 
 part 'kakao_auth_exception.g.dart';
 
-/// 카카오 OAuth API 호출 시 에러 응답
+/// KO: 인증 및 인가 에러 응답
+/// <br>
+/// EN: Response for authorization or authentication errors
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class KakaoAuthException extends KakaoException {
   /// @nodoc
   KakaoAuthException(this.error, this.errorDescription)
       : super(errorDescription);
 
-  /// invalid_grant 등 어떤 에러인지 나타내주는 스트링 값
+  /// KO: 에러 코드
+  /// <br>
+  /// EN: Error code
   @JsonKey(unknownEnumValue: AuthErrorCause.unknown)
   final AuthErrorCause error;
 
-  /// 자세한 에러 설명
+  /// KO: 에러 메시지
+  /// <br>
+  /// EN: Error message
   final String? errorDescription;
 
   /// @nodoc
@@ -29,40 +35,60 @@ class KakaoAuthException extends KakaoException {
   String toString() => toJson().toString();
 }
 
-/// [KakaoAuthException]의 발생 원인
+/// KO: 인증 및 인가 에러 원인
+/// <br>
+/// EN: Causes of authentication or authorization errors
 enum AuthErrorCause {
-  /// 요청 파라미터 오류
+  /// KO: 잘못된 파라미터를 전달한 경우
+  /// <br>
+  /// EN: Passed wrong parameters
   @JsonValue("invalid_request")
   invalidRequest,
 
-  /// 유효하지 않은 앱
+  /// KO: 잘못된 앱 키를 전달한 경우
+  /// <br>
+  /// EN: Passed with the wrong app key
   @JsonValue("invalid_client")
   invalidClient,
 
-  /// 유효하지 않은 scope ID
+  /// KO: 잘못된 동의항목 ID를 전달한 경우
+  /// <br>
+  /// EN: Passed with invalid scope IDs
   @JsonValue("invalid_scope")
   invalidScope,
 
-  /// 인증 수단이 유효하지 않아 인증할 수 없는 상태
+  /// KO: 리프레시 토큰이 만료되었거나 존재하지 않는 경우
+  /// <br>
+  /// EN: The refresh token has expired or does not exist
   @JsonValue("invalid_grant")
   invalidGrant,
 
-  /// 설정이 올바르지 않음 (android key hash 또는 redirect uri).
+  /// KO: 앱의 플랫폼 설정이 올바르지 않은 경우
+  /// <br>
+  /// EN: Platform settings of the app are misconfigured
   @JsonValue("misconfigured")
   misconfigured,
 
-  /// 앱이 요청 권한이 없음
+  /// KO: 앱에 사용 권한이 없는 경우
+  /// <br>
+  /// EN: The app does not have permission
   @JsonValue("unauthorized")
   unauthorized,
 
-  /// 접근이 거부 됨 (동의 취소)
+  /// KO: 사용자가 동의 화면에서 카카오 로그인을 취소한 경우
+  /// <br>
+  /// EN: The user canceled Kakao Login at the consent screen
   @JsonValue("access_denied")
   accessDenied,
 
-  /// 서버 내부 에러
+  /// KO: 서버 에러
+  /// <br>
+  /// EN: Server error
   @JsonValue("server_error")
   serverError,
 
-  /// 기타 에러
+  /// KO: 알 수 없음
+  /// <br>
+  /// EN: Unknown
   unknown
 }

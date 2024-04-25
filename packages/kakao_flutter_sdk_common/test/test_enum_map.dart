@@ -17,7 +17,6 @@ const $ApiErrorCauseEnumMap = {
   ApiErrorCause.appDoesNotExist: -301,
   ApiErrorCause.invalidToken: -401,
   ApiErrorCause.insufficientScope: -402,
-  ApiErrorCause.invalidOrigin: -403,
   ApiErrorCause.requiredAgeVerification: -405,
   ApiErrorCause.underAgeLimit: -406,
   ApiErrorCause.notTalkUser: -501,

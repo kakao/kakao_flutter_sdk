@@ -8,11 +8,14 @@ import 'package:kakao_flutter_sdk_common/src/kakao_exception.dart';
 import 'package:kakao_flutter_sdk_common/src/kakao_sdk.dart';
 import 'package:platform/platform.dart';
 
+/// @nodoc
 const MethodChannel _methodChannel =
     MethodChannel(CommonConstants.methodChannel);
 const _platform = LocalPlatform();
 
-/// 종료된 앱이 카카오 스킴 호출로 실행될 때 URL 전달
+/// KO: 실행 중이지 않은 앱을 커스텀 URL 스킴 호출로 실행할 때 URL 전달
+/// <br>
+/// EN: Pass the URL when launching a closed app with a custom URL scheme
 Future<String?> receiveKakaoScheme() async {
   if (kIsWeb) {
     return null;
@@ -20,7 +23,9 @@ Future<String?> receiveKakaoScheme() async {
   return await _methodChannel.invokeMethod(CommonConstants.receiveKakaoScheme);
 }
 
-/// 실행 중인 앱이 카카오 스킴 호출로 실행될 때 URL 전달
+/// KO: 실행 중인 앱을 커스텀 URL 스킴 호출로 실행할 때 URL 전달
+/// <br>
+/// EN: Pass the URL when launching a running app with a custom URL scheme
 Stream<String?> get kakaoSchemeStream {
   if (kIsWeb) {
     return Stream.value(null);
@@ -31,8 +36,11 @@ Stream<String?> get kakaoSchemeStream {
       .map<String?>((link) => link as String?);
 }
 
-/// 플랫폼별 기본 브라우저로 URL 실행
-/// URL을 팝업으로 열고싶을 때 [popupOpen] 사용. 웹에서만 사용 가능
+/// KO: 기본 브라우저로 URL 실행<br>
+/// [popupOpen]이 true면 URL을 팝업에서 실행. [popupOpen]은 웹에서만 사용 가능<br>
+/// <br>
+/// EN: Launchs a URL with the default browser<br>
+/// Execute the URL with a pop-up if [popupOpen] is set true. [popupOpen] is only available on the web
 Future<String> launchBrowserTab(Uri uri,
     {String? redirectUri, bool popupOpen = false}) async {
   if (uri.scheme != CommonConstants.http &&
@@ -58,7 +66,9 @@ Future<String> launchBrowserTab(Uri uri,
   );
 }
 
-/// 카카오톡 앱 실행 가능 여부 확인
+/// KO: 카카오톡 앱 실행 가능 여부 조회
+/// <br>
+/// EN: Returns whether Kakao Talk is available to launch
 Future<bool> isKakaoTalkInstalled() async {
   var arguments = {};
   if (kIsWeb) {
@@ -79,10 +89,12 @@ Future<Uint8List> platformId() async {
   return await _methodChannel.invokeMethod("platformId");
 }
 
+/// @nodoc
 bool isAndroid() {
   return defaultTargetPlatform == TargetPlatform.android;
 }
 
+/// @nodoc
 bool isiOS() {
   return defaultTargetPlatform == TargetPlatform.iOS;
 }
