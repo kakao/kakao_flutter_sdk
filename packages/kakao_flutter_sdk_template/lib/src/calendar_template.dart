@@ -5,25 +5,35 @@ import 'package:kakao_flutter_sdk_template/src/model/content.dart';
 
 part 'calendar_template.g.dart';
 
-/// 톡캘린더의 구독 캘린더 또는 공개 일정 정보를 포함한 메시지 형식입니다.
-/// 카카오톡 채널의 구독 캘린더 또는 공개 일정을 사용자의 톡캘린더에 추가하는 기능을 제공합니다.
+/// KO: 캘린더 메시지용 기본 템플릿
+/// <br>
+/// EN: Default template for calendar messages
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class CalendarTemplate extends DefaultTemplate {
-  /// 구독 캘린더 또는 공개 일정 ID
+  /// KO: 구독 캘린더 또는 공개 일정 ID
+  /// <br>
+  /// EN: ID for subscribed calendar or public event
   final String id;
 
-  /// id의 타입, event(공개 일정) 또는 calendar(구독 캘린더) 중 하나
+  /// KO: ID 타입
+  /// <br>
+  /// EN: ID type
   final IdType idType;
 
-  /// 일정에 대해 설명하는 컨텐츠 정보
+  /// KO: 일정 설명
+  /// <br>
+  /// EN: Event description
   final Content content;
 
-  /// 버튼 목록
-  /// 기본 버튼의 타이틀 외에 링크도 변경하고 싶을 때 설정 (최대 1개, 오른쪽 위치 보기 버튼은 고정)
+  /// KO: 메시지 하단 버튼
+  /// <br>
+  /// EN: Button at the bottom of the message
   final List<Button>? buttons;
 
-  /// "calendar" 고정 값
+  /// KO: 메시지 템플릿 타입, "calendar"로 고정
+  /// <br>
+  /// EN: Type of the message template, fixed as "calendar"
   final String objectType;
 
   /// @nodoc
@@ -47,8 +57,17 @@ class CalendarTemplate extends DefaultTemplate {
   String toString() => toJson().toString();
 }
 
-/// id의 타입, event(공개 일정) 또는 calendar(구독 캘린더) 중 하나
+/// KO: ID 타입
+/// <br>
+/// EN: ID type
 enum IdType {
+  /// KO: 구독 캘린더
+  /// <br>
+  /// EN: Subscribed calendar
   calendar,
+
+  /// KO: 공개 일정
+  /// <br>
+  /// EN: Public event
   event,
 }

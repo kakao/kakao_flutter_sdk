@@ -3,23 +3,33 @@ import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 
 part 'link.g.dart';
 
-/// 메시지에서 콘텐츠 영역이나 버튼 클릭 시에 이동되는 링크 정보 오브젝트
+/// KO: 바로가기 정보
+/// <br>
+/// EN: Link information
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class Link {
-  /// PC 버전 카카오톡에서 사용하는 웹 링크 URL
+  /// KO: 웹 URL
+  /// <br>
+  /// EN: Web URL
   final Uri? webUrl;
 
-  /// 모바일 카카오톡에서 사용하는 웹 링크 URL
+  /// KO: 모바일 웹 URL
+  /// <br>
+  /// EN: Mobile web URL
   final Uri? mobileWebUrl;
 
-  /// 안드로이드 카카오톡에서 사용하는 앱 링크 URL에 추가할 파라미터
+  /// KO: Android 앱 실행 시 전달할 파라미터
+  /// <br>
+  /// EN: Parameters to pass to the Android app
   @JsonKey(
       name: "android_execution_params",
       fromJson: Util.stringToMap,
       toJson: Util.mapToString)
   final Map<String, String>? androidExecutionParams;
 
-  /// iOS 카카오톡에서 사용하는 앱 링크 URL에 추가할 파라미터
+  /// KO: iOS 앱 실행 시 전달할 파라미터
+  /// <br>
+  /// EN: Parameters to pass to the iOS app
   @JsonKey(
       name: "ios_execution_params",
       fromJson: Util.stringToMap,

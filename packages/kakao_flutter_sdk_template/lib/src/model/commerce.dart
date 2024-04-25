@@ -2,28 +2,44 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'commerce.g.dart';
 
-/// 가격 정보를 표현하기 위해 사용되는 오브젝트
+/// KO: 상품 정보
+/// <br>
+/// EN: Product information
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class Commerce {
-  /// 정상가격
+  /// KO: 정가
+  /// <br>
+  /// EN: Regular price
   final int regularPrice;
 
-  /// 할인된 가격
+  /// KO: 할인 가격
+  /// <br>
+  /// EN: Discount price
   final int? discountPrice;
 
-  /// 정액 할인 가격
+  /// KO: 정액 할인 가격
+  /// <br>
+  /// EN: Fixed disount price
   final int? fixedDiscountPrice;
 
-  /// 할인율
+  /// KO: 할인율
+  /// <br>
+  /// EN: Discount rate
   final int? discountRate;
 
-  /// 상품명
+  /// KO: 상품 이름
+  /// <br>
+  /// EN: Product name
   final String? productName;
 
-  /// 가격 단위
+  /// KO: 화폐 단위
+  /// <br>
+  /// EN: Currency unit
   final String? currencyUnit;
 
-  /// 가격 단위 위치 (0: 가격뒤에 단위 표시, 1 : 가격앞에 단위 표시)
+  /// KO: 화폐 단위 표시 위치
+  /// <br>
+  /// EN: Position of currency unit
   final int? currencyUnitPosition;
 
   /// @nodoc

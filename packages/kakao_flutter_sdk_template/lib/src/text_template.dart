@@ -5,25 +5,35 @@ import 'package:kakao_flutter_sdk_template/src/model/link.dart';
 
 part 'text_template.g.dart';
 
-/// 텍스트형 기본 템플릿 클래스
+/// KO: 텍스트 메시지용 기본 템플릿
+/// <br>
+/// EN: Default template for text messages
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class TextTemplate extends DefaultTemplate {
-  /// 메시지에 들어갈 텍스트 (최대 200자)
+  /// KO: 텍스트
+  /// <br>
+  /// EN: Text
   final String text;
 
-  /// 컨텐츠 클릭 시 이동할 링크 정보
+  /// KO: 바로가기 정보
+  /// <br>
+  /// EN: Link information
   final Link link;
 
-  /// 버튼 목록
-  /// 버튼 타이틀과 링크를 변경하고 싶을때, 버튼 두개를 사용하고 싶을때 사용 (최대 2개)
+  /// KO: 메시지 하단 버튼
+  /// <br>
+  /// EN: Button at the bottom of the message
   final List<Button>? buttons;
 
-  /// 기본 버튼 타이틀(자세히 보기)을 변경하고 싶을 때 설정
-  /// 이 값을 사용하면 클릭 시 이동할 링크는 content에 입력된 값이 사용됨
+  /// KO: 버튼 문구
+  /// <br>
+  /// EN: Label for the button
   final String? buttonTitle;
 
-  /// "text" 고정 값
+  /// KO: 메시지 템플릿 타입, "text"로 고정
+  /// <br>
+  /// EN: Type of the message template, fixed as "text"
   final String objectType;
 
   /// @nodoc
