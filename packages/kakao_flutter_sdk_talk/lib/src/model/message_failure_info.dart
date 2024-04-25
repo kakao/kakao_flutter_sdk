@@ -2,14 +2,24 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'message_failure_info.g.dart';
 
-/// 여러 친구를 대상으로 메시지 전송 API 호출 시 대상 중 일부가 실패한 경우 오류 정보
+/// KO: 메시지 전송 실패 정보
+/// <br>
+/// EN: Failure information for sending a message
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class MessageFailureInfo {
-  /// 오류 코드
+  /// KO: 에러 코드
+  /// <br>
+  /// EN: Error code
   final int code;
+
+  /// KO: 에러 메시지
+  /// <br>
+  /// EN: Error message
   final String msg;
 
-  /// 이 에러로 인해 실패한 대상 목록
+  /// KO: 메시지 전송에 실패한 수신자 UUID 목록
+  /// <br>
+  /// EN: Receiver UUIDs that failed to send the message
   final List<String> receiverUuids;
 
   /// @nodoc
