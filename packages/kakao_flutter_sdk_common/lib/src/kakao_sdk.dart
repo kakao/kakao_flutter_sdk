@@ -16,7 +16,7 @@ class KakaoSdk {
   static late String _nativeKey;
   static late String _jsKey;
 
-  static String sdkVersion = "1.9.1+2";
+  static String sdkVersion = "1.9.2";
 
   static String get appKey => kIsWeb ? _jsKey : _nativeKey;
 
