@@ -11,12 +11,11 @@ class AccessTokenResponse {
   int? refreshTokenExpiresIn;
   String? scope;
   String tokenType;
-  String? txId;
   String? idToken;
 
   AccessTokenResponse(this.accessToken, this.expiresIn, this.refreshToken,
       this.refreshTokenExpiresIn, this.scope, this.tokenType,
-      {this.txId, this.idToken});
+      {this.idToken});
 
   factory AccessTokenResponse.fromJson(Map<String, dynamic> json) =>
       _$AccessTokenResponseFromJson(json);

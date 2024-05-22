@@ -8,28 +8,22 @@ import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/parameter_dialog.d
 
 class LoginDialog extends StatelessWidget {
   final String title;
-  final String settleId;
 
   final bool promptsVisibility;
   final bool loginHintVisibility;
   final bool scopesVisibility;
-  final bool signDataVisibility;
   final bool nonceVisibility;
   final bool channelPublicIdsVisibility;
   final bool serviceTermsVisibility;
-  final bool settleIdVisibility;
   final Map<String, Object> result = {};
 
-  LoginDialog(this.title, {this.settleId = '', super.key})
-      : promptsVisibility =
-            {accountLogin, talkCertLogin, accountCertLogin}.contains(title),
-        loginHintVisibility = {accountLogin, accountCertLogin}.contains(title),
+  LoginDialog(this.title, {super.key})
+      : promptsVisibility = {accountLogin}.contains(title),
+        loginHintVisibility = {accountLogin}.contains(title),
         scopesVisibility = title == newScopes,
-        signDataVisibility = {talkCertLogin, accountCertLogin}.contains(title),
         nonceVisibility = true,
         channelPublicIdsVisibility = title != newScopes,
-        serviceTermsVisibility = title != newScopes,
-        settleIdVisibility = {talkCertLogin, accountCertLogin}.contains(title);
+        serviceTermsVisibility = title != newScopes;
 
   @override
   Widget build(BuildContext context) {
@@ -56,12 +50,6 @@ class LoginDialog extends StatelessWidget {
             fontSize: 12.0,
             onValueChanged: (value) => result['scopes'] = value),
         TextFieldItem(
-            visible: signDataVisibility,
-            title: 'signData',
-            hintText: "write signData here",
-            fontSize: 12.0,
-            onValueChanged: (value) => result['signData'] = value),
-        TextFieldItem(
             visible: nonceVisibility,
             title: 'nonce',
             hintText: "write nonce here",
@@ -79,13 +67,6 @@ class LoginDialog extends StatelessWidget {
             hintText: "separate string by ','",
             fontSize: 10.0,
             onValueChanged: (value) => result['serviceTerms'] = value),
-        TextFieldItem(
-            switchChecked: true,
-            visible: settleIdVisibility,
-            title: 'settleId',
-            hintText: settleId,
-            editable: false,
-            fontSize: 12.0),
       ],
     );
   }
@@ -95,9 +76,7 @@ class LoginDialog extends StatelessWidget {
       prompts: (result['prompts'] as List<Prompt>?) ?? [],
       loginHint: result['loginHint'] as String?,
       scopes: (result['scopes'] as String?)?.split(',') ?? [],
-      signData: result['signData'] as String?,
       nonce: result['nonce'] as String?,
-      settleId: result['settleId'] as String?,
       channelPublicIds:
           (result['channelPublicIds'] as String?)?.split(',') ?? [],
       serviceTerms: (result['serviceTerms'] as String?)?.split(',') ?? [],

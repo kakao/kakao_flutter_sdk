@@ -6,3 +6,11 @@ String generateRandomString(int length) {
   return String.fromCharCodes(
       Iterable.generate(length, (_) => ch.codeUnitAt(r.nextInt(ch.length))));
 }
+
+extension ListParameterExtension<T> on List<T>? {
+  String? joinToString([String separator = ""]) {
+    if (this == null || this!.isEmpty) return null;
+
+    return this!.join(separator);
+  }
+}

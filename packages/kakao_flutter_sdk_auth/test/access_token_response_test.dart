@@ -22,7 +22,6 @@ void main() {
         expect(
             expected['refresh_token_expires_in'], actual.refreshTokenExpiresIn);
         expect(expected['scope'], actual.scope);
-        expect(expected['tx_id'], actual.txId);
       });
     }
 

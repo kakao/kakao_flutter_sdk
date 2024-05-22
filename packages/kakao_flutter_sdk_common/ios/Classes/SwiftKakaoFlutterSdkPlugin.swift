@@ -18,7 +18,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
         let instance = SwiftKakaoFlutterSdkPlugin()
         registrar.addMethodCallDelegate(instance, channel: methodChannel)
         eventChannel.setStreamHandler(instance)
-        registrar.addApplicationDelegate(instance) // This is necessary to receive open iurl delegate method.
+        registrar.addApplicationDelegate(instance) // This is necessary to receive open url delegate method.
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -38,11 +38,11 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
             result(Utility.origin())
         case "getKaHeader":
             result(Utility.kaHeader())
-        case "launchBrowserTab":
+        case "accountLogin":
             let args = castArguments(call.arguments)
             let url = args["url"]
             let redirectUri = args["redirect_uri"]
-            launchBrowserTab(url: url!, redirectUri: redirectUri, result: result)
+            launchBrowser(url: url!, redirectUri: redirectUri!, result: result)
         case "authorizeWithTalk":
             let args = castArguments(call.arguments)
             authorizeWithTalk(parameters: args, result: result)
@@ -66,11 +66,10 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
             let args = castArguments(call.arguments)
             let uri = args["uri"]
             launchKakaoTalk(uri: uri!, result: result)
-        case "selectShippingAddresses", "followChannel":
+        case "launchBrowserTab", "selectShippingAddresses", "followChannel":
             let args = castArguments(call.arguments)
             let url = args["url"]
-            launchBrowserTab(url: url!, redirectUri: nil, result: result)
-            
+            launchBrowser(url: url!, redirectUri: nil, result: result)
         case "addChannel":
             let args = castArguments(call.arguments)
             let scheme = args["channel_scheme"] ?? "kakaoplus:plusfriend"
@@ -209,39 +208,32 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
             }
         }
     }
-
-    private func launchBrowserTab(url: String, redirectUri: String?, result: @escaping FlutterResult) {
+    
+    private func launchBrowser(url: String, redirectUri: String?, result: @escaping FlutterResult) {
         var keepMe: Any? = nil
         let completionHandler = { (url: URL?, err: Error?) in
             keepMe = nil
-
-            if let err = err {
-                if #available(iOS 12, *) {
-                    if let error = err as? ASWebAuthenticationSessionError {
-                        switch error.code {
-                        case .canceledLogin:
-                            result(FlutterError(code: "CANCELED", message: "User canceled login.", details: nil))
-                            return
-                        default:
-                            break
-                        }
-                    }
-                } else {
-                    if let error = err as? SFAuthenticationError {
-                        switch error.code {
-                        case .canceledLogin:
-                            result(FlutterError(code: "CANCELED", message: "User canceled login.", details: nil))
-                            return
-                        default:
-                            break
-                        }
-                    }
-                }
-                result(FlutterError(code: "EUNKNOWN", message: err.localizedDescription, details: nil))
+            
+            guard err != nil else {
+                result(url?.absoluteString)
                 return
             }
-            result(url?.absoluteString)
+        
+            if #available(iOS 12, *) {
+                if let error = err as? ASWebAuthenticationSessionError {
+                    result(FlutterError(code: "CANCELED", message: "User canceled login.", details: error.localizedDescription))
+                    return
+                }
+            } else {
+                if let error = err as? SFAuthenticationError {
+                    result(FlutterError(code: "CANCELED", message: "User canceled login.", details: error.localizedDescription))
+                    return
+                }
+            }
+            result(FlutterError(code: "EUNKNOWN", message: err!.localizedDescription, details: nil))
+            return
         }
+        
         let urlObject = URL(string: url)!
         let redirectUriObject: URL? = redirectUri == nil ? nil : URL(string: redirectUri!)
         if #available(iOS 12, *) {
@@ -249,12 +241,12 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
             if #available(iOS 13.0, *) {
                 session.presentationContextProvider = self
             }
-            session.start()
             keepMe = session
+            session.start()
         } else {
             let session = SFAuthenticationSession(url: urlObject, callbackURLScheme: redirectUriObject?.scheme, completionHandler: completionHandler)
-            session.start()
             keepMe = session
+            session.start()
         }
     }
 
@@ -262,7 +254,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
         let urlString = url.absoluteString
         
         guard urlString.starts(with: "kakao") else { return false }
-        
+            
         if redirectUri != nil && urlString.contains(Constants.oauthPath) {
             if urlString.hasPrefix(redirectUri!) {
                 self.authorizeTalkCompletionHandler?(url, nil)

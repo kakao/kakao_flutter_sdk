@@ -8,6 +8,11 @@
             android:launchMode="singleTask"
             android:theme="@style/TransparentCompat" />
         <activity
+            android:name=".CustomTabsActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@style/TransparentCompat" />
+        <activity
             android:name=".AuthCodeCustomTabsActivity"
             android:exported="true"
             android:launchMode="singleTask"

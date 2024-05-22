@@ -47,7 +47,7 @@ object IntentFactory {
             .putExtra(Constants.KEY_EXTRAS, extras)
     }
 
-    inline fun <reified T : Activity> customTabs(
+    inline fun <reified T : CustomTabsActivity> customTabs(
         context: Context,
         args: Map<String, String?>,
     ): Intent {

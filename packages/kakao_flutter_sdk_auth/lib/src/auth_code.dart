@@ -4,14 +4,9 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import 'package:kakao_flutter_sdk_auth/src/auth_api.dart';
+import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_auth/src/constants.dart';
-import 'package:kakao_flutter_sdk_auth/src/utils.dart';
-import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:platform/platform.dart';
-
-import 'model/prompt.dart';
 
 const MethodChannel _channel = MethodChannel(CommonConstants.methodChannel);
 
@@ -41,39 +36,54 @@ class AuthCodeClient {
   }) async {
     String? codeChallenge =
         codeVerifier != null ? _codeChallenge(codeVerifier) : null;
-    final params = {
-      Constants.clientId: clientId ?? KakaoSdk.appKey,
-      Constants.redirectUri: redirectUri,
-      Constants.responseType: Constants.code,
-      // "approval_type": "individual",
-      Constants.scope: scopes?.join(" "),
-      Constants.agt: agt,
-      Constants.channelPublicId: channelPublicIds?.join(','),
-      Constants.serviceTerms: serviceTerms?.join(','),
-      Constants.prompt: kauthTxId == null
-          ? (prompts == null ? null : _parsePrompts(prompts))
-          : _parsePrompts(_makeCertPrompts(prompts)),
-      Constants.loginHint: loginHint,
-      Constants.codeChallenge: codeChallenge,
-      Constants.codeChallengeMethod:
-          codeChallenge != null ? Constants.codeChallengeMethodValue : null,
-      Constants.kaHeader: await KakaoSdk.kaHeader,
-      Constants.nonce: nonce,
-      Constants.kauthTxId: kauthTxId,
-    };
-    params.removeWhere((k, v) => v == null);
-    final url =
-        Uri.https(KakaoSdk.hosts.kauth, Constants.authorizePath, params);
+    final stateToken = generateRandomString(20);
+    final kaHeader = await KakaoSdk.kaHeader;
+
+    final params = await _makeAuthParams(
+      clientId: clientId,
+      redirectUri: redirectUri,
+      scopes: scopes,
+      agt: agt,
+      channelPublicIds: channelPublicIds,
+      serviceTerms: serviceTerms,
+      prompts: prompts,
+      loginHint: loginHint,
+      codeChallenge: codeChallenge,
+      nonce: nonce,
+      kauthTxId: kauthTxId,
+      stateToken: stateToken,
+      isPopup: webPopupLogin,
+    );
+    final url = Uri.https(KakaoSdk.hosts.kauth, Constants.authorizePath, {
+      ...params,
+      Constants.isPopup: '$webPopupLogin',
+    });
     SdkLog.i(url);
 
     try {
-      final authCode = await launchBrowserTab(
-        url,
-        redirectUri: redirectUri,
-        popupOpen: webPopupLogin,
-      );
+      if (kIsWeb && webPopupLogin) {
+        final additionalParams = {};
 
-      return _parseCode(authCode);
+        if (isiOS()) {
+          additionalParams.addAll({
+            ...params,
+            'loginScheme': KakaoSdk.platforms.ios.talkLoginScheme,
+            'universalLink': KakaoSdk.platforms.ios.iosLoginUniversalLink,
+          });
+        }
+
+        await _channel.invokeMethod('popupLogin', {
+          'url': url.toString(),
+          ...additionalParams,
+        });
+        return _getAuthCode(stateToken, kaHeader);
+      } else {
+        final authCode = await _channel.invokeMethod('accountLogin', {
+          CommonConstants.url: url.toString(),
+          CommonConstants.redirectUri: redirectUri,
+        });
+        return _parseCode(authCode);
+      }
     } catch (e) {
       SdkLog.e(e);
       rethrow;
@@ -143,27 +153,31 @@ class AuthCodeClient {
     final agt = await _kauthApi.agt();
     try {
       return await authorize(
-          clientId: clientId,
-          redirectUri: redirectUri,
-          scopes: scopes,
-          agt: agt,
-          codeVerifier: codeVerifier,
-          nonce: nonce,
-          webPopupLogin: webPopupLogin);
+        clientId: clientId,
+        redirectUri: redirectUri,
+        scopes: scopes,
+        agt: agt,
+        codeVerifier: codeVerifier,
+        nonce: nonce,
+        webPopupLogin: webPopupLogin,
+      );
     } catch (e) {
       rethrow;
     }
-  }
-
-  // Retrieve auth code in web environment. (This method is web specific. Use after checking the platform)
-  void _retrieveAuthCode() {
-    _channel.invokeMethod("retrieveAuthCode");
   }
 
   /// @nodoc
   // Get platform specific redirect uri. (This method is web specific. Use after checking the platform)
   Future<String> platformRedirectUri() async {
     return await _channel.invokeMethod('platformRedirectUri');
+  }
+
+  /// @nodoc
+  static String codeVerifier() {
+    // remove last '='
+    return base64UrlEncode(
+            sha512.convert(utf8.encode(UniqueKey().toString())).bytes)
+        .split('=')[0];
   }
 
   String _parseCode(String redirectedUri) {
@@ -193,11 +207,8 @@ class AuthCodeClient {
       Constants.codeVerifier: codeVerifier,
       Constants.channelPublicId: channelPublicId?.join(','),
       Constants.serviceTerms: serviceTerms?.join(','),
-      Constants.prompt: kauthTxId == null
-          ? (prompts == null ? null : _parsePrompts(prompts))
-          : _parsePrompts(_makeCertPrompts(prompts)),
+      Constants.prompt: prompts == null ? null : _parsePrompts(prompts),
       Constants.nonce: nonce,
-      Constants.kauthTxId: kauthTxId,
       Constants.stateToken: stateToken,
       Constants.isPopup: webPopupLogin,
     };
@@ -230,16 +241,18 @@ class AuthCodeClient {
     await _channel.invokeMethod<String>(
         CommonConstants.authorizeWithTalk, arguments);
 
-    String kaHeader = await _channel.invokeMethod('getKaHeader');
+    String kaHeader = await KakaoSdk.kaHeader;
+    return _getAuthCode(stateToken, kaHeader);
+  }
 
-    int count = 0;
-    const maxCount = 600;
-    Completer<String> completer = Completer();
+  Future<String> _getAuthCode(String? stateToken, String kaHeader,
+      {int count = 0, int maxCount = 600}) async {
+    final completer = Completer<String>();
 
     await Future.doWhile(() async {
       if (count == maxCount) {
         completer.completeError(
-            TimeoutException('KakaoTalk login timed out. Please login again.'));
+            TimeoutException('Kakao Login timed out. Please login again.'));
         return false;
       }
 
@@ -258,15 +271,9 @@ class AuthCodeClient {
     return completer.future;
   }
 
-  List<Prompt> _makeCertPrompts(List<Prompt>? prompts) {
-    prompts ??= [];
-    if (!prompts.contains(Prompt.cert)) {
-      prompts.add(Prompt.cert);
-    }
-    return prompts;
-  }
+  String? _parsePrompts(List<Prompt> prompts) {
+    if (prompts.isEmpty) return null;
 
-  String _parsePrompts(List<Prompt> prompts) {
     var parsedPrompt = '';
     for (var element in prompts) {
       parsedPrompt += '${describeEnum(element).toSnakeCase()} ';
@@ -281,11 +288,42 @@ class AuthCodeClient {
         .split('=')[0];
   }
 
-  /// @nodoc
-  static String codeVerifier() {
-    // remove last '='
-    return base64UrlEncode(
-            sha512.convert(utf8.encode(UniqueKey().toString())).bytes)
-        .split('=')[0];
+  Future<Map<String, dynamic>> _makeAuthParams({
+    String? clientId,
+    String? redirectUri,
+    List<String>? scopes,
+    String? agt,
+    List<String>? channelPublicIds,
+    List<String>? serviceTerms,
+    List<Prompt>? prompts,
+    String? loginHint,
+    String? codeChallenge,
+    String? nonce,
+    String? kauthTxId,
+    String? stateToken,
+    bool? isPopup,
+  }) async {
+    final params = {
+      Constants.clientId: clientId ?? KakaoSdk.appKey,
+      Constants.redirectUri: redirectUri,
+      Constants.responseType: Constants.code,
+      // "approval_type": "individual",
+      Constants.scope: scopes?.join(" "),
+      Constants.agt: agt,
+      Constants.channelPublicId: channelPublicIds.joinToString(','),
+      Constants.serviceTerms: serviceTerms?.joinToString(','),
+      Constants.prompt: prompts == null ? null : _parsePrompts(prompts),
+      Constants.loginHint: loginHint,
+      Constants.codeChallenge: codeChallenge,
+      Constants.codeChallengeMethod:
+          codeChallenge != null ? Constants.codeChallengeMethodValue : null,
+      Constants.kaHeader: await KakaoSdk.kaHeader,
+      Constants.nonce: nonce,
+      Constants.state: stateToken,
+      Constants.stateToken: stateToken,
+      Constants.isPopup: isPopup,
+    };
+    params.removeWhere((k, v) => v == null);
+    return params;
   }
 }

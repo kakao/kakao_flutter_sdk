@@ -58,6 +58,25 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                 } ?: result.error("Error", "Application is not attached to FlutterEngine", null)
             }
 
+            "accountLogin" -> {
+                val context = applicationContext ?: run {
+                    result.error("Error", "Application is not attached to FlutterEngine", null)
+                    return
+                }
+
+                val activity = activity ?: run {
+                    result.error("Error", "Plugin is not attached to Activity", null)
+                    return
+                }
+
+                @Suppress("UNCHECKED_CAST")
+                val args = call.arguments as Map<String, String?>
+                val intent = IntentFactory.customTabsForLogin(context, args)
+                val requestCode = Constants.REQUEST_KAKAO_LOGIN
+
+                activity.startActivityForResult(intent, requestCode)
+            }
+
             "launchBrowserTab" -> {
                 val context = applicationContext ?: run {
                     result.error("Error", "Application is not attached to FlutterEngine", null)
@@ -71,17 +90,8 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
 
                 @Suppress("UNCHECKED_CAST")
                 val args = call.arguments as Map<String, String?>
-
-                val intent: Intent
-                val requestCode: Int
-
-                if (args.contains("redirect_uri")) {
-                    intent = IntentFactory.customTabsForLogin(context, args)
-                    requestCode = Constants.REQUEST_KAKAO_LOGIN
-                } else {
-                    intent = IntentFactory.customTabs<AuthCodeCustomTabsActivity>(context, args)
-                    requestCode = Constants.REQUEST_CUSTOM_TABS
-                }
+                val intent = IntentFactory.customTabs<CustomTabsActivity>(context, args)
+                val requestCode = Constants.REQUEST_CUSTOM_TABS
 
                 activity.startActivityForResult(intent, requestCode)
             }
@@ -405,10 +415,7 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
     }
 
     override fun onNewIntent(intent: Intent): Boolean {
-        if (activity != null && handleTalkSharingIntent(activity!!, intent) != null) {
-            return true
-        }
-        return false
+        return activity != null && handleTalkSharingIntent(activity!!, intent) != null
     }
 
     private fun resultOk(result: Result?, data: Intent?) {
