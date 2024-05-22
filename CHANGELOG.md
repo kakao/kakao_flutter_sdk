@@ -1,3 +1,10 @@
+## 1.9.2
+
+- Updated the internal source code.
+- Fixed a bug.
+    - Web: Fixed an issue related to the popup (Login with Kakao Account, Select shipping address,
+      Follow Kakao Talk Channel) on iOS 17.4 and higher versions.
+
 ## 1.9.1+2
 
 - Added missing keys in the Privacy Manifest file for the iOS apps.
