@@ -57,19 +57,18 @@ class FriendsContext {
     offset = int.parse(url.queryParameters['offset']!);
     limit = int.parse(url.queryParameters['limit']!);
 
-    if (url.queryParameters['order'] == describeEnum(Order.asc)) {
+    if (url.queryParameters['order'] == Order.asc.name) {
       order = Order.asc;
-    } else if (url.queryParameters['order'] == describeEnum(Order.desc)) {
+    } else if (url.queryParameters['order'] == Order.desc.name) {
       order = Order.desc;
     } else {
       order = null;
     }
 
-    if (url.queryParameters['friend_order'] ==
-        describeEnum(FriendOrder.nickname)) {
+    if (url.queryParameters['friend_order'] == FriendOrder.nickname.name) {
       friendOrder = FriendOrder.nickname;
     } else if (url.queryParameters['friend_order'] ==
-        describeEnum(FriendOrder.favorite)) {
+        FriendOrder.favorite.name) {
       friendOrder = FriendOrder.favorite;
     } else {
       friendOrder = null;
