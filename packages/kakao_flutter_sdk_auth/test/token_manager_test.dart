@@ -59,8 +59,8 @@ void main() {
     // oldTokenManager can't get token after token migration
     try {
       final prevToken = await oldTokenManager.getToken();
-      fail("should not reach here");
-    } catch (e) {}
+      fail("should not reach here $prevToken");
+    } catch (_) {}
   });
 
   test("token migration test (0.9.0 <= version < 1.0.0)", () async {
@@ -81,8 +81,8 @@ void main() {
     // oldTokenManager can't get token after token migration
     try {
       final prevToken = await oldTokenManager.getToken();
-      fail("should not reach here");
-    } catch (e) {}
+      fail("should not reach here $prevToken");
+    } catch (_) {}
   });
 }
 
