@@ -4,6 +4,7 @@ import 'dart:html';
 
 import 'package:dio/dio.dart';
 import 'package:kakao_flutter_sdk_common/src/util.dart';
+import 'package:kakao_flutter_sdk_common/src/web/ua_parser.dart';
 
 /// @nodoc
 bool isMobileDevice() {
@@ -42,6 +43,7 @@ IFrameElement createHiddenIframe(String transId, String source) {
 }
 
 EventListener addMessageEventListener(
+  Browser browser,
   String requestDomain,
   Completer<String> completer,
   Function afterReceive,
@@ -49,7 +51,11 @@ EventListener addMessageEventListener(
   callback(event) {
     if (event is! MessageEvent || completer.isCompleted) return;
 
-    if (event.data != null && event.origin == requestDomain) {
+    if (event.data != null &&
+        (event.origin == requestDomain ||
+            isiOS() &&
+                browser == Browser.kakaotalk &&
+                event.origin == window.origin)) {
       completer.complete(event.data);
       window.removeEventListener('message', callback);
       afterReceive();

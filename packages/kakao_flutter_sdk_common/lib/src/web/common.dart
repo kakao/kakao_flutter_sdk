@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:html' as html;
 
 import 'package:kakao_flutter_sdk_common/src/kakao_sdk.dart';
+import 'package:kakao_flutter_sdk_common/src/web/ua_parser.dart';
 import 'package:kakao_flutter_sdk_common/src/web/utility.dart';
 
 Future<String> handleAppsApi(
+  final Browser browser,
   final String transId,
   final String requestUrl,
   final String popupTitle,
@@ -15,7 +17,7 @@ Future<String> handleAppsApi(
 
   final completer = Completer<String>();
 
-  addMessageEventListener(url, completer, () => iframe.remove());
+  addMessageEventListener(browser, url, completer, () => iframe.remove());
 
   windowOpen(
     requestUrl,

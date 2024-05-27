@@ -168,7 +168,8 @@ class KakaoFlutterSdkPlugin {
           'agt': agt,
           'continue': continueUrl,
         });
-        return handleAppsApi(transId, kpidtUrl, 'select_shipping_addresses');
+        return handleAppsApi(
+            currentBrowser, transId, kpidtUrl, 'select_shipping_addresses');
       case 'followChannel':
         Browser currentBrowser = _uaParser.detectBrowser(userAgent);
         if ({Browser.facebook, Browser.instagram}.contains(currentBrowser)) {
@@ -191,7 +192,8 @@ class KakaoFlutterSdkPlugin {
         };
         params.removeWhere((k, v) => v == null);
         final requestUrl = createFollowChannelUrl(params);
-        return handleAppsApi(transId, requestUrl, 'follow_channel');
+        return handleAppsApi(
+            currentBrowser, transId, requestUrl, 'follow_channel');
       case "addChannel":
         var scheme = call.arguments['channel_scheme'];
         var channelPublicId = call.arguments['channel_public_id'];
@@ -278,7 +280,8 @@ class KakaoFlutterSdkPlugin {
 
         // popup picker
         final completer = Completer<String>();
-        addMessageEventListener(url, completer, () => iframe.remove());
+        addMessageEventListener(
+            currentBrowser, url, completer, () => iframe.remove());
 
         windowOpen(
           '$url/select/$pickerType',
