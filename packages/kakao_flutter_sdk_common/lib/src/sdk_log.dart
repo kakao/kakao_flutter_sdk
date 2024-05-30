@@ -85,7 +85,7 @@ class SdkLog {
 }
 
 /// @nodoc
-class LogData extends LinkedListEntry<LogData> {
+final class LogData extends LinkedListEntry<LogData> {
   String log;
 
   LogData(this.log);
