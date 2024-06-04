@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:html' as html;
 
 import 'package:flutter/services.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
@@ -15,6 +14,7 @@ import 'package:kakao_flutter_sdk_common/src/web/talk.dart';
 import 'package:kakao_flutter_sdk_common/src/web/ua_parser.dart';
 import 'package:kakao_flutter_sdk_common/src/web/user.dart';
 import 'package:kakao_flutter_sdk_common/src/web/utility.dart';
+import 'package:web/web.dart' as web;
 
 class KakaoFlutterSdkPlugin {
   final _uaParser = UaParser();
@@ -28,7 +28,7 @@ class KakaoFlutterSdkPlugin {
   }
 
   Future<dynamic> handleMethodCall(MethodCall call) async {
-    String userAgent = html.window.navigator.userAgent;
+    String userAgent = web.window.navigator.userAgent;
     Browser currentBrowser = _uaParser.detectBrowser(userAgent);
 
     switch (call.method) {
@@ -48,17 +48,17 @@ class KakaoFlutterSdkPlugin {
           queryParameters[CommonConstants.redirectUri] =
               args[CommonConstants.redirectUri];
           final finalUri = fullUri.replace(queryParameters: queryParameters);
-          html.window.location.href = finalUri.toString();
+          web.window.location.href = finalUri.toString();
           return;
         }
 
         queryParameters[CommonConstants.redirectUri] =
-            html.window.location.origin;
+            web.window.location.origin;
         final finalUri = fullUri.replace(queryParameters: queryParameters);
         windowOpen(finalUri.toString(), "_blank");
         return;
       case "getOrigin":
-        return html.window.location.origin;
+        return web.window.location.origin;
       case "getKaHeader":
         return _getKaHeader();
       case 'isKakaoTalkSharingAvailable':
@@ -69,7 +69,7 @@ class KakaoFlutterSdkPlugin {
         }
         return false;
       case "platformId":
-        final origin = Uri.parse(html.window.location.origin)
+        final origin = Uri.parse(web.window.location.origin)
             .authority
             .split('')
             .map((e) => e.codeUnits[0])
@@ -83,12 +83,12 @@ class KakaoFlutterSdkPlugin {
           return CommonConstants.iosWebRedirectUri;
         }
         // Returns meaningless values unless Android and iOS.
-        return html.window.origin;
+        return web.window.origin;
       case 'redirectForEasyLogin':
         final String redirectUri = call.arguments['redirect_uri'];
         final String code = call.arguments['code'];
         final String state = call.arguments['state'];
-        html.window.location.href =
+        web.window.location.href =
             '$redirectUri?code=${Uri.encodeComponent(code)}&state=${Uri.encodeComponent(state)}';
         return;
       case "authorizeWithTalk":
@@ -105,15 +105,15 @@ class KakaoFlutterSdkPlugin {
         if (isAndroid()) {
           String intent =
               androidLoginIntent(kaHeader, userAgent, Map.castFrom(arguments));
-          html.window.location.href = intent;
+          web.window.location.href = intent;
         } else if (isiOS()) {
           final universalLink =
               iosLoginUniversalLink(kaHeader, Map.castFrom(arguments));
 
           if (currentBrowser == Browser.safari) {
-            html.window.open(universalLink, "_blank");
+            web.window.open(universalLink, "_blank");
           } else {
-            html.window.location.href = universalLink;
+            web.window.location.href = universalLink;
           }
         }
         break;
@@ -130,10 +130,10 @@ class KakaoFlutterSdkPlugin {
 
         if (isAndroid()) {
           final intent = _getAndroidShareIntent(userAgent, uri);
-          html.window.location.href = intent;
+          web.window.location.href = intent;
           return true;
         } else if (isiOS()) {
-          html.window.location.href = uri;
+          web.window.location.href = uri;
           return true;
         }
         break;
@@ -206,10 +206,10 @@ class KakaoFlutterSdkPlugin {
 
         final path = 'home/$channelPublicId/add';
         if (isAndroid()) {
-          html.window.location.href =
+          web.window.location.href =
               androidChannelIntent(scheme, channelPublicId, path);
         } else if (isiOS()) {
-          html.window.location.href =
+          web.window.location.href =
               iosChannelScheme(scheme, channelPublicId, path);
         }
         break;
@@ -224,13 +224,13 @@ class KakaoFlutterSdkPlugin {
         }
 
         final path = 'talk/chat/$channelPublicId';
-        final extra = 'extra={"referer": "${html.window.location.href}"}';
+        final extra = 'extra={"referer": "${web.window.location.href}"}';
         if (isAndroid()) {
-          html.window.location.href = androidChannelIntent(
+          web.window.location.href = androidChannelIntent(
               scheme, channelPublicId, path,
               queryParameters: extra);
         } else if (isiOS()) {
-          html.window.location.href = iosChannelScheme(
+          web.window.location.href = iosChannelScheme(
               scheme, channelPublicId, path,
               queryParameters: extra);
         }
@@ -242,15 +242,15 @@ class KakaoFlutterSdkPlugin {
             'apiver=1.0&appkey=${KakaoSdk.appKey}&param=${Uri.encodeComponent(call.arguments['navi_params'])}&extras=${Uri.encodeComponent(call.arguments['extras'])}';
 
         if (isAndroid()) {
-          html.window.location.href = androidNaviIntent(scheme, queries);
+          web.window.location.href = androidNaviIntent(scheme, queries);
           return true;
         } else if (isiOS()) {
           bindPageHideEvent(deferredFallback(
               '${KakaoSdk.platforms.web.kakaoNaviInstallPage}?$queries',
               (storeUrl) {
-            html.window.top?.location.href = storeUrl;
+            web.window.top?.location.href = storeUrl;
           }));
-          html.window.location.href = '$scheme?$queries';
+          web.window.location.href = '$scheme?$queries';
           return true;
         }
         return false;
@@ -264,7 +264,7 @@ class KakaoFlutterSdkPlugin {
 
         final iframe =
             createHiddenIframe(transId, '$url/proxy?transId=$transId');
-        html.document.body?.append(iframe);
+        web.document.body?.append(iframe);
 
         final params = await createPickerParams(
           accessToken,
@@ -306,12 +306,12 @@ class KakaoFlutterSdkPlugin {
         if (isiOS() && currentBrowser == Browser.kakaotalk) {
           final String kaHeader = arguments['ka'];
           final String url = iosLoginUniversalLink(kaHeader, arguments);
-          html.window.location.href = url;
+          web.window.location.href = url;
           return;
         }
 
         final String url = arguments['url'];
-        html.window.open(url, "_blank");
+        web.window.open(url, "_blank");
         return;
       default:
         throw PlatformException(
@@ -322,7 +322,7 @@ class KakaoFlutterSdkPlugin {
   }
 
   String _getKaHeader() {
-    return "os/javascript origin/${html.window.location.origin}";
+    return "os/javascript origin/${web.window.location.origin}";
   }
 
   String _getAndroidShareIntent(String userAgent, String uri) {
