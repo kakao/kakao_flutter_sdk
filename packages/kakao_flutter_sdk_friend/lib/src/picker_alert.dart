@@ -7,11 +7,11 @@ class PickerAlert extends StatelessWidget {
   final String confirm;
 
   const PickerAlert({
-    Key? key,
+    super.key,
     required this.title,
     required this.message,
     required this.confirm,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

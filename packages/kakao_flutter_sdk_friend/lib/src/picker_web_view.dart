@@ -13,8 +13,7 @@ class PickerWebView extends StatefulWidget {
   final bool isSingle;
   final PickerFriendRequestParams params;
 
-  const PickerWebView({Key? key, this.isSingle = false, required this.params})
-      : super(key: key);
+  const PickerWebView({super.key, this.isSingle = false, required this.params});
 
   @override
   State<PickerWebView> createState() => _PickerWebViewState();
