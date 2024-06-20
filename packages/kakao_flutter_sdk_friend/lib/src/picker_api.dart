@@ -48,6 +48,13 @@ class PickerApi {
       );
     }
 
+    if (!context.mounted) {
+      throw KakaoClientException(
+        ClientErrorCause.illegalState,
+        "Context is not mouned",
+      );
+    }
+
     return await _navigateToWebView(
         context: context, params: params, isSingle: true);
   }
@@ -85,6 +92,13 @@ class PickerApi {
       );
     }
 
+    if (!context.mounted) {
+      throw KakaoClientException(
+        ClientErrorCause.illegalState,
+        "Context is not mouned",
+      );
+    }
+
     return await _navigateToWebView(context: context, params: params);
   }
 
@@ -117,7 +131,7 @@ class PickerApi {
 
   Future _invokeWebPicker(
       PickerFriendRequestParams params, String pickerType) async {
-    final token = await TokenManagerProvider.instance.manager.getToken()!;
+    final token = await TokenManagerProvider.instance.manager.getToken();
     final response = await _channel.invokeMethod('requestWebPicker', {
       'app_key': KakaoSdk.appKey,
       'ka': await KakaoSdk.kaHeader,
@@ -137,13 +151,6 @@ class PickerApi {
     bool isSingle = false,
     required PickerFriendRequestParams params,
   }) async {
-    if (!context.mounted) {
-      throw KakaoClientException(
-        ClientErrorCause.illegalState,
-        "Context is not mouned",
-      );
-    }
-
     Map<String, String>? result = await Navigator.push(
       context,
       MaterialPageRoute(

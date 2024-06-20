@@ -3,7 +3,7 @@ description: Demonstrates how to use the kakao_flutter_sdk plugin.
 version: 1.9.0
 publish_to: "none"
 environment:
-  sdk: ">=2.18.0 <4.0.0"
+  sdk: ">=3.3.0 <4.0.0"
 dependencies:
   flutter:
     sdk: flutter
@@ -14,14 +14,14 @@ dependencies:
   cupertino_icons: ^1.0.2
   path_provider: ^2.1.1
   shared_preferences: ^2.2.2
-  file_picker: ^6.1.1
+  file_picker: ^8.0.3
   kakao_flutter_sdk:
     path: ../packages/kakao_flutter_sdk
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.1
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.devs/tools/pub/pubspec

@@ -16,7 +16,7 @@ class RequiredScopesInterceptor extends Interceptor {
             tokenManagerProvider ?? TokenManagerProvider.instance;
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) async {
+  void onError(DioException err, ErrorInterceptorHandler handler) async {
     var error = ApiFactory.transformApiError(err);
     if (error is! KakaoApiException) {
       handler.next(err);
@@ -63,13 +63,13 @@ class RequiredScopesInterceptor extends Interceptor {
         var response = await _dio.fetch(options);
         handler.resolve(response);
       } catch (error) {
-        if (error is DioError) {
+        if (error is DioException) {
           handler.reject(error);
         } else if (error is KakaoAuthException) {
           // KakaoAuthException is thrown when the 'Cancel' button is pressed in the additional consent page
-          handler.reject(DioError(requestOptions: options, error: error));
+          handler.reject(DioException(requestOptions: options, error: error));
         } else {
-          handler.next(DioError(requestOptions: options, error: error));
+          handler.next(DioException(requestOptions: options, error: error));
         }
       }
     }

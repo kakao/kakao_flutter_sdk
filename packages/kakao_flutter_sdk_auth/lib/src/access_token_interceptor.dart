@@ -24,7 +24,7 @@ class AccessTokenInterceptor extends Interceptor {
 
     if (token == null) {
       handler.reject(
-        DioError(
+        DioException(
           requestOptions: options,
           message: "authentication token doesn't exist.",
         ),
@@ -38,7 +38,7 @@ class AccessTokenInterceptor extends Interceptor {
   }
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) async {
+  void onError(DioException err, ErrorInterceptorHandler handler) async {
     if (kIsWeb) {
       handler.next(err);
       return;
@@ -76,16 +76,16 @@ class AccessTokenInterceptor extends Interceptor {
       if (_isTokenError(error)) {
         await _tokenManagerProvider.manager.clear();
       }
-      if (error is DioError) {
+      if (error is DioException) {
         handler.reject(error);
       } else {
-        handler.reject(DioError(requestOptions: options, error: error));
+        handler.reject(DioException(requestOptions: options, error: error));
       }
     }
   }
 
   bool _isTokenError(Object err) {
-    if (err is DioError) {
+    if (err is DioException) {
       if (err.requestOptions.baseUrl ==
               "${CommonConstants.scheme}://${KakaoSdk.hosts.kapi}" &&
           err.response != null &&

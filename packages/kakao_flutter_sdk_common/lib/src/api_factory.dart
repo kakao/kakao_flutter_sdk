@@ -34,13 +34,13 @@ class ApiFactory {
       Future<T> Function() requestFunction) async {
     try {
       return await requestFunction();
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       throw transformApiError(e);
     }
   }
 
-  /// transforms [DioError] to [KakaoException].
-  static Exception transformApiError(DioError e) {
+  /// transforms [DioException] to [KakaoException].
+  static Exception transformApiError(DioException e) {
     var response = e.response;
     var request = e.requestOptions;
 

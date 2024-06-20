@@ -1,21 +1,23 @@
 import 'dart:async';
-import 'dart:html' as html;
 
 import 'package:kakao_flutter_sdk_common/src/kakao_sdk.dart';
+import 'package:kakao_flutter_sdk_common/src/web/ua_parser.dart';
 import 'package:kakao_flutter_sdk_common/src/web/utility.dart';
+import 'package:web/web.dart' as web;
 
 Future<String> handleAppsApi(
+  final Browser browser,
   final String transId,
   final String requestUrl,
   final String popupTitle,
 ) {
   final url = 'https://${KakaoSdk.hosts.apps}';
   final iframe = createHiddenIframe(transId, '$url/proxy?trans_id=$transId');
-  html.document.body?.append(iframe);
+  web.document.body?.append(iframe);
 
   final completer = Completer<String>();
 
-  addMessageEventListener(url, completer, () => iframe.remove());
+  addMessageEventListener(browser, url, completer, () => iframe.remove());
 
   windowOpen(
     requestUrl,
@@ -26,6 +28,6 @@ Future<String> handleAppsApi(
   return completer.future;
 }
 
-html.WindowBase windowOpen(String url, String name, {String? features}) {
-  return html.window.open(url, name, features);
+web.Window? windowOpen(String url, String name, {String features = ''}) {
+  return web.window.open(url, name, features);
 }

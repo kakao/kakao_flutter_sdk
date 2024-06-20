@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'dart:html' as html;
+import 'dart:js_interop';
 
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
+import 'package:web/web.dart' as web;
 
 String androidNaviIntent(String scheme, String queries) {
   var url = '$scheme?$queries';
@@ -25,23 +25,20 @@ Timer deferredFallback(String storeUrl, Function(String) fallback) {
 }
 
 void bindPageHideEvent(Timer timer) {
-  EventListener? listener;
+  web.EventListener? listener;
 
-  listener = (event) {
+  listener = (web.Event event) {
     if (!_isPageVisible()) {
       timer.cancel();
-      html.window.removeEventListener('pagehide', listener);
-      html.window.removeEventListener('visibilitychange', listener);
+      web.window.removeEventListener('pagehide', listener);
+      web.window.removeEventListener('visibilitychange', listener);
     }
-  };
+  }.toJS;
 
-  html.window.addEventListener('pagehide', listener);
-  html.window.addEventListener('visibilitychange', listener);
+  web.window.addEventListener('pagehide', listener);
+  web.window.addEventListener('visibilitychange', listener);
 }
 
 bool _isPageVisible() {
-  if (html.document.hidden != null) {
-    return !html.document.hidden!;
-  }
-  return true;
+  return !web.document.hidden;
 }

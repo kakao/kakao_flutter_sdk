@@ -276,7 +276,7 @@ class AuthCodeClient {
 
     var parsedPrompt = '';
     for (var element in prompts) {
-      parsedPrompt += '${describeEnum(element).toSnakeCase()} ';
+      parsedPrompt += '${element.name.toSnakeCase()} ';
     }
     return parsedPrompt;
   }

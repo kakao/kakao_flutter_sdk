@@ -1,6 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kakao_flutter_sdk_user/src/model/revoked_service_terms.dart';
-import 'package:kakao_flutter_sdk_user/src/model/service_terms.dart';
 
 part 'user_revoked_service_terms.g.dart';
 

@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kakao_flutter_sdk_talk/src/constants.dart';
-import 'package:kakao_flutter_sdk_talk/src/model/friends.dart';
 import 'package:kakao_flutter_sdk_talk/src/model/talk_profile.dart';
 
 import '../../kakao_flutter_sdk_common/test/helper.dart';

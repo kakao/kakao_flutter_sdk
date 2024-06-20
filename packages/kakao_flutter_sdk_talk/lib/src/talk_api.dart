@@ -109,11 +109,11 @@ class TalkApi {
         Constants.offset: context != null ? context.offset : offset,
         Constants.limit: context != null ? context.limit : limit,
         Constants.friendOrder: context != null && context.friendOrder != null
-            ? describeEnum(context.friendOrder!)
-            : (friendOrder == null ? null : describeEnum(friendOrder)),
+            ? context.friendOrder!.name
+            : (friendOrder?.name),
         Constants.order: context != null && context.order != null
-            ? describeEnum(context.order!)
-            : (order == null ? null : describeEnum(order)),
+            ? context.order!.name
+            : (order?.name),
         Constants.secureResource: true
       };
       params.removeWhere((k, v) => v == null);

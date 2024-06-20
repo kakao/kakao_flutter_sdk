@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
@@ -1000,7 +1001,7 @@ class ApiListState extends State<ApiList> {
 
         // 디바이스 브라우저 열기
         try {
-          await launchBrowserTab(url);
+          await launchBrowserTab(url, popupOpen: kIsWeb);
         } catch (e) {
           Log.e(context, tag, '카카오톡 채널 추가 실패', e);
         }
@@ -1022,7 +1023,7 @@ class ApiListState extends State<ApiList> {
 
         // 디바이스 브라우저 열기
         try {
-          await launchBrowserTab(url);
+          await launchBrowserTab(url, popupOpen: kIsWeb);
         } catch (e) {
           Log.e(context, tag, '카카오톡 채널 채팅 실패', e);
         }
@@ -1151,7 +1152,7 @@ class ApiListState extends State<ApiList> {
         try {
           Uri shareUrl = await WebSharerClient.instance.makeCustomUrl(
               templateId: templateId, templateArgs: {'key1': 'value1'});
-          await launchBrowserTab(shareUrl);
+          await launchBrowserTab(shareUrl, popupOpen: kIsWeb);
         } catch (e) {
           Log.e(context, tag, '카카오톡 공유 실패', e);
         }
@@ -1166,7 +1167,7 @@ class ApiListState extends State<ApiList> {
         try {
           Uri shareUrl = await WebSharerClient.instance
               .makeScrapUrl(url: url, templateArgs: {'key1': 'value1'});
-          await launchBrowserTab(shareUrl);
+          await launchBrowserTab(shareUrl, popupOpen: kIsWeb);
         } catch (e) {
           Log.e(context, tag, '카카오톡 공유 실패', e);
         }
@@ -1177,7 +1178,7 @@ class ApiListState extends State<ApiList> {
         try {
           Uri shareUrl = await WebSharerClient.instance
               .makeDefaultUrl(template: defaultFeed);
-          await launchBrowserTab(shareUrl);
+          await launchBrowserTab(shareUrl, popupOpen: kIsWeb);
         } catch (e) {
           Log.e(context, tag, '카카오톡 공유 실패', e);
         }
@@ -1188,7 +1189,7 @@ class ApiListState extends State<ApiList> {
         try {
           Uri shareUrl = await WebSharerClient.instance
               .makeDefaultUrl(template: defaultLocation);
-          await launchBrowserTab(shareUrl);
+          await launchBrowserTab(shareUrl, popupOpen: kIsWeb);
         } catch (e) {
           Log.e(context, tag, '카카오톡 공유 실패', e);
         }
@@ -1199,7 +1200,7 @@ class ApiListState extends State<ApiList> {
         try {
           Uri shareUrl = await WebSharerClient.instance.makeDefaultUrl(
               template: getDefaultCalendar(customData['calendarEventId']));
-          await launchBrowserTab(shareUrl);
+          await launchBrowserTab(shareUrl, popupOpen: kIsWeb);
         } catch (e) {
           Log.e(context, tag, '카카오톡 공유 실패', e);
         }
@@ -1283,7 +1284,8 @@ class ApiListState extends State<ApiList> {
           );
         } else {
           // 카카오내비 설치 페이지로 이동
-          launchBrowserTab(Uri.parse(NaviApi.webNaviInstall));
+          launchBrowserTab(Uri.parse(NaviApi.webNaviInstall),
+              popupOpen: kIsWeb);
         }
       }),
       ApiItem('shareDestination - WGS84', api: () async {
@@ -1296,7 +1298,8 @@ class ApiListState extends State<ApiList> {
           );
         } else {
           // 카카오내비 설치 페이지로 이동
-          launchBrowserTab(Uri.parse(NaviApi.webNaviInstall));
+          launchBrowserTab(Uri.parse(NaviApi.webNaviInstall),
+              popupOpen: kIsWeb);
         }
       }),
       ApiItem('navigate - KATEC - viaList', api: () async {
@@ -1310,7 +1313,8 @@ class ApiListState extends State<ApiList> {
           );
         } else {
           // 카카오내비 설치 페이지로 이동
-          launchBrowserTab(Uri.parse(NaviApi.webNaviInstall));
+          launchBrowserTab(Uri.parse(NaviApi.webNaviInstall),
+              popupOpen: kIsWeb);
         }
       }),
       ApiItem('navigate - WGS84 - viaList', api: () async {
@@ -1326,7 +1330,8 @@ class ApiListState extends State<ApiList> {
           );
         } else {
           // 카카오내비 설치 페이지로 이동
-          launchBrowserTab(Uri.parse(NaviApi.webNaviInstall));
+          launchBrowserTab(Uri.parse(NaviApi.webNaviInstall),
+              popupOpen: kIsWeb);
         }
       }),
       ApiItem('Kakao Sync'),
