@@ -1284,7 +1284,8 @@ class ApiListState extends State<ApiList> {
           );
         } else {
           // 카카오내비 설치 페이지로 이동
-          launchBrowserTab(Uri.parse(NaviApi.webNaviInstall), popupOpen: kIsWeb);
+          launchBrowserTab(Uri.parse(NaviApi.webNaviInstall),
+              popupOpen: kIsWeb);
         }
       }),
       ApiItem('shareDestination - WGS84', api: () async {
@@ -1297,7 +1298,8 @@ class ApiListState extends State<ApiList> {
           );
         } else {
           // 카카오내비 설치 페이지로 이동
-          launchBrowserTab(Uri.parse(NaviApi.webNaviInstall), popupOpen: kIsWeb);
+          launchBrowserTab(Uri.parse(NaviApi.webNaviInstall),
+              popupOpen: kIsWeb);
         }
       }),
       ApiItem('navigate - KATEC - viaList', api: () async {
@@ -1311,7 +1313,8 @@ class ApiListState extends State<ApiList> {
           );
         } else {
           // 카카오내비 설치 페이지로 이동
-          launchBrowserTab(Uri.parse(NaviApi.webNaviInstall), popupOpen: kIsWeb);
+          launchBrowserTab(Uri.parse(NaviApi.webNaviInstall),
+              popupOpen: kIsWeb);
         }
       }),
       ApiItem('navigate - WGS84 - viaList', api: () async {
@@ -1327,7 +1330,8 @@ class ApiListState extends State<ApiList> {
           );
         } else {
           // 카카오내비 설치 페이지로 이동
-          launchBrowserTab(Uri.parse(NaviApi.webNaviInstall), popupOpen: kIsWeb);
+          launchBrowserTab(Uri.parse(NaviApi.webNaviInstall),
+              popupOpen: kIsWeb);
         }
       }),
       ApiItem('Kakao Sync'),
