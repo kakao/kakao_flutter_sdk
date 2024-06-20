@@ -1,3 +1,10 @@
+## 1.9.3
+
+- New features
+    - Web: Supports WebAssembly build
+- Changed Dart minimum support version to 3.3.0 or higher.
+- Updated the internal source code.
+
 ## 1.9.2
 
 - Updated the internal source code.
