@@ -66,7 +66,7 @@ class ShareClient {
 
   /// KO: 기본 템플릿으로 메시지 보내기<br>
   /// [template]에 메시지 템플릿 객체 전달<br>
-  /// [serverCallbackArgs]에 카카오톡 공유 전송 성공 알림에 포함할 키와 값 전달
+  /// [serverCallbackArgs]에 카카오톡 공유 전송 성공 알림에 포함할 키와 값 전달<br>
   /// <br>
   /// EN: Send message with default template<br>
   /// Pass an object of a message template to [template]<br>

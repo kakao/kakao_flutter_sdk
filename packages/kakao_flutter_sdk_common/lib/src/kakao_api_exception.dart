@@ -13,12 +13,10 @@ class KakaoApiException extends KakaoException {
       {this.apiType, this.requiredScopes, this.allowedScopes})
       : super(msg);
 
-  /// 에러 코드
-  @JsonKey(unknownEnumValue: ApiErrorCause.unknown)
-
   /// KO: 에러 코드
   /// <br>
   /// EN: Error code
+  @JsonKey(unknownEnumValue: ApiErrorCause.unknown)
   final ApiErrorCause code;
 
   /// KO: 에러 메시지

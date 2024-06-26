@@ -13,8 +13,9 @@ class Friend {
   /// EN: Service user ID
   final int? id;
 
-  /// 메시지를 전송하기 위한 고유 아이디
-  /// 사용자의 계정 상태에 따라 이 정보는 바뀔 수 있으므로 앱내의 사용자 식별자로는 권장하지 않음
+  /// KO: 고유 ID
+  /// <br>
+  /// EN: Unique ID
   final String uuid;
 
   /// KO: 프로필 닉네임

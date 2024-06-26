@@ -288,7 +288,7 @@ class UserApi {
   /// KO: 배송지 선택하기<br>
   /// [enableBackButton]과 [mobileView]는 웹 플랫폼 전용 파라미터<br>
   /// [mobileView]로 배송지 피커를 모바일 디바이스에 맞춘 레이아웃으로 고정할 것인지 지정<br>
-  /// [enableBackButton]로 배송지 피커의 뒤로 가기 버튼 노출 여부 지정
+  /// [enableBackButton]로 배송지 피커의 뒤로 가기 버튼 노출 여부 지정<br>
   /// <br>
   /// EN: Select shipping address<br>
   /// [enableBackButton] and [mobileView] are web platform only parameters<br>
@@ -314,7 +314,7 @@ class UserApi {
   }
 
   /// KO: 배송지 가져오기<br>
-  /// [addressId]에 배송지 ID 전달
+  /// [addressId]에 배송지 ID 전달<br>
   /// [fromUpdatedAt]에 이전 페이지의 마지막 배송지 수정 시각 전달, `0` 전달 시 처음부터 조회<br>
   /// [pageSize]에 한 페이지에 포함할 배송지 수 전달(기본값: 10)<br>
   /// <br>
