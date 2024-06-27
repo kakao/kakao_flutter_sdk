@@ -2,17 +2,25 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'access_token_info.g.dart';
 
-/// 토큰 정보 요청 API 응답 클래스
+/// KO: 액세스 토큰 정보
+/// <br>
+/// EN: Access token information
 @JsonSerializable(includeIfNull: false)
 class AccessTokenInfo {
-  /// 해당 access token이 발급된 앱 ID
+  /// KO: 앱 ID
+  /// <br>
+  /// EN: App ID
   @JsonKey(name: 'app_id')
   int appId;
 
-  /// 회원번호
+  /// KO: 회원번호
+  /// <br>
+  /// EN: Service user ID
   int? id;
 
-  /// 해당 access token의 남은 만료시간 (단위: 초)
+  /// KO: 만료 시간(단위: 초)
+  /// <br>
+  /// EN: Remaining expiration time (Unit: second)
   @JsonKey(name: "expires_in")
   int expiresIn;
 

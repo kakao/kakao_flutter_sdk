@@ -4,55 +4,66 @@ import 'package:kakao_flutter_sdk_auth/src/model/oauth_token.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Kakao SDK가 사용하게 될 토큰 저장소 제공자
-///
-/// Kakao SDK는 로그인에 성공하면 이 제공자를 통해 현재 지정된 토큰 저장소에 토큰 저장
-/// 저장된 토큰은 로그인 기반 API 호출 시 자동으로 인증 헤더에 추가됨
-///
-/// [DefaultTokenManager]를 기본 저장소로 사용하며, 토큰을 직접 관리하고 싶은 경우 [TokenManager] 인터페이스를 구현하여 나만의 저장소 설정 가능
-/// 앱 서비스 도중 저장소 구현을 변경하는 경우, 앱 업데이트 사용자를 위하여 기존에 저장되어 있던 토큰 마이그레이션 고려해야 함
-///
-/// ```dart
-/// // 사용자 정의 저장소 설정하기
-/// TokenManagerProvider.instance.manager = MyTokenManager();
-/// ```
+/// KO: 토큰 저장소 설정
+/// <br>
+/// EN: Setting for the token manager
 class TokenManagerProvider {
-  /// 현재 지정된 토큰 저장소
-  /// 기본 값 [DefaultTokenManager]
+  /// KO: 현재 지정된 토큰 저장소, [TokenManager]를 구현한 사용자 정의 토큰 저장소로 변경 가능(기본값: [DefaultTokenManager])
+  /// <br>
+  /// EN: Current set token manager, can be changed to a custom [TokenManager] (Default: [DefaultTokenManager])
   TokenManager manager = DefaultTokenManager();
 
   TokenManagerProvider._();
 
-  /// singleton 객체
   static final instance = TokenManagerProvider._();
 }
 
-/// 카카오 API에 사용되는 액세스 토큰, 리프레시 토큰을 관리하는 추상 클래스
+/// KO: 토큰 저장소의 추상 클래스
+/// <br>
+/// EN: Abstract class of the token manager
 abstract class TokenManager {
-  /// [TokenManager]에 [OAuthToken] 할당
-  /// Redirect 방식 로그인 시 서비스 서버에서 발급받은 토큰을 클라이언트에 할당하기 위한 용도로 사용 가능
+  /// KO: 리다이렉트 방식 로그인으로 서비스 서버에서 발급받은 토큰을 `TokenManager`에 토큰 할당
+  /// <br>
+  /// EN: Set tokens in the `TokenManager` that are issued in the service server using Login through redirection
   Future<void> setToken(OAuthToken token);
 
-  /// 저장되어 있는 [OAuthToken] 반환
+  /// KO: 저장된 토큰 반환
+  /// <br>
+  /// EN: Returns saved tokens
   Future<OAuthToken?> getToken();
 
-  /// 저장되어 있는 [OAuthToken] 객체를 삭제
+  /// KO: 저장된 토큰 삭제
+  /// <br>
+  /// EN: Deletes saved tokens
   Future<void> clear();
 }
 
-/// Kakao SDK에서 기본 제공하는 토큰 저장소 구현체
-///
-/// 기기 고유값을 이용해 토큰을 암호화하고 [SharedPreferences]에 저장함
-/// (Android는 SharedPreferences, iOS는 UserDefaults에 저장함)
+/// KO: 토큰 저장소
+/// <br>
+/// EN: Token manager
 class DefaultTokenManager implements TokenManager {
+  /// @nodoc
   static const tokenKey = "com.kakao.token.OAuthToken";
 
+  /// @nodoc
   static const atKey = "com.kakao.token.AccessToken";
+
+  /// @nodoc
   static const expiresAtKey = "com.kakao.token.AccessToken.ExpiresAt";
+
+  /// @nodoc
   static const rtKey = "com.kakao.token.RefreshToken";
+
+  /// @nodoc
   static const rtExpiresAtKey = "com.kakao.token.RefreshToken.ExpiresAt";
+
+  /// @nodoc
   static const secureModeKey = "com.kakao.token.KakaoSecureMode";
+
+  /// @nodoc
   static const scopesKey = "com.kakao.token.Scopes";
+
+  /// @nodoc
   static const versionKey = "com.kakao.token.version";
 
   static final _instance = DefaultTokenManager._();
@@ -64,6 +75,7 @@ class DefaultTokenManager implements TokenManager {
 
   DefaultTokenManager._();
 
+  /// @nodoc
   factory DefaultTokenManager() {
     return _instance;
   }

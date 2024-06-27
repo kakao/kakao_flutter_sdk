@@ -2,10 +2,14 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'user_id_response.g.dart';
 
-/// 사용자 회원번호 응답 클래스
+/// KO: 사용자 회원번호 응답 클래스
+/// <br>
+/// EN: Class for user ID response
 @JsonSerializable(includeIfNull: false)
 class UserIdResponse {
-  /// 회원번호
+  /// KO: 회원번호
+  /// <br>
+  /// EN: User ID
   int id;
 
   /// @nodoc

@@ -6,24 +6,35 @@ import 'package:kakao_flutter_sdk_template/src/model/content.dart';
 
 part 'commerce_template.g.dart';
 
-/// 기본 템플릿으로 제공되는 커머스 템플릿 클래스
+/// KO: 커머스 메시지용 기본 템플릿
+/// <br>
+/// EN: Default template for commerce messages
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class CommerceTemplate extends DefaultTemplate {
-  /// 메시지의 내용. 텍스트 및 이미지, 링크 정보 포함
+  /// KO: 메시지 콘텐츠
+  /// <br>
+  /// EN: Contents for the message
   final Content content;
 
-  /// 컨텐츠에 대한 가격 정보
+  /// KO: 상품 정보
+  /// <br>
+  /// EN: Product information
   final Commerce commerce;
 
-  /// 버튼 목록. 버튼 타이틀과 링크를 변경하고 싶을때, 버튼 두개를 사용하고 싶을때 사용 (최대 2개)
+  /// KO: 메시지 하단 버튼
+  /// <br>
+  /// EN: Button at the bottom of the message
   final List<Button>? buttons;
 
-  /// 기본 버튼 타이틀(자세히 보기)을 변경하고 싶을 때 설정
-  /// 이 값을 사용하면 클릭 시 이동할 링크는 content 에 입력된 값이 사용됨
+  /// KO: 버튼 문구
+  /// <br>
+  /// EN: Label for the button
   final String? buttonTitle;
 
-  /// "commerce" 고정 값
+  /// KO: 메시지 템플릿 타입, "commerce"로 고정
+  /// <br>
+  /// EN: Type of the message template, fixed as "commerce"
   final String objectType;
 
   /// @nodoc

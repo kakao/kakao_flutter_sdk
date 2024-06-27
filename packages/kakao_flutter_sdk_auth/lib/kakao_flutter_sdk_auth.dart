@@ -1,4 +1,6 @@
-/// Oauth 관련 API 클라이언트를 제공하는 패키지
+/// KO: 카카오 로그인 인증 및 토큰 관리 패키지
+/// <br>
+/// EN: Package for the authentication and token management through Kakao Login
 library kakao_flutter_sdk_auth;
 
 export 'package:kakao_flutter_sdk_auth/src/access_token_interceptor.dart';

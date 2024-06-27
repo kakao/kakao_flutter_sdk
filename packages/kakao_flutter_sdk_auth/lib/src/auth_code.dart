@@ -10,8 +10,11 @@ import 'package:platform/platform.dart';
 
 const MethodChannel _channel = MethodChannel(CommonConstants.methodChannel);
 
-/// Kakao SDK의 카카오 로그인 내부 동작에 사용되는 클라이언트
+/// KO: 카카오 로그인 인증 및 토큰 관리 클라이언트
+/// <br>
+/// EN: Client for the authentication and token management through Kakao Login
 class AuthCodeClient {
+  /// @nodoc
   AuthCodeClient({AuthApi? authApi}) : _kauthApi = authApi ?? AuthApi.instance;
 
   final AuthApi _kauthApi;
@@ -19,7 +22,9 @@ class AuthCodeClient {
 
   static final AuthCodeClient instance = AuthCodeClient();
 
-  /// 사용자가 앱에 로그인할 수 있도록 인가 코드를 요청하는 함수입니다. 인가 코드를 받을 수 있는 서버 개발이 필요합니다.
+  /// KO: 카카오계정으로 로그인: 리다이렉트 방식
+  /// <br>
+  /// EN: Login with Kakao Account through redirection
   Future<String> authorize({
     String? clientId,
     required String redirectUri,
@@ -90,8 +95,9 @@ class AuthCodeClient {
     }
   }
 
-  /// 사용자가 앱에 로그인할 수 있도록 사용자의 디바이스에 설치된 카카오톡을 통해 인가 코드를 요청하는 함수입니다.
-  /// 인가 코드를 받을 수 있는 서버 개발이 필요합니다.
+  /// KO: 카카오톡으로 로그인: 리다이렉트 방식
+  /// <br>
+  /// EN: Login with Kakao Talk through redirection
   Future<String> authorizeWithTalk({
     String? clientId,
     required String redirectUri,
@@ -140,8 +146,9 @@ class AuthCodeClient {
     }
   }
 
-  /// 사용자가 아직 동의하지 않은 개인정보 및 접근권한 동의 항목에 대하여 동의를 요청 화면을 출력하고 인가 코드를 요청하는 함수입니다.
-  /// 인가 코드를 받을 수 있는 서버 개발이 필요합니다.
+  /// KO: 추가 항목 동의 받기
+  /// <br>
+  /// EN: Request additional consent
   Future<String> authorizeWithNewScopes({
     required List<String> scopes,
     required String redirectUri,

@@ -1,4 +1,6 @@
-/// 카카오톡 공유 API 클라이언트를 제공하는 패키지
+/// KO: 카카오톡 공유 API 패키지
+/// <br>
+/// EN: Package for the Kakao Talk Sharing APIs
 library kakao_flutter_sdk_share;
 
 export 'package:kakao_flutter_sdk_share/src/model/image_info.dart';

@@ -2,21 +2,31 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'channel.g.dart';
 
-/// 카카오톡 채널 추가상태 정보
+/// KO: 카카오톡 채널 관계
+/// <br>
+/// EN: Relationship with the Kakao Talk Channel
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class Channel {
-  /// 채널의 uuid
+  /// KO: 카카오톡 채널 고유 ID
+  /// <br>
+  /// EN: Kakao Talk Channel unique ID
   @JsonKey(name: "channel_uuid")
   String uuid;
 
-  /// encoded channel public id (ex. https://pf.kakao.com/${channelId})
+  /// KO: 카카오톡 채널 프로필 ID
+  /// <br>
+  /// EN: Kakao Talk Channel profile ID
   @JsonKey(name: "channel_public_id")
   String encodedId;
 
-  /// 사용자의 채널 추가 상태
+  /// KO: 카카오톡 채널 관계
+  /// <br>
+  /// EN: Relationship with the Kakao Talk Channel
   String relation;
 
-  /// 마지막 상태 변경 일시 (현재는 ADDED 상태의 친구 추가시각만 의미)
+  /// KO: 최종 변경 일시
+  /// <br>
+  /// EN: Last update time
   DateTime? updatedAt;
 
   /// @nodoc

@@ -15,19 +15,23 @@ import 'package:kakao_flutter_sdk_talk/src/model/talk_profile.dart';
 import 'package:kakao_flutter_sdk_template/kakao_flutter_sdk_template.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
-/// 카카오톡 API 호출을 담당하는 클라이언트
+/// KO: 카카오톡 채널, 카카오톡 소셜, 카카오톡 메시지 API 클라이언트
+/// <br>
+/// EN: Client for the Kakao Talk Channel, Kakao Talk Social, Kakao Talk Message APIs
 class TalkApi {
-  TalkApi(this._dio);
-
   final Dio _dio;
 
   static const MethodChannel _channel =
       MethodChannel(CommonConstants.methodChannel);
 
-  /// 간편한 API 호출을 위해 기본 제공되는 singleton 객체
   static final TalkApi instance = TalkApi(AuthApiFactory.authApi);
 
-  /// 카카오톡 프로필 가져오기
+  /// @nodoc
+  TalkApi(this._dio);
+
+  /// KO: 카카오톡 프로필 가져오기
+  /// <br>
+  /// EN: Retrieve Kakao Talk profile
   Future<TalkProfile> profile() async {
     return ApiFactory.handleApiError(() async {
       Response response = await _dio.get(Constants.profilePath,
@@ -36,9 +40,11 @@ class TalkApi {
     });
   }
 
-  /// 카카오디벨로퍼스에서 생성한 서비스만의 커스텀 메시지 템플릿을 사용하여, 카카오톡의 나와의 채팅방으로 메시지 전송
-  ///
-  /// 템플릿을 생성하는 방법은 [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/ko/message/message-template) 참고
+  /// KO: 나에게 사용자 정의 템플릿으로 메시지 보내기<br>
+  /// [templateId]에 메시지 템플릿 ID 전달<br>
+  /// <br>
+  /// EN: Send message with custom template to me<br>
+  /// Pass the message template ID to [templateId]
   Future<void> sendCustomMemo({
     required int templateId,
     Map<String, String>? templateArgs,
@@ -50,13 +56,25 @@ class TalkApi {
     return _memo("", params);
   }
 
-  /// 기본 템플릿을 이용하여, 카카오톡의 나와의 채팅방으로 메시지 전송
+  /// KO: 나에게 기본 템플릿으로 메시지 보내기<br>
+  /// [template]에 메시지 템플릿 객체 전달<br>
+  /// <br>
+  /// EN: Send message with default template to me<br>
+  /// Pass an object of a message template to [template]
   Future<void> sendDefaultMemo(DefaultTemplate template) async {
     return _memo(Constants.defaultPath,
         {Constants.templateObject: jsonEncode(template)});
   }
 
-  /// 지정된 URL 을 스크랩하여, 카카오톡의 나와의 채팅방으로 메시지 전송
+  /// KO: 나에게 스크랩 메시지 보내기<br>
+  /// [url]에 스크랩할 URL 전달<br>
+  /// [templateId]에 메시지 템플릿 ID 전달<br>
+  /// [templateArgs]에 사용자 인자 전달<br>
+  /// <br>
+  /// EN: Send scrape message to me<br>
+  /// Pass the URL to scrape to [url]<br>
+  /// Pass the message template ID to [templateId]<br>
+  /// Pass the user arguments to [templateArgs]
   Future<void> sendScrapMemo({
     required String url,
     int? templateId,
@@ -79,7 +97,11 @@ class TalkApi {
     });
   }
 
-  /// 사용자가 특정 카카오톡 채널을 추가했는지 확인
+  /// KO: 카카오톡 채널 관계 확인하기<br>
+  /// [publicIds]에 카카오톡 채널 프로필 ID 목록 전달<br>
+  /// <br>
+  /// EN: Check Kakao Talk Channel relationship<br>
+  /// Pass a list of Kakao Talk Channel profile IDs to [publicIds]
   Future<Channels> channels([List<String>? publicIds]) async {
     var queryParameters = {
       Constants.channelIds: publicIds?.join(','),
@@ -96,7 +118,19 @@ class TalkApi {
     });
   }
 
-  /// 카카오톡 친구 목록 가져오기
+  /// KO: 카카오톡 친구 목록 가져오기<br>
+  /// [offset]으로 친구 목록 시작 지점 변경<br>
+  /// [limit]로 페이지당 결과 수 변경<br>
+  /// [friendOrder]로 정렬 방식 변경<br>
+  /// [order]로 정렬 방식 변경<br>
+  /// [context]로 친구 목록 조회 설정<br>
+  /// <br>
+  /// EN: Retrieve list of friends<br>
+  /// Change the start point of the friend list with [offset]<br>
+  /// Change the number of results in a page with [limit]<br>
+  /// Change the method to sort the friend list with [friendOrder]<br>
+  /// Change the sorting method with [order]<br>
+  /// Set Context for retrieving friend list with [context]
   Future<Friends> friends({
     int? offset,
     int? limit,
@@ -123,9 +157,15 @@ class TalkApi {
     });
   }
 
-  /// 카카오디벨로퍼스에서 생성한 서비스만의 커스텀 메시지 템플릿을 사용하여, 조회한 친구를 대상으로 카카오톡으로 메시지 전송
-  ///
-  /// 템플릿을 생성하는 방법은 [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/ko/message/message-template) 참고
+  /// KO: 친구에게 사용자 정의 템플릿으로 메시지 보내기<br>
+  /// [receiverUuids]에 수신자 UUID 전달<br>
+  /// [templateId]에 메시지 템플릿 ID 전달<br>
+  /// [templateArgs]에 사용자 인자 전달<br>
+  /// <br>
+  /// EN: Send message with custom template to friends<br>
+  /// Pass the receiver UUIDs to [receiverUuids]<br>
+  /// Pass the message template ID to [templateId]<br>
+  /// Pass the user arguments to [templateArgs]
   Future<MessageSendResult> sendCustomMessage({
     required List<String> receiverUuids,
     required int templateId,
@@ -140,7 +180,13 @@ class TalkApi {
     return _message("", params);
   }
 
-  /// 기본 템플릿을 이용하여, 조회한 친구를 대상으로 카카오톡으로 메시지 전송
+  /// KO: 친구에게 기본 템플릿으로 메시지 보내기<br>
+  /// [receiverUuids]에 수신자 UUID 전달<br>
+  /// [template]에 메시지 템플릿 객체 전달<br>
+  /// <br>
+  /// EN: Send message with default template to friends<br>
+  /// Pass the receiver UUIDs to [receiverUuids]<br>
+  /// Pass an object of a message template to [template]
   Future<MessageSendResult> sendDefaultMessage({
     required List<String> receiverUuids,
     required DefaultTemplate template,
@@ -152,9 +198,17 @@ class TalkApi {
     return _message(Constants.defaultPath, params);
   }
 
-  /// 지정된 URL 을 스크랩하여, 조회한 친구를 대상으로 카카오톡으로 메시지 전송
-  ///
-  /// 스크랩 커스텀 템플릿 가이드를 참고하여 템플릿을 직접 만들고 스크랩 메시지 전송에 이용 가능
+  /// KO: 친구에게 스크랩 메시지 보내기<br>
+  /// [receiverUuids]에 수신자 UUID 전달<br>
+  /// [url]에 스크랩할 URL 전달<br>
+  /// [templateId]에 메시지 템플릿 ID 전달<br>
+  /// [templateArgs]에 사용자 인자 전달<br>
+  /// <br>
+  /// EN: Send scrape message to friends<br>
+  /// Pass the receiver UUIDs to [receiverUuids]<br>
+  /// Pass the URL to scrap to [url]<br>
+  /// Pass the message template ID to [templateId]<br>
+  /// Pass the user arguments to [templateArgs]
   Future<MessageSendResult> sendScrapMessage({
     required List<String> receiverUuids,
     required String url,
@@ -171,10 +225,9 @@ class TalkApi {
     return _message(Constants.scrapPath, params);
   }
 
-  /// 카카오톡 채널 간편 추가하기.
-  ///
-  /// [channelPublicId]는 카카오톡 채널 홈 URL 에 들어간 {_영문}으로 구성된 고유 아이디
-  /// 홈 URL 은 카카오톡 채널 관리자센터 > 관리 > 상세설정 페이지에서 확인.
+  /// KO: 카카오톡 채널 간편 추가하기
+  /// <br>
+  /// EN: Follow Kakao Talk Channel
   Future<FollowChannelResult> followChannel(
     final String channelPublicId,
   ) async {
@@ -194,10 +247,11 @@ class TalkApi {
     }
   }
 
-  /// 카카오톡 채널 추가
-  ///
-  /// [channelPublicId]는 카카오톡 채널 홈 URL 에 들어간 {_영문}으로 구성된 고유 아이디
-  /// 홈 URL 은 카카오톡 채널 관리자센터 > 관리 > 상세설정 페이지에서 확인
+  /// KO: 카카오톡 채널 친구 추가하기<br>
+  /// [channelPublicId]에 카카오톡 채널 프로필 ID 전달<br>
+  /// <br>
+  /// EN: Add Kakao Talk Channel<br>
+  /// Pass Kakao Talk Channel profile ID to [channelPublicId]
   Future addChannel(final String channelPublicId) async {
     if (!await isKakaoTalkInstalled()) {
       throw KakaoClientException(
@@ -220,10 +274,11 @@ class TalkApi {
     });
   }
 
-  /// 카카오톡 채널 1:1 대화방 실행
-  ///
-  /// [channelPublicId]는 카카오톡 채널 홈 URL 에 들어간 {_영문}으로 구성된 고유 아이디
-  /// 홈 URL 은 카카오톡 채널 관리자센터 > 관리 > 상세설정 페이지에서 확인
+  /// KO: 카카오톡 채널 채팅하기<br>
+  /// [channelPublicId]에 카카오톡 채널 프로필 ID 전달<br>
+  /// <br>
+  /// EN: Start Kakao Talk Channel chat<br>
+  /// Pass Kakao Talk Channel profile ID to [channelPublicId]
   Future chatChannel(final String channelPublicId) async {
     if (!await isKakaoTalkInstalled()) {
       throw KakaoClientException(
@@ -248,11 +303,11 @@ class TalkApi {
     await _channel.invokeMethod('channelChat', args);
   }
 
-  /// 카카오톡 채널을 추가하기 위한 URL 반환. URL 을 브라우저나 웹뷰에서 로드하면 브릿지 웹페이지를 통해 카카오톡 실행
-  ///
-  /// [channelPublicId]는 카카오톡 채널 홈 URL 에 들어간 {_영문}으로 구성된 고유 아이디
-  /// 홈 URL 은 카카오톡 채널 관리자센터 > 관리 > 상세설정 페이지에서 확인
-  ///
+  /// KO: 카카오톡 채널 추가 페이지 URL 반환<br>
+  /// [channelPublicId]에 카카오톡 채널 프로필 ID 전달<br>
+  /// <br>
+  /// EN: Returns a URL to add a Kakao Talk Channel as a friend<br>
+  /// Pass Kakao Talk Channel profile ID to [channelPublicId]
   Future<Uri> addChannelUrl(final String channelPublicId) async {
     return Uri(
         scheme: Constants.scheme,
@@ -261,10 +316,11 @@ class TalkApi {
         queryParameters: await _channelBaseParams());
   }
 
-  /// 카카오톡 채널 1:1 대화방 실행을 위한 URL 반환. URL 을 브라우저나 웹뷰에서 로드하면 브릿지 웹페이지를 통해 카카오톡 실행
-  ///
-  /// [channelPublicId]는 카카오톡 채널 홈 URL 에 들어간 {_영문}으로 구성된 고유 아이디
-  /// 홈 URL 은 카카오톡 채널 관리자센터 > 관리 > 상세설정 페이지에서 확인
+  /// KO: 카카오톡 채널 채팅 페이지 URL 반환<br>
+  /// [channelPublicId]에 카카오톡 채널 프로필 ID 전달<br>
+  /// <br>
+  /// EN: Returns a URL to start a chat with a Kakao Talk Channel<br>
+  /// Pass Kakao Talk Channel profile ID to [channelPublicId]
   Future<Uri> chatChannelUrl(final String channelPublicId) async {
     return Uri(
         scheme: Constants.scheme,

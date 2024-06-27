@@ -2,19 +2,29 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'profile.g.dart';
 
-/// 카카오계정에 등록된 사용자의 프로필 정보 제공
+/// KO: 프로필 정보
+/// <br>
+/// EN: Profile information
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class Profile {
-  /// 사용자의 닉네임
+  /// KO: 닉네임
+  /// <br>
+  /// EN: Nickname
   final String? nickname;
 
-  /// 카카오계정에 등록된 프로필 이미지의 썸네일 규격 이미지 URL
+  /// KO: 프로필 미리보기 이미지 URL
+  /// <br>
+  /// EN: Thumbnail image URL
   final String? thumbnailImageUrl;
 
-  /// 카카오계정에 등록된 프로필 이미지 URL
+  /// KO: 프로필 사진 URL
+  /// <br>
+  /// EN: Profile image URL
   final String? profileImageUrl;
 
-  /// 카카오계정에 등록된 프로필 이미지가 기본이미지인지 여부
+  /// KO: 프로필 사진 URL이 기본 프로필 사진 URL인지 여부
+  /// <br>
+  /// EN: Whether the default image is used for profile image
   final bool? isDefaultImage;
 
   /// @nodoc

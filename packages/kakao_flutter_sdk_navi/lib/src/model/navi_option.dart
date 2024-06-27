@@ -2,34 +2,52 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'navi_option.g.dart';
 
-/// 길안내 옵션
+/// KO: 경로 검색 옵션
+/// <br>
+/// EN: Options for searching the route
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class NaviOption {
-  /// 사용할 좌표계
+  /// KO: 좌표계 타입
+  /// <br>
+  /// EN: Type of the coordinate system
   final CoordType? coordType;
 
-  /// 차종
+  /// KO: 차종(기본값: 카카오내비 앱에 설정된 차종)
+  /// <br>
+  /// EN: Vehicle type (Default: vehicle type set on the Kakao Navi app)
   final VehicleType? vehicleType;
 
-  /// 경로 옵션
+  /// KO: 경로 최적화 기준
+  /// <br>
+  /// EN: Criteria to optimize the route
   @JsonKey(name: "rpoption")
   final RpOption? rpOption;
 
-  /// 전체 경로정보 보기 사용여부
+  /// KO: 전체 경로 정보 보기 사용 여부
+  /// <br>
+  /// EN: Whether to view the full route information
   final bool? routeInfo;
 
-  /// 시작 위치의 경도 좌표
+  /// KO: 시작 위치의 경도 좌표
+  /// <br>
+  /// EN: Longitude coordinate of the start point
   @JsonKey(name: "s_x")
   final String? startX;
 
-  /// 시작 위치의 위도 좌표
+  /// KO: 시작 위치의 위도 좌표
+  /// <br>
+  /// EN: Latitude coordinate of the start point
   @JsonKey(name: "s_y")
   final String? startY;
 
-  /// 시작 차량 각도 (0 ~ 359)
+  /// KO: 시작 차량 각도(최소: 0, 최대: 359)
+  /// <br>
+  /// EN: Angle of the vehicle at the start point (Minimum: 0, Maximum: 359)
   final int? startAngle;
 
-  /// 길안내 종료(전체 경로보기시 종료) 후 호출 될 URI.
+  /// KO: 전체 경로 보기 종료 시 호출될 URI
+  /// <br>
+  /// EN: URI to be called upon exiting the full route view
   final String? returnUri;
 
   /// @nodoc
@@ -56,77 +74,117 @@ class NaviOption {
   String toString() => toJson().toString();
 }
 
-/// 좌표계 타입 선택
+/// KO: 좌표계 타입
+/// <br>
+/// EN: Type of the coordinate system
 enum CoordType {
-  /// World Geodetic System 84 좌표계
+  /// KO: World Geodetic System(WGS) 84
+  /// <br>
+  /// EN: World Geodetic System(WGS) 84
   wgs84,
 
-  /// Katec 좌표계 (서버 기본값)
+  /// KO: Katec, 서버 기본값
+  /// <br>
+  /// EN: Katec, the default value on the server side
   katec
 }
 
-/// 안내할 경로를 최적화하기 위한 옵션
+/// KO: 경로 최적화 기준
+/// <br>
+/// EN: Criteria to optimize the route
 enum RpOption {
-  /// 빠른 길
+  /// KO: 가장 빠른 경로
+  /// <br>
+  /// EN: Fastest route
   @JsonValue("1")
   fast,
 
-  /// 무료 도로
+  /// KO: 무료 도로
+  /// <br>
+  /// EN: Free route
   @JsonValue("2")
   free,
 
-  /// 최단거리
+  /// KO: 가장 짧은 경로
+  /// <br>
+  /// EN: Shortest route
   @JsonValue("3")
   shortest,
 
-  /// 자동차 전용 제외
+  /// KO: 자동차 전용 도로 제외
+  /// <br>
+  /// EN: Exclude motorway
   @JsonValue("4")
   noAuto,
 
-  /// 큰 길 우선
+  /// KO: 큰길 우선
+  /// <br>
+  /// EN: Wide road first
   @JsonValue("5")
   wide,
 
-  /// 고속도로 우선
+  /// KO: 고속도로 우선
+  /// <br>
+  /// EN: Highway first
   @JsonValue("6")
   highway,
 
-  ///일반도로 우선
+  /// KO: 일반 도로 우선
+  /// <br>
+  /// EN: Normal road first
   @JsonValue("8")
   normal,
 
-  /// 추천 경로 (기본값)
+  /// KO: 추천 경로(기본값)
+  /// <br>
+  /// EN: Recommended route (Default)
   @JsonValue("100")
   recommended
 }
 
-/// 길안내를 사용할 차종(1~7) 선택
+/// KO: 차종
+/// <br>
+/// EN: Vehicle type
 enum VehicleType {
-  /// 1종 (승용차/소형승합차/소형화물화)
+  /// KO: 1종, 승용차, 소형승합차, 소형화물차
+  /// <br>
+  /// EN: Class 1, passenger car, small van, small truck
   @JsonValue("1")
   first,
 
-  ///2종 (중형승합차/중형화물차)
+  /// KO: 2종, 중형승합차, 중형화물차
+  /// <br>
+  /// EN: Class 2, mid-size van, mid-size truck
   @JsonValue("2")
   second,
 
-  /// 3종 (대형승합차/2축 대형화물차)
+  /// KO: 3종, 대형승합차, 2축 대형화물차
+  /// <br>
+  /// EN: Class 3, large van, 2-axis large truck
   @JsonValue("3")
   third,
 
-  /// 4종 (3축 대형화물차)
+  /// KO: 4종, 3축 대형화물차
+  /// <br>
+  /// EN: Class 4, 3-axis large truck
   @JsonValue("4")
   fourth,
 
-  /// 5종 (4축이상 특수화물차)
+  /// KO: 5종, 4축 이상 특수화물차
+  /// <br>
+  /// EN: Class 5, special truck with four axes or more
   @JsonValue("5")
   fifth,
 
-  /// 6종 (경차)
+  /// KO: 6종, 경차
+  /// <br>
+  /// EN: Class 6, compact car
   @JsonValue("6")
   sixth,
 
-  ///이륜차
+  /// KO: 이륜차
+  /// <br>
+  /// EN: Two-wheeled vehicle
   @JsonValue("7")
   twoWheel
 }

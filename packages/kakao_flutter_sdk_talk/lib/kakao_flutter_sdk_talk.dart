@@ -1,5 +1,6 @@
-/// 카카오톡 API 클라이언트를 제공하는 패키지
-/// 카카오톡 친구 및 메시지 기능 제공
+/// KO: 카카오톡 채널, 카카오톡 소셜, 카카오톡 메시지 API 패키지
+/// <br>
+/// EN: Package for the Kakao Talk Channel, Kakao Talk Social, Kakao Talk Message APIs
 library kakao_flutter_sdk_talk;
 
 export 'package:kakao_flutter_sdk_talk/src/model/channel.dart';

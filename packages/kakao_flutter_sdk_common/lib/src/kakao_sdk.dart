@@ -4,22 +4,25 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 
-/// Kakao SDK의 싱글턴 Context
+/// KO: 주요 설정 및 초기화 클래스
+/// <br>
+/// EN: Class for major settings and initializing
 class KakaoSdk {
   KakaoSdk._();
 
   static const MethodChannel _channel =
       MethodChannel(CommonConstants.methodChannel);
 
-  /// Kakao Native App Key
-  /// SDK를 사용하기 전에 반드시 초기화 필요
   static late String _nativeKey;
   static late String _jsKey;
 
+  /// @nodoc
   static String sdkVersion = "1.9.3";
 
+  /// @nodoc
   static String get appKey => kIsWeb ? _jsKey : _nativeKey;
 
+  /// @nodoc
   static bool logging = false;
 
   // ServerHosts used by SDK.
@@ -38,56 +41,58 @@ class KakaoSdk {
   //  String get sharer => "sandbox-${super.sharer}";
   // }
   // ```
+  /// @nodoc
   static late ServerHosts hosts;
 
+  /// @nodoc
   static late PlatformSupport platforms;
 
   // Origin value in KA header.
   //
   // Bundle id and Android keyhash for iOS and Android platform, respectively.
+  /// @nodoc
   static Future<String> get origin async {
     final String origin =
         await _channel.invokeMethod(CommonConstants.getOrigin);
     return origin;
   }
 
-  //
-  // KA (Kakao Agent) header.
-  //
-  // This header is constructed by SDK for light platform validation and statistics purpose.
-  //
-  // ### Android example
-  // ```
-  // sdk/0.1.0 sdk_type/flutter os/android-28 lang/ko-KR origin/R0tsaOaVqq4/xTZAEihCkrXS+6M= device/SM-G973N android_pkg/com.kakao.sdk.KakaoSample app_ver/0.1.0
-  // ```
-  //
-  // ### iOS example
-  // ```
-  // sdk/0.1.0 sdk_type/flutter os/ios-12.4 lang/en res/414.0x896.0 device/iPhone origin/com.kakao.sdk.KakaoSample app_ver/0.1.0
-  // ```
+  /// KO: KA 헤더 정보
+  /// <br>
+  /// EN: KA header information
   static Future<String> get kaHeader async {
     final String kaHeader =
         await _channel.invokeMethod(CommonConstants.getKaHeader);
     return "sdk/$sdkVersion sdk_type/flutter $kaHeader";
   }
 
+  /// @nodoc
   static Future<String> get appVer async {
     return await _channel.invokeMethod(CommonConstants.appVer);
   }
 
+  /// @nodoc
   static Future<String> get packageName async {
     return await _channel.invokeMethod(CommonConstants.packageName);
   }
 
+  /// KO: 리다이렉트 URI
+  /// <br>
+  /// EN: Redirect URI
   static String get redirectUri => "$customScheme://oauth";
 
   static late String _customScheme;
 
+  /// @nodoc
   static String get customScheme => _customScheme;
 
-  /// [내 애플리케이션]에서 확인한 앱 키로 Flutter SDK 초기화, 서비스 환경별 앱 키 사용
-  /// 웹: javaScriptAppKey에 JavaScript 키 전달
-  /// 앱: nativeAppKey에 네이티브 앱 키 전달
+  /// KO: Kakao SDK 초기화<br>
+  /// 앱별 커스텀 URL 스킴은 [customScheme]으로 등록<br>
+  /// [loggingEnabled]로 Kakao SDK 내부 로그 기능 활성화 여부 설정<br>
+  /// <br>
+  /// EN: Initializes Kakao SDK<br>
+  /// Register custom URL scheme for each app as [customScheme]<br>
+  /// Set Whether to enable the internal log of the Kakao SDK with [loggingEnabled]
   static void init({
     String? nativeAppKey,
     String? javaScriptAppKey,

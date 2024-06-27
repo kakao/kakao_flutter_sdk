@@ -3,24 +3,40 @@ import 'package:kakao_flutter_sdk_template/src/model/link.dart';
 
 part 'content.g.dart';
 
-/// 콘텐츠의 내용을 담고 있는 오브젝트
+/// KO: 메시지 콘텐츠
+/// <br>
+/// EN: Contents for the message
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class Content {
-  /// 콘텐츠의 타이틀
+  /// KO: 제목
+  /// <br>
+  /// EN: Title
   final String? title;
 
-  /// 콘텐츠의 이미지 URL
+  /// KO: 바로가기 URL
+  /// <br>
+  /// EN: Link URL
   final Uri? imageUrl;
 
-  /// 콘텐츠 클릭 시 이동할 링크 정보
+  /// KO: 바로가기 URL
+  /// <br>
+  /// EN: Link URL
   final Link link;
+
+  /// KO: 설명
+  /// <br>
+  /// EN: Description
   final String? description;
 
-  /// 콘텐츠의 이미지 너비 (단위: 픽셀)
+  /// KO: 이미지 너비(단위: 픽셀)
+  /// <br>
+  /// EN: Image width (Unit: Pixel)
   final int? imageWidth;
 
-  /// 콘텐츠의 이미지 높이 (단위: 픽셀)
+  /// KO: 이미지 높이(단위: 픽셀)
+  /// <br>
+  /// EN: Image height (Unit: Pixel)
   final int? imageHeight;
 
   /// @nodoc

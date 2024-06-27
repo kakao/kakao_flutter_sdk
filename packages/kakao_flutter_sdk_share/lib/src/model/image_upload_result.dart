@@ -3,10 +3,14 @@ import 'package:kakao_flutter_sdk_share/src/model/image_infos.dart';
 
 part 'image_upload_result.g.dart';
 
-/// 이미지 업로드,스크랩 요청 결과
+/// KO: 이미지 업로드 결과
+/// <br>
+/// EN: Image upload result
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class ImageUploadResult {
-  /// 업로드된 이미지 정보
+  /// KO: 이미지 정보 목록
+  /// <br>
+  /// EN: List of image information
   final ImageInfos infos;
 
   /// @nodoc

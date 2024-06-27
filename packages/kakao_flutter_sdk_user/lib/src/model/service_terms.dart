@@ -2,22 +2,34 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'service_terms.g.dart';
 
-/// 3rd party 서비스 약관 정보 클래스
+/// KO: 서비스 약관 정보
+/// <br>
+/// EN: Service terms information
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class ServiceTerms {
-  /// 3rd 에서 설정한 서비스 약관의 tag
+  /// KO: 태그
+  /// <br>
+  /// EN: Tag
   String tag;
 
-  /// 필수 동의 여부
+  /// KO: 필수 동의 여부
+  /// <br>
+  /// EN: Whether consent is required
   bool required;
 
-  /// 동의 여부
+  /// KO: 동의 여부
+  /// <br>
+  /// EN: The consent status of the service terms
   bool agreed;
 
-  /// 철회 가능 여부
+  /// KO: 철회 가능 여부
+  /// <br>
+  /// EN: Whether consent is revocable
   bool revocable;
 
-  /// 최근 동의 시각
+  /// KO: 마지막으로 동의한 시간
+  /// <br>
+  /// EN: The last time the user agreed to the scope
   DateTime? agreedAt;
 
   /// @nodoc

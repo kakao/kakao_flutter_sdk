@@ -2,22 +2,34 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'image_info.g.dart';
 
-/// 업로드된 개별 이미지 정보
+/// KO: 이미지 정보
+/// <br>
+/// EN: Image information
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class ImageInfo {
-  /// 업로드 된 이미지의 URL
+  /// KO: 이미지 URL
+  /// <br>
+  /// EN: Image URL
   final String url;
 
-  /// 업로드 된 이미지의 Content-Type
+  /// KO: 이미지 포맷
+  /// <br>
+  /// EN: Image format
   final String contentType;
 
-  /// 업로드 된 이미지의 용량 (단위: 바이트)
+  /// KO: 이미지 파일 크기
+  /// <br>
+  /// EN: Image file size
   final int length;
 
-  /// 업로드 된 이미지의 너비 (단위: 픽셀)
+  /// KO: 이미지 너비
+  /// <br>
+  /// EN: Image width
   final int width;
 
-  /// 업로드 된 이미지의 높이 (단위: 픽셀)
+  /// KO: 이미지 높이
+  /// <br>
+  /// EN: Image height
   final int height;
 
   /// @nodoc

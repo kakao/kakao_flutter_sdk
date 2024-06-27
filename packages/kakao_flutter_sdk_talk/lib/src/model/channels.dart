@@ -3,14 +3,20 @@ import 'package:kakao_flutter_sdk_talk/src/model/channel.dart';
 
 part 'channels.g.dart';
 
-/// 카카오톡 채널 추가상태 조회 API 응답 클래스
+/// KO: 카카오톡 채널 관계 목록
+/// <br>
+/// EN: List of the Kakao Talk Channel relationship
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class Channels {
-  /// 회원번호
+  /// KO: 회원번호
+  /// <br>
+  /// EN: Service user ID
   int? userId;
 
-  /// 사용자의 채널 추가상태 목록
+  /// KO: 카카오톡 채널 관계 목록
+  /// <br>
+  /// EN: List of the Kakao Talk Channel relationship
   List<Channel>? channels;
 
   /// @nodoc

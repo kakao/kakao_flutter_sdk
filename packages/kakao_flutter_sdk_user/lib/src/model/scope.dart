@@ -2,30 +2,45 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'scope.g.dart';
 
-/// 동의 항목별 정보
+/// KO: 동의항목 정보
+/// <br>
+/// EN: Scope information
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class Scope {
-  /// 동의항목 ID
+  /// KO: 사용자 동의 화면에 출력되는 동의항목의 이름 또는 설명
+  /// <br>
+  /// EN: Name or description of the scope displayed on the Consent screen.
   final String id;
 
-  /// 사용자 동의 화면에 출력되는 동의 항목 이름 또는 설명
+  /// KO: 사용자 동의 화면에 출력되는 동의항목의 이름 또는 설명
+  /// <br>
+  /// EN: Name or description of the scope displayed on the Consent screen.
   final String displayName;
 
-  /// 동의 항목 타입 PRIVACY(개인정보 보호 동의 항목) / SERVICE(접근권한 관리 동의 항목) 중 하나
+  /// KO: 동의항목 타입(PRIVACY: 개인정보 보호 동의 항목 | SERVICE: 접근권한 관리 동의 항목)
+  /// <br>
+  /// EN: Type of the scope (PRIVACY: for personal information | SERVICE: for permission)
   final ScopeType type;
 
-  /// 동의 항목의 현재 사용 여부. 사용자가 동의했으나 현재 앱에 설정되어 있지 않은 동의 항목의 경우 false
+  /// KO: 동의항목 사용 여부
+  /// <br>
+  /// EN: Whether your app is using the scope
   final bool using;
 
-  /// 카카오가 관리하지 않는 위임 동의 항목인지 여부. 현재 사용 중인 동의 항목이고, 위임 동의 항목인 경우에만 응답에 포함
+  /// KO: 카카오가 관리하지 않는 위임 동의항목인지 여부, 현재 사용 중인 동의항목만 응답에 포함
+  /// <br>
+  /// EN: The consent status of the service terms
   final bool? delegated;
 
-  /// 사용자 동의 여부
+  /// KO: 동의 여부
+  /// <br>
+  /// EN: The consent status of the service terms
   final bool agreed;
 
-  /// 동의 항목의 동의 철회 가능 여부
-  /// 사용자가 동의한 동의 항목인 경우에만 응답에 포함
+  /// KO: 동의 철회 가능 여부
+  /// <br>
+  /// EN: Whether the scope can be revoked
   final bool? revocable;
 
   /// @nodoc
@@ -43,13 +58,19 @@ class Scope {
   String toString() => toJson().toString();
 }
 
-/// 동의 항목 타입
+/// KO: 동의항목 타입
+/// <br>
+/// EN: Scope type
 enum ScopeType {
-  /// 개인정보 보호 동의 항목
+  /// KO: 개인정보 보호 동의항목
+  /// <br>
+  /// EN: Scope for personal information
   @JsonValue("PRIVACY")
   privacy,
 
-  /// 접근권한 관리 동의 항목
+  /// KO: 접근권한 관리 동의항목
+  /// <br>
+  /// EN: Scope for permission
   @JsonValue("SERVICE")
   service
 }

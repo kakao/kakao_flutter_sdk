@@ -9,17 +9,27 @@ import 'package:kakao_flutter_sdk_share/src/model/sharing_result.dart';
 import 'package:kakao_flutter_sdk_share/src/share_api.dart';
 import 'package:kakao_flutter_sdk_template/kakao_flutter_sdk_template.dart';
 
-/// 카카오톡 공유를 웹으로 제공하는 클라이언트
+/// KO: 카카오톡 공유 API 클라이언트, 웹 공유 기능 제공
+/// <br>
+/// EN: Client for the Kakao Talk Sharing APIs, provides sharing features for the web
 class WebSharerClient {
-  ShareApi api;
+  /// @nodoc
+  final ShareApi api;
 
-  WebSharerClient(this.api);
-
-  /// 간편한 API 호출을 위해 기본 제공되는 singleton 객체
   static final WebSharerClient instance = WebSharerClient(ShareApi.instance);
 
-  /// 카카오디벨로퍼스에서 생성한 메시지 템플릿을 웹으로 공유
-  /// 템플릿을 생성하는 방법은 [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/ko/message/message-template) 참고
+  /// @nodoc
+  WebSharerClient(this.api);
+
+  /// KO: 사용자 정의 템플릿을 카카오톡으로 공유하기 위한 URL 생성<br>
+  /// [templateId]에 사용자 정의 템플릿 ID 전달<br>
+  /// [templateArgs]에 사용자 인자 키와 값 전달<br>
+  /// [serverCallbackArgs]에 카카오톡 공유 전송 성공 알림에 포함할 키와 값 전달<br>
+  /// <br>
+  /// EN: Creates a URL to share a custom template via Kakao Talk<br>
+  /// Pass the custom template ID to [templateId]<br>
+  /// Pass the keys and values of the user argument to [templateArgs]<br>
+  /// Pass the keys and values for the Kakao Talk Sharing success callback to [serverCallbackArgs]
   Future<Uri> makeCustomUrl({
     required int templateId,
     Map<String, String>? templateArgs,
@@ -30,7 +40,13 @@ class WebSharerClient {
         serverCallbackArgs: serverCallbackArgs);
   }
 
-  /// 기본 템플릿을 웹으로 공유
+  /// KO: 기본 템플릿을 카카오톡으로 공유하기 위한 URL 생성<br>
+  /// [template]에 기본 템플릿 객체 전달<br>
+  /// [serverCallbackArgs]에 카카오톡 공유 전송 성공 알림에 포함할 키와 값 전달<br>
+  /// <br>
+  /// EN: Creates a URL to share a default template via Kakao Talk<br>
+  /// Pass the default template object to [template]<br>
+  /// Pass the keys and values for the Kakao Talk Sharing success callback to [serverCallbackArgs]
   Future<Uri> makeDefaultUrl({
     required DefaultTemplate template,
     Map<String, String>? serverCallbackArgs,
@@ -40,8 +56,17 @@ class WebSharerClient {
         serverCallbackArgs: serverCallbackArgs);
   }
 
-  /// 원격 이미지를 카카오톡 공유 컨텐츠 이미지로 활용하기 위해 카카오 이미지 서버로 업로드
-  /// 지정된 URL 을 스크랩하여 만들어진 템플릿을 웹으로 공유
+  /// KO: 스크랩 정보로 구성된 메시지 템플릿을 카카오톡으로 공유하기 위한 URL 생성<br>
+  /// [url]에 스크랩할 URL 전달<br>
+  /// [templateId]에 사용자 정의 템플릿 ID 전달<br>
+  /// [templateArgs]에 사용자 인자 키와 값 전달<br>
+  /// [serverCallbackArgs]에 카카오톡 공유 전송 성공 알림에 포함할 키와 값 전달<br>
+  /// <br>
+  /// EN: Creates a URL to share a scrape message via Kakao Talk<br>
+  /// Pass the URL to scrape [url]<br>
+  /// Pass the custom template ID to [templateId]<br>
+  /// Pass the keys and values of the user argument to [templateArgs]<br>
+  /// Pass the keys and values for the Kakao Talk Sharing success callback to [serverCallbackArgs]
   Future<Uri> makeScrapUrl({
     required String url,
     int? templateId,
@@ -54,7 +79,13 @@ class WebSharerClient {
         serverCallbackArgs: serverCallbackArgs);
   }
 
-  /// 로컬 이미지를 카카오톡 공유 컨텐츠 이미지로 활용하기 위해 카카오 이미지 서버로 업로드
+  /// KO: 이미지 업로드하기<br>
+  /// [image]에 이미지 파일 전달<br>
+  /// [secureResource]로 이미지 URL을 HTTPS로 설정<br>
+  /// <br>
+  /// EN: Upload image<br>
+  /// Pass the image file to [image]<br>
+  /// Set whether to use HTTPS for the image URL with [secureResource]
   Future<ImageUploadResult> uploadImage({
     File? image,
     Uint8List? byteData,
@@ -70,7 +101,13 @@ class WebSharerClient {
         secureResource: secureResource);
   }
 
-  /// 원격 이미지를 카카오톡 공유 컨텐츠 이미지로 활용하기 위해 카카오 이미지 서버로 업로드
+  /// KO: 이미지 스크랩하기<br>
+  /// [imageUrl]에 이미지 URL 전달<br>
+  /// [secureResource]로 이미지 URL을 HTTPS로 설정<br>
+  /// <br>
+  /// EN: Scrape image<br>
+  /// Pass the image URL to [imageUrl]<br>
+  /// Set whether to use HTTPS for the image URL with [secureResource]
   Future<ImageUploadResult> scrapImage({
     required String imageUrl,
     bool secureResource = true,
