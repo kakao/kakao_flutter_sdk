@@ -1,16 +1,18 @@
 package com.kakao.sdk.flutter
 
 import android.app.Activity
-import android.content.Intent
 import android.content.ServiceConnection
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.ResultReceiver
 import android.util.Log
 
 open class CustomTabsActivity : Activity() {
     private var fullUri: Uri? = null
     private var customTabsConnection: ServiceConnection? = null
     private var customTabsOpened = false
+    private var resultReceiver: ResultReceiver? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +22,14 @@ open class CustomTabsActivity : Activity() {
                 ?: throw IllegalArgumentException("No uri was passed to CustomTabsActivity.")
 
             fullUri = Uri.parse(url)
+
+            resultReceiver = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.extras?.getBundle(Constants.KEY_BUNDLE)
+                    ?.getParcelable(Constants.KEY_RESULT_RECEIVER, ResultReceiver::class.java)
+            } else {
+                @Suppress("DEPRECATION")
+                intent.extras?.getParcelable<ResultReceiver>(Constants.KEY_RESULT_RECEIVER) as ResultReceiver
+            } ?: throw IllegalArgumentException("ResultReceiver not delivered")
         } catch (e: Throwable) {
             Log.e(e.javaClass.simpleName, e.toString())
             sendError(e.javaClass.simpleName, e.localizedMessage)
@@ -66,11 +76,21 @@ open class CustomTabsActivity : Activity() {
         }
     }
 
+    protected fun sendOk(url: String) {
+        resultReceiver?.send(RESULT_OK, Bundle().apply {
+            putParcelable(Constants.KEY_URL, Uri.parse(url))
+        })
+        // // If MainActivity and the current Activity have different taskAffinity settings, tasks are left behind when finish() is called
+        finishAndRemoveTask()
+    }
+
     protected fun sendError(errorCode: String, errorMessage: String?) {
-        val data = Intent().putExtra(Constants.KEY_ERROR_CODE, errorCode)
-            .putExtra(Constants.KEY_ERROR_MESSAGE, errorMessage)
-        setResult(RESULT_CANCELED, data)
-        finish()
+        resultReceiver?.send(RESULT_CANCELED, Bundle().apply {
+            putString(Constants.KEY_ERROR_CODE, errorCode)
+            putString(Constants.KEY_ERROR_MESSAGE, errorMessage)
+        })
+        // // If MainActivity and the current Activity have different taskAffinity settings, tasks are left behind when finish() is called
+        finishAndRemoveTask()
     }
 
     override fun onDestroy() {

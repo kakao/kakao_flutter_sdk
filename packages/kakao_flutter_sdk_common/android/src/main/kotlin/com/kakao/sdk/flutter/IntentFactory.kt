@@ -1,14 +1,18 @@
 package com.kakao.sdk.flutter
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.ResultReceiver
 import android.util.Base64
 import java.security.MessageDigest
 
 object IntentFactory {
-    fun talkAuthCode(context: Context, args: Map<String, String>): Intent {
+    fun talkAuthCode(
+        context: Context,
+        args: Map<String, String>,
+        resultReceiver: ResultReceiver,
+    ): Intent {
         val sdkVersion = args["sdk_version"]
             ?: throw IllegalArgumentException("Sdk version id is required.")
         val clientId = args["client_id"]
@@ -45,18 +49,30 @@ object IntentFactory {
             .putExtra(Constants.KEY_CLIENT_ID, clientId)
             .putExtra(Constants.KEY_REDIRECT_URI, redirectUri)
             .putExtra(Constants.KEY_EXTRAS, extras)
+            .putExtra(Constants.KEY_BUNDLE, Bundle().apply {
+                putParcelable(Constants.KEY_RESULT_RECEIVER, resultReceiver)
+            })
     }
 
     inline fun <reified T : CustomTabsActivity> customTabs(
         context: Context,
         args: Map<String, String?>,
+        resultReceiver: ResultReceiver,
     ): Intent {
         return Intent(context, T::class.java)
             .putExtra(Constants.KEY_FULL_URI, args["url"] as String)
+            .putExtra(Constants.KEY_BUNDLE, Bundle().apply {
+                putParcelable(Constants.KEY_RESULT_RECEIVER, resultReceiver)
+            })
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     }
 
-    fun customTabsForLogin(context: Context, args: Map<String, String?>): Intent {
-        return customTabs<AuthCodeCustomTabsActivity>(context, args).apply {
+    fun customTabsForLogin(
+        context: Context,
+        args: Map<String, String?>,
+        resultReceiver: ResultReceiver,
+    ): Intent {
+        return customTabs<AuthCodeCustomTabsActivity>(context, args, resultReceiver).apply {
             val redirectUrl = args["redirect_uri"]
             putExtra(Constants.KEY_REDIRECT_URL, redirectUrl)
         }

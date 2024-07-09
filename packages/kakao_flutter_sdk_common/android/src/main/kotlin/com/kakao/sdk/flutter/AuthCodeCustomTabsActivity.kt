@@ -23,9 +23,7 @@ class AuthCodeCustomTabsActivity : CustomTabsActivity() {
 
         val url = intent.dataString
         if (redirectUrl != null && url?.startsWith(redirectUrl!!) == true) {
-            val data = Intent().putExtra(Constants.KEY_RETURN_URL, url.toString())
-            setResult(RESULT_OK, data)
-            finish()
+            sendOk(url)
         } else {
             sendError("REDIRECT_URI_MISMATCH", "Expected: $redirectUrl, Actual: $url")
         }

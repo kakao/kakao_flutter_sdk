@@ -2,10 +2,14 @@ package com.kakao.sdk.flutter
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.ResultReceiver
 import android.view.Window
 
 class TalkAuthCodeActivity : Activity() {
+    private var resultReceiver: ResultReceiver? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -17,6 +21,15 @@ class TalkAuthCodeActivity : Activity() {
         val redirectUri = intent.extras?.getString(Constants.KEY_REDIRECT_URI)
             ?: throw IllegalArgumentException("Redirect uri is required.")
         val extra = intent.extras?.getBundle(Constants.KEY_EXTRAS) ?: Bundle()
+
+        resultReceiver = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.extras?.getBundle(Constants.KEY_BUNDLE)
+                ?.getParcelable(Constants.KEY_RESULT_RECEIVER, ResultReceiver::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.extras?.getBundle(Constants.KEY_BUNDLE)
+                ?.getParcelable(Constants.KEY_RESULT_RECEIVER)
+        }
 
         val loginIntent = Utility.talkLoginIntent(
             clientId,
@@ -47,19 +60,25 @@ class TalkAuthCodeActivity : Activity() {
                 return
             }
             val redirectUrl = extras.getString(Constants.EXTRA_REDIRECT_URL)
-            setResult(RESULT_OK, Intent().putExtra(Constants.KEY_RETURN_URL, redirectUrl))
-            finish()
+            sendOk(redirectUrl)
             overridePendingTransition(0, 0)
             return
         }
         throw IllegalStateException("Unexpected data from KakaoTalk in onActivityResult. $data")
     }
 
+    private fun sendOk(url: String?) {
+        resultReceiver?.send(RESULT_OK, Bundle().apply {
+            putParcelable(Constants.KEY_URL, Uri.parse(url))
+        })
+        finish()
+    }
+
     private fun sendError(errorCode: String, errorMessage: String) {
-        val intent = Intent()
-            .putExtra(Constants.KEY_ERROR_CODE, errorCode)
-            .putExtra(Constants.KEY_ERROR_MESSAGE, errorMessage)
-        setResult(RESULT_CANCELED, intent)
+        resultReceiver?.send(RESULT_CANCELED, Bundle().apply {
+            putString(Constants.KEY_ERROR_CODE, errorCode)
+            putString(Constants.KEY_ERROR_MESSAGE, errorMessage)
+        })
         finish()
     }
 }

@@ -6,9 +6,10 @@ class FollowChannelHandlerActivity : CustomTabsActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
-        val url = intent.dataString
-        val data = Intent().putExtra(Constants.KEY_RETURN_URL, url.toString())
-        setResult(RESULT_OK, data)
-        finish()
+        intent.dataString?.let {
+            sendOk(it)
+            // // If MainActivity and the current Activity have different taskAffinity settings, tasks are left behind when finish() is called
+            finishAndRemoveTask()
+        }
     }
 }

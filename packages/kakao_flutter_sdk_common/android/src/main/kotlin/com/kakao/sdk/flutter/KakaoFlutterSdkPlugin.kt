@@ -19,8 +19,7 @@ import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry
 
 class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
-    PluginRegistry.ActivityResultListener, EventChannel.StreamHandler,
-    PluginRegistry.NewIntentListener {
+    EventChannel.StreamHandler, PluginRegistry.NewIntentListener {
     private var applicationContext: Context? = null
     private var activity: Activity? = null
 
@@ -71,10 +70,8 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
 
                 @Suppress("UNCHECKED_CAST")
                 val args = call.arguments as Map<String, String?>
-                val intent = IntentFactory.customTabsForLogin(context, args)
-                val requestCode = Constants.REQUEST_KAKAO_LOGIN
-
-                activity.startActivityForResult(intent, requestCode)
+                val intent = IntentFactory.customTabsForLogin(context, args, resultReceiver())
+                activity.startActivity(intent)
             }
 
             "launchBrowserTab" -> {
@@ -90,10 +87,9 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
 
                 @Suppress("UNCHECKED_CAST")
                 val args = call.arguments as Map<String, String?>
-                val intent = IntentFactory.customTabs<CustomTabsActivity>(context, args)
-                val requestCode = Constants.REQUEST_CUSTOM_TABS
-
-                activity.startActivityForResult(intent, requestCode)
+                val intent =
+                    IntentFactory.customTabs<CustomTabsActivity>(context, args, resultReceiver())
+                activity.startActivity(intent)
             }
 
             "authorizeWithTalk" -> {
@@ -115,8 +111,9 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                         )
                         return
                     }
-                    val intent = IntentFactory.talkAuthCode(applicationContext!!, args)
-                    activity?.startActivityForResult(intent, Constants.REQUEST_KAKAO_LOGIN)
+                    val intent =
+                        IntentFactory.talkAuthCode(applicationContext!!, args, resultReceiver())
+                    activity?.startActivity(intent)
                         ?: result.error("Error", "Plugin is not attached to Activity", null)
                 } catch (e: Exception) {
                     result.error(e.javaClass.simpleName, e.localizedMessage, e)
@@ -154,8 +151,11 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                     result.success(false)
                     return
                 }
-                val uri = args["uri"]
-                    ?: throw IllegalArgumentException("KakaoTalk uri scheme is required.")
+                val uri = args["uri"] ?: run {
+                    result.error("Error", "KakaoTalk uri scheme is required.", null)
+                    return
+                }
+
                 val intent = Intent(
                     Intent.ACTION_SEND,
                     Uri.parse(uri)
@@ -178,8 +178,12 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                 @Suppress("UNCHECKED_CAST")
                 val args = call.arguments as Map<String, String>
 
-                val intent = IntentFactory.customTabs<FollowChannelHandlerActivity>(context, args)
-                activity.startActivityForResult(intent, Constants.REQUEST_CUSTOM_TABS)
+                val intent = IntentFactory.customTabs<FollowChannelHandlerActivity>(
+                    context,
+                    args,
+                    resultReceiver()
+                )
+                activity.startActivity(intent)
             }
 
             "addChannel" -> {
@@ -236,8 +240,9 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                 @Suppress("UNCHECKED_CAST")
                 val args = call.arguments as Map<String, String>
 
-                val intent = IntentFactory.customTabs<AppsHandlerActivity>(context, args)
-                activity.startActivityForResult(intent, Constants.REQUEST_CUSTOM_TABS)
+                val intent =
+                    IntentFactory.customTabs<AppsHandlerActivity>(context, args, resultReceiver())
+                activity.startActivity(intent)
             }
 
             "isKakaoTalkSharingAvailable" -> {
@@ -316,39 +321,6 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
-        if (requestCode == Constants.REQUEST_KAKAO_LOGIN && data != null) {
-            return when (resultCode) {
-                Activity.RESULT_OK -> {
-                    resultOk(result, data)
-                    return true
-                }
-
-                Activity.RESULT_CANCELED -> {
-                    resultCanceled(result, data)
-                    return true
-                }
-
-                else -> false
-            }
-        } else if (requestCode == Constants.REQUEST_CUSTOM_TABS) {
-            return when (resultCode) {
-                Activity.RESULT_OK -> {
-                    resultOk(result, data)
-                    true
-                }
-
-                Activity.RESULT_CANCELED -> {
-                    resultCanceled(result, data)
-                    true
-                }
-
-                else -> false
-            }
-        }
-        return false
-    }
-
     override fun onListen(arguments: Any?, events: EventChannel.EventSink) {
         receiver = KakaoSchemeReceiver(events)
     }
@@ -381,13 +353,13 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         activity = binding.activity
-        binding.addActivityResultListener(this)
+
         binding.addOnNewIntentListener(this)
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
         activity = binding.activity
-        binding.addActivityResultListener(this)
+
         binding.addOnNewIntentListener(this)
         handleTalkSharingIntent(binding.activity, binding.activity.intent)
     }
@@ -414,18 +386,41 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
         }
     }
 
+    private fun resultReceiver() =
+        SingleResultReceiver.create(
+            emitter = { url, error ->
+                if (error != null) {
+                    resultCanceled(result, error.first, error.second)
+                } else {
+                    resultOk(result, url)
+                }
+            },
+            isError = { url -> url.encodedQuery?.contains(Constants.ERROR) == true },
+            parseError = { uri ->
+                if (uri.queryParameterNames.contains(Constants.STATUS)) {
+                    // apps error
+                    val code = uri.getQueryParameter(Constants.ERROR_CODE)
+                    val message = uri.getQueryParameter(Constants.ERROR_MSG)
+                    Pair(code, message)
+                } else {
+                    // kauth error
+                    val code = uri.getQueryParameter(Constants.ERROR)
+                    val message = uri.getQueryParameter(Constants.ERROR_DESCRIPTION)
+                    Pair(code, message)
+                }
+            },
+            parseResponse = { uri -> uri.toString() },
+        )
+
     override fun onNewIntent(intent: Intent): Boolean {
         return activity != null && handleTalkSharingIntent(activity!!, intent) != null
     }
 
-    private fun resultOk(result: Result?, data: Intent?) {
-        val url = data?.getStringExtra(Constants.KEY_RETURN_URL)
+    private fun resultOk(result: Result?, url: String?) {
         result?.success(url)
     }
 
-    private fun resultCanceled(result: Result?, data: Intent?) {
-        val errorCode = data?.getStringExtra(Constants.KEY_ERROR_CODE) ?: "ERROR"
-        val errorMessage = data?.getStringExtra(Constants.KEY_ERROR_MESSAGE)
-        result?.error(errorCode, errorMessage, null)
+    private fun resultCanceled(result: Result?, errorCode: String?, errorMessage: String?) {
+        result?.error(errorCode ?: "Error", errorMessage, null)
     }
 }
