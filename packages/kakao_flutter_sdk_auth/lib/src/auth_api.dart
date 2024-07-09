@@ -80,7 +80,7 @@ class AuthApi {
       Constants.redirectUri: redirectUri ?? await _platformRedirectUri(),
       ...await _platformData()
     };
-    final newToken = await _issueAccessToken(data, oldToken: oldToken);
+    final newToken = await _issueAccessToken(data, oldToken: token);
     await _tokenManagerProvider.manager.setToken(newToken);
     return newToken;
   }
