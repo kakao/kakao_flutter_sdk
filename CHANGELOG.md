@@ -1,3 +1,11 @@
+## 1.9.4
+
+- Android: Fixed a bug that the following features do now work when android:taskAffinity in
+  MainActivity is set.
+    - Login with Kakao Account, Select shipping address, Follow Kakao Talk Channel
+- Fixed a bug that removes the refresh token when repeatedly calling Follow Kakao Talk Channel or
+  Select shipping address.
+
 ## 1.9.3
 
 - New features
