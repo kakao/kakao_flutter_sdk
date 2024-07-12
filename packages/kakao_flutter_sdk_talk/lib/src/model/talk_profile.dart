@@ -2,22 +2,32 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'talk_profile.g.dart';
 
-/// 카카오톡 프로필 조회 API 응답 클래스
+/// KO: 카카오톡 프로필
+/// <br>
+/// EN: Kakao Talk profile
 @JsonSerializable(includeIfNull: false)
 class TalkProfile {
-  /// 카카오톡 닉네임
+  /// KO: 프로필 닉네임
+  /// <br>
+  /// EN: Profile nickname
   @JsonKey(name: "nickName")
   String? nickname;
 
-  /// 카카오톡 프로필 이미지 URL
+  /// KO: 프로필 이미지
+  /// <br>
+  /// EN: Profile image
   @JsonKey(name: "profileImageURL")
   String? profileImageUrl;
 
-  /// 카카오톡 프로필 이미지 썸네일 URL
+  /// KO: 프로필 썸네일 이미지
+  /// <br>
+  /// EN: Profile thumbnail image
   @JsonKey(name: "thumbnailURL")
   String? thumbnailUrl;
 
-  /// 카카오톡 국가 코드
+  /// KO: 국가 코드
+  /// <br>
+  /// EN: Country code
   String? countryISO;
 
   /// @nodoc

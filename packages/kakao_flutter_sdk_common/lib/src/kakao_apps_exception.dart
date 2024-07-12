@@ -3,23 +3,31 @@ import 'package:kakao_flutter_sdk_common/src/kakao_exception.dart';
 
 part 'kakao_apps_exception.g.dart';
 
-/// 카카오 Apps API 호출 시 에러 응답
+/// KO: Apps 에러
+/// <br>
+/// EN: Apps error
 @JsonSerializable(includeIfNull: false, fieldRename: FieldRename.snake)
 class KakaoAppsException extends KakaoException {
   /// @nodoc
   KakaoAppsException(this.code, this.msg) : super(msg);
 
-  /// 에러 코드
+  /// KO: 에러 코드
+  /// <br>
+  /// EN: Error code
   @JsonKey(name: 'error_code', unknownEnumValue: AppsErrorCause.unknown)
   final AppsErrorCause code;
 
-  /// 자세한 에러 설명
+  /// KO: 에러 메시지
+  /// <br>
+  /// EN: Error message
   @JsonKey(name: "error_msg")
   final String msg;
 
+  /// @nodoc
   factory KakaoAppsException.fromJson(Map<String, dynamic> json) =>
       _$KakaoAppsExceptionFromJson(json);
 
+  /// @nodoc
   Map<String, dynamic> toJson() => _$KakaoAppsExceptionToJson(this);
 
   /// @nodoc
@@ -27,76 +35,115 @@ class KakaoAppsException extends KakaoException {
   String toString() => toJson().toString();
 }
 
+/// KO: Apps 에러 원인
+/// <br>
+/// EN: Cause of Apps error
 enum AppsErrorCause {
-  /// 내부 서버 에러가 발생하는 경우
+  /// KO: 서버 내부에서 처리 중 에러가 발생한 경우
+  /// <br>
+  /// EN: An Error occurred during the internal processing on the server
   @JsonValue("KAE001")
   internalServerError,
 
-  /// 잘못된 요청을 사용하는 경우
+  /// KO: 잘못된 요청을 전달한 경우
+  /// <br>
+  /// EN: Passed wrong request
   @JsonValue("KAE002")
   invalidRequest,
 
-  /// 잘못된 파라미터를 사용하는 경우
+  /// KO: 잘못된 파라미터를 전달한 경우
+  /// <br>
+  /// EN: Passed wrong parameters
   @JsonValue("KAE003")
   invalidParameter,
 
-  /// 유효시간이 만료된 경우
+  /// KO: 유효시간이 만료된 경우
+  /// <br>
+  /// EN: Validity period has expired
   @JsonValue("KAE004")
   timeExpired,
 
-  /// 채널 정보를 확인할 수 없는 경우
+  /// KO: 카카오톡 채널 정보를 확인할 수 없는 경우
+  /// <br>
+  /// EN: Unable to check Kakoa Talk channel information
   @JsonValue("KAE005")
   invalidChannel,
 
-  /// 채널이 추가 가능한 상태가 아닌 경우
+  /// KO: 카카오톡 채널이 추가 불가능 상태인 경우
+  /// <br>
+  /// EN: Kakao Talk channel in a state that cannot be added
   @JsonValue("KAE006")
   illegalStateChannel,
 
-  /// 브라우저를 지원하지 않는 경우
+  /// KO: 브라우저를 지원하지 않는 경우
+  /// <br>
+  /// EN: Unsupported browser
   @JsonValue("KAE007")
   unsupported,
 
-  /// API를 사용할 수 없는 앱 타입인 경우
+  /// KO: 사용할 수 없는 앱 타입인 경우
+  /// <br>
+  /// EN: Unavailable app type
   @JsonValue("KAE101")
   appTypeError,
 
-  /// API 사용에 필요한 scope이 설정되지 않은 경우
+  /// KO: 필요한 동의항목이 설정되지 않은 경우
+  /// <br>
+  /// EN: Required consent items are not set
   @JsonValue("KAE102")
   appScopeError,
 
-  /// API 사용에 필요한 권한이 없는 경우
+  /// KO: 앱에 사용 권한이 업는 API를 호출한 경우
+  /// <br>
+  /// EN: Requested an API using an app that does not have permission
   @JsonValue("KAE103")
   permissionError,
 
-  /// API 호출에 사용할 수 없는 앱키 타입으로 API를 호출하는 경우
+  /// KO: 잘못된 타입의 앱 키를 전달한 경우
+  /// <br>
+  /// EN: Passed wrong type app key
   @JsonValue("KAE104")
   appKeyTypeError,
 
-  /// 앱과 연결되지 않은 채널 정보로 API를 요청한 경우
+  /// KO: 앱과 연결되지 않은 카카오톡 채널 정보를 전달한 경우
+  /// <br>
+  /// EN: Passed KAkao Talk channel is not connected to the app
   @JsonValue("KAE105")
   appChannelNotConnected,
 
-  /// Access Token, KPIDT, 톡세션 등으로 앱 유저 인증에 실패하는 경우
+  /// KO: 사용자 인증에 실패한 경우
+  /// <br>
+  /// EN: Failed user authentication
   @JsonValue("KAE201")
   authError,
 
-  /// 앱에 연결되지 않은 유저가 API를 호출하는 경우
+  /// KO: 앱에 연결되지 않은 사용자가 API를 호출한 경우
+  /// <br>
+  /// EN: Requested an API by users not connected to the app
   @JsonValue("KAE202")
   notRegisteredUser,
 
-  /// API 호출에 필요한 scope에 동의하지 않은 경우
+  /// KO: 필요한 동의항목이 동의 상태가 아닌 경우
+  /// <br>
+  /// EN: Required consent items are not agreed to
   @JsonValue("KAE203")
   invalidScope,
 
-  /// API 사용에 필요한 계정 약관 동의가 되어 있지 않은 경우
+  /// KO: 필요한 서비스 약관이 동의 상태가 아닌 경우
+  /// <br>
+  /// EN: Required service terms are not agreed to
   @JsonValue("KAE204")
   accountTermsError,
 
-  /// 계정 페이지에서 배송지 콜백으로 로그인 필요 응답을 전달하는 경우
+  /// KO: 로그인이 필요한 경우
+  /// <br>
+  /// EN: Login is required
   @JsonValue("KAE205")
   loginRequired,
 
-  /// 계정에 등록되어있지 않은 배송지 ID를 파라미터로 사용하는 경우
+  /// KO: 등록되지 않은 배송지 ID를 전달한 경우
+  /// <br>
+  /// EN: Unregistered delivery ID
   @JsonValue("KAE206")
   invalidShippingAddressId,
   unknown,

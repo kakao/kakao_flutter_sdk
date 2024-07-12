@@ -2,14 +2,20 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'revoked_service_terms.g.dart';
 
-/// 동의 철회가 반영된 서비스 약관 클래스
+/// KO: 동의 철회된 서비스 약관 정보
+/// <br>
+/// EN: Revoked service terms information
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class RevokedServiceTerms {
-  /// 3rd 에서 설정한 서비스 약관의 tag
+  /// KO: 태그
+  /// <br>
+  /// EN: Tag
   String tag;
 
-  /// 동의 여부
+  /// KO: 동의 여부
+  /// <br>
+  /// EN: The consent status of the service terms
   bool agreed;
 
   /// @nodoc

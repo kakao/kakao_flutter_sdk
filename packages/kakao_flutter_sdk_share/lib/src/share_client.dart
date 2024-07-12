@@ -11,20 +11,26 @@ import 'package:kakao_flutter_sdk_share/src/share_api.dart';
 import 'package:kakao_flutter_sdk_template/kakao_flutter_sdk_template.dart';
 import 'package:platform/platform.dart';
 
-/// 카카오톡 공유 호출을 담당하는 클라이언트.
+/// KO: KO: 카카오톡 공유 API 클라이언트
+/// <br>
+/// EN: Client for the Kakao Talk Sharing APIs
 class ShareClient {
-  ShareClient(this.api, {Platform? platform})
-      : _platform = platform ?? const LocalPlatform();
-  ShareApi api;
+  /// @nodoc
+  final ShareApi api;
   final Platform _platform;
 
   static const MethodChannel _channel =
       MethodChannel(CommonConstants.methodChannel);
 
-  /// 간편한 API 호출을 위해 기본 제공되는 singleton 객체
   static final ShareClient instance = ShareClient(ShareApi.instance);
 
-  /// 카카오톡 실행을 통한 공유 가능 여부 확인
+  /// @nodoc
+  ShareClient(this.api, {Platform? platform})
+      : _platform = platform ?? const LocalPlatform();
+
+  /// KO: 카카오톡 공유 가능 여부 확인
+  /// <br>
+  /// EN: Checks whether the Kakao Talk Sharing is available
   Future<bool> isKakaoTalkSharingAvailable() async {
     var arguments = {};
     if (kIsWeb) {
@@ -39,7 +45,15 @@ class ShareClient {
         false;
   }
 
-  /// 카카오디벨로퍼스에서 생성한 메시지 템플릿으로 카카오톡 공유 URI 생성, [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/message/message-template) 참고
+  /// KO: 사용자 정의 템플릿으로 메시지 보내기<br>
+  /// [templateId]에 사용자 정의 템플릿 ID 전달<br>
+  /// [templateArgs]에 사용자 인자 키와 값 전달<br>
+  /// [serverCallbackArgs]에 카카오톡 공유 전송 성공 알림에 포함할 키와 값 전달<br>
+  /// <br>
+  /// EN: Send message with custom template<br>
+  /// Pass the custom template ID to [templateId]<br>
+  /// Pass the keys and values of the user argument to [templateArgs]<br>
+  /// Pass the keys and values for the Kakao Talk Sharing success callback to [serverCallbackArgs]
   Future<Uri> shareCustom({
     required int templateId,
     Map<String, String>? templateArgs,
@@ -49,7 +63,13 @@ class ShareClient {
     return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
-  /// 기본 템플릿으로 카카오톡 공유 URI 생성, [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/message/message-template) 참고
+  /// KO: 기본 템플릿으로 메시지 보내기<br>
+  /// [template]에 메시지 템플릿 객체 전달<br>
+  /// [serverCallbackArgs]에 카카오톡 공유 전송 성공 알림에 포함할 키와 값 전달<br>
+  /// <br>
+  /// EN: Send message with default template<br>
+  /// Pass an object of a message template to [template]<br>
+  /// Pass the keys and values for the Kakao Talk Sharing success callback to [serverCallbackArgs]
   Future<Uri> shareDefault({
     required DefaultTemplate template,
     Map<String, String>? serverCallbackArgs,
@@ -58,7 +78,17 @@ class ShareClient {
     return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
-  /// 특정 URL의 웹 페이지 정보를 바탕으로 카카오톡 공유 URI 생성, [메시지 템플릿 가이드](https://developers.kakao.com/docs/latest/message/message-template) 참고
+  /// KO: 스크랩 메시지 보내기<br>
+  /// [url]에 스크랩할 URL 전달<br>
+  /// [templateId]에 사용자 정의 템플릿 ID 전달<br>
+  /// [templateArgs]에 사용자 인자 키와 값 전달<br>
+  /// [serverCallbackArgs]에 카카오톡 공유 전송 성공 알림에 포함할 키와 값 전달<br>
+  /// <br>
+  /// EN: Send scrape message<br>
+  /// Pass the URL to scrape [url]<br>
+  /// Pass the custom template ID to [templateId]<br>
+  /// Pass the keys and values of the user argument to [templateArgs]<br>
+  /// Pass the keys and values for the Kakao Talk Sharing success callback to [serverCallbackArgs]
   Future<Uri> shareScrap({
     required String url,
     int? templateId,
@@ -70,7 +100,13 @@ class ShareClient {
     return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
-  /// 로컬 이미지를 카카오톡 공유 컨텐츠 이미지로 활용하기 위해 카카오 이미지 서버로 업로드
+  /// KO: 이미지 업로드하기<br>
+  /// [image]에 이미지 파일 전달<br>
+  /// [secureResource]로 이미지 URL을 HTTPS로 설정<br>
+  /// <br>
+  /// EN: Upload image<br>
+  /// Pass the image file to [image]<br>
+  /// Set whether to use HTTPS for the image URL with [secureResource]
   Future<ImageUploadResult> uploadImage({
     File? image,
     Uint8List? byteData,
@@ -86,7 +122,13 @@ class ShareClient {
         secureResource: secureResource);
   }
 
-  /// 원격 이미지를 카카오톡 공유 컨텐츠 이미지로 활용하기 위해 카카오 이미지 서버에 스크랩
+  /// KO: 이미지 스크랩하기<br>
+  /// [imageUrl]에 이미지 URL 전달<br>
+  /// [secureResource]로 이미지 URL을 HTTPS로 설정<br>
+  /// <br>
+  /// EN: Scrape image<br>
+  /// Pass the image URL to [imageUrl]<br>
+  /// Set whether to use HTTPS for the image URL with [secureResource]
   Future<ImageUploadResult> scrapImage({
     required String imageUrl,
     bool secureResource = true,
@@ -94,6 +136,9 @@ class ShareClient {
     return await api.scrapImage(imageUrl, secureResource: secureResource);
   }
 
+  /// KO: 카카오톡 공유 실행 URL로 카카오톡 실행
+  /// <br>
+  /// EN: Launches Kakao Talk with the URL to execute the Kakao Talk Sharing
   Future<void> launchKakaoTalk(Uri uri) {
     return _channel.invokeMethod(
         CommonConstants.launchKakaoTalk, {Constants.uri: uri.toString()});

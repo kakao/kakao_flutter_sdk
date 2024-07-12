@@ -64,13 +64,14 @@ object Constants {
     const val KEY_CUSTOM_TABS_OPENED = "key.customtabs.opened"
 
     // SDK Internal Key
-    const val REQUEST_KAKAO_LOGIN = 50001
-    const val REQUEST_CUSTOM_TABS = 50003
     const val KEY_RETURN_URL = "key_return_url"
     const val KEY_ERROR_CODE = "key_error_code"
     const val KEY_ERROR_MESSAGE = "key_error_message"
     const val KEY_FULL_URI = "key_full_uri"
     const val KEY_REDIRECT_URL = "key_redirect_url"
+    const val KEY_URL = "key_url"
+    const val KEY_RESULT_RECEIVER = "key_result_receiver"
+    const val KEY_BUNDLE = "key_bundle"
 
     // Talk Login Key
     const val REQUEST_CODE = 50002
@@ -78,4 +79,10 @@ object Constants {
     const val KEY_CLIENT_ID = "key_client_Id"
     const val KEY_REDIRECT_URI = "key_redirect_uri"
     const val KEY_EXTRAS = "key_extras"
+
+    const val STATUS = "status"
+    const val ERROR = "error"
+    const val ERROR_DESCRIPTION = "error_description"
+    const val ERROR_CODE = "error_code"
+    const val ERROR_MSG = "error_msg"
 }

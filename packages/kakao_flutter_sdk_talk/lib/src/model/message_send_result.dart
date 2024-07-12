@@ -3,14 +3,20 @@ import 'package:kakao_flutter_sdk_talk/src/model/message_failure_info.dart';
 
 part 'message_send_result.g.dart';
 
-/// 메시지 전송 API 호출 결과
+/// KO: 메시지 전송 결과
+/// <br>
+/// EN: Sending message result
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class MessageSendResult {
-  /// 메시지 전송에 성공한 대상의 uuid
+  /// KO: 메시지 전송에 성공한 수신자 UUID 목록
+  /// <br>
+  /// EN: Receiver UUIDs that succeeded to send the message
   final List<String>? successfulReceiverUuids;
 
-  /// (복수의 전송 대상을 지정한 경우) 전송 실패한 일부 대상의 오류 정보
+  /// KO: 메시지 전송 실패 정보
+  /// <br>
+  /// EN: Failure information for sending a message
   @JsonKey(name: "failure_info")
   final List<MessageFailureInfo>? failureInfos;
 

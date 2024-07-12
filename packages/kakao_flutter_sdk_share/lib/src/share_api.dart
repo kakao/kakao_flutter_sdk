@@ -9,7 +9,8 @@ import 'package:kakao_flutter_sdk_share/src/model/image_upload_result.dart';
 import 'package:kakao_flutter_sdk_share/src/model/sharing_result.dart';
 import 'package:kakao_flutter_sdk_template/kakao_flutter_sdk_template.dart';
 
-/// Kakao SDK의 카카오톡 공유 내부 동작에 사용되는 클라이언트
+// Kakao SDK의 카카오톡 공유 내부 동작에 사용되는 클라이언트
+/// @nodoc
 class ShareApi {
   ShareApi(this.dio);
 
@@ -18,7 +19,7 @@ class ShareApi {
 
   static final ShareApi instance = ShareApi(ApiFactory.appKeyApi);
 
-  /// 카카오디벨로퍼스에서 생성한 메시지 템플릿을 카카오톡 메시지로 공유
+  // 카카오디벨로퍼스에서 생성한 메시지 템플릿을 카카오톡 메시지로 공유
   Future<SharingResult> custom(int templateId,
       {Map<String, String>? templateArgs}) async {
     return _validate(Constants.validate, {
@@ -28,13 +29,13 @@ class ShareApi {
     });
   }
 
-  /// 기본 템플릿을 카카오톡 메시지로 공유
+  // 기본 템플릿을 카카오톡 메시지로 공유
   Future<SharingResult> defaultTemplate(DefaultTemplate template) async {
     return _validate(Constants.defaultTemplate,
         {Constants.templateObject: jsonEncode(template)});
   }
 
-  /// 지정된 URL을 스크랩하여 만들어진 템플릿을 카카오톡 메시지로 공유
+  // 지정된 URL을 스크랩하여 만들어진 템플릿을 카카오톡 메시지로 공유
   Future<SharingResult> scrap(String url,
       {int? templateId, Map<String, String>? templateArgs}) async {
     var params = {
@@ -47,7 +48,7 @@ class ShareApi {
     return _validate(Constants.scrap, params);
   }
 
-  /// 로컬 이미지를 카카오톡 공유 컨텐츠 이미지로 활용하기 위해 카카오 이미지 서버로 업로드
+  // 로컬 이미지를 카카오톡 공유 컨텐츠 이미지로 활용하기 위해 카카오 이미지 서버로 업로드
   Future<ImageUploadResult> uploadImage(File? image, Uint8List? byteData,
       {bool secureResource = true}) async {
     return ApiFactory.handleApiError(() async {
@@ -70,7 +71,7 @@ class ShareApi {
     });
   }
 
-  /// 원격 이미지를 카카오톡 공유 컨텐츠 이미지로 활용하기 위해 카카오 이미지 서버로 업로드
+  // 원격 이미지를 카카오톡 공유 컨텐츠 이미지로 활용하기 위해 카카오 이미지 서버로 업로드
   Future<ImageUploadResult> scrapImage(String imageUrl,
       {bool secureResource = true}) {
     return ApiFactory.handleApiError(() async {

@@ -3,7 +3,9 @@ import 'package:kakao_flutter_sdk_common/src/kakao_exception.dart';
 
 part 'kakao_api_exception.g.dart';
 
-/// 카카오 API 호출 시 에러 응답
+/// KO: API 에러 응답
+/// <br>
+/// EN: Response for API errors
 @JsonSerializable(includeIfNull: false, fieldRename: FieldRename.snake)
 class KakaoApiException extends KakaoException {
   /// @nodoc
@@ -11,19 +13,30 @@ class KakaoApiException extends KakaoException {
       {this.apiType, this.requiredScopes, this.allowedScopes})
       : super(msg);
 
-  /// 에러 코드
+  /// KO: 에러 코드
+  /// <br>
+  /// EN: Error code
   @JsonKey(unknownEnumValue: ApiErrorCause.unknown)
   final ApiErrorCause code;
 
-  /// 자세한 에러 설명
+  /// KO: 에러 메시지
+  /// <br>
+  /// EN: Error message
   final String msg;
 
+  /// KO: API 종류
+  /// <br>
+  /// EN: API type
   final String? apiType;
 
-  /// API 호출을 위해 추가로 필요한 동의 항목
+  /// KO: 사용자가 동의해야 하는 동의항목
+  /// <br>
+  /// EN: Scopes that the user must agree to
   final List<String>? requiredScopes;
 
-  // List of scopes this user already agreed to.
+  /// KO: 사용자가 동의한 동의항목
+  /// <br>
+  /// EN: Scopes that user agreed to
   final List<String>? allowedScopes;
 
   /// @nodoc
@@ -38,120 +51,174 @@ class KakaoApiException extends KakaoException {
   String toString() => toJson().toString();
 }
 
-/// [KakaoApiException]의 발생 원인
+/// KO: API 에러 원인
+/// <br>
+/// EN: Causes of API errors
 enum ApiErrorCause {
-  /// 서버 내부에서 처리 중에 에러가 발생한 경우
+  /// KO: 서버 내부에서 처리 중 에러가 발생한 경우
+  /// <br>
+  /// EN: An Error occurred during the internal processing in the server
   @JsonValue(-1)
   internalError,
 
-  /// 필수 인자가 포함되지 않은 경우나 호출 인자값의 데이타 타입이 적절하지 않거나 허용된 범위를 벗어난 경우
+  /// KO: 필수 파라미터가 포함되지 않았거나, 파라미터 값이 올바르지 않은 경우
+  /// <br>
+  /// EN: Requested without required parameters or using invalid values
   @JsonValue(-2)
   illegalParams,
 
-  /// 해당 API를 사용하기 위해 필요한 기능(간편가입, 동의항목, 서비스 설정 등)이 활성화 되지 않은 경우
+  /// KO: API 사용에 필요한 사전 설정을 완료하지 않은 경우
+  /// <br>
+  /// EN: Required prerequisites for the API are not completed
   @JsonValue(-3)
   unsupportedApi,
 
-  /// 계정이 제재된 경우나 해당 계정에 제재된 행동을 하는 경우
+  /// KO: 카카오계정이 제재되었거나, 카카오계정에 제한된 동작을 요청한 경우
+  /// <br>
+  /// EN: Requested by a blocked Kakao Account, or requested restricted actions to the Kakao Account
   @JsonValue(-4)
   blockedAction,
 
-  /// 해당 API에 대한 요청 권한이 없는 경우
+  /// KO: 사용자가 동의 화면에서 카카오 로그인을 취소한 경우
+  /// <br>
+  /// EN: The user canceled Kakao Login at the consent screen
   @JsonValue(-5)
   accessDenied,
 
-  /// 서비스가 종료된 API를 호출한 경우
+  /// KO: 제공 종료된 API를 호출한 경우
+  /// <br>
+  /// EN: Requested a deprecated API
   @JsonValue(-9)
   deprecatedApi,
 
-  /// 허용된 요청 회수가 초과한 경우
+  /// KO: 사용량 제한을 초과한 경우
+  /// <br>
+  /// EN: Exceeded the quota
   @JsonValue(-10)
   apiLimitExceeded,
 
-  /// 해당 앱에 카카오계정 연결이 완료되지 않은 사용자가 호출한 경우
+  /// KO: 앱과 연결되지 않은 사용자가 요청한 경우
+  /// <br>
+  /// EN: Requested by a user who is not linked to the app
   @JsonValue(-101)
   notRegisteredUser,
 
-  /// 이미 연결된 사용자에 대해 signup 시도
+  /// KO: 이미 앱과 연결되어 있는 사용자에 대해 연결하기 요청한 경우
+  /// <br>
+  /// EN: Requested manual sign-up to a linked user
   @JsonValue(-102)
   alreadyRegisteredUser,
 
-  /// 존재하지 않는 카카오계정으로 요청한 경우
+  /// KO: 휴면 상태, 또는 존재하지 않는 카카오계정으로 요청한 경우
+  /// <br>
+  /// EN: Requested with a Kakao Account that is in the dormant state or does not exist
   @JsonValue(-103)
   accountDoesNotExist,
 
-  /// 사용자 정보 요청 API나 사용자 정보 저장 API 호출 시 앱에 추가하지 않은 사용자 프로퍼티 키 값을 불러오거나 저장하려고 한 경우
+  /// KO: 앱에 추가하지 않은 사용자 프로퍼티 키 값을 불러오거나 저장하려고 한 경우
+  /// <br>
+  /// EN: Requested to retrieve or save value for not registered user properties key
   @JsonValue(-201)
   propertyKeyDoesNotExist,
 
-  /// 등록되지 않은 앱키의 요청 또는 존재하지 않는 앱으로의 요청. (앱키가 인증에 사용되는 경우는 -401 참조)
+  /// KO: 등록되지 않은 앱 키로 요청했거나, 존재하지 않는 앱에 대해 요청한 경우
+  /// <br>
+  /// EN: Requested with an app key of not registered app, or requested to an app that does not exist
   @JsonValue(-301)
   appDoesNotExist,
 
-  /// 유효하지 않은 앱키나 액세스 토큰으로 요청한 경우, 등록된 앱 정보와 호출된 앱 정보가 불일치 하는 경우 ex) 토큰 만료
+  /// KO: 유효하지 않은 앱 키나 액세스 토큰으로 요청했거나, 앱 정보가 등록된 앱 정보와 일치하지 않는 경우
+  /// <br>
+  /// EN: Requested with an invalid app key or an access token, or the app information is not equal to the registered app information
   @JsonValue(-401)
   invalidToken,
 
-  /// 해당 API에서 접근하는 리소스에 대해 사용자의 동의를 받지 않은 경우
+  /// KO: 접근하려는 리소스에 대해 사용자 동의를 받지 않은 경우
+  /// <br>
+  /// EN: User has not agreed to the scope of the desired resource
   @JsonValue(-402)
   insufficientScope,
 
-  /// TODO: add reference or remove value
-  @JsonValue(-403)
-  invalidOrigin,
-
-  /// 앱의 연령제한에 대해 사용자 연령 인증 받지 않음
+  /// KO: 연령인증 필요
+  /// <br>
+  /// EN: Age verification is required
   @JsonValue(-405)
   requiredAgeVerification,
 
-  /// 앱의 연령제한보다 사용자의 연령이 낮음
+  /// KO: 앱에 설정된 제한 연령보다 사용자의 연령이 낮음
+  /// <br>
+  /// EN: User age does not meet the app's age limit
   @JsonValue(-406)
   underAgeLimit,
 
-  /// 카카오톡 미가입 사용자가 카카오톡 API를 호출하였을 경우
+  /// KO: 카카오톡 미가입 사용자가 카카오톡 API를 호출한 경우
+  /// <br>
+  /// EN: Users not signed up for Kakao Talk requested the Kakao Talk APIs
   @JsonValue(-501)
   notTalkUser,
 
-  /// 받는 이가 보내는 이의 친구가 아닌 경우
+  /// KO: 받는 이가 보내는 이의 친구가 아닌 경우
+  /// <br>
+  /// EN: Receiver is not a friend of the sender
   @JsonValue(-502)
   notFriend,
 
-  /// 지원되지 않는 기기로 메시지 보내는 경우
+  /// KO: 지원되지 않는 기기로 메시지를 전송한 경우
+  /// <br>
+  /// EN: Sent message to an unsupported device
   @JsonValue(-504)
   userDeviceUnsupported,
 
-  /// 받는 이가 메시지 수신 거부를 설정한 경우
+  /// KO: 받는 이가 프로필 비공개로 설정한 경우
+  /// <br>
+  /// EN: The receiver turned off the profile visibility
   @JsonValue(-530)
   talkMessageDisabled,
 
-  /// 특정 앱에서 보내는 이가 특정인에게 하루 동안 보낼 수 있는 쿼터를 초과한 경우
+  /// KO: 보내는 이가 한 달 동안 보낼 수 있는 쿼터를 초과한 경우
+  /// <br>
+  /// EN: The sender exceeded the monthly quota for sending messages
   @JsonValue(-531)
   talkSendMessageMonthlyLimitExceed,
 
-  /// 특정 앱에서 보내는 이가 받는 사람 관계없이 하루 동안 보낼 수 있는 쿼터를 초과한 경우
+  /// KO: 보내는 이가 하루 동안 보낼 수 있는 쿼터를 초과한 경우
+  /// <br>
+  /// EN: The sender exceeded the daily quota for sending messages
   @JsonValue(-532)
   talkSendMessageDailyLimitExceed,
 
-  /// 이미지 업로드 사이즈 제한 초과
+  /// KO: 업로드 가능한 이미지 최대 용량을 초과한 경우
+  /// <br>
+  /// EN: Exceeded the maximum size of images to upload
   @JsonValue(-602)
   imageUploadSizeExceeded,
 
-  /// 업로드,스크랩 등 오래 걸리는 API의 타임아웃
+  /// KO: 카카오 플랫폼 내부에서 요청 처리 중 타임아웃이 발생한 경우
+  /// <br>
+  /// EN: Timeout occurred during the internal processing in the server
   @JsonValue(-603)
   serverTimeOut,
 
-  /// 업로드할 수 있는 최대 이미지 개수(현재 5개. 단, gif 파일은 1개)를 초과하였을 경우
+  /// KO: 업로드할 수 있는 최대 이미지 개수를 초과한 경우
+  /// <br>
+  /// EN: Exceeded the maximum number of images to upload
   @JsonValue(-606)
   imageMaxUploadCountExceed,
 
-  /// 등록되지 않은 개발자의 앱키나 등록되지 않은 개발자의 앱키로 구성된 액세스 토큰으로 요청한 경우
+  /// KO: 등록되지 않은 개발자의 앱키나 등록되지 않은 개발자의 앱키로 구성된 액세스 토큰으로 요청한 경우
+  /// <br>
+  /// EN: Requested with an app key of not registered developer, or an access token issued by an app key of not registered developer
   @JsonValue(-903)
   developerDoesNotExist,
 
-  /// 서버 점검 중
+  /// KO: 서비스 점검 중
+  /// <br>
+  /// EN: Under the service maintenance
   @JsonValue(-9798)
   underMaintenance,
 
-  /// 기타 에러
+  /// KO: 알 수 없음
+  /// <br>
+  /// EN: Unknown
   unknown
 }

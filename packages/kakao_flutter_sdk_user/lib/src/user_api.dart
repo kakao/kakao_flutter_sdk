@@ -15,24 +15,29 @@ import 'model/user.dart';
 import 'model/user_id_response.dart';
 import 'model/user_shipping_addresses.dart';
 
-/// 사용자관리 API 호출을 담당하는 클라이언트
+/// KO: 카카오 로그인 API 클래스
+/// <br>
+/// EN: Class for the Kakao Login APIs
 class UserApi {
+  /// @nodoc
   UserApi(this._dio);
 
   /// @nodoc
   final Dio _dio;
 
-  /// 간편한 API 호출을 위해 기본 제공되는 singleton 객체
   static final UserApi instance = UserApi(AuthApiFactory.authApi);
 
   /// @nodoc
   static const MethodChannel _channel =
       MethodChannel(CommonConstants.methodChannel);
 
-  /// 카카오톡으로 로그인
-  /// 카카오톡에 연결된 카카오계정으로 사용자를 인증하고 [OAuthToken] 발급
-  /// 발급된 토큰은 [TokenManagerProvider]에 지정된 토큰 저장소에 자동으로 저장됨
-  /// ID 토큰 재생 공격 방지를 위한 검증 값은 [nonce]로 전달. 임의의 문자열, ID 토큰 검증 시 사용
+  /// KO: 카카오톡으로 로그인<br>
+  /// [channelPublicIds]에 카카오톡 채널 프로필 ID 전달<br>
+  /// [serviceTerms] 서비스 약관 목록 전달<br>
+  /// <br>
+  /// EN: Login with Kakao Talk<br>
+  /// Pass Kakao Talk Channel's profile IDs to [channelPublicIds]<br>
+  /// Pass List of service terms to [serviceTerms]
   Future<OAuthToken> loginWithKakaoTalk({
     List<String>? channelPublicIds,
     List<String>? serviceTerms,
@@ -65,13 +70,19 @@ class UserApi {
     return token;
   }
 
-  /// 카카오계정으로 로그인. 기본 웹 브라우저에 있는 카카오계정 cookie 로 사용자를 인증하고 [OAuthToken] 발급
-  ///
-  /// 발급된 토큰은 [TokenManagerProvider]에 지정된 토큰 저장소에 자동으로 저장됨
-  ///
-  /// 동의 화면 요청 시 추가 상호작용을 요청하고자 할 때는 [prompts]를 전달
-  /// 카카오계정 로그인 페이지의 ID에 자동 입력할 이메일 또는 전화번호(+82 00-0000-0000 형식)는 [loginHint]에 전달
-  /// ID 토큰 재생 공격 방지를 위한 검증 값은 [nonce]로 전달. 임의의 문자열, ID 토큰 검증 시 사용
+  /// KO: 카카오계정으로 로그인<br>
+  /// [prompts]에 상호작용 추가 요청 프롬프트 전달<br>
+  /// [channelPublicIds]에 카카오톡 채널 프로필 ID 전달<br>
+  /// [serviceTerms] 서비스 약관 목록 전달<br>
+  /// [loginHint]에 카카오계정 로그인 페이지의 ID란에 자동 입력할 값 전달<br>
+  /// ID 토큰 재생 공격 방지를 위한 검증 값, 임의의 문자열은 [nonce]에 전달<br>
+  /// <br>
+  /// EN: Login with Kakao Account<br>
+  /// Pass the prompts to [prompts] for requests to add interactions<br>
+  /// Pass Kakao Talk Channel's profile IDs to [channelPublicIds]<br>
+  /// Pass List of service terms to [serviceTerms]<br>
+  /// Pass a value to fill in the ID field of the Kakao Account login page to [loginHint]<br>
+  /// Pass a random string to prevent replay attacks to [nonce]
   Future<OAuthToken> loginWithKakaoAccount({
     List<Prompt>? prompts,
     List<String>? channelPublicIds,
@@ -103,13 +114,11 @@ class UserApi {
     return token;
   }
 
-  /// 사용자가 아직 동의하지 않은 개인정보 및 접근권한 동의 항목에 대하여 동의를 요청하는 동의 화면을 출력하고, 사용자 동의 시 동의항목이 업데이트 된 [OAuthToken] 발급
-  ///
-  /// 발급된 토큰은 [TokenManagerProvider]에 지정된 토큰 저장소에 자동으로 저장됨
-  ///
-  /// [scopes]로 추가로 동의 받고자 하는 동의 항목 ID 목록을 전달함
-  /// 카카오디벨로퍼스 동의 항목 설정 화면에서 확인 가능
-  /// ID 토큰 재생 공격 방지를 위한 검증 값은 [nonce]로 전달. 임의의 문자열, ID 토큰 검증 시 사용
+  /// KO: 추가 항목 동의 받기<br>
+  /// 동의 항목 ID 목록은 [scopes]에 전달<br>
+  /// <br>
+  /// EN: Request additional consent<br>
+  /// Pass a list of the scope IDs to [scopes]
   Future<OAuthToken> loginWithNewScopes(List<String> scopes,
       {String? nonce}) async {
     String codeVerifier = AuthCodeClient.codeVerifier();
@@ -133,7 +142,9 @@ class UserApi {
     return token;
   }
 
-  /// 사용자 정보 요청
+  /// KO: 사용자 정보 가져오기
+  /// <br>
+  /// EN: Retrieve user information
   Future<User> me(
       {List<String>? properties, bool secureResource = true}) async {
     var params = {
@@ -150,9 +161,9 @@ class UserApi {
     });
   }
 
-  /// 현재 토큰을 강제로 만료시키고 로그아웃
-  ///
-  /// API 호출 결과와 관계 없이 [TokenManagerProvider]에 지정된 저장소에서 토큰을 자동으로 삭제함
+  /// KO: 로그아웃
+  /// <br>
+  /// EN: Logout
   Future<UserIdResponse> logout() async {
     return ApiFactory.handleApiError(() async {
       try {
@@ -166,9 +177,9 @@ class UserApi {
     });
   }
 
-  /// 연결 끊기. 카카오 로그인을 통한 사용자와 서비스 간의 연결 관계를 해제하고 사용자의 정보 제공 및 카카오 플랫폼 사용을 중단
-  ///
-  /// API 호출에 성공하면 [TokenManagerProvider]에 지정된 저장소에서 토큰을 자동으로 삭제함
+  /// KO: 연결 끊기
+  /// <br>
+  /// EN: Unlink
   Future<UserIdResponse> unlink() async {
     return ApiFactory.handleApiError(() async {
       Response response = await _dio.post(Constants.v1UnlinkPath);
@@ -177,10 +188,9 @@ class UserApi {
     });
   }
 
-  /// 현재 로그인한 사용자의 엑세스 토큰 정보 보기
-  ///
-  /// [me] 에서 제공되는 다양한 사용자 정보 없이 가볍게 토큰의 유효성을 체크하는 용도로 추천
-  /// 액세스 토큰이 만료된 경우 자동으로 갱신된 새로운 액세스 토큰 정보 반환
+  /// KO: 액세스 토큰 정보
+  /// <br>
+  /// EN: Access token information
   Future<AccessTokenInfo> accessTokenInfo() async {
     return ApiFactory.handleApiError(() async {
       Response response = await _dio.get(Constants.v1AccessTokenInfoPath);
@@ -188,11 +198,15 @@ class UserApi {
     });
   }
 
-  /// 배송지 선택하기
-  ///
-  /// [enableBackButton]과 [mobileView]는 웹 플랫폼 전용 파라미터.
-  /// [mobileView]로 배송지 피커를 모바일 디바이스에 맞춘 레이아웃으로 고정할 것인지 지정.
-  /// [enableBackButton]로 배송지 피커의 뒤로 가기 버튼 노출 여부 지정
+  /// KO: 배송지 선택하기<br>
+  /// [enableBackButton]과 [mobileView]는 웹 플랫폼 전용 파라미터<br>
+  /// [mobileView]로 배송지 피커를 모바일 디바이스에 맞춘 레이아웃으로 고정할 것인지 지정<br>
+  /// [enableBackButton]로 배송지 피커의 뒤로 가기 버튼 노출 여부 지정<br>
+  /// <br>
+  /// EN: Select shipping address<br>
+  /// [enableBackButton] and [mobileView] are web platform only parameters<br>
+  /// Use [mobileView] to specify whether the picker is pinned to a layout adapted for mobile device<br>
+  /// Use [enableBackButton] to show or hide the back button in the picker
   Future<int> selectShippingAddresses({
     bool? mobileView,
     bool? enableBackButton,
@@ -212,7 +226,15 @@ class UserApi {
     }
   }
 
-  /// 사용자의 배송지 정보 획득
+  /// KO: 배송지 가져오기<br>
+  /// [addressId]에 배송지 ID 전달<br>
+  /// [fromUpdatedAt]에 이전 페이지의 마지막 배송지 수정 시각 전달, `0` 전달 시 처음부터 조회<br>
+  /// [pageSize]에 한 페이지에 포함할 배송지 수 전달(기본값: 10)<br>
+  /// <br>
+  /// EN: Retrieve shipping address<br>
+  /// Pass the Shipping address ID to [addressId]<br>
+  /// Pass the last shipping address modification on the previous page to [fromUpdatedAt], retrieve from beginning if passing `0'<br>
+  /// Pass the number of shipping addresses displayed on a page to [pageSize](Default: 10)
   Future<UserShippingAddresses> shippingAddresses({
     int? addressId,
     DateTime? fromUpdatedAt,
@@ -233,10 +255,13 @@ class UserApi {
     });
   }
 
-  /// 서비스 약관 내역 반환.
-  ///
-  /// [tags]로 조회할 서비스 약관에 설정된 tag 목록을 지정함
-  /// [result]에 app_service_terms를 지정해 앱에 사용 설정된 서비스 약관 목록 요청 가능
+  /// KO: 서비스 약관 동의 내역 확인하기<br>
+  /// 서비스 약관 태그 목록은 [tags]에 전달<br>
+  /// [result]에 조회 대상(`agreed_service_terms`: 사용자가 동의한 서비스 약관 목록 | `app_service_terms`: 앱에 사용 설정된 서비스 약관 목록, 기본값: `agreed_service_terms`) 전달<br>
+  /// <br>
+  /// EN: Retrieve consent details for service terms<br>
+  /// Pass the tags of service terms to [tags]<br>
+  /// Pass the result type (`agreed_service_terms`: List of service terms the user has agreed to | `app_service_terms`: List of service terms enabled for the app, Default: `agreed_service_terms`) to [result]
   Future<UserServiceTerms> serviceTerms({
     List<String>? tags,
     String? result,
@@ -253,7 +278,11 @@ class UserApi {
     });
   }
 
-  /// 특정 서비스 약관에 대한 동의를 철회하고, 동의 철회가 반영된 서비스 약관 목록 반환
+  /// KO: 서비스 약관 동의 철회하기<br>
+  /// 서비스 약관 태그 목록은 [tags]에 전달<br>
+  /// <br>
+  /// EN: Revoke consent for service terms<br>
+  /// Pass the tags of service terms to [tags]
   Future<UserRevokedServiceTerms> revokeServiceTerms(
       {required List<String> tags}) async {
     Map<String, dynamic> param = {Constants.tags: tags.join(',')};
@@ -264,10 +293,9 @@ class UserApi {
     });
   }
 
-  /// User 클래스에서 제공되고 있는 사용자의 부가정보를 신규저장 및 수정
-  ///
-  /// 저장 가능한 키 이름은 카카오디벨로퍼스 > 카카오 로그인 > 사용자 프로퍼티 메뉴에서 확인
-  /// 앱 연결 시 기본 저장되는 nickname, profile_image, thumbnail_image 값도 덮어쓰기 가능하며 새로운 컬럼을 추가하면 해당 키 이름으로 정보 저장 가능
+  /// KO: 사용자 정보 저장하기
+  /// <br>
+  /// EN: Store user information
   Future<void> updateProfile(Map<String, String> properties) {
     return ApiFactory.handleApiError(() async {
       await _dio.post(Constants.v1UpdateProfilePath,
@@ -275,8 +303,9 @@ class UserApi {
     });
   }
 
-  /// 앱 연결 상태가 **PREREGISTER** 상태의 사용자에 대하여 앱 연결 요청
-  /// **자동연결** 설정을 비활성화한 앱에서 사용
+  /// KO: 연결하기
+  /// <br>
+  /// EN: Manual signup
   Future<void> signup({Map<String, String>? properties}) {
     return ApiFactory.handleApiError(() async {
       await _dio.post(Constants.v1SignupPath,
@@ -284,7 +313,9 @@ class UserApi {
     });
   }
 
-  /// 사용자 동의 항목의 상세 정보 목록 반환
+  /// KO: 동의 내역 확인하기
+  /// <br>
+  /// EN: Retrieve consent details
   Future<ScopeInfo> scopes({List<String>? scopes}) {
     return ApiFactory.handleApiError(() async {
       Response response = await _dio.get(Constants.v2ScopesPath,
@@ -293,9 +324,11 @@ class UserApi {
     });
   }
 
-  /// 사용자의 특정 동의 항목에 대한 동의를 철회하고, 남은 사용자 동의 항목의 상세 정보 목록 반환
-  ///
-  /// [scopes]로 동의를 철회할 동의 항목 ID 목록 전달
+  /// KO: 동의 철회하기<br>
+  /// 동의 항목 ID 목록은 [scopes]에 전달<br>
+  /// <br>
+  /// EN: Revoke consent<br>
+  /// Pass a list of the scope IDs to [scopes]
   Future<ScopeInfo> revokeScopes({required List<String> scopes}) {
     return ApiFactory.handleApiError(() async {
       Response response = await _dio.post(Constants.v2RevokeScopesPath,

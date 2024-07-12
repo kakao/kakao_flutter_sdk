@@ -3,7 +3,9 @@ import 'package:kakao_flutter_sdk_share/src/model/image_info.dart';
 
 part 'image_infos.g.dart';
 
-/// 업로드된 이미지 정보
+/// KO: 이미지 정보 목록
+/// <br>
+/// EN: List of image information
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class ImageInfos {
   /// 원본 이미지

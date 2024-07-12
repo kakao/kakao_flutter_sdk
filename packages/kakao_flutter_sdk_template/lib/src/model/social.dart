@@ -2,22 +2,34 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'social.g.dart';
 
-/// 좋아요 수, 댓글 수 등의 소셜 정보를 표현하기 위해 사용되는 오브젝트
+/// KO: 소셜 정보
+/// <br>
+/// EN: Social information
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class Social {
-  /// 콘텐츠의 좋아요 수
+  /// KO: 좋아요 수
+  /// <br>
+  /// EN: Number of likes
   final int? likeCount;
 
-  /// 콘텐츠의 댓글 수
+  /// KO: 댓글 수
+  /// <br>
+  /// EN: Number of comments
   final int? commentCount;
 
-  /// 콘텐츠의 공유 수
+  /// KO: 공유 수
+  /// <br>
+  /// EN: Number of shares
   final int? sharedCount;
 
-  /// 콘텐츠의 조회 수
+  /// KO: 조회 수
+  /// <br>
+  /// EN: Views
   final int? viewCount;
 
-  /// 콘텐츠의 구독 수
+  /// KO: 구독 수
+  /// <br>
+  /// EN: Number of subscribers
   final int? subscriberCount;
 
   /// @nodoc

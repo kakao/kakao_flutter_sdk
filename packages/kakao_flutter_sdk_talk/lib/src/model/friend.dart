@@ -2,28 +2,39 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'friend.g.dart';
 
-/// 카카오톡 친구 정보
+/// KO: 친구 정보
+/// <br>
+/// EN: Friend information
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class Friend {
-  /// 회원번호
+  /// KO: 회원번호
+  /// <br>
+  /// EN: Service user ID
   final int? id;
 
-  /// 메시지를 전송하기 위한 고유 아이디
-  /// 사용자의 계정 상태에 따라 이 정보는 바뀔 수 있으므로 앱내의 사용자 식별자로는 권장하지 않음
+  /// KO: 고유 ID
+  /// <br>
+  /// EN: Unique ID
   final String uuid;
 
-  /// 친구의 닉네임
+  /// KO: 프로필 닉네임
+  /// <br>
+  /// EN: Profile nickname
   final String? profileNickname;
 
-  /// 썸네일 이미지 URL
+  /// KO: 프로필 썸네일 이미지
+  /// <br>
+  /// EN: Profile thumbnail image
   final String? profileThumbnailImage;
 
-  /// 즐겨찾기 추가 여부
+  /// KO: 즐겨찾기 친구 여부
+  /// <br>
+  /// EN: Whether a favorite friend
   final bool? favorite;
 
-  /// 메시지 수신이 허용되었는지 여부
-  /// 앱가입 친구의 경우는 feed msg 에 해당
-  /// 앱미가입친구는 invite msg 에 해당
+  /// KO: 메시지 수신 허용 여부
+  /// <br>
+  /// EN: Whether to allow receiving messages
   final bool? allowedMsg;
 
   /// @nodoc
@@ -41,14 +52,36 @@ class Friend {
   String toString() => toJson().toString();
 }
 
-/// 친구 목록 조회 Context
+/// KO: 친구 목록 조회 설정
+/// <br>
+/// EN: Context for retrieving friend list
 class FriendsContext {
+  /// KO: 친구 목록 시작 지점
+  /// <br>
+  /// EN: Start point of the friend list
   int? offset;
+
+  /// KO: 페이지당 결과 수
+  /// <br>
+  /// EN: Number of results in a page
   int? limit;
+
+  /// KO: 정렬 방식
+  /// <br>
+  /// EN: Sorting method
   Order? order;
+
+  /// KO: 페이지당 결과 수
+  /// <br>
+  /// EN: Number of results in a page
   FriendOrder? friendOrder;
+
+  /// KO: 친구 목록 요청 URL
+  /// <br>
+  /// EN: URL to request the friend list
   Uri url;
 
+  /// @nodoc
   FriendsContext({this.offset, this.limit, this.order, this.friendOrder})
       : url = Uri.parse('');
 
@@ -75,14 +108,32 @@ class FriendsContext {
   }
 }
 
-/// 목록 조회에 사용되는 정렬 방식
-enum Order { asc, desc }
+/// KO: 정렬 방식
+/// <br>
+/// EN: Sorting method
+enum Order {
+  /// KO: 오름차순
+  /// <br>
+  /// EN: Ascending
+  asc,
 
-/// 친구 목록 정렬 기준
+  /// KO: 내림차순
+  /// <br>
+  /// EN: Descending
+  desc
+}
+
+/// KO: 친구 정렬 방식
+/// <br>
+/// EN: Method to sort the friend list
 enum FriendOrder {
-  /// 이름 순 정렬
+  /// KO: 닉네임순 정렬
+  /// <br>
+  /// EN: Sort by nickname
   nickname,
 
-  /// 즐겨찾기 순 정렬
+  /// KO: 즐겨찾기 우선 정렬
+  /// <br>
+  /// EN: Sort favorite friends first
   favorite
 }

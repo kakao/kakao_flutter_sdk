@@ -1,28 +1,41 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kakao_flutter_sdk_auth/src/model/access_token_response.dart';
-import 'package:kakao_flutter_sdk_auth/src/token_manager.dart';
 
 part 'oauth_token.g.dart';
 
-/// 카카오 로그인을 통해 발급 받은 토큰, Kakao SDK는 [TokenManager]를 통해 토큰을 자동으로 관리함
+/// KO: 카카오 로그인으로 발급받은 토큰
+/// <br>
+/// EN: Tokens issued with Kakao Login
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class OAuthToken {
-  /// API 인증에 사용하는 엑세스 토큰
+  /// KO: 액세스 토큰
+  /// <br>
+  /// EN: Access token
   String accessToken;
 
-  /// 엑세스 토큰 만료 시각
+  /// KO: 액세스 토큰 만료시각
+  /// <br>
+  /// EN: The expiration time of the access token
   DateTime expiresAt;
 
-  /// 엑세스 토큰을 갱신하는데 사용하는 리프레시 토큰
+  /// KO: 리프레시 토큰
+  /// <br>
+  /// EN: Refresh token
   String? refreshToken;
 
-  /// 리프레시 토큰 만료 시각
+  /// KO: 리프레시 토큰 만료시각
+  /// <br>
+  /// EN: The expiration time of the refresh token
   DateTime? refreshTokenExpiresAt;
 
-  /// 이 토큰에 부여된 scope 목록
+  /// KO: 인가된 동의항목
+  /// <br>
+  /// EN: Authorized scopes
   List<String>? scopes;
 
-  /// OpenID Connect 확장 기능을 통해 발급되는 ID 토큰, Base64 인코딩된 사용자 인증 정보 포함
+  /// KO: ID 토큰
+  /// <br>
+  /// EN: ID token
   String? idToken;
 
   /// @nodoc

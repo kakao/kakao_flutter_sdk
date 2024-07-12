@@ -1,3 +1,4 @@
+/// @nodoc
 extension StringExtensions on String {
   String toSnakeCase() {
     String result = '';

@@ -9,10 +9,10 @@ import 'package:kakao_flutter_sdk_navi/src/model/location.dart';
 import 'package:kakao_flutter_sdk_navi/src/model/navi_option.dart';
 import 'package:platform/platform.dart';
 
-/// 카카오내비 API 호출을 담당하는 클래스
+/// KO: 카카오내비 API 클라이언트
+/// <br>
+/// EN: Client for the Kakao Navi APIs
 class NaviApi {
-  NaviApi({Platform? platform}) : _platform = platform ?? const LocalPlatform();
-
   final Platform _platform;
   static const MethodChannel _channel =
       MethodChannel(CommonConstants.methodChannel);
@@ -28,10 +28,14 @@ class NaviApi {
     }
   }
 
-  /// 간편한 API 호출을 위해 기본 제공되는 singleton 객체
   static final NaviApi instance = NaviApi();
 
-  /// 카카오내비 앱 실행 가능 여부 확인
+  /// @nodoc
+  NaviApi({Platform? platform}) : _platform = platform ?? const LocalPlatform();
+
+  /// KO: 카카오내비 앱 실행 가능 여부 확인
+  /// <br>
+  /// EN: Check whether the Kakao Navi app is available
   Future<bool> isKakaoNaviInstalled() async {
     Map<String, String> arguments = {};
     if (kIsWeb) {
@@ -49,9 +53,15 @@ class NaviApi {
     return isInstalled;
   }
 
-  /// 카카오내비 앱으로 길안내를 실행
-  /// [location]로 목적지를 입력받고 [option]를 통해 길안내 옵션을 입력받음
-  /// 경유지 목록은 최대 3개까지 등록 가능하고 [viaList]로 입력받음
+  /// KO: 카카오내비 앱으로 길안내 실행, 모바일 기기에서만 동작<br>
+  /// [destination]에 목적지 전달<br>
+  /// [option]에 경로 검색 옵션 전달<br>
+  /// [viaList]에 경유지 목록 전달(최대: 3개)<br>
+  /// <br>
+  /// EN: Launches the Kakao Navi app to start navigation, available only on the mobile devices<br>
+  /// Pass the destination to [destination]<br>
+  /// Pass the options for searching the route to [option]<br>
+  /// Pass the list of stops to [viaList] (Maximum: 3 places)
   Future navigate(
       {required Location destination,
       NaviOption? option,
@@ -73,9 +83,15 @@ class NaviApi {
     await _channel.invokeMethod<bool>(CommonConstants.navigate, arguments);
   }
 
-  /// 카카오내비 앱으로 목적지를 공유
-  /// [location]로 목적지를 입력받고 [option]를 통해 길안내 옵션을 입력받음
-  /// 경유지 목록은 최대 3개까지 등록 가능하고 [viaList]로 입력받음
+  /// KO: 카카오내비 앱으로 목적지 공유 실행, 모바일 기기에서만 동작<br>
+  /// [destination]에 목적지 전달<br>
+  /// [option]에 경로 검색 옵션 전달<br>
+  /// [viaList]에 경유지 목록 전달(최대: 3개)<br>
+  /// <br>
+  /// EN: Launches the Kakao Navi app to show the shared destination, available only on the mobile devices<br>
+  /// Pass the destination to [destination]<br>
+  /// Pass the options for searching the route to [option]<br>
+  /// Pass the list of stops to [viaList] (Maximum: 3 places)
   Future shareDestination(
       {required Location destination,
       NaviOption? option,

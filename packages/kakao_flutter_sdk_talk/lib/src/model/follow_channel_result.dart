@@ -3,15 +3,21 @@ import 'package:kakao_flutter_sdk_talk/src/constants.dart';
 
 part 'follow_channel_result.g.dart';
 
-/// 카카오톡 간편 채널 추가 결과
+/// KO: 카카오톡 채널 간편 추가하기 결과
+/// <br>
+/// EN: Result of Follow Kakao Talk Channel
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class FollowChannelResult {
-  /// 요청 결과
+  /// KO: 성공 여부
+  /// <br>
+  /// EN: Success status
   @StatusConverter()
   @JsonKey(name: 'status')
   final bool success;
 
-  /// 요청한 채널 public Id
+  /// KO: 카카오톡 채널 프로필 ID
+  /// <br>
+  /// EN: Kakao Talk Channel profile ID
   final String channelPublicId;
 
   /// @nodoc
