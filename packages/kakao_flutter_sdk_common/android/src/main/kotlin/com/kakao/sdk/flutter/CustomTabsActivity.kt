@@ -30,7 +30,8 @@ open class CustomTabsActivity : Activity() {
                     ?.getParcelable(Constants.KEY_RESULT_RECEIVER, ResultReceiver::class.java)
             } else {
                 @Suppress("DEPRECATION")
-                intent.extras?.getParcelable<ResultReceiver>(Constants.KEY_RESULT_RECEIVER) as ResultReceiver
+                intent.extras?.getBundle(Constants.KEY_BUNDLE)
+                    ?.getParcelable<ResultReceiver>(Constants.KEY_RESULT_RECEIVER) as ResultReceiver
             } ?: throw IllegalArgumentException("ResultReceiver not delivered")
 
             activityName = intent.getStringExtra(Constants.ACTIVITY_NAME)
