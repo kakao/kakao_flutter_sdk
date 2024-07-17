@@ -85,4 +85,6 @@ object Constants {
     const val ERROR_DESCRIPTION = "error_description"
     const val ERROR_CODE = "error_code"
     const val ERROR_MSG = "error_msg"
+
+    const val ACTIVITY_NAME = "activity_name"
 }

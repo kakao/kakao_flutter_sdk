@@ -1,3 +1,9 @@
+## 1.9.5
+
+- Android: Fixed an issue that Login with Kakao Account does not work on devices below Android 13
+  using Flutter SDK version 1.9.4.
+- Updated the internal source code.
+
 ## 1.9.4
 
 - Android: Fixed a bug that the following features do now work when android:taskAffinity in
