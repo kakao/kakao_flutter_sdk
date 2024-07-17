@@ -58,11 +58,6 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
             }
 
             "accountLogin" -> {
-                val context = applicationContext ?: run {
-                    result.error("Error", "Application is not attached to FlutterEngine", null)
-                    return
-                }
-
                 val activity = activity ?: run {
                     result.error("Error", "Plugin is not attached to Activity", null)
                     return
@@ -70,16 +65,11 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
 
                 @Suppress("UNCHECKED_CAST")
                 val args = call.arguments as Map<String, String?>
-                val intent = IntentFactory.customTabsForLogin(context, args, resultReceiver())
+                val intent = IntentFactory.customTabsForLogin(activity, args, resultReceiver())
                 activity.startActivity(intent)
             }
 
             "launchBrowserTab" -> {
-                val context = applicationContext ?: run {
-                    result.error("Error", "Application is not attached to FlutterEngine", null)
-                    return
-                }
-
                 val activity = activity ?: run {
                     result.error("Error", "Plugin is not attached to Activity", null)
                     return
@@ -88,7 +78,7 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                 @Suppress("UNCHECKED_CAST")
                 val args = call.arguments as Map<String, String?>
                 val intent =
-                    IntentFactory.customTabs<CustomTabsActivity>(context, args, resultReceiver())
+                    IntentFactory.customTabs<CustomTabsActivity>(activity, args, resultReceiver())
                 activity.startActivity(intent)
             }
 
@@ -98,12 +88,12 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                     val args = call.arguments as Map<String, String>
                     val talkPackageName = args["talkPackageName"] ?: Constants.TALK_PACKAGE
 
-                    if (applicationContext == null) {
-                        result.error("Error", "Application is not attached to FlutterEngine", null)
+                    val activity = activity ?: run {
+                        result.error("Error", "Plugin is not attached to Activity", null)
                         return
                     }
 
-                    if (!Utility.isKakaoTalkInstalled(applicationContext!!, talkPackageName)) {
+                    if (!Utility.isKakaoTalkInstalled(activity, talkPackageName)) {
                         result.error(
                             "Error",
                             "KakaoTalk is not installed. If you want KakaoTalk Login, please install KakaoTalk",
@@ -112,9 +102,8 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                         return
                     }
                     val intent =
-                        IntentFactory.talkAuthCode(applicationContext!!, args, resultReceiver())
-                    activity?.startActivity(intent)
-                        ?: result.error("Error", "Plugin is not attached to Activity", null)
+                        IntentFactory.talkAuthCode(activity, args, resultReceiver())
+                    activity.startActivity(intent)
                 } catch (e: Exception) {
                     result.error(e.javaClass.simpleName, e.localizedMessage, e)
                 }
@@ -142,12 +131,13 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                 @Suppress("UNCHECKED_CAST")
                 val args = call.arguments as Map<String, String>
                 val talkPackageName = args["talkPackageName"] ?: Constants.TALK_PACKAGE
-                if (applicationContext == null) {
-                    result.error("Error", "Application is not attached to FlutterEngine", null)
+
+                val activity = activity ?: run {
+                    result.error("Error", "Plugin is not attached to Activity", null)
                     return
                 }
 
-                if (!Utility.isKakaoTalkInstalled(applicationContext!!, talkPackageName)) {
+                if (!Utility.isKakaoTalkInstalled(activity, talkPackageName)) {
                     result.success(false)
                     return
                 }
@@ -160,16 +150,11 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                     Intent.ACTION_SEND,
                     Uri.parse(uri)
                 ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                applicationContext?.startActivity(intent)
+                activity.startActivity(intent)
                 result.success(true)
             }
 
             "followChannel" -> {
-                val context = applicationContext ?: run {
-                    result.error("Error", "Application is not attached to FlutterEngine", null)
-                    return
-                }
-
                 val activity = activity ?: run {
                     result.error("Error", "Plugin is not attached to Activity", null)
                     return
@@ -179,7 +164,7 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                 val args = call.arguments as Map<String, String>
 
                 val intent = IntentFactory.customTabs<FollowChannelHandlerActivity>(
-                    context,
+                    activity,
                     args,
                     resultReceiver()
                 )
@@ -227,11 +212,6 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
             }
 
             "selectShippingAddresses" -> {
-                val context = applicationContext ?: run {
-                    result.error("Error", "Application is not attached to FlutterEngine", null)
-                    return
-                }
-
                 val activity = activity ?: run {
                     result.error("Error", "Plugin is not attached to Activity", null)
                     return
@@ -241,7 +221,7 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                 val args = call.arguments as Map<String, String>
 
                 val intent =
-                    IntentFactory.customTabs<AppsHandlerActivity>(context, args, resultReceiver())
+                    IntentFactory.customTabs<AppsHandlerActivity>(activity, args, resultReceiver())
                 activity.startActivity(intent)
             }
 

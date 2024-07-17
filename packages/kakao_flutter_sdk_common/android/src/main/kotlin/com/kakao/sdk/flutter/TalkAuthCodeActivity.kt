@@ -10,6 +10,7 @@ import android.view.Window
 
 class TalkAuthCodeActivity : Activity() {
     private var resultReceiver: ResultReceiver? = null
+    private var activityName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -21,6 +22,8 @@ class TalkAuthCodeActivity : Activity() {
         val redirectUri = intent.extras?.getString(Constants.KEY_REDIRECT_URI)
             ?: throw IllegalArgumentException("Redirect uri is required.")
         val extra = intent.extras?.getBundle(Constants.KEY_EXTRAS) ?: Bundle()
+
+        activityName = intent.getStringExtra(Constants.ACTIVITY_NAME)
 
         resultReceiver = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.extras?.getBundle(Constants.KEY_BUNDLE)
@@ -71,7 +74,7 @@ class TalkAuthCodeActivity : Activity() {
         resultReceiver?.send(RESULT_OK, Bundle().apply {
             putParcelable(Constants.KEY_URL, Uri.parse(url))
         })
-        finish()
+        finishAndRemoveTask()
     }
 
     private fun sendError(errorCode: String, errorMessage: String) {
@@ -79,6 +82,18 @@ class TalkAuthCodeActivity : Activity() {
             putString(Constants.KEY_ERROR_CODE, errorCode)
             putString(Constants.KEY_ERROR_MESSAGE, errorMessage)
         })
-        finish()
+        finishAndRemoveTask()
+    }
+
+    override fun finishAndRemoveTask() {
+        super.finishAndRemoveTask()
+
+        // To return to the app's Activity when the app's Activity and the current Activity's task are different
+        runCatching {
+            val activityClass = activityName?.let { Class.forName(it) }
+            val intent = Intent(this, activityClass)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+        }
     }
 }

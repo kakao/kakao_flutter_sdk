@@ -1,5 +1,6 @@
 package com.kakao.sdk.flutter
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -52,6 +53,7 @@ object IntentFactory {
             .putExtra(Constants.KEY_BUNDLE, Bundle().apply {
                 putParcelable(Constants.KEY_RESULT_RECEIVER, resultReceiver)
             })
+            .putExtra(Constants.ACTIVITY_NAME, (context as? Activity)?.componentName?.className)
     }
 
     inline fun <reified T : CustomTabsActivity> customTabs(
@@ -64,6 +66,7 @@ object IntentFactory {
             .putExtra(Constants.KEY_BUNDLE, Bundle().apply {
                 putParcelable(Constants.KEY_RESULT_RECEIVER, resultReceiver)
             })
+            .putExtra(Constants.ACTIVITY_NAME, (context as? Activity)?.componentName?.className)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     }
 
