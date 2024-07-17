@@ -1,6 +1,6 @@
 name: kakao_flutter_sdk_talk
 description: A flutter plugin for Kakao API, which supports Kakao login, KakaoTalk Share, User API, KakaoTalk API and Navi API.
-version: 1.9.4
+version: 1.9.5
 homepage: https://github.com/kakao/kakao_flutter_sdk
 issue_tracker: https://github.com/kakao/kakao_flutter_sdk/issues
 
