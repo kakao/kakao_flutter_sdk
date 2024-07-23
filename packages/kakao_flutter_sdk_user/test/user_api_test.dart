@@ -50,15 +50,15 @@ void main() {
         accountMap["phone_number_needs_agreement"]);
     expect(account?.phoneNumber, accountMap["phone_number"]);
 
-    if (account?.ageRange != null) {
-      expect(account?.ageRange,
-          $enumDecode($AgeRangeEnumMap, accountMap['age_range']));
-    }
+    expect(
+        account?.ageRange,
+        $enumDecodeNullable($AgeRangeEnumMap, accountMap['age_range'],
+            unknownValue: AgeRange.unknown));
 
-    if (account?.gender != null) {
-      expect(
-          account?.gender, $enumDecode($GenderEnumMap, accountMap['gender']));
-    }
+    expect(
+        account?.gender,
+        $enumDecodeNullable($GenderEnumMap, accountMap['gender'],
+            unknownValue: Gender.other));
 
     Map<String, dynamic>? profileMap = accountMap["profile"];
     final profile = account?.profile;

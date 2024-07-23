@@ -17,7 +17,7 @@ void main() {
 
         expect(
           actual.code,
-          $enumDecode($ApiErrorCauseEnumMap, expected['code']),
+          $enumDecode($ApiErrorCauseEnumMap, expected['code'], unknownValue: ApiErrorCause.unknown),
         );
         expect(actual.msg, expected['msg']);
         expect(actual.apiType, expected['api_type']);

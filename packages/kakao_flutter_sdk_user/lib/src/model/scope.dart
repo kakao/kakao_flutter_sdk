@@ -21,6 +21,7 @@ class Scope {
   /// KO: 동의항목 타입(PRIVACY: 개인정보 보호 동의 항목 | SERVICE: 접근권한 관리 동의 항목)
   /// <br>
   /// EN: Type of the scope (PRIVACY: for personal information | SERVICE: for permission)
+  @JsonKey(unknownEnumValue: ScopeType.unknown)
   final ScopeType type;
 
   /// KO: 동의항목 사용 여부
@@ -72,5 +73,6 @@ enum ScopeType {
   /// <br>
   /// EN: Scope for permission
   @JsonValue("SERVICE")
-  service
+  service,
+  unknown,
 }

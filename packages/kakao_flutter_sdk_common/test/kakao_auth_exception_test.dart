@@ -16,9 +16,9 @@ void main() {
         KakaoAuthException actual = KakaoAuthException.fromJson(expected);
 
         expect(
-          actual.error,
-          $enumDecode($AuthErrorCauseEnumMap, expected['error']),
-        );
+            actual.error,
+            $enumDecode($AuthErrorCauseEnumMap, expected['error'],
+                unknownValue: AuthErrorCause.unknown));
         expect(actual.errorDescription, expected['error_description']);
       });
     }

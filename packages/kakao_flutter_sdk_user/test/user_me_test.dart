@@ -52,10 +52,13 @@ void main() {
           expect(account.ageRangeNeedsAgreement,
               expectedAccount['age_range_needs_agreement']);
 
-          if (account.ageRange != null) {
-            expect(account.ageRange,
-                $enumDecode($AgeRangeEnumMap, expectedAccount['age_range']));
-          }
+          expect(
+              account.ageRange,
+              $enumDecodeNullable(
+                $AgeRangeEnumMap,
+                expectedAccount['age_range'],
+                unknownValue: AgeRange.unknown,
+              ));
 
           expect(
             account.birthyearNeedsAgreement,
@@ -64,27 +67,28 @@ void main() {
           expect(account.birthyear, expectedAccount['birthyear']);
           expect(account.birthday, expectedAccount['birthday']);
 
-          if (account.birthdayType != null) {
-            expect(
-              account.birthdayType,
-              $enumDecode(
-                $BirthdayTypeEnumMap,
-                expectedAccount['birthday_type'],
-              ),
-            );
-          }
+          expect(
+            account.birthdayType,
+            $enumDecodeNullable(
+              $BirthdayTypeEnumMap,
+              expectedAccount['birthday_type'],
+              unknownValue: BirthdayType.unknown,
+            ),
+          );
 
           expect(
             account.genderNeedsAgreement,
             expectedAccount['gender_needs_agreement'],
           );
 
-          if (account.gender != null) {
-            expect(
-              account.gender,
-              $enumDecode($GenderEnumMap, expectedAccount['gender']),
-            );
-          }
+          expect(
+            account.gender,
+            $enumDecodeNullable(
+              $GenderEnumMap,
+              expectedAccount['gender'],
+              unknownValue: Gender.other,
+            ),
+          );
 
           expect(
             account.ciNeedsAgreement,
@@ -114,12 +118,11 @@ void main() {
             expectedAccount['legal_gender_needs_agreement'],
           );
 
-          if (account.legalGender != null) {
-            expect(
-              account.legalGender,
-              $enumDecode($GenderEnumMap, expectedAccount['legal_gender']),
-            );
-          }
+          expect(
+            account.legalGender,
+            $enumDecodeNullable($GenderEnumMap, expectedAccount['legal_gender'],
+                unknownValue: Gender.other),
+          );
           expect(
             account.phoneNumberNeedsAgreement,
             expectedAccount['phone_number_needs_agreement'],
@@ -168,27 +171,76 @@ void main() {
 
   group('enum test', () {
     test('AgeRange Test', () {
-      expect(AgeRange.age_0_9, $enumDecode($AgeRangeEnumMap, '0~9'));
-      expect(AgeRange.age_10_14, $enumDecode($AgeRangeEnumMap, '10~14'));
-      expect(AgeRange.age_15_19, $enumDecode($AgeRangeEnumMap, '15~19'));
-      expect(AgeRange.age_20_29, $enumDecode($AgeRangeEnumMap, '20~29'));
-      expect(AgeRange.age_30_39, $enumDecode($AgeRangeEnumMap, '30~39'));
-      expect(AgeRange.age_40_49, $enumDecode($AgeRangeEnumMap, '40~49'));
-      expect(AgeRange.age_50_59, $enumDecode($AgeRangeEnumMap, '50~59'));
-      expect(AgeRange.age_60_69, $enumDecode($AgeRangeEnumMap, '60~69'));
-      expect(AgeRange.age_70_79, $enumDecode($AgeRangeEnumMap, '70~79'));
-      expect(AgeRange.age_80_89, $enumDecode($AgeRangeEnumMap, '80~89'));
-      expect(AgeRange.age_90above, $enumDecode($AgeRangeEnumMap, '90~'));
+      expect(
+        AgeRange.age_0_9,
+        $enumDecodeNullable($AgeRangeEnumMap, '0~9',
+            unknownValue: AgeRange.unknown),
+      );
+      expect(
+        AgeRange.age_10_14,
+        $enumDecode($AgeRangeEnumMap, '10~14', unknownValue: AgeRange.unknown),
+      );
+      expect(
+        AgeRange.age_15_19,
+        $enumDecode($AgeRangeEnumMap, '15~19', unknownValue: AgeRange.unknown),
+      );
+      expect(
+        AgeRange.age_20_29,
+        $enumDecode($AgeRangeEnumMap, '20~29', unknownValue: AgeRange.unknown),
+      );
+      expect(
+        AgeRange.age_30_39,
+        $enumDecode($AgeRangeEnumMap, '30~39', unknownValue: AgeRange.unknown),
+      );
+      expect(
+        AgeRange.age_40_49,
+        $enumDecode($AgeRangeEnumMap, '40~49', unknownValue: AgeRange.unknown),
+      );
+      expect(
+        AgeRange.age_50_59,
+        $enumDecode($AgeRangeEnumMap, '50~59', unknownValue: AgeRange.unknown),
+      );
+      expect(
+        AgeRange.age_60_69,
+        $enumDecode($AgeRangeEnumMap, '60~69', unknownValue: AgeRange.unknown),
+      );
+      expect(
+        AgeRange.age_70_79,
+        $enumDecode($AgeRangeEnumMap, '70~79', unknownValue: AgeRange.unknown),
+      );
+      expect(
+        AgeRange.age_80_89,
+        $enumDecode($AgeRangeEnumMap, '80~89', unknownValue: AgeRange.unknown),
+      );
+      expect(
+        AgeRange.age_90above,
+        $enumDecode($AgeRangeEnumMap, '90~', unknownValue: AgeRange.unknown),
+      );
+      expect(
+        AgeRange.unknown,
+        $enumDecode($AgeRangeEnumMap, 'test', unknownValue: AgeRange.unknown),
+      );
     });
 
     test('BirthdayType Test', () {
-      expect(BirthdayType.solar, $enumDecode($BirthdayTypeEnumMap, 'SOLAR'));
-      expect(BirthdayType.lunar, $enumDecode($BirthdayTypeEnumMap, 'LUNAR'));
+      expect(
+          BirthdayType.solar,
+          $enumDecode($BirthdayTypeEnumMap, 'SOLAR',
+              unknownValue: BirthdayType.unknown));
+      expect(
+          BirthdayType.lunar,
+          $enumDecode($BirthdayTypeEnumMap, 'LUNAR',
+              unknownValue: BirthdayType.unknown));
+      expect(
+          BirthdayType.unknown,
+          $enumDecode($BirthdayTypeEnumMap, 'test',
+              unknownValue: BirthdayType.unknown));
     });
 
     test('Gender Test', () {
-      expect(Gender.female, $enumDecode($GenderEnumMap, 'female'));
-      expect(Gender.male, $enumDecode($GenderEnumMap, 'male'));
+      expect(Gender.female, $enumDecode($GenderEnumMap, 'female', unknownValue: Gender.other));
+      expect(Gender.male, $enumDecode($GenderEnumMap, 'male', unknownValue: Gender.other));
+      expect(Gender.other, $enumDecode($GenderEnumMap, 'test', unknownValue: Gender.other));
     });
   });
 }
