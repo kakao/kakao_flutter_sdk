@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:kakao_flutter_sdk_user/src/constants.dart';
-import 'package:kakao_flutter_sdk_user/src/model/user_service_terms.dart';
 
 import '../../kakao_flutter_sdk_common/test/helper.dart';
+import 'test_enum_map.dart';
 
 void main() {
   group('parse test', () {
@@ -31,10 +32,27 @@ void main() {
             expect(serviceTerm.agreedAt,
                 DateTime.parse(expectedServiceTerm['agreed_at']));
           }
+
+          expect(
+            serviceTerm.referer,
+            $enumDecodeNullable(
+              $RefererEnumMap,
+              expectedServiceTerm['agreed_by'],
+              unknownValue: Referer.unknown,
+            ),
+          );
         }
       });
     }
 
     parse('normal');
+  });
+
+  group('enum test', () {
+    test('Referer Test', () {
+      expect(Referer.kapi, $enumDecode($RefererEnumMap, 'KAPI', unknownValue: Referer.unknown));
+      expect(Referer.kauth, $enumDecode($RefererEnumMap, 'KAUTH', unknownValue: Referer.unknown));
+      expect(Referer.unknown, $enumDecode($RefererEnumMap, 'test', unknownValue: Referer.unknown));
+    });
   });
 }

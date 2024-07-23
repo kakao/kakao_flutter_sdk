@@ -32,9 +32,15 @@ class ServiceTerms {
   /// EN: The last time the user agreed to the scope
   DateTime? agreedAt;
 
+  /// 서비스 약관의 동의 경로
+  /// <br>
+  /// Path through which the service terms were agreed to.
+  @JsonKey(name: 'agreed_by',unknownEnumValue: Referer.unknown)
+  Referer? referer;
+
   /// @nodoc
-  ServiceTerms(
-      this.tag, this.required, this.agreed, this.revocable, this.agreedAt);
+  ServiceTerms(this.tag, this.required, this.agreed, this.revocable,
+      this.agreedAt, this.referer);
 
   /// @nodoc
   factory ServiceTerms.fromJson(Map<String, dynamic> json) =>
@@ -46,4 +52,12 @@ class ServiceTerms {
   /// @nodoc
   @override
   String toString() => toJson().toString();
+}
+
+enum Referer {
+  @JsonValue('KAUTH')
+  kauth,
+  @JsonValue('KAPI')
+  kapi,
+  unknown
 }

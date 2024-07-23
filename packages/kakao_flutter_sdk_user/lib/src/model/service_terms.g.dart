@@ -14,6 +14,8 @@ ServiceTerms _$ServiceTermsFromJson(Map<String, dynamic> json) => ServiceTerms(
       json['agreed_at'] == null
           ? null
           : DateTime.parse(json['agreed_at'] as String),
+      $enumDecodeNullable(_$RefererEnumMap, json['agreed_by'],
+          unknownValue: Referer.unknown),
     );
 
 Map<String, dynamic> _$ServiceTermsToJson(ServiceTerms instance) {
@@ -31,5 +33,12 @@ Map<String, dynamic> _$ServiceTermsToJson(ServiceTerms instance) {
   }
 
   writeNotNull('agreed_at', instance.agreedAt?.toIso8601String());
+  writeNotNull('agreed_by', _$RefererEnumMap[instance.referer]);
   return val;
 }
+
+const _$RefererEnumMap = {
+  Referer.kauth: 'KAUTH',
+  Referer.kapi: 'KAPI',
+  Referer.unknown: 'unknown',
+};
