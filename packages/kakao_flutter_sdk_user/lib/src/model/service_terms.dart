@@ -32,10 +32,10 @@ class ServiceTerms {
   /// EN: The last time the user agreed to the scope
   DateTime? agreedAt;
 
-  /// 서비스 약관의 동의 경로
+  /// KO: 서비스 약관의 동의 경로
   /// <br>
-  /// Path through which the service terms were agreed to.
-  @JsonKey(name: 'agreed_by',unknownEnumValue: Referer.unknown)
+  /// EN: Path through which the service terms were agreed to
+  @JsonKey(name: 'agreed_by', unknownEnumValue: Referer.unknown)
   Referer? referer;
 
   /// @nodoc
@@ -54,10 +54,24 @@ class ServiceTerms {
   String toString() => toJson().toString();
 }
 
+/// KO: 서비스 약관의 동의 경로
+/// <br>
+/// EN: Path through which the service terms were agreed to
 enum Referer {
+  /// KO: 카카오싱크 간편가입 동의 화면
+  /// <br>
+  /// EN: Consent screen of Kakao Sync Simple Signup
   @JsonValue('KAUTH')
   kauth,
+
+  /// KO: 기타
+  /// <br>
+  /// EN: Other paths
   @JsonValue('KAPI')
   kapi,
+
+  /// KO: 알 수 없음
+  /// <br>
+  /// EN: Unknown
   unknown
 }
