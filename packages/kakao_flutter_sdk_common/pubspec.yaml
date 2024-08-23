@@ -24,7 +24,7 @@ dependencies:
   platform: ^3.1.0
   crypto: ^3.0.2
   encrypt: ^5.0.1
-  web: ^0.5.1
+  web: ^1.0.0
 
 dependency_overrides:
   shared_preferences_foundation: ^2.3.5 # for Privacy Manifest on iOS
