@@ -27,7 +27,7 @@ apply plugin: 'kotlin-android'
 android {
     namespace 'com.kakao.sdk.flutter'
 
-    compileSdkVersion 33
+    compileSdkVersion 34
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -44,7 +44,7 @@ android {
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdkVersion 34
     }
 }
 
