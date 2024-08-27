@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_user/src/constants.dart';
+import 'package:kakao_flutter_sdk_user/src/model/user_response.dart';
 import 'package:kakao_flutter_sdk_user/src/model/user_revoked_service_terms.dart';
 import 'package:kakao_flutter_sdk_user/src/model/user_service_terms.dart';
 
@@ -157,7 +158,8 @@ class UserApi {
     return ApiFactory.handleApiError(() async {
       Response response =
           await _dio.get(Constants.v2MePath, queryParameters: params);
-      return User.fromJson(response.data);
+      final userResponse = UserResponse.fromJson(response.data);
+      return userResponse.toUser();
     });
   }
 

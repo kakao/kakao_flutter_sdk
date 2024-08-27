@@ -44,9 +44,14 @@ class User {
   /// EN: Whether the user is completely linked with the app
   bool? hasSignedUp;
 
+  /// KO: 다른 사용자의 친구 정보에서 보여지는 해당 사용자의 고유 ID
+  /// <br>
+  /// EN: Unique ID for the friend information
+  String? uuid;
+
   /// @nodoc
   User(this.id, this.hasSignedUp, this.properties, this.kakaoAccount,
-      this.groupUserToken, this.synchedAt, this.connectedAt);
+      this.groupUserToken, this.synchedAt, this.connectedAt, this.uuid);
 
   /// @nodoc
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
