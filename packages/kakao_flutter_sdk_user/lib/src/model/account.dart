@@ -107,21 +107,6 @@ class Account {
   @JsonKey(unknownEnumValue: Gender.other)
   Gender? gender;
 
-  /// KO: 사용자 동의 시 CI 참고 가능 여부
-  /// <br>
-  /// EN: Whether CI for a reference can be provided under user consent
-  bool? ciNeedsAgreement;
-
-  /// KO: 연계정보
-  /// <br>
-  /// EN: Connecting Information(CI)
-  String? ci;
-
-  /// KO: CI 발급시간
-  /// <br>
-  /// EN: CI issuance time
-  DateTime? ciAuthenticatedAt;
-
   /// KO: 사용자 동의 시 실명 제공 가능 여부
   /// <br>
   /// EN: Whether [legalName] can be provided under user consent
@@ -194,9 +179,6 @@ class Account {
       this.birthdayType,
       this.genderNeedsAgreement,
       this.gender,
-      this.ciNeedsAgreement,
-      this.ci,
-      this.ciAuthenticatedAt,
       this.legalNameNeedsAgreement,
       this.legalName,
       this.legalGenderNeedsAgreement,

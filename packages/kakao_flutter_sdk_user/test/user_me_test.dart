@@ -91,17 +91,6 @@ void main() {
           );
 
           expect(
-            account.ciNeedsAgreement,
-            expectedAccount['ci_needs_agreement'],
-          );
-          expect(account.ci, expectedAccount['ci']);
-
-          if (account.ciAuthenticatedAt != null) {
-            expect(account.ciAuthenticatedAt,
-                DateTime.parse(expectedAccount['ci_authenticated_at']));
-          }
-
-          expect(
             account.legalNameNeedsAgreement,
             expectedAccount['legal_name_needs_agreement'],
           );
