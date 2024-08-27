@@ -7,7 +7,7 @@ part of 'scope_info.dart';
 // **************************************************************************
 
 ScopeInfo _$ScopeInfoFromJson(Map<String, dynamic> json) => ScopeInfo(
-      json['id'] as int,
+      (json['id'] as num).toInt(),
       (json['scopes'] as List<dynamic>?)
           ?.map((e) => Scope.fromJson(e as Map<String, dynamic>))
           .toList(),

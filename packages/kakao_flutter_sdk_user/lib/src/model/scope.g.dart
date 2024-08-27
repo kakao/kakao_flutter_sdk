@@ -9,7 +9,8 @@ part of 'scope.dart';
 Scope _$ScopeFromJson(Map<String, dynamic> json) => Scope(
       json['id'] as String,
       json['display_name'] as String,
-      $enumDecode(_$ScopeTypeEnumMap, json['type']),
+      $enumDecode(_$ScopeTypeEnumMap, json['type'],
+          unknownValue: ScopeType.unknown),
       json['using'] as bool,
       json['delegated'] as bool?,
       json['agreed'] as bool,
@@ -39,4 +40,5 @@ Map<String, dynamic> _$ScopeToJson(Scope instance) {
 const _$ScopeTypeEnumMap = {
   ScopeType.privacy: 'PRIVACY',
   ScopeType.service: 'SERVICE',
+  ScopeType.unknown: 'unknown',
 };

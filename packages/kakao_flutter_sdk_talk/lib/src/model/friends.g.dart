@@ -10,8 +10,8 @@ Friends _$FriendsFromJson(Map<String, dynamic> json) => Friends(
       (json['elements'] as List<dynamic>?)
           ?.map((e) => Friend.fromJson(e as Map<String, dynamic>))
           .toList(),
-      json['total_count'] as int,
-      json['favorite_count'] as int?,
+      (json['total_count'] as num).toInt(),
+      (json['favorite_count'] as num?)?.toInt(),
       json['before_url'] as String?,
       json['after_url'] as String?,
     );

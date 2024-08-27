@@ -8,7 +8,7 @@ part of 'user_service_terms.dart';
 
 UserServiceTerms _$UserServiceTermsFromJson(Map<String, dynamic> json) =>
     UserServiceTerms(
-      json['id'] as int,
+      (json['id'] as num).toInt(),
       (json['service_terms'] as List<dynamic>?)
           ?.map((e) => ServiceTerms.fromJson(e as Map<String, dynamic>))
           .toList(),
