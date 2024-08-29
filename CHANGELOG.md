@@ -1,3 +1,16 @@
+## 1.9.6
+
+- Changed the minimum support version of Flutter to 3.22.0 or higher.
+- Changed the minimum support version of Dart to 3.4.0 or higher.
+- Android: Changed compileSdk and targetSdk to 34.
+- Web: Updated web package to 1.0.0 version.
+- Removed ci property from the response of the Retrieve user information API.
+- Added uuid property to User for the Retrieve user information API.
+- Fixed bugs.
+    - Android: Fixed a bug that Compilation failure in Kotlin 2.0.0 version.
+    - Web: Fixed a bug that authorize() does not work in Flutter SDK 1.9.2 version.
+- Updated the internal source code.
+
 ## 1.9.5
 
 - Android: Fixed an issue that Login with Kakao Account does not work on devices below Android 13
