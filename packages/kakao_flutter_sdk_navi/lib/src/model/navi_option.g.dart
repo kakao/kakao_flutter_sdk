@@ -14,7 +14,7 @@ NaviOption _$NaviOptionFromJson(Map<String, dynamic> json) => NaviOption(
       routeInfo: json['route_info'] as bool?,
       startX: json['s_x'] as String?,
       startY: json['s_y'] as String?,
-      startAngle: json['start_angle'] as int?,
+      startAngle: (json['start_angle'] as num?)?.toInt(),
       returnUri: json['return_uri'] as String?,
     );
 

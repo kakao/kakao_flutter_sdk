@@ -31,11 +31,6 @@ Account _$AccountFromJson(Map<String, dynamic> json) => Account(
       json['gender_needs_agreement'] as bool?,
       $enumDecodeNullable(_$GenderEnumMap, json['gender'],
           unknownValue: Gender.other),
-      json['ci_needs_agreement'] as bool?,
-      json['ci'] as String?,
-      json['ci_authenticated_at'] == null
-          ? null
-          : DateTime.parse(json['ci_authenticated_at'] as String),
       json['legal_name_needs_agreement'] as bool?,
       json['legal_name'] as String?,
       json['legal_gender_needs_agreement'] as bool?,
@@ -79,10 +74,6 @@ Map<String, dynamic> _$AccountToJson(Account instance) {
   writeNotNull('birthday_type', _$BirthdayTypeEnumMap[instance.birthdayType]);
   writeNotNull('gender_needs_agreement', instance.genderNeedsAgreement);
   writeNotNull('gender', _$GenderEnumMap[instance.gender]);
-  writeNotNull('ci_needs_agreement', instance.ciNeedsAgreement);
-  writeNotNull('ci', instance.ci);
-  writeNotNull(
-      'ci_authenticated_at', instance.ciAuthenticatedAt?.toIso8601String());
   writeNotNull('legal_name_needs_agreement', instance.legalNameNeedsAgreement);
   writeNotNull('legal_name', instance.legalName);
   writeNotNull('legal_birth_date_needs_agreement',

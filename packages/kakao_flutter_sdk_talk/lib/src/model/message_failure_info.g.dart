@@ -8,7 +8,7 @@ part of 'message_failure_info.dart';
 
 MessageFailureInfo _$MessageFailureInfoFromJson(Map<String, dynamic> json) =>
     MessageFailureInfo(
-      json['code'] as int,
+      (json['code'] as num).toInt(),
       json['msg'] as String,
       (json['receiver_uuids'] as List<dynamic>)
           .map((e) => e as String)

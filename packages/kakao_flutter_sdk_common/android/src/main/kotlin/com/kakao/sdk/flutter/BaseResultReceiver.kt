@@ -35,7 +35,7 @@ abstract class SingleResultReceiver<T : Any> private constructor() :
                 override fun parseError(url: Uri): Pair<String?, String?> = parseError(url)
                 override fun isError(url: Uri): Boolean = isError(url)
             }.apply {
-                this.emitter = emitter
+                setEmitter(emitter)
             }
         }
     }
@@ -44,7 +44,12 @@ abstract class SingleResultReceiver<T : Any> private constructor() :
 abstract class BaseResultReceiver<T : Any, E> protected constructor() :
     ResultReceiver(Handler(Looper.getMainLooper())) {
     var emitter: E? = null
-        protected set
+        private set
+
+    // There was a bug in kotlin 2.0.0 where you couldn't assign a value to a protected set variable, so I added the setter function
+    protected fun setEmitter(emitter: E) {
+        this.emitter = emitter
+    }
 
     abstract fun parseResponse(url: Uri): T?
 

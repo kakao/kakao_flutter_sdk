@@ -7,7 +7,7 @@ part of 'channels.dart';
 // **************************************************************************
 
 Channels _$ChannelsFromJson(Map<String, dynamic> json) => Channels(
-      json['user_id'] as int?,
+      (json['user_id'] as num?)?.toInt(),
       (json['channels'] as List<dynamic>?)
           ?.map((e) => Channel.fromJson(e as Map<String, dynamic>))
           .toList(),

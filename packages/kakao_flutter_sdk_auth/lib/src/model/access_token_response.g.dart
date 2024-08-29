@@ -9,9 +9,9 @@ part of 'access_token_response.dart';
 AccessTokenResponse _$AccessTokenResponseFromJson(Map<String, dynamic> json) =>
     AccessTokenResponse(
       json['access_token'] as String,
-      json['expires_in'] as int,
+      (json['expires_in'] as num).toInt(),
       json['refresh_token'] as String?,
-      json['refresh_token_expires_in'] as int?,
+      (json['refresh_token_expires_in'] as num?)?.toInt(),
       json['scope'] as String?,
       json['token_type'] as String,
       idToken: json['id_token'] as String?,

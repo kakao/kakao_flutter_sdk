@@ -8,7 +8,7 @@ part of 'sharing_result.dart';
 
 SharingResult _$SharingResultFromJson(Map<String, dynamic> json) =>
     SharingResult(
-      json['template_id'] as int,
+      (json['template_id'] as num).toInt(),
       json['template_args'] as Map<String, dynamic>?,
       json['template_msg'] as Map<String, dynamic>,
       json['warning_msg'] as Map<String, dynamic>,

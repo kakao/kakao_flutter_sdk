@@ -9,7 +9,7 @@ part of 'user_revoked_service_terms.dart';
 UserRevokedServiceTerms _$UserRevokedServiceTermsFromJson(
         Map<String, dynamic> json) =>
     UserRevokedServiceTerms(
-      json['id'] as int,
+      (json['id'] as num).toInt(),
       (json['revoked_service_terms'] as List<dynamic>?)
           ?.map((e) => RevokedServiceTerms.fromJson(e as Map<String, dynamic>))
           .toList(),

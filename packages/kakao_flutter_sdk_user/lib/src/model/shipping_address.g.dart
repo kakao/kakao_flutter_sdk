@@ -8,10 +8,10 @@ part of 'shipping_address.dart';
 
 ShippingAddress _$ShippingAddressFromJson(Map<String, dynamic> json) =>
     ShippingAddress(
-      json['id'] as int,
+      (json['id'] as num).toInt(),
       json['name'] as String?,
       json['is_default'] as bool,
-      Util.fromTimeStamp(json['updated_at'] as int?),
+      Util.fromTimeStamp((json['updated_at'] as num?)?.toInt()),
       json['type'] as String?,
       json['base_address'] as String?,
       json['detail_address'] as String?,

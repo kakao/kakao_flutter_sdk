@@ -1,5 +1,6 @@
 import 'package:kakao_flutter_sdk_user/src/model/account.dart';
 import 'package:kakao_flutter_sdk_user/src/model/scope.dart';
+import 'package:kakao_flutter_sdk_user/src/model/service_terms.dart';
 
 // This is a copy of the enumMap created by the json_serializable package. Needs to be modified when values are added
 const $AgeRangeEnumMap = {
@@ -35,4 +36,11 @@ const $GenderEnumMap = {
 const $ScopeTypeEnumMap = {
   ScopeType.privacy: 'PRIVACY',
   ScopeType.service: 'SERVICE',
+};
+
+// This is a copy of the enumMap created by the json_serializable package. Needs to be modified when values are added
+const $RefererEnumMap = {
+  Referer.kauth: 'KAUTH',
+  Referer.kapi: 'KAPI',
+  Referer.unknown: 'unknown',
 };

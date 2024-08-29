@@ -8,9 +8,9 @@ part of 'access_token_info.dart';
 
 AccessTokenInfo _$AccessTokenInfoFromJson(Map<String, dynamic> json) =>
     AccessTokenInfo(
-      json['app_id'] as int,
-      json['id'] as int?,
-      json['expires_in'] as int,
+      (json['app_id'] as num).toInt(),
+      (json['id'] as num?)?.toInt(),
+      (json['expires_in'] as num).toInt(),
     );
 
 Map<String, dynamic> _$AccessTokenInfoToJson(AccessTokenInfo instance) {

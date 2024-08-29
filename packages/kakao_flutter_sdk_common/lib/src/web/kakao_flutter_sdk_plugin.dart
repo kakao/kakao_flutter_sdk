@@ -39,23 +39,15 @@ class KakaoFlutterSdkPlugin {
       case "launchBrowserTab":
         Map<dynamic, dynamic> args = call.arguments;
         String uri = args["url"];
-        bool popupLogin = args[CommonConstants.isPopup];
+        bool popupOpen = args[CommonConstants.isPopup];
         final fullUri = Uri.parse(uri);
-        Map<String, dynamic> queryParameters =
-            Map.from(fullUri.queryParameters);
 
-        if (!popupLogin) {
-          queryParameters[CommonConstants.redirectUri] =
-              args[CommonConstants.redirectUri];
-          final finalUri = fullUri.replace(queryParameters: queryParameters);
-          web.window.location.href = finalUri.toString();
+        if (!popupOpen) {
+          web.window.location.href = fullUri.toString();
           return;
         }
 
-        queryParameters[CommonConstants.redirectUri] =
-            web.window.location.origin;
-        final finalUri = fullUri.replace(queryParameters: queryParameters);
-        windowOpen(finalUri.toString(), "_blank");
+        windowOpen(fullUri.toString(), "_blank");
         return;
       case "getOrigin":
         return web.window.location.origin;
@@ -297,6 +289,18 @@ class KakaoFlutterSdkPlugin {
         );
 
         return completer.future;
+      case 'accountLogin':
+        Map<dynamic, dynamic> args = call.arguments;
+        String uri = args["url"];
+        final fullUri = Uri.parse(uri);
+        Map<String, dynamic> queryParameters =
+        Map.from(fullUri.queryParameters);
+
+        queryParameters[CommonConstants.redirectUri] =
+            args[CommonConstants.redirectUri];
+        final finalUri = fullUri.replace(queryParameters: queryParameters);
+        web.window.location.href = finalUri.toString();
+        return;
       case 'popupLogin':
         final Map<String, dynamic> arguments = Map.castFrom(call.arguments);
 

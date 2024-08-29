@@ -13,8 +13,8 @@ Content _$ContentFromJson(Map<String, dynamic> json) => Content(
           : Uri.parse(json['image_url'] as String),
       link: Link.fromJson(json['link'] as Map<String, dynamic>),
       description: json['description'] as String?,
-      imageWidth: json['image_width'] as int?,
-      imageHeight: json['image_height'] as int?,
+      imageWidth: (json['image_width'] as num?)?.toInt(),
+      imageHeight: (json['image_height'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$ContentToJson(Content instance) {

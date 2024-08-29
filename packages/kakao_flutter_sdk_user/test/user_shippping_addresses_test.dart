@@ -58,8 +58,18 @@ void main() {
 
   group('Enum Test', () {
     test('ScopeType Test', () {
-      expect(ScopeType.privacy, $enumDecode($ScopeTypeEnumMap, 'PRIVACY'));
-      expect(ScopeType.service, $enumDecode($ScopeTypeEnumMap, 'SERVICE'));
+      expect(
+          ScopeType.privacy,
+          $enumDecode($ScopeTypeEnumMap, 'PRIVACY',
+              unknownValue: ScopeType.unknown));
+      expect(
+          ScopeType.service,
+          $enumDecode($ScopeTypeEnumMap, 'SERVICE',
+              unknownValue: ScopeType.unknown));
+      expect(
+          ScopeType.unknown,
+          $enumDecode($ScopeTypeEnumMap, 'test',
+              unknownValue: ScopeType.unknown));
     });
   });
 }
