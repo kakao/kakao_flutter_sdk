@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:ui';
 
 /// @nodoc
 class LocalizationOptions {
@@ -13,21 +13,16 @@ class LocalizationOptions {
   });
 
   static LocalizationOptions getLocalizationOptions() {
-    var locale = Platform.localeName.split('_')[0];
+    final locale = PlatformDispatcher.instance.locale.languageCode;
 
-    LocalizationOptions localizationOptions;
     switch (locale) {
       case "ko":
-        localizationOptions = buildKoreanOptions();
-        break;
+        return buildKoreanOptions();
       case "ja":
-        localizationOptions = buildJapaneseOptions();
-        break;
+        return buildJapaneseOptions();
       default:
-        localizationOptions = buildEnglishOptions();
-        break;
+        return buildEnglishOptions();
     }
-    return localizationOptions;
   }
 
   static LocalizationOptions buildKoreanOptions() {
