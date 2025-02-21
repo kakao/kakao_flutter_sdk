@@ -28,6 +28,7 @@ Account _$AccountFromJson(Map<String, dynamic> json) => Account(
       json['birthday'] as String?,
       $enumDecodeNullable(_$BirthdayTypeEnumMap, json['birthday_type'],
           unknownValue: BirthdayType.unknown),
+      json['is_leap_month'] as bool?,
       json['gender_needs_agreement'] as bool?,
       $enumDecodeNullable(_$GenderEnumMap, json['gender'],
           unknownValue: Gender.other),
@@ -72,6 +73,7 @@ Map<String, dynamic> _$AccountToJson(Account instance) {
   writeNotNull('birthday_needs_agreement', instance.birthdayNeedsAgreement);
   writeNotNull('birthday', instance.birthday);
   writeNotNull('birthday_type', _$BirthdayTypeEnumMap[instance.birthdayType]);
+  writeNotNull('is_leap_month', instance.isLeapMonth);
   writeNotNull('gender_needs_agreement', instance.genderNeedsAgreement);
   writeNotNull('gender', _$GenderEnumMap[instance.gender]);
   writeNotNull('legal_name_needs_agreement', instance.legalNameNeedsAgreement);
