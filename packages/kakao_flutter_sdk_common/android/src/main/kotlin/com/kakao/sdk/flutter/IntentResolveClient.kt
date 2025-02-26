@@ -59,11 +59,11 @@ class IntentResolveClient {
 
     private fun validateTalkSignature(packageInfo: PackageInfo): Boolean {
         val arrayOfSignatures = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            packageInfo.signingInfo.apkContentsSigners
+            packageInfo.signingInfo?.apkContentsSigners
         } else {
             @Suppress("DEPRECATION")
             packageInfo.signatures
-        }
+        } ?: arrayOf()
 
         for (signature in arrayOfSignatures) {
             val signatureCharsString = signature.toCharsString()

@@ -18,7 +18,7 @@ object Utility {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             val packageInfo = context.packageManager
                 .getPackageInfo(context.packageName, PackageManager.GET_SIGNING_CERTIFICATES)
-            val signatures = packageInfo.signingInfo.signingCertificateHistory
+            val signatures = packageInfo.signingInfo?.signingCertificateHistory ?: arrayOf()
             for (signature in signatures) {
                 val md = MessageDigest.getInstance("SHA")
                 md.update(signature.toByteArray())
@@ -34,7 +34,7 @@ object Utility {
     fun getKeyHashDeprecated(context: Context): String {
         val packageInfo = context.packageManager
             .getPackageInfo(context.packageName, PackageManager.GET_SIGNATURES)
-        for (signature in packageInfo.signatures) {
+        for (signature in packageInfo.signatures ?: arrayOf()) {
             val md = MessageDigest.getInstance("SHA")
             md.update(signature.toByteArray())
             return Base64.encodeToString(md.digest(), Base64.NO_WRAP)
@@ -76,7 +76,7 @@ object Utility {
         } else {
             @Suppress("DEPRECATION")
             context.packageManager.getPackageInfo(context.packageName, 0).versionName
-        }
+        } ?: throw IllegalStateException("Failed to get app version")
     }
 
     fun talkLoginIntent(
