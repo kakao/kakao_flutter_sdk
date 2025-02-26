@@ -17,18 +17,12 @@ UserShippingAddresses _$UserShippingAddressesFromJson(
     );
 
 Map<String, dynamic> _$UserShippingAddressesToJson(
-    UserShippingAddresses instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('user_id', instance.userId);
-  writeNotNull('shipping_addresses_needs_agreement', instance.needsAgreement);
-  writeNotNull('shipping_addresses',
-      instance.shippingAddresses?.map((e) => e.toJson()).toList());
-  return val;
-}
+        UserShippingAddresses instance) =>
+    <String, dynamic>{
+      if (instance.userId case final value?) 'user_id': value,
+      if (instance.needsAgreement case final value?)
+        'shipping_addresses_needs_agreement': value,
+      if (instance.shippingAddresses?.map((e) => e.toJson()).toList()
+          case final value?)
+        'shipping_addresses': value,
+    };

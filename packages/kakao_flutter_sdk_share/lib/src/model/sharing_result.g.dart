@@ -15,20 +15,11 @@ SharingResult _$SharingResultFromJson(Map<String, dynamic> json) =>
       json['argument_msg'] as Map<String, dynamic>,
     );
 
-Map<String, dynamic> _$SharingResultToJson(SharingResult instance) {
-  final val = <String, dynamic>{
-    'template_id': instance.templateId,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('template_args', instance.templateArgs);
-  val['template_msg'] = instance.templateMsg;
-  val['warning_msg'] = instance.warningMsg;
-  val['argument_msg'] = instance.argumentMsg;
-  return val;
-}
+Map<String, dynamic> _$SharingResultToJson(SharingResult instance) =>
+    <String, dynamic>{
+      'template_id': instance.templateId,
+      if (instance.templateArgs case final value?) 'template_args': value,
+      'template_msg': instance.templateMsg,
+      'warning_msg': instance.warningMsg,
+      'argument_msg': instance.argumentMsg,
+    };

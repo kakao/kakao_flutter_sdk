@@ -17,20 +17,12 @@ CommerceTemplate _$CommerceTemplateFromJson(Map<String, dynamic> json) =>
       objectType: json['object_type'] as String? ?? "commerce",
     );
 
-Map<String, dynamic> _$CommerceTemplateToJson(CommerceTemplate instance) {
-  final val = <String, dynamic>{
-    'content': instance.content.toJson(),
-    'commerce': instance.commerce.toJson(),
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('buttons', instance.buttons?.map((e) => e.toJson()).toList());
-  writeNotNull('button_title', instance.buttonTitle);
-  val['object_type'] = instance.objectType;
-  return val;
-}
+Map<String, dynamic> _$CommerceTemplateToJson(CommerceTemplate instance) =>
+    <String, dynamic>{
+      'content': instance.content.toJson(),
+      'commerce': instance.commerce.toJson(),
+      if (instance.buttons?.map((e) => e.toJson()).toList() case final value?)
+        'buttons': value,
+      if (instance.buttonTitle case final value?) 'button_title': value,
+      'object_type': instance.objectType,
+    };

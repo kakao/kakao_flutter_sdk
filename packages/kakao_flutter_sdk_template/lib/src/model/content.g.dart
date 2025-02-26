@@ -17,20 +17,11 @@ Content _$ContentFromJson(Map<String, dynamic> json) => Content(
       imageHeight: (json['image_height'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$ContentToJson(Content instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('title', instance.title);
-  writeNotNull('image_url', instance.imageUrl?.toString());
-  val['link'] = instance.link.toJson();
-  writeNotNull('description', instance.description);
-  writeNotNull('image_width', instance.imageWidth);
-  writeNotNull('image_height', instance.imageHeight);
-  return val;
-}
+Map<String, dynamic> _$ContentToJson(Content instance) => <String, dynamic>{
+      if (instance.title case final value?) 'title': value,
+      if (instance.imageUrl?.toString() case final value?) 'image_url': value,
+      'link': instance.link.toJson(),
+      if (instance.description case final value?) 'description': value,
+      if (instance.imageWidth case final value?) 'image_width': value,
+      if (instance.imageHeight case final value?) 'image_height': value,
+    };

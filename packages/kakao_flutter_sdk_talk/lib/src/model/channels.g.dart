@@ -13,16 +13,8 @@ Channels _$ChannelsFromJson(Map<String, dynamic> json) => Channels(
           .toList(),
     );
 
-Map<String, dynamic> _$ChannelsToJson(Channels instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('user_id', instance.userId);
-  writeNotNull('channels', instance.channels?.map((e) => e.toJson()).toList());
-  return val;
-}
+Map<String, dynamic> _$ChannelsToJson(Channels instance) => <String, dynamic>{
+      if (instance.userId case final value?) 'user_id': value,
+      if (instance.channels?.map((e) => e.toJson()).toList() case final value?)
+        'channels': value,
+    };

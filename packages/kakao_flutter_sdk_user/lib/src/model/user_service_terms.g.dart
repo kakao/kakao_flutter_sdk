@@ -14,18 +14,10 @@ UserServiceTerms _$UserServiceTermsFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$UserServiceTermsToJson(UserServiceTerms instance) {
-  final val = <String, dynamic>{
-    'id': instance.id,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull(
-      'service_terms', instance.serviceTerms?.map((e) => e.toJson()).toList());
-  return val;
-}
+Map<String, dynamic> _$UserServiceTermsToJson(UserServiceTerms instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      if (instance.serviceTerms?.map((e) => e.toJson()).toList()
+          case final value?)
+        'service_terms': value,
+    };

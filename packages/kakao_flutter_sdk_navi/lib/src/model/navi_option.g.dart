@@ -18,25 +18,20 @@ NaviOption _$NaviOptionFromJson(Map<String, dynamic> json) => NaviOption(
       returnUri: json['return_uri'] as String?,
     );
 
-Map<String, dynamic> _$NaviOptionToJson(NaviOption instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('coord_type', _$CoordTypeEnumMap[instance.coordType]);
-  writeNotNull('vehicle_type', _$VehicleTypeEnumMap[instance.vehicleType]);
-  writeNotNull('rpoption', _$RpOptionEnumMap[instance.rpOption]);
-  writeNotNull('route_info', instance.routeInfo);
-  writeNotNull('s_x', instance.startX);
-  writeNotNull('s_y', instance.startY);
-  writeNotNull('start_angle', instance.startAngle);
-  writeNotNull('return_uri', instance.returnUri);
-  return val;
-}
+Map<String, dynamic> _$NaviOptionToJson(NaviOption instance) =>
+    <String, dynamic>{
+      if (_$CoordTypeEnumMap[instance.coordType] case final value?)
+        'coord_type': value,
+      if (_$VehicleTypeEnumMap[instance.vehicleType] case final value?)
+        'vehicle_type': value,
+      if (_$RpOptionEnumMap[instance.rpOption] case final value?)
+        'rpoption': value,
+      if (instance.routeInfo case final value?) 'route_info': value,
+      if (instance.startX case final value?) 's_x': value,
+      if (instance.startY case final value?) 's_y': value,
+      if (instance.startAngle case final value?) 'start_angle': value,
+      if (instance.returnUri case final value?) 'return_uri': value,
+    };
 
 const _$CoordTypeEnumMap = {
   CoordType.wgs84: 'wgs84',
