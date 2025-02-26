@@ -22,8 +22,8 @@ dependencies:
   dio: ^5.5.0+1
   shared_preferences: ^2.2.3
   platform: ^3.1.4
-  crypto: ^3.0.2
-  encrypt: ^5.0.1
+  crypto: ^3.0.3
+  encrypt: ^5.0.3
   web: ^1.0.0
 
 dev_dependencies:

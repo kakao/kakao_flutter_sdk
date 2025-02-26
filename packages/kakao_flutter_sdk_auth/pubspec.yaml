@@ -20,7 +20,7 @@ dependencies:
   dio: ^5.5.0+1
   shared_preferences: ^2.2.3
   platform: ^3.1.4
-  crypto: ^3.0.1
+  crypto: ^3.0.3
   kakao_flutter_sdk_common:
     path: ../kakao_flutter_sdk_common
 
