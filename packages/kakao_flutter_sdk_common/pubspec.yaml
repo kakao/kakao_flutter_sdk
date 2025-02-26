@@ -21,7 +21,7 @@ dependencies:
   json_annotation: ^4.9.0
   dio: ^5.5.0+1
   shared_preferences: ^2.2.3
-  platform: ^3.1.0
+  platform: ^3.1.4
   crypto: ^3.0.2
   encrypt: ^5.0.1
   web: ^1.0.0
