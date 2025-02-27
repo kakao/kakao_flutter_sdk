@@ -40,7 +40,6 @@ class Utility {
             return URL(string: finalStringUrl)
         }
         
-        let customSchemeStringUrl = "\(finalStringUrl)"
         let escapedStringUrl = finalStringUrl.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         
         let universalLinkStringUrl = "\(universalLink)\(escapedStringUrl ?? "")"
