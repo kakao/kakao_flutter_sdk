@@ -210,44 +210,28 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
     }
     
     private func launchBrowser(url: String, redirectUri: String?, result: @escaping FlutterResult) {
-        var keepMe: Any? = nil
-        let completionHandler = { (url: URL?, err: Error?) in
-            keepMe = nil
-            
+        let completionHandler = { (url: URL?, err: Error?) in            
             guard err != nil else {
                 result(url?.absoluteString)
                 return
             }
         
-            if #available(iOS 12, *) {
-                if let error = err as? ASWebAuthenticationSessionError {
-                    result(FlutterError(code: "CANCELED", message: "User canceled login.", details: error.localizedDescription))
-                    return
-                }
-            } else {
-                if let error = err as? SFAuthenticationError {
-                    result(FlutterError(code: "CANCELED", message: "User canceled login.", details: error.localizedDescription))
-                    return
-                }
+            if let error = err as? ASWebAuthenticationSessionError {
+                result(FlutterError(code: "CANCELED", message: "User canceled login.", details: error.localizedDescription))
+                return
             }
+            
             result(FlutterError(code: "EUNKNOWN", message: err!.localizedDescription, details: nil))
             return
         }
         
         let urlObject = URL(string: url)!
         let redirectUriObject: URL? = redirectUri == nil ? nil : URL(string: redirectUri!)
-        if #available(iOS 12, *) {
-            let session = ASWebAuthenticationSession(url: urlObject, callbackURLScheme: redirectUriObject?.scheme, completionHandler: completionHandler)
-            if #available(iOS 13.0, *) {
-                session.presentationContextProvider = self
-            }
-            keepMe = session
-            session.start()
-        } else {
-            let session = SFAuthenticationSession(url: urlObject, callbackURLScheme: redirectUriObject?.scheme, completionHandler: completionHandler)
-            keepMe = session
-            session.start()
-        }
+        let session = ASWebAuthenticationSession(url: urlObject, callbackURLScheme: redirectUriObject?.scheme, completionHandler: completionHandler)
+        
+        session.presentationContextProvider = self
+        
+        session.start()
     }
 
     public func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
@@ -278,7 +262,6 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
         return true
     }
 
-    @available(iOS 12.0, *)
     public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
         return UIApplication.shared.keyWindow ?? ASPresentationAnchor()
     }
