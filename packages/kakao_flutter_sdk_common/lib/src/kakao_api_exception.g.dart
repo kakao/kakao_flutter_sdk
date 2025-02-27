@@ -20,23 +20,14 @@ KakaoApiException _$KakaoApiExceptionFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$KakaoApiExceptionToJson(KakaoApiException instance) {
-  final val = <String, dynamic>{
-    'code': _$ApiErrorCauseEnumMap[instance.code]!,
-    'msg': instance.msg,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('api_type', instance.apiType);
-  writeNotNull('required_scopes', instance.requiredScopes);
-  writeNotNull('allowed_scopes', instance.allowedScopes);
-  return val;
-}
+Map<String, dynamic> _$KakaoApiExceptionToJson(KakaoApiException instance) =>
+    <String, dynamic>{
+      'code': _$ApiErrorCauseEnumMap[instance.code]!,
+      'msg': instance.msg,
+      if (instance.apiType case final value?) 'api_type': value,
+      if (instance.requiredScopes case final value?) 'required_scopes': value,
+      if (instance.allowedScopes case final value?) 'allowed_scopes': value,
+    };
 
 const _$ApiErrorCauseEnumMap = {
   ApiErrorCause.internalError: -1,

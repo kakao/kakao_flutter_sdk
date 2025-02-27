@@ -18,18 +18,10 @@ KakaoNaviParams _$KakaoNaviParamsFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$KakaoNaviParamsToJson(KakaoNaviParams instance) {
-  final val = <String, dynamic>{
-    'destination': instance.destination.toJson(),
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('option', instance.option?.toJson());
-  writeNotNull('via_list', instance.viaList?.map((e) => e.toJson()).toList());
-  return val;
-}
+Map<String, dynamic> _$KakaoNaviParamsToJson(KakaoNaviParams instance) =>
+    <String, dynamic>{
+      'destination': instance.destination.toJson(),
+      if (instance.option?.toJson() case final value?) 'option': value,
+      if (instance.viaList?.map((e) => e.toJson()).toList() case final value?)
+        'via_list': value,
+    };

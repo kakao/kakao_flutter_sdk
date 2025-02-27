@@ -17,22 +17,13 @@ OAuthToken _$OAuthTokenFromJson(Map<String, dynamic> json) => OAuthToken(
       idToken: json['id_token'] as String?,
     );
 
-Map<String, dynamic> _$OAuthTokenToJson(OAuthToken instance) {
-  final val = <String, dynamic>{
-    'access_token': instance.accessToken,
-    'expires_at': instance.expiresAt.toIso8601String(),
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('refresh_token', instance.refreshToken);
-  writeNotNull('refresh_token_expires_at',
-      instance.refreshTokenExpiresAt?.toIso8601String());
-  writeNotNull('scopes', instance.scopes);
-  writeNotNull('id_token', instance.idToken);
-  return val;
-}
+Map<String, dynamic> _$OAuthTokenToJson(OAuthToken instance) =>
+    <String, dynamic>{
+      'access_token': instance.accessToken,
+      'expires_at': instance.expiresAt.toIso8601String(),
+      if (instance.refreshToken case final value?) 'refresh_token': value,
+      if (instance.refreshTokenExpiresAt?.toIso8601String() case final value?)
+        'refresh_token_expires_at': value,
+      if (instance.scopes case final value?) 'scopes': value,
+      if (instance.idToken case final value?) 'id_token': value,
+    };

@@ -18,24 +18,20 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
-  json_annotation: ^4.8.0
-  dio: ^5.0.3
-  shared_preferences: ^2.0.20
-  platform: ^3.1.0
-  crypto: ^3.0.2
-  encrypt: ^5.0.1
-  web: ^1.0.0
-
-dependency_overrides:
-  shared_preferences_foundation: ^2.3.5 # for Privacy Manifest on iOS
-  shared_preferences_web: ^2.3.0 # for WebAssembly
+  json_annotation: ^4.9.0
+  dio: ^5.5.0+1
+  shared_preferences: ^2.2.3
+  platform: ^3.1.4
+  crypto: ^3.0.3
+  encrypt: ^5.0.3
+  web: ^1.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
   build_runner: ^2.3.3
-  json_serializable: ^6.5.4
+  json_serializable: ^6.9.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

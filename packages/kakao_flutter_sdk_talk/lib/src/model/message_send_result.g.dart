@@ -16,17 +16,11 @@ MessageSendResult _$MessageSendResultFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$MessageSendResultToJson(MessageSendResult instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('successful_receiver_uuids', instance.successfulReceiverUuids);
-  writeNotNull(
-      'failure_info', instance.failureInfos?.map((e) => e.toJson()).toList());
-  return val;
-}
+Map<String, dynamic> _$MessageSendResultToJson(MessageSendResult instance) =>
+    <String, dynamic>{
+      if (instance.successfulReceiverUuids case final value?)
+        'successful_receiver_uuids': value,
+      if (instance.failureInfos?.map((e) => e.toJson()).toList()
+          case final value?)
+        'failure_info': value,
+    };

@@ -14,19 +14,10 @@ Social _$SocialFromJson(Map<String, dynamic> json) => Social(
       subscriberCount: (json['subscriber_count'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$SocialToJson(Social instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('like_count', instance.likeCount);
-  writeNotNull('comment_count', instance.commentCount);
-  writeNotNull('shared_count', instance.sharedCount);
-  writeNotNull('view_count', instance.viewCount);
-  writeNotNull('subscriber_count', instance.subscriberCount);
-  return val;
-}
+Map<String, dynamic> _$SocialToJson(Social instance) => <String, dynamic>{
+      if (instance.likeCount case final value?) 'like_count': value,
+      if (instance.commentCount case final value?) 'comment_count': value,
+      if (instance.sharedCount case final value?) 'shared_count': value,
+      if (instance.viewCount case final value?) 'view_count': value,
+      if (instance.subscriberCount case final value?) 'subscriber_count': value,
+    };

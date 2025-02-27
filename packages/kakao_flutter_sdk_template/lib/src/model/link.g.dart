@@ -18,20 +18,12 @@ Link _$LinkFromJson(Map<String, dynamic> json) => Link(
           Util.stringToMap(json['ios_execution_params'] as String?),
     );
 
-Map<String, dynamic> _$LinkToJson(Link instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('web_url', instance.webUrl?.toString());
-  writeNotNull('mobile_web_url', instance.mobileWebUrl?.toString());
-  writeNotNull('android_execution_params',
-      Util.mapToString(instance.androidExecutionParams));
-  writeNotNull(
-      'ios_execution_params', Util.mapToString(instance.iosExecutionParams));
-  return val;
-}
+Map<String, dynamic> _$LinkToJson(Link instance) => <String, dynamic>{
+      if (instance.webUrl?.toString() case final value?) 'web_url': value,
+      if (instance.mobileWebUrl?.toString() case final value?)
+        'mobile_web_url': value,
+      if (Util.mapToString(instance.androidExecutionParams) case final value?)
+        'android_execution_params': value,
+      if (Util.mapToString(instance.iosExecutionParams) case final value?)
+        'ios_execution_params': value,
+    };

@@ -16,18 +16,10 @@ UserRevokedServiceTerms _$UserRevokedServiceTermsFromJson(
     );
 
 Map<String, dynamic> _$UserRevokedServiceTermsToJson(
-    UserRevokedServiceTerms instance) {
-  final val = <String, dynamic>{
-    'id': instance.id,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('revoked_service_terms',
-      instance.revokedServiceTerms?.map((e) => e.toJson()).toList());
-  return val;
-}
+        UserRevokedServiceTerms instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      if (instance.revokedServiceTerms?.map((e) => e.toJson()).toList()
+          case final value?)
+        'revoked_service_terms': value,
+    };

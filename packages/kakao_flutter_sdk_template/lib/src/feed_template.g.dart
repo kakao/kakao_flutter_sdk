@@ -21,21 +21,14 @@ FeedTemplate _$FeedTemplateFromJson(Map<String, dynamic> json) => FeedTemplate(
       objectType: json['object_type'] as String? ?? "feed",
     );
 
-Map<String, dynamic> _$FeedTemplateToJson(FeedTemplate instance) {
-  final val = <String, dynamic>{
-    'content': instance.content.toJson(),
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('item_content', instance.itemContent?.toJson());
-  writeNotNull('social', instance.social?.toJson());
-  writeNotNull('buttons', instance.buttons?.map((e) => e.toJson()).toList());
-  writeNotNull('button_title', instance.buttonTitle);
-  val['object_type'] = instance.objectType;
-  return val;
-}
+Map<String, dynamic> _$FeedTemplateToJson(FeedTemplate instance) =>
+    <String, dynamic>{
+      'content': instance.content.toJson(),
+      if (instance.itemContent?.toJson() case final value?)
+        'item_content': value,
+      if (instance.social?.toJson() case final value?) 'social': value,
+      if (instance.buttons?.map((e) => e.toJson()).toList() case final value?)
+        'buttons': value,
+      if (instance.buttonTitle case final value?) 'button_title': value,
+      'object_type': instance.objectType,
+    };

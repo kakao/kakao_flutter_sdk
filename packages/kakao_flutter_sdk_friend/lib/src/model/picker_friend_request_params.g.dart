@@ -16,10 +16,10 @@ PickerFriendRequestParams _$PickerFriendRequestParamsFromJson(
       showFavorite: json['showFavorite'] as bool? ?? DefaultValues.showFavorite,
       showPickedFriend:
           json['showPickedFriend'] as bool? ?? DefaultValues.showPickedFriend,
-      maxPickableCount:
-          json['maxPickableCount'] as int? ?? DefaultValues.maxPickableCount,
-      minPickableCount:
-          json['minPickableCount'] as int? ?? DefaultValues.minPickableCount,
+      maxPickableCount: (json['maxPickableCount'] as num?)?.toInt() ??
+          DefaultValues.maxPickableCount,
+      minPickableCount: (json['minPickableCount'] as num?)?.toInt() ??
+          DefaultValues.minPickableCount,
       returnUrl: json['returnUrl'] as String?,
       enableBackButton:
           json['enableBackButton'] as bool? ?? DefaultValues.enableBackButton,

@@ -23,22 +23,17 @@ ItemContent _$ItemContentFromJson(Map<String, dynamic> json) => ItemContent(
       sumOp: json['sum_op'] as String?,
     );
 
-Map<String, dynamic> _$ItemContentToJson(ItemContent instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('profile_text', instance.profileText);
-  writeNotNull('profile_image_url', instance.profileImageUrl?.toString());
-  writeNotNull('title_image_text', instance.titleImageText);
-  writeNotNull('title_image_url', instance.titleImageUrl?.toString());
-  writeNotNull('title_image_category', instance.titleImageCategory);
-  writeNotNull('items', instance.items);
-  writeNotNull('sum', instance.sum);
-  writeNotNull('sum_op', instance.sumOp);
-  return val;
-}
+Map<String, dynamic> _$ItemContentToJson(ItemContent instance) =>
+    <String, dynamic>{
+      if (instance.profileText case final value?) 'profile_text': value,
+      if (instance.profileImageUrl?.toString() case final value?)
+        'profile_image_url': value,
+      if (instance.titleImageText case final value?) 'title_image_text': value,
+      if (instance.titleImageUrl?.toString() case final value?)
+        'title_image_url': value,
+      if (instance.titleImageCategory case final value?)
+        'title_image_category': value,
+      if (instance.items case final value?) 'items': value,
+      if (instance.sum case final value?) 'sum': value,
+      if (instance.sumOp case final value?) 'sum_op': value,
+    };

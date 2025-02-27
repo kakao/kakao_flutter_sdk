@@ -13,17 +13,8 @@ ScopeInfo _$ScopeInfoFromJson(Map<String, dynamic> json) => ScopeInfo(
           .toList(),
     );
 
-Map<String, dynamic> _$ScopeInfoToJson(ScopeInfo instance) {
-  final val = <String, dynamic>{
-    'id': instance.id,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('scopes', instance.scopes?.map((e) => e.toJson()).toList());
-  return val;
-}
+Map<String, dynamic> _$ScopeInfoToJson(ScopeInfo instance) => <String, dynamic>{
+      'id': instance.id,
+      if (instance.scopes?.map((e) => e.toJson()).toList() case final value?)
+        'scopes': value,
+    };

@@ -17,23 +17,15 @@ CalendarTemplate _$CalendarTemplateFromJson(Map<String, dynamic> json) =>
       objectType: json['object_type'] as String? ?? "calendar",
     );
 
-Map<String, dynamic> _$CalendarTemplateToJson(CalendarTemplate instance) {
-  final val = <String, dynamic>{
-    'id': instance.id,
-    'id_type': _$IdTypeEnumMap[instance.idType]!,
-    'content': instance.content.toJson(),
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('buttons', instance.buttons?.map((e) => e.toJson()).toList());
-  val['object_type'] = instance.objectType;
-  return val;
-}
+Map<String, dynamic> _$CalendarTemplateToJson(CalendarTemplate instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'id_type': _$IdTypeEnumMap[instance.idType]!,
+      'content': instance.content.toJson(),
+      if (instance.buttons?.map((e) => e.toJson()).toList() case final value?)
+        'buttons': value,
+      'object_type': instance.objectType,
+    };
 
 const _$IdTypeEnumMap = {
   IdType.calendar: 'calendar',

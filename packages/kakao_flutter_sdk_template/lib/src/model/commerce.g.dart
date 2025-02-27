@@ -16,22 +16,14 @@ Commerce _$CommerceFromJson(Map<String, dynamic> json) => Commerce(
       currencyUnitPosition: (json['currency_unit_position'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$CommerceToJson(Commerce instance) {
-  final val = <String, dynamic>{
-    'regular_price': instance.regularPrice,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('discount_price', instance.discountPrice);
-  writeNotNull('fixed_discount_price', instance.fixedDiscountPrice);
-  writeNotNull('discount_rate', instance.discountRate);
-  writeNotNull('product_name', instance.productName);
-  writeNotNull('currency_unit', instance.currencyUnit);
-  writeNotNull('currency_unit_position', instance.currencyUnitPosition);
-  return val;
-}
+Map<String, dynamic> _$CommerceToJson(Commerce instance) => <String, dynamic>{
+      'regular_price': instance.regularPrice,
+      if (instance.discountPrice case final value?) 'discount_price': value,
+      if (instance.fixedDiscountPrice case final value?)
+        'fixed_discount_price': value,
+      if (instance.discountRate case final value?) 'discount_rate': value,
+      if (instance.productName case final value?) 'product_name': value,
+      if (instance.currencyUnit case final value?) 'currency_unit': value,
+      if (instance.currencyUnitPosition case final value?)
+        'currency_unit_position': value,
+    };

@@ -16,8 +16,8 @@ platforms:
 dependencies:
   flutter:
     sdk: flutter
-  json_annotation: ^4.8.0
-  dio: ^5.0.3
+  json_annotation: ^4.9.0
+  dio: ^5.5.0+1
   kakao_flutter_sdk_auth:
     path: ../kakao_flutter_sdk_auth
   kakao_flutter_sdk_user:
@@ -30,8 +30,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
-  build_runner: ^2.2.0
-  json_serializable: ^6.5.4
+  build_runner: ^2.4.15
+  json_serializable: ^6.9.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

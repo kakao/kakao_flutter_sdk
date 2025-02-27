@@ -13,19 +13,9 @@ Location _$LocationFromJson(Map<String, dynamic> json) => Location(
       rpFlag: json['rpflag'] as String?,
     );
 
-Map<String, dynamic> _$LocationToJson(Location instance) {
-  final val = <String, dynamic>{
-    'name': instance.name,
-    'x': instance.x,
-    'y': instance.y,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('rpflag', instance.rpFlag);
-  return val;
-}
+Map<String, dynamic> _$LocationToJson(Location instance) => <String, dynamic>{
+      'name': instance.name,
+      'x': instance.x,
+      'y': instance.y,
+      if (instance.rpFlag case final value?) 'rpflag': value,
+    };

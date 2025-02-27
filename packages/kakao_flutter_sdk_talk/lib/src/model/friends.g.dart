@@ -16,19 +16,11 @@ Friends _$FriendsFromJson(Map<String, dynamic> json) => Friends(
       json['after_url'] as String?,
     );
 
-Map<String, dynamic> _$FriendsToJson(Friends instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('elements', instance.elements?.map((e) => e.toJson()).toList());
-  val['total_count'] = instance.totalCount;
-  writeNotNull('favorite_count', instance.favoriteCount);
-  writeNotNull('before_url', instance.beforeUrl);
-  writeNotNull('after_url', instance.afterUrl);
-  return val;
-}
+Map<String, dynamic> _$FriendsToJson(Friends instance) => <String, dynamic>{
+      if (instance.elements?.map((e) => e.toJson()).toList() case final value?)
+        'elements': value,
+      'total_count': instance.totalCount,
+      if (instance.favoriteCount case final value?) 'favorite_count': value,
+      if (instance.beforeUrl case final value?) 'before_url': value,
+      if (instance.afterUrl case final value?) 'after_url': value,
+    };

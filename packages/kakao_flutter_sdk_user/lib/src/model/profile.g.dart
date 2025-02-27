@@ -13,18 +13,11 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
       json['is_default_image'] as bool?,
     );
 
-Map<String, dynamic> _$ProfileToJson(Profile instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('nickname', instance.nickname);
-  writeNotNull('thumbnail_image_url', instance.thumbnailImageUrl);
-  writeNotNull('profile_image_url', instance.profileImageUrl);
-  writeNotNull('is_default_image', instance.isDefaultImage);
-  return val;
-}
+Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
+      if (instance.nickname case final value?) 'nickname': value,
+      if (instance.thumbnailImageUrl case final value?)
+        'thumbnail_image_url': value,
+      if (instance.profileImageUrl case final value?)
+        'profile_image_url': value,
+      if (instance.isDefaultImage case final value?) 'is_default_image': value,
+    };
