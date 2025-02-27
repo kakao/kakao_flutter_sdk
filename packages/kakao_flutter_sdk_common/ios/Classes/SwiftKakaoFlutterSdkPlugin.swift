@@ -42,7 +42,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
             let args = castArguments(call.arguments)
             let url = args["url"]
             let redirectUri = args["redirect_uri"]
-            launchBrowser(url: url!, redirectUri: redirectUri!, result: result)
+            launchBrowser(url: url!, redirectUri: redirectUri!, isLogin: true, result: result)
         case "authorizeWithTalk":
             let args = castArguments(call.arguments)
             authorizeWithTalk(parameters: args, result: result)
@@ -209,8 +209,8 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
         }
     }
     
-    private func launchBrowser(url: String, redirectUri: String?, result: @escaping FlutterResult) {
-        let completionHandler = { (url: URL?, err: Error?) in            
+    private func launchBrowser(url: String, redirectUri: String?, isLogin: Bool = false, result: @escaping FlutterResult) {
+        let completionHandler = { (url: URL?, err: Error?) in
             guard err != nil else {
                 result(url?.absoluteString)
                 return
@@ -230,6 +230,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
         let session = ASWebAuthenticationSession(url: urlObject, callbackURLScheme: redirectUriObject?.scheme, completionHandler: completionHandler)
         
         session.presentationContextProvider = self
+        session.prefersEphemeralWebBrowserSession = !isLogin
         
         session.start()
     }
