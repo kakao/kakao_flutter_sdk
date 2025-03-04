@@ -129,7 +129,7 @@ class KakaoFlutterSdkPlugin {
           return true;
         }
         break;
-      case 'selectShippingAddresses':
+      case 'selectShippingAddress':
         Browser currentBrowser = _uaParser.detectBrowser(userAgent);
         if ({Browser.facebook, Browser.instagram}.contains(currentBrowser)) {
           return jsonEncode({
@@ -154,7 +154,7 @@ class KakaoFlutterSdkPlugin {
         };
         continueUrlParams.removeWhere((k, v) => v == null);
 
-        final continueUrl = createSelectShippingAddressesUrl(continueUrlParams);
+        final continueUrl = createselectShippingAddressUrl(continueUrlParams);
         final kpidtUrl = createKpidtUrl({
           'app_key': KakaoSdk.appKey,
           'agt': agt,

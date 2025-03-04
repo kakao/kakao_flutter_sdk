@@ -209,7 +209,7 @@ class UserApi {
   /// [enableBackButton] and [mobileView] are web platform only parameters<br>
   /// Use [mobileView] to specify whether the picker is pinned to a layout adapted for mobile device<br>
   /// Use [enableBackButton] to show or hide the back button in the picker
-  Future<int> selectShippingAddresses({
+  Future<int> selectShippingAddress({
     bool? mobileView,
     bool? enableBackButton,
   }) async {
@@ -218,7 +218,7 @@ class UserApi {
         await AuthApi.instance.refreshToken();
       }
       final agt = await AuthApi.instance.agt();
-      return _selectShippingAddresses(
+      return _selectShippingAddress(
         agt,
         enableBackButton: enableBackButton,
         mobileView: mobileView,
@@ -339,28 +339,28 @@ class UserApi {
     });
   }
 
-  Future<int> _selectShippingAddresses(
+  Future<int> _selectShippingAddress(
     final String agt, {
     final bool? mobileView,
     final bool? enableBackButton,
   }) {
     if (kIsWeb) {
-      return _selectShippingAddressesForWeb(
+      return _selectShippingAddressForWeb(
         agt,
         mobileView: mobileView,
         enableBackButton: enableBackButton,
       );
     }
-    return _selectShippingAddressesForNative(agt);
+    return _selectShippingAddressForNative(agt);
   }
 
-  Future<int> _selectShippingAddressesForWeb(
+  Future<int> _selectShippingAddressForWeb(
     final String agt, {
     final bool? mobileView,
     final bool? enableBackButton,
   }) async {
     final response =
-        await _channel.invokeMethod(CommonConstants.selectShippingAddresses, {
+        await _channel.invokeMethod(CommonConstants.selectShippingAddress, {
       Constants.mobileView: mobileView,
       Constants.enableBackButton: enableBackButton,
       Constants.agt: agt,
@@ -374,9 +374,9 @@ class UserApi {
     return result[Constants.addressId];
   }
 
-  Future<int> _selectShippingAddressesForNative(final String agt) async {
+  Future<int> _selectShippingAddressForNative(final String agt) async {
     final continueUrl =
-        Uri.https(KakaoSdk.hosts.apps, Constants.selectShippingAddressesPath, {
+        Uri.https(KakaoSdk.hosts.apps, Constants.selectShippingAddressPath, {
       Constants.appKey: KakaoSdk.appKey,
       Constants.ka: await KakaoSdk.kaHeader,
       Constants.returnUrl:
@@ -390,7 +390,7 @@ class UserApi {
     }).toString();
 
     final result = await _channel.invokeMethod(
-        CommonConstants.selectShippingAddresses, {CommonConstants.url: url});
+        CommonConstants.selectShippingAddress, {CommonConstants.url: url});
     final resultUri = Uri.parse(result);
 
     if (resultUri.queryParameters[Constants.status] == Constants.error) {

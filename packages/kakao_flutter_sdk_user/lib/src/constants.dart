@@ -12,7 +12,7 @@ class Constants {
   static const String v1SignupPath = '/v1/user/signup';
   static const String v2ScopesPath = '/v2/user/scopes';
   static const String v2RevokeScopesPath = '/v2/user/revoke/scopes';
-  static const String selectShippingAddressesPath = '/user/address';
+  static const String selectShippingAddressPath = '/user/address';
   static const String kpidtPath = '/auth/kpidt';
   static const String shippingAddressesScheme = 'address';
 
