@@ -460,8 +460,9 @@ class ApiListState extends State<ApiList> {
         // 약관 철회하기
 
         try {
-          UserRevokedServiceTerms userRevokedServiceTerms =
-              await UserApi.instance.revokeServiceTerms(tags: parameters.tags);
+          UserRevokedServiceTerms userRevokedServiceTerms = await UserApi
+              .instance
+              .revokeServiceTerms(tags: parameters.serviceTerms ?? []);
           Log.i(context, tag,
               '약관 철회하기 성공\n회원정보: ${userRevokedServiceTerms.id}\n철회한 약관: \n${userRevokedServiceTerms.revokedServiceTerms?.join('\n')}');
         } catch (e) {
