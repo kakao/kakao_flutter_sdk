@@ -21,6 +21,7 @@ dependencies:
   kakao_flutter_sdk_user:
     path: ../kakao_flutter_sdk_user
   webview_flutter: ^4.8.0
+  webview_flutter_wkwebview: ^3.13.1
 
 dev_dependencies:
   flutter_test:
