@@ -20,7 +20,7 @@ object IntentFactory {
             ?: throw IllegalArgumentException("Client id is required.")
         val redirectUri = args["redirect_uri"]
             ?: throw IllegalArgumentException("Redirect uri is required.")
-        val channelPublicIds = args["channel_public_ids"]
+        val channelPublicIds = args["channel_public_id"]
         val serviceTerms = args["service_terms"]
         val approvalType = args["approval_type"]
         val codeVerifier = args["code_verifier"]
