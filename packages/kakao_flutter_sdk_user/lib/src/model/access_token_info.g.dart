@@ -13,18 +13,9 @@ AccessTokenInfo _$AccessTokenInfoFromJson(Map<String, dynamic> json) =>
       (json['expires_in'] as num).toInt(),
     );
 
-Map<String, dynamic> _$AccessTokenInfoToJson(AccessTokenInfo instance) {
-  final val = <String, dynamic>{
-    'app_id': instance.appId,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('id', instance.id);
-  val['expires_in'] = instance.expiresIn;
-  return val;
-}
+Map<String, dynamic> _$AccessTokenInfoToJson(AccessTokenInfo instance) =>
+    <String, dynamic>{
+      'app_id': instance.appId,
+      if (instance.id case final value?) 'id': value,
+      'expires_in': instance.expiresIn,
+    };

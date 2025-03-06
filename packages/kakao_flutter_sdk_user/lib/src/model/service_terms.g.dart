@@ -18,24 +18,17 @@ ServiceTerms _$ServiceTermsFromJson(Map<String, dynamic> json) => ServiceTerms(
           unknownValue: Referer.unknown),
     );
 
-Map<String, dynamic> _$ServiceTermsToJson(ServiceTerms instance) {
-  final val = <String, dynamic>{
-    'tag': instance.tag,
-    'required': instance.required,
-    'agreed': instance.agreed,
-    'revocable': instance.revocable,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('agreed_at', instance.agreedAt?.toIso8601String());
-  writeNotNull('agreed_by', _$RefererEnumMap[instance.referer]);
-  return val;
-}
+Map<String, dynamic> _$ServiceTermsToJson(ServiceTerms instance) =>
+    <String, dynamic>{
+      'tag': instance.tag,
+      'required': instance.required,
+      'agreed': instance.agreed,
+      'revocable': instance.revocable,
+      if (instance.agreedAt?.toIso8601String() case final value?)
+        'agreed_at': value,
+      if (_$RefererEnumMap[instance.referer] case final value?)
+        'agreed_by': value,
+    };
 
 const _$RefererEnumMap = {
   Referer.kauth: 'KAUTH',

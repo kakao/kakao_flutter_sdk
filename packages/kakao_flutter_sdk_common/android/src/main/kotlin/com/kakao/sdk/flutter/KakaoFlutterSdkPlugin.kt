@@ -211,7 +211,7 @@ class KakaoFlutterSdkPlugin : MethodCallHandler, FlutterPlugin, ActivityAware,
                 }
             }
 
-            "selectShippingAddresses" -> {
+            "selectShippingAddress" -> {
                 val activity = activity ?: run {
                     result.error("Error", "Plugin is not attached to Activity", null)
                     return

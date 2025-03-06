@@ -1,3 +1,19 @@
+## 1.9.7
+
+- Android: Changed compileSdk and targetSdk versions to 35.
+- iOS:
+    - Changed the minimum supported version to 13 or higher.
+    - Modified the guidance popup appears only during the login process when using the default
+      browser.
+- Fixed a bug where the serviceTerms parameter of Login with Kakao Talk does not work in 1.9.2 or
+  higher.
+- Fixed a bug where all service terms were exposed when passing an empty list to the serviceTerms
+  parameter of Login with Kakao account.
+- Added whether the user's birthday falls on a leap month field to Retrieve user information API.
+- Fixed a typo in method name for Select shipping address API(previous: selectShippingAddresses(),
+  fixed: selectShippingAddress())
+- Updated the internal source code.
+
 ## 1.9.6
 
 - Changed the minimum support version of Flutter to 3.22.0 or higher.

@@ -28,6 +28,7 @@ Account _$AccountFromJson(Map<String, dynamic> json) => Account(
       json['birthday'] as String?,
       $enumDecodeNullable(_$BirthdayTypeEnumMap, json['birthday_type'],
           unknownValue: BirthdayType.unknown),
+      json['is_leap_month'] as bool?,
       json['gender_needs_agreement'] as bool?,
       $enumDecodeNullable(_$GenderEnumMap, json['gender'],
           unknownValue: Gender.other),
@@ -44,51 +45,56 @@ Account _$AccountFromJson(Map<String, dynamic> json) => Account(
       json['is_korean'] as bool?,
     );
 
-Map<String, dynamic> _$AccountToJson(Account instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('profile_needs_agreement', instance.profileNeedsAgreement);
-  writeNotNull('profile_nickname_needs_agreement',
-      instance.profileNicknameNeedsAgreement);
-  writeNotNull(
-      'profile_image_needs_agreement', instance.profileImageNeedsAgreement);
-  writeNotNull('profile', instance.profile?.toJson());
-  writeNotNull('name_needs_agreement', instance.nameNeedsAgreement);
-  writeNotNull('name', instance.name);
-  writeNotNull('email_needs_agreement', instance.emailNeedsAgreement);
-  writeNotNull('is_email_valid', instance.isEmailValid);
-  writeNotNull('is_email_verified', instance.isEmailVerified);
-  writeNotNull('email', instance.email);
-  writeNotNull('age_range_needs_agreement', instance.ageRangeNeedsAgreement);
-  writeNotNull('age_range', _$AgeRangeEnumMap[instance.ageRange]);
-  writeNotNull('birthyear_needs_agreement', instance.birthyearNeedsAgreement);
-  writeNotNull('birthyear', instance.birthyear);
-  writeNotNull('birthday_needs_agreement', instance.birthdayNeedsAgreement);
-  writeNotNull('birthday', instance.birthday);
-  writeNotNull('birthday_type', _$BirthdayTypeEnumMap[instance.birthdayType]);
-  writeNotNull('gender_needs_agreement', instance.genderNeedsAgreement);
-  writeNotNull('gender', _$GenderEnumMap[instance.gender]);
-  writeNotNull('legal_name_needs_agreement', instance.legalNameNeedsAgreement);
-  writeNotNull('legal_name', instance.legalName);
-  writeNotNull('legal_birth_date_needs_agreement',
-      instance.legalBirthDateNeedsAgreement);
-  writeNotNull('legal_birth_date', instance.legalBirthDate);
-  writeNotNull(
-      'legal_gender_needs_agreement', instance.legalGenderNeedsAgreement);
-  writeNotNull('legal_gender', _$GenderEnumMap[instance.legalGender]);
-  writeNotNull(
-      'phone_number_needs_agreement', instance.phoneNumberNeedsAgreement);
-  writeNotNull('phone_number', instance.phoneNumber);
-  writeNotNull('is_korean_needs_agreement', instance.isKoreanNeedsAgreement);
-  writeNotNull('is_korean', instance.isKorean);
-  return val;
-}
+Map<String, dynamic> _$AccountToJson(Account instance) => <String, dynamic>{
+      if (instance.profileNeedsAgreement case final value?)
+        'profile_needs_agreement': value,
+      if (instance.profileNicknameNeedsAgreement case final value?)
+        'profile_nickname_needs_agreement': value,
+      if (instance.profileImageNeedsAgreement case final value?)
+        'profile_image_needs_agreement': value,
+      if (instance.profile?.toJson() case final value?) 'profile': value,
+      if (instance.nameNeedsAgreement case final value?)
+        'name_needs_agreement': value,
+      if (instance.name case final value?) 'name': value,
+      if (instance.emailNeedsAgreement case final value?)
+        'email_needs_agreement': value,
+      if (instance.isEmailValid case final value?) 'is_email_valid': value,
+      if (instance.isEmailVerified case final value?)
+        'is_email_verified': value,
+      if (instance.email case final value?) 'email': value,
+      if (instance.ageRangeNeedsAgreement case final value?)
+        'age_range_needs_agreement': value,
+      if (_$AgeRangeEnumMap[instance.ageRange] case final value?)
+        'age_range': value,
+      if (instance.birthyearNeedsAgreement case final value?)
+        'birthyear_needs_agreement': value,
+      if (instance.birthyear case final value?) 'birthyear': value,
+      if (instance.birthdayNeedsAgreement case final value?)
+        'birthday_needs_agreement': value,
+      if (instance.birthday case final value?) 'birthday': value,
+      if (_$BirthdayTypeEnumMap[instance.birthdayType] case final value?)
+        'birthday_type': value,
+      if (instance.isLeapMonth case final value?) 'is_leap_month': value,
+      if (instance.genderNeedsAgreement case final value?)
+        'gender_needs_agreement': value,
+      if (_$GenderEnumMap[instance.gender] case final value?) 'gender': value,
+      if (instance.legalNameNeedsAgreement case final value?)
+        'legal_name_needs_agreement': value,
+      if (instance.legalName case final value?) 'legal_name': value,
+      if (instance.legalBirthDateNeedsAgreement case final value?)
+        'legal_birth_date_needs_agreement': value,
+      if (instance.legalBirthDate case final value?) 'legal_birth_date': value,
+      if (instance.legalGenderNeedsAgreement case final value?)
+        'legal_gender_needs_agreement': value,
+      if (_$GenderEnumMap[instance.legalGender] case final value?)
+        'legal_gender': value,
+      if (instance.phoneNumberNeedsAgreement case final value?)
+        'phone_number_needs_agreement': value,
+      if (instance.phoneNumber case final value?) 'phone_number': value,
+      if (instance.isKoreanNeedsAgreement case final value?)
+        'is_korean_needs_agreement': value,
+      if (instance.isKorean case final value?) 'is_korean': value,
+    };
 
 const _$AgeRangeEnumMap = {
   AgeRange.age_0_9: '0~9',

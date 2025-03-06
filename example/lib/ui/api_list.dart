@@ -381,10 +381,10 @@ class ApiListState extends State<ApiList> {
           Log.e(context, tag, '사용자 정보 저장 실패', e);
         }
       }),
-      ApiItem('selectShippingAddresses()', api: () async {
+      ApiItem('selectShippingAddress()', api: () async {
         // 배송지 피커 호출
         try {
-          final addressId = await UserApi.instance.selectShippingAddresses();
+          final addressId = await UserApi.instance.selectShippingAddress();
           Log.i(context, tag, '배송지 선택 성공 $addressId');
         } catch (e) {
           Log.e(context, tag, '배송지 선택 실패 $e');
@@ -460,8 +460,9 @@ class ApiListState extends State<ApiList> {
         // 약관 철회하기
 
         try {
-          UserRevokedServiceTerms userRevokedServiceTerms =
-              await UserApi.instance.revokeServiceTerms(tags: parameters.tags);
+          UserRevokedServiceTerms userRevokedServiceTerms = await UserApi
+              .instance
+              .revokeServiceTerms(tags: parameters.serviceTerms ?? []);
           Log.i(context, tag,
               '약관 철회하기 성공\n회원정보: ${userRevokedServiceTerms.id}\n철회한 약관: \n${userRevokedServiceTerms.revokedServiceTerms?.join('\n')}');
         } catch (e) {

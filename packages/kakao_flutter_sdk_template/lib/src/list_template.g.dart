@@ -19,21 +19,13 @@ ListTemplate _$ListTemplateFromJson(Map<String, dynamic> json) => ListTemplate(
       objectType: json['object_type'] as String? ?? "list",
     );
 
-Map<String, dynamic> _$ListTemplateToJson(ListTemplate instance) {
-  final val = <String, dynamic>{
-    'header_title': instance.headerTitle,
-    'header_link': instance.headerLink.toJson(),
-    'contents': instance.contents.map((e) => e.toJson()).toList(),
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('buttons', instance.buttons?.map((e) => e.toJson()).toList());
-  writeNotNull('button_title', instance.buttonTitle);
-  val['object_type'] = instance.objectType;
-  return val;
-}
+Map<String, dynamic> _$ListTemplateToJson(ListTemplate instance) =>
+    <String, dynamic>{
+      'header_title': instance.headerTitle,
+      'header_link': instance.headerLink.toJson(),
+      'contents': instance.contents.map((e) => e.toJson()).toList(),
+      if (instance.buttons?.map((e) => e.toJson()).toList() case final value?)
+        'buttons': value,
+      if (instance.buttonTitle case final value?) 'button_title': value,
+      'object_type': instance.objectType,
+    };

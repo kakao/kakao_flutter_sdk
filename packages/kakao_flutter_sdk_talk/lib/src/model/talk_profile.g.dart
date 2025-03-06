@@ -13,18 +13,10 @@ TalkProfile _$TalkProfileFromJson(Map<String, dynamic> json) => TalkProfile(
       json['countryISO'] as String?,
     );
 
-Map<String, dynamic> _$TalkProfileToJson(TalkProfile instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('nickName', instance.nickname);
-  writeNotNull('profileImageURL', instance.profileImageUrl);
-  writeNotNull('thumbnailURL', instance.thumbnailUrl);
-  writeNotNull('countryISO', instance.countryISO);
-  return val;
-}
+Map<String, dynamic> _$TalkProfileToJson(TalkProfile instance) =>
+    <String, dynamic>{
+      if (instance.nickname case final value?) 'nickName': value,
+      if (instance.profileImageUrl case final value?) 'profileImageURL': value,
+      if (instance.thumbnailUrl case final value?) 'thumbnailURL': value,
+      if (instance.countryISO case final value?) 'countryISO': value,
+    };

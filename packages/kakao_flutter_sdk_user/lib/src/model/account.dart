@@ -96,6 +96,11 @@ class Account {
   @JsonKey(unknownEnumValue: BirthdayType.unknown)
   BirthdayType? birthdayType;
 
+  /// KO: 생일의 윤달 여부
+  /// <br>
+  /// EN: Whether the birthday falls on a leap month
+  bool? isLeapMonth;
+
   /// KO: 사용자 동의 시 성별 제공 가능 여부
   /// <br>
   /// EN: Whether gender can be provided under user consent
@@ -177,6 +182,7 @@ class Account {
       this.birthdayNeedsAgreement,
       this.birthday,
       this.birthdayType,
+      this.isLeapMonth,
       this.genderNeedsAgreement,
       this.gender,
       this.legalNameNeedsAgreement,

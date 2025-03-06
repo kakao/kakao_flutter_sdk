@@ -25,23 +25,16 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       json['uuid'] as String?,
     );
 
-Map<String, dynamic> _$UserToJson(User instance) {
-  final val = <String, dynamic>{
-    'id': instance.id,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('properties', instance.properties);
-  writeNotNull('kakao_account', instance.kakaoAccount?.toJson());
-  writeNotNull('group_user_token', instance.groupUserToken);
-  writeNotNull('connected_at', instance.connectedAt?.toIso8601String());
-  writeNotNull('synched_at', instance.synchedAt?.toIso8601String());
-  writeNotNull('has_signed_up', instance.hasSignedUp);
-  writeNotNull('uuid', instance.uuid);
-  return val;
-}
+Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
+      'id': instance.id,
+      if (instance.properties case final value?) 'properties': value,
+      if (instance.kakaoAccount?.toJson() case final value?)
+        'kakao_account': value,
+      if (instance.groupUserToken case final value?) 'group_user_token': value,
+      if (instance.connectedAt?.toIso8601String() case final value?)
+        'connected_at': value,
+      if (instance.synchedAt?.toIso8601String() case final value?)
+        'synched_at': value,
+      if (instance.hasSignedUp case final value?) 'has_signed_up': value,
+      if (instance.uuid case final value?) 'uuid': value,
+    };

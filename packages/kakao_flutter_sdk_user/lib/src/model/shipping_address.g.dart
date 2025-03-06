@@ -22,27 +22,21 @@ ShippingAddress _$ShippingAddressFromJson(Map<String, dynamic> json) =>
       json['zip_code'] as String?,
     );
 
-Map<String, dynamic> _$ShippingAddressToJson(ShippingAddress instance) {
-  final val = <String, dynamic>{
-    'id': instance.id,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('name', instance.name);
-  val['is_default'] = instance.isDefault;
-  writeNotNull('updated_at', Util.fromDateTime(instance.updatedAt));
-  writeNotNull('type', instance.type);
-  writeNotNull('base_address', instance.baseAddress);
-  writeNotNull('detail_address', instance.detailAddress);
-  writeNotNull('receiver_name', instance.receiverName);
-  writeNotNull('receiver_phone_number1', instance.receiverPhoneNumber1);
-  writeNotNull('receiver_phone_number2', instance.receiverPhoneNumber2);
-  writeNotNull('zone_number', instance.zoneNumber);
-  writeNotNull('zip_code', instance.zipCode);
-  return val;
-}
+Map<String, dynamic> _$ShippingAddressToJson(ShippingAddress instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      if (instance.name case final value?) 'name': value,
+      'is_default': instance.isDefault,
+      if (Util.fromDateTime(instance.updatedAt) case final value?)
+        'updated_at': value,
+      if (instance.type case final value?) 'type': value,
+      if (instance.baseAddress case final value?) 'base_address': value,
+      if (instance.detailAddress case final value?) 'detail_address': value,
+      if (instance.receiverName case final value?) 'receiver_name': value,
+      if (instance.receiverPhoneNumber1 case final value?)
+        'receiver_phone_number1': value,
+      if (instance.receiverPhoneNumber2 case final value?)
+        'receiver_phone_number2': value,
+      if (instance.zoneNumber case final value?) 'zone_number': value,
+      if (instance.zipCode case final value?) 'zip_code': value,
+    };

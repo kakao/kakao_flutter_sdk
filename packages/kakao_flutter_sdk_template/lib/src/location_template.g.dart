@@ -21,22 +21,14 @@ LocationTemplate _$LocationTemplateFromJson(Map<String, dynamic> json) =>
       objectType: json['object_type'] as String? ?? "location",
     );
 
-Map<String, dynamic> _$LocationTemplateToJson(LocationTemplate instance) {
-  final val = <String, dynamic>{
-    'address': instance.address,
-    'content': instance.content.toJson(),
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('address_title', instance.addressTitle);
-  writeNotNull('social', instance.social?.toJson());
-  writeNotNull('buttons', instance.buttons?.map((e) => e.toJson()).toList());
-  writeNotNull('button_title', instance.buttonTitle);
-  val['object_type'] = instance.objectType;
-  return val;
-}
+Map<String, dynamic> _$LocationTemplateToJson(LocationTemplate instance) =>
+    <String, dynamic>{
+      'address': instance.address,
+      'content': instance.content.toJson(),
+      if (instance.addressTitle case final value?) 'address_title': value,
+      if (instance.social?.toJson() case final value?) 'social': value,
+      if (instance.buttons?.map((e) => e.toJson()).toList() case final value?)
+        'buttons': value,
+      if (instance.buttonTitle case final value?) 'button_title': value,
+      'object_type': instance.objectType,
+    };

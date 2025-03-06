@@ -13,20 +13,12 @@ KakaoAuthException _$KakaoAuthExceptionFromJson(Map<String, dynamic> json) =>
       json['error_description'] as String?,
     );
 
-Map<String, dynamic> _$KakaoAuthExceptionToJson(KakaoAuthException instance) {
-  final val = <String, dynamic>{
-    'error': _$AuthErrorCauseEnumMap[instance.error]!,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('error_description', instance.errorDescription);
-  return val;
-}
+Map<String, dynamic> _$KakaoAuthExceptionToJson(KakaoAuthException instance) =>
+    <String, dynamic>{
+      'error': _$AuthErrorCauseEnumMap[instance.error]!,
+      if (instance.errorDescription case final value?)
+        'error_description': value,
+    };
 
 const _$AuthErrorCauseEnumMap = {
   AuthErrorCause.invalidRequest: 'invalid_request',

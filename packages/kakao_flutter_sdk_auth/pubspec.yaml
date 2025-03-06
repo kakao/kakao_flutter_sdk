@@ -1,6 +1,6 @@
 name: kakao_flutter_sdk_auth
 description: A flutter plugin for Kakao API, which supports Kakao login, KakaoTalk Share, User API, KakaoTalk API and Navi API.
-version: 1.9.6
+version: 1.9.7
 homepage: https://github.com/kakao/kakao_flutter_sdk
 issue_tracker: https://github.com/kakao/kakao_flutter_sdk/issues
 
@@ -16,11 +16,11 @@ platforms:
 dependencies:
   flutter:
     sdk: flutter
-  json_annotation: ^4.8.0
-  dio: ^5.0.3
-  shared_preferences: ^2.0.20
-  platform: ^3.1.0
-  crypto: ^3.0.1
+  json_annotation: ^4.9.0
+  dio: ^5.5.0+1
+  shared_preferences: ^2.2.3
+  platform: ^3.1.4
+  crypto: ^3.0.3
   kakao_flutter_sdk_common:
     path: ../kakao_flutter_sdk_common
 
@@ -28,8 +28,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
-  build_runner: ^2.2.0
-  json_serializable: ^6.5.4
+  build_runner: ^2.4.15
+  json_serializable: ^6.9.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
