@@ -146,6 +146,8 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
         let clientId = parameters["client_id"]
         let redirectUri = parameters["redirect_uri"]
         let codeVerifier = parameters["code_verifier"]
+        let channelPublicId = parameters["channel_public_id"]
+        let serviceTerms = parameters["service_terms"]
         let prompt = parameters["prompt"]
         let state = parameters["state"]
         let nonce = parameters["nonce"]
@@ -179,6 +181,14 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
         if(codeVerifier != nil) {
             parameters["code_challenge"] = SdkCrypto.base64url(data: SdkCrypto.sha256(string: codeVerifier!)!)
             parameters["code_challenge_method"] = "S256"
+        }
+        
+        if(serviceTerms != nil) {
+            parameters["service_terms"] = serviceTerms
+        }
+        
+        if(channelPublicId != nil) {
+            parameters["channel_public_id"] = channelPublicId
         }
 
         if(prompt != nil) {
