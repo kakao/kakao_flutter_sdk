@@ -1,4 +1,4 @@
-## 1.9.7+2
+## 1.9.7+3
 
 - Android: Changed compileSdk and targetSdk versions to 35.
 - iOS:

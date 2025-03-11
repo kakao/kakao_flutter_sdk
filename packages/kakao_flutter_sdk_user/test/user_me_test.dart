@@ -227,9 +227,12 @@ void main() {
     });
 
     test('Gender Test', () {
-      expect(Gender.female, $enumDecode($GenderEnumMap, 'female', unknownValue: Gender.other));
-      expect(Gender.male, $enumDecode($GenderEnumMap, 'male', unknownValue: Gender.other));
-      expect(Gender.other, $enumDecode($GenderEnumMap, 'test', unknownValue: Gender.other));
+      expect(Gender.female,
+          $enumDecode($GenderEnumMap, 'female', unknownValue: Gender.other));
+      expect(Gender.male,
+          $enumDecode($GenderEnumMap, 'male', unknownValue: Gender.other));
+      expect(Gender.other,
+          $enumDecode($GenderEnumMap, 'test', unknownValue: Gender.other));
     });
   });
 }

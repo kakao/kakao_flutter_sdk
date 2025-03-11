@@ -294,7 +294,7 @@ class KakaoFlutterSdkPlugin {
         String uri = args["url"];
         final fullUri = Uri.parse(uri);
         Map<String, dynamic> queryParameters =
-        Map.from(fullUri.queryParameters);
+            Map.from(fullUri.queryParameters);
 
         queryParameters[CommonConstants.redirectUri] =
             args[CommonConstants.redirectUri];
