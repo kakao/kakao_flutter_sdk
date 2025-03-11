@@ -86,6 +86,9 @@ class AuthCodeClient {
         final authCode = await _channel.invokeMethod('accountLogin', {
           CommonConstants.url: url.toString(),
           CommonConstants.redirectUri: redirectUri,
+
+          // prevent popups from appearing on IOS.
+          CommonConstants.authorizeNewScopes: scopes != null,
         });
         return _parseCode(authCode);
       }

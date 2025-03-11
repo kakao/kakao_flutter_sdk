@@ -12,6 +12,7 @@ class CommonConstants {
   static const String http = 'http';
   static const String url = 'url';
   static const String redirectUri = 'redirect_uri';
+  static const String authorizeNewScopes = 'new_scope';
   static const String androidWebRedirectUri = '/cors/afterlogin.html';
   static const String iosWebRedirectUri = 'JS-SDK';
   static const String webAccountLoginRedirectUri = 'JS-SDK';

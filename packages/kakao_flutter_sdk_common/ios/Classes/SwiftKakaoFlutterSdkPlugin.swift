@@ -25,7 +25,10 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
         func castArguments(_ arguments: Any?) -> Dictionary<String, String> {
             var args = arguments as! Dictionary<String, Any>
             let isPopup = (args["is_popup"] as? Bool) ?? true
+            let requestScope = (args["new_scope"] as? Bool) ?? true
+    
             args["is_popup"] = (isPopup) ? "YES" : "NO"
+            args["new_scope"] = (requestScope) ? "YES" : "NO"
             return args as! Dictionary<String, String>
         }
         
@@ -42,9 +45,11 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
             let args = castArguments(call.arguments)
             let url = args["url"]
             let redirectUri = args["redirect_uri"]
-            launchBrowser(url: url!, redirectUri: redirectUri!, isLogin: true, result: result)
+            let isLogin = args["new_scope"] == "NO"
+            
+            launchBrowser(url: url!, redirectUri: redirectUri!, isLogin: isLogin, result: result)
         case "authorizeWithTalk":
-            let args = castArguments(call.arguments)
+                let args = castArguments(call.arguments)
             authorizeWithTalk(parameters: args, result: result)
         case "isKakaoTalkInstalled":
             let args = castArguments(call.arguments)
