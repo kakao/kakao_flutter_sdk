@@ -1,7 +1,8 @@
 name: kakao_flutter_sdk_share
 description: A flutter plugin for Kakao API, which supports Kakao login, KakaoTalk Share, User API, KakaoTalk API and Navi API.
 version: 1.9.7+2
-homepage: https://github.com/kakao/kakao_flutter_sdk
+homepage: https://developers.kakao.com/docs/latest/flutter/getting-started
+repository: https://github.com/kakao/kakao_flutter_sdk
 issue_tracker: https://github.com/kakao/kakao_flutter_sdk/issues
 
 environment:
