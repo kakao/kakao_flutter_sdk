@@ -50,9 +50,12 @@ void main() {
 
   group('enum test', () {
     test('Referer Test', () {
-      expect(Referer.kapi, $enumDecode($RefererEnumMap, 'KAPI', unknownValue: Referer.unknown));
-      expect(Referer.kauth, $enumDecode($RefererEnumMap, 'KAUTH', unknownValue: Referer.unknown));
-      expect(Referer.unknown, $enumDecode($RefererEnumMap, 'test', unknownValue: Referer.unknown));
+      expect(Referer.kapi,
+          $enumDecode($RefererEnumMap, 'KAPI', unknownValue: Referer.unknown));
+      expect(Referer.kauth,
+          $enumDecode($RefererEnumMap, 'KAUTH', unknownValue: Referer.unknown));
+      expect(Referer.unknown,
+          $enumDecode($RefererEnumMap, 'test', unknownValue: Referer.unknown));
     });
   });
 }

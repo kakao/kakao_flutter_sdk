@@ -14,7 +14,6 @@ import 'package:platform/platform.dart';
 /// <br>
 /// EN: Class for the authentication and token management through Kakao Login
 class AuthApi {
-
   final Dio _dio;
   final Platform _platform;
 
