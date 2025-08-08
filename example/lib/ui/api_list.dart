@@ -438,15 +438,15 @@ class ApiListState extends State<ApiList> {
 
         if (parameters == null) return;
 
-        // 동의한 약관 조회
+        // 서비스 약관 동의 내역 조회
 
         try {
           UserServiceTerms userServiceTerms = await UserApi.instance
               .serviceTerms(tags: parameters.tags, result: parameters.result);
           Log.i(context, tag,
-              '동의한 약관 조회 성공\n회원정보: ${userServiceTerms.id}\n동의한 약관: \n${userServiceTerms.serviceTerms?.join('\n')}');
+              '서비스 약관 동의 내역 조회 성공\n회원정보: ${userServiceTerms.id}\n동의한 약관: \n${userServiceTerms.serviceTerms?.join('\n')}');
         } catch (e) {
-          Log.e(context, tag, '동의한 약관 조회 실패', e);
+          Log.e(context, tag, '서비스 약관 동의 내역 조회 실패', e);
         }
       }),
       ApiItem('+revokeServiceTerms()', backgroundColor: plusColor,
@@ -464,9 +464,9 @@ class ApiListState extends State<ApiList> {
               .instance
               .revokeServiceTerms(tags: parameters.serviceTerms ?? []);
           Log.i(context, tag,
-              '약관 철회 성공\n회원정보: ${userRevokedServiceTerms.id}\n철회한 약관: \n${userRevokedServiceTerms.revokedServiceTerms?.join('\n')}');
+              '서비스 약관 동의 철회 성공\n회원정보: ${userRevokedServiceTerms.id}\n철회한 약관: \n${userRevokedServiceTerms.revokedServiceTerms?.join('\n')}');
         } catch (e) {
-          Log.e(context, tag, '약관 철회 실패', e);
+          Log.e(context, tag, '서비스 약관 동의 철회 실패', e);
         }
       }),
       ApiItem('+scopes()', backgroundColor: plusColor, api: () async {
@@ -475,7 +475,7 @@ class ApiListState extends State<ApiList> {
 
         if (parameters == null) return;
 
-        // 동의 항목 whghl
+        // 동의 항목 동의 내역 조회
 
         try {
           ScopeInfo scopeInfo =
@@ -1040,7 +1040,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('customTemplate()', api: () async {
-        // 커스텀 템플릿으로 카카오톡 공유
+        // 커스텀 템플릿으로 카카오톡 공유 메시지 발송
         //  * 만들기 가이드: https://developers.kakao.com/docs/latest/ko/message/message-template
         int templateId = customData['customMemo']!;
 
@@ -1054,7 +1054,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('scrapTemplate()', api: () async {
-        // 스크랩 템플릿으로 카카오톡 공유
+        // 스크랩 템플릿으로 카카오톡 공유 메시지 발송
 
         // 공유할 웹페이지 URL
         // * 주의: 개발자사이트 Web 플랫폼 설정에 공유할 URL의 도메인이 등록되어 있어야 합니다.
@@ -1069,7 +1069,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('defaultTemplate() - feed', api: () async {
-        // 디폴트 템플릿으로 카카오톡 공유 - Feed
+        // 디폴트 템플릿으로 카카오톡 공유 메시지 발송 - Feed
 
         try {
           Uri uri =
@@ -1081,7 +1081,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('defaultTemplate() - list', api: () async {
-        // 디폴트 템플릿으로 카카오톡 공유 - List
+        // 디폴트 템플릿으로 카카오톡 공유 메시지 발송 - List
 
         try {
           Uri uri =
@@ -1093,7 +1093,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('defaultTemplate() - location', api: () async {
-        // 디폴트 템플릿으로 카카오톡 공유 - Location
+        // 디폴트 템플릿으로 카카오톡 공유 메시지 발송 - Location
 
         try {
           Uri uri = await ShareClient.instance
@@ -1105,7 +1105,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('defaultTemplate() - commerce', api: () async {
-        // 디폴트 템플릿으로 카카오톡 공유 - Commerce
+        // 디폴트 템플릿으로 카카오톡 공유 메시지 발송 - Commerce
 
         try {
           Uri uri = await ShareClient.instance
@@ -1117,7 +1117,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('defaultTemplate() - text', api: () async {
-        // 디폴트 템플릿으로 카카오톡 공유 - Text
+        // 디폴트 템플릿으로 카카오톡 공유 메시지 발송 - Text
 
         try {
           Uri uri =
@@ -1129,7 +1129,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('defaultTemplate() - calendar', api: () async {
-        // 디폴트 템플릿으로 카카오톡 공유 - Calendar
+        // 디폴트 템플릿으로 카카오톡 공유 메시지 발송 - Calendar
 
         try {
           Uri uri = await ShareClient.instance.shareDefault(
