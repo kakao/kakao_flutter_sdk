@@ -149,7 +149,7 @@ class AuthCodeClient {
     }
   }
 
-  /// KO: 추가 항목 동의 받기
+  /// KO: 동의항목 추가 동의 요청
   /// <br>
   /// EN: Request additional consent
   Future<String> authorizeWithNewScopes({

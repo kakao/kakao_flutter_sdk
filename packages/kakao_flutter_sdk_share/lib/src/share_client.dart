@@ -28,7 +28,7 @@ class ShareClient {
   ShareClient(this.api, {Platform? platform})
       : _platform = platform ?? const LocalPlatform();
 
-  /// KO: 카카오톡 공유 가능 여부 확인
+  /// KO: 카카오톡 공유 가능 여부 조회
   /// <br>
   /// EN: Checks whether the Kakao Talk Sharing is available
   Future<bool> isKakaoTalkSharingAvailable() async {
@@ -45,7 +45,7 @@ class ShareClient {
         false;
   }
 
-  /// KO: 사용자 정의 템플릿으로 메시지 보내기<br>
+  /// KO: 사용자 정의 템플릿으로 메시지 발송<br>
   /// [templateId]에 사용자 정의 템플릿 ID 전달<br>
   /// [templateArgs]에 사용자 인자 키와 값 전달<br>
   /// [serverCallbackArgs]에 카카오톡 공유 전송 성공 알림에 포함할 키와 값 전달<br>
@@ -63,7 +63,7 @@ class ShareClient {
     return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
-  /// KO: 기본 템플릿으로 메시지 보내기<br>
+  /// KO: 기본 템플릿으로 메시지 발송<br>
   /// [template]에 메시지 템플릿 객체 전달<br>
   /// [serverCallbackArgs]에 카카오톡 공유 전송 성공 알림에 포함할 키와 값 전달<br>
   /// <br>
@@ -78,7 +78,7 @@ class ShareClient {
     return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
-  /// KO: 스크랩 메시지 보내기<br>
+  /// KO: 스크랩 메시지 발송<br>
   /// [url]에 스크랩할 URL 전달<br>
   /// [templateId]에 사용자 정의 템플릿 ID 전달<br>
   /// [templateArgs]에 사용자 인자 키와 값 전달<br>
@@ -100,7 +100,7 @@ class ShareClient {
     return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
-  /// KO: 이미지 업로드하기<br>
+  /// KO: 이미지 업로드<br>
   /// [image]에 이미지 파일 전달<br>
   /// [secureResource]로 이미지 URL을 HTTPS로 설정<br>
   /// <br>
@@ -122,7 +122,7 @@ class ShareClient {
         secureResource: secureResource);
   }
 
-  /// KO: 이미지 스크랩하기<br>
+  /// KO: 이미지 스크랩<br>
   /// [imageUrl]에 이미지 URL 전달<br>
   /// [secureResource]로 이미지 URL을 HTTPS로 설정<br>
   /// <br>

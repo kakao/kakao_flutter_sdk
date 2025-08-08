@@ -3,7 +3,7 @@ import 'package:kakao_flutter_sdk_talk/src/constants.dart';
 
 part 'follow_channel_result.g.dart';
 
-/// KO: 카카오톡 채널 간편 추가하기 결과
+/// KO: 카카오톡 채널 간편 추가 결과
 /// <br>
 /// EN: Result of Follow Kakao Talk Channel
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)

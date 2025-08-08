@@ -32,9 +32,9 @@ abstract class TokenManager {
   /// EN: Returns saved tokens
   Future<OAuthToken?> getToken();
 
-  /// KO: 저장된 토큰 삭제
+  /// KO: 저장된 토큰 폐기
   /// <br>
-  /// EN: Deletes saved tokens
+  /// EN: Revokes saved tokens
   Future<void> clear();
 }
 

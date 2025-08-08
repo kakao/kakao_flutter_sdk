@@ -3,7 +3,7 @@ import 'package:kakao_flutter_sdk_user/src/model/service_terms.dart';
 
 part 'user_service_terms.g.dart';
 
-/// KO: 서비스 약관 동의 내역 확인하기 응답
+/// KO: 서비스 약관 동의 내역 조회 응답
 /// <br>
 /// EN: Response for Retrieve consent details for service terms
 @JsonSerializable(

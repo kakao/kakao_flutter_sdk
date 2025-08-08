@@ -30,7 +30,7 @@ class AuthApi {
         _tokenManagerProvider =
             tokenManagerProvider ?? TokenManagerProvider.instance;
 
-  /// KO: 토큰 존재 여부 확인하기
+  /// KO: 토큰 존재 여부 조회
   /// <br>
   /// EN: Check token presence
   Future<bool> hasToken() async {

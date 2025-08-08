@@ -12,7 +12,7 @@ class KakaoException implements Exception {
   /// EN: Error message
   final String? message;
 
-  /// KO: 유효하지 않은 토큰으로 인한 에러인지 확인
+  /// KO: 유효하지 않은 토큰으로 인한 에러 여부 조회
   /// <br>
   /// EN: Check whether the error is due to an invalid token
   bool isInvalidTokenError() {

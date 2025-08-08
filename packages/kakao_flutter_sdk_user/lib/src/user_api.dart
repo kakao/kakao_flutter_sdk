@@ -115,7 +115,7 @@ class UserApi {
     return token;
   }
 
-  /// KO: 추가 항목 동의 받기<br>
+  /// KO: 동의항목 추가 동의 요청<br>
   /// 동의 항목 ID 목록은 [scopes]에 전달<br>
   /// <br>
   /// EN: Request additional consent<br>
@@ -143,7 +143,7 @@ class UserApi {
     return token;
   }
 
-  /// KO: 사용자 정보 가져오기
+  /// KO: 사용자 정보 조회
   /// <br>
   /// EN: Retrieve user information
   Future<User> me(
@@ -179,7 +179,7 @@ class UserApi {
     });
   }
 
-  /// KO: 연결 끊기
+  /// KO: 연결 해제
   /// <br>
   /// EN: Unlink
   Future<UserIdResponse> unlink() async {
@@ -190,7 +190,7 @@ class UserApi {
     });
   }
 
-  /// KO: 액세스 토큰 정보
+  /// KO: 액세스 토큰 정보 조회
   /// <br>
   /// EN: Access token information
   Future<AccessTokenInfo> accessTokenInfo() async {
@@ -200,7 +200,7 @@ class UserApi {
     });
   }
 
-  /// KO: 배송지 선택하기<br>
+  /// KO: 배송지 선택<br>
   /// [enableBackButton]과 [mobileView]는 웹 플랫폼 전용 파라미터<br>
   /// [mobileView]로 배송지 피커를 모바일 디바이스에 맞춘 레이아웃으로 고정할 것인지 지정<br>
   /// [enableBackButton]로 배송지 피커의 뒤로 가기 버튼 노출 여부 지정<br>
@@ -228,7 +228,7 @@ class UserApi {
     }
   }
 
-  /// KO: 배송지 가져오기<br>
+  /// KO: 배송지 조회<br>
   /// [addressId]에 배송지 ID 전달<br>
   /// [fromUpdatedAt]에 이전 페이지의 마지막 배송지 수정 시각 전달, `0` 전달 시 처음부터 조회<br>
   /// [pageSize]에 한 페이지에 포함할 배송지 수 전달(기본값: 10)<br>
@@ -257,7 +257,7 @@ class UserApi {
     });
   }
 
-  /// KO: 서비스 약관 동의 내역 확인하기<br>
+  /// KO: 서비스 약관 동의 내역 조회<br>
   /// 서비스 약관 태그 목록은 [tags]에 전달<br>
   /// [result]에 조회 대상(`agreed_service_terms`: 사용자가 동의한 서비스 약관 목록 | `app_service_terms`: 앱에 사용 설정된 서비스 약관 목록, 기본값: `agreed_service_terms`) 전달<br>
   /// <br>
@@ -280,7 +280,7 @@ class UserApi {
     });
   }
 
-  /// KO: 서비스 약관 동의 철회하기<br>
+  /// KO: 서비스 약관 동의 철회<br>
   /// 서비스 약관 태그 목록은 [tags]에 전달<br>
   /// <br>
   /// EN: Revoke consent for service terms<br>
@@ -295,9 +295,9 @@ class UserApi {
     });
   }
 
-  /// KO: 사용자 정보 저장하기
+  /// KO: 사용자 프로퍼티 저장
   /// <br>
-  /// EN: Store user information
+  /// EN: Store user properties
   Future<void> updateProfile(Map<String, String> properties) {
     return ApiFactory.handleApiError(() async {
       await _dio.post(Constants.v1UpdateProfilePath,
@@ -305,7 +305,7 @@ class UserApi {
     });
   }
 
-  /// KO: 연결하기
+  /// KO: 수동 연결
   /// <br>
   /// EN: Manual signup
   Future<void> signup({Map<String, String>? properties}) {
@@ -315,7 +315,7 @@ class UserApi {
     });
   }
 
-  /// KO: 동의 내역 확인하기
+  /// KO: 동의 내역 조회
   /// <br>
   /// EN: Retrieve consent details
   Future<ScopeInfo> scopes({List<String>? scopes}) {
@@ -326,7 +326,7 @@ class UserApi {
     });
   }
 
-  /// KO: 동의 철회하기<br>
+  /// KO: 동의 철회<br>
   /// 동의 항목 ID 목록은 [scopes]에 전달<br>
   /// <br>
   /// EN: Revoke consent<br>

@@ -79,7 +79,7 @@ class WebSharerClient {
         serverCallbackArgs: serverCallbackArgs);
   }
 
-  /// KO: 이미지 업로드하기<br>
+  /// KO: 이미지 업로드<br>
   /// [image]에 이미지 파일 전달<br>
   /// [secureResource]로 이미지 URL을 HTTPS로 설정<br>
   /// <br>
@@ -101,7 +101,7 @@ class WebSharerClient {
         secureResource: secureResource);
   }
 
-  /// KO: 이미지 스크랩하기<br>
+  /// KO: 이미지 스크랩<br>
   /// [imageUrl]에 이미지 URL 전달<br>
   /// [secureResource]로 이미지 URL을 HTTPS로 설정<br>
   /// <br>
