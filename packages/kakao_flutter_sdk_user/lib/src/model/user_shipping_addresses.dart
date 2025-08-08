@@ -3,7 +3,7 @@ import 'package:kakao_flutter_sdk_user/src/model/shipping_address.dart';
 
 part 'user_shipping_addresses.g.dart';
 
-/// KO: 배송지 가져오기 응답
+/// KO: 배송지 조회 응답
 /// <br>
 /// EN: Response for Retrieve shipping address
 @JsonSerializable(

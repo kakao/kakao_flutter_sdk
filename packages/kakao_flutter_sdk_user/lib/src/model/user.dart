@@ -3,7 +3,7 @@ import 'package:kakao_flutter_sdk_user/src/model/account.dart';
 
 part 'user.g.dart';
 
-/// KO: 사용자 정보 가져오기 응답
+/// KO: 사용자 정보 조회 응답
 /// <br>
 /// EN: Response for Retrieve user information
 @JsonSerializable(
@@ -39,7 +39,7 @@ class User {
   /// EN: Time logged in through Kakao Sync Simple Signup, UTC
   DateTime? synchedAt;
 
-  /// KO: 연결하기 호출의 완료 여부
+  /// KO: 수동 연결 API 호출의 완료 여부
   /// <br>
   /// EN: Whether the user is completely linked with the app
   bool? hasSignedUp;

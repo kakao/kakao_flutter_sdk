@@ -3,7 +3,7 @@ import 'package:kakao_flutter_sdk_user/src/model/revoked_service_terms.dart';
 
 part 'user_revoked_service_terms.g.dart';
 
-/// KO: 서비스 약관 동의 철회하기 응답
+/// KO: 서비스 약관 동의 철회 응답
 /// <br>
 /// EN: Response for Revoke consent for service terms
 @JsonSerializable(

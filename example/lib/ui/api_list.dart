@@ -69,7 +69,7 @@ class ApiListState extends State<ApiList> {
     apiList.addAll([
       ApiItem('User API'),
       ApiItem('isKakaoTalkInstalled()', api: () async {
-        // 카카오톡 설치여부 확인
+        // 카카오톡 설치여부 조회
 
         bool result = await isKakaoTalkInstalled();
         String msg = result ? '카카오톡으로 로그인 가능' : '카카오톡 미설치: 카카오계정으로 로그인 사용 권장';
@@ -438,15 +438,15 @@ class ApiListState extends State<ApiList> {
 
         if (parameters == null) return;
 
-        // 동의한 약관 확인하기
+        // 동의한 약관 조회
 
         try {
           UserServiceTerms userServiceTerms = await UserApi.instance
               .serviceTerms(tags: parameters.tags, result: parameters.result);
           Log.i(context, tag,
-              '동의한 약관 확인하기 성공\n회원정보: ${userServiceTerms.id}\n동의한 약관: \n${userServiceTerms.serviceTerms?.join('\n')}');
+              '동의한 약관 조회 성공\n회원정보: ${userServiceTerms.id}\n동의한 약관: \n${userServiceTerms.serviceTerms?.join('\n')}');
         } catch (e) {
-          Log.e(context, tag, '동의한 약관 확인하기 실패', e);
+          Log.e(context, tag, '동의한 약관 조회 실패', e);
         }
       }),
       ApiItem('+revokeServiceTerms()', backgroundColor: plusColor,
@@ -457,16 +457,16 @@ class ApiListState extends State<ApiList> {
 
         if (parameters == null) return;
 
-        // 약관 철회하기
+        // 약관 철회
 
         try {
           UserRevokedServiceTerms userRevokedServiceTerms = await UserApi
               .instance
               .revokeServiceTerms(tags: parameters.serviceTerms ?? []);
           Log.i(context, tag,
-              '약관 철회하기 성공\n회원정보: ${userRevokedServiceTerms.id}\n철회한 약관: \n${userRevokedServiceTerms.revokedServiceTerms?.join('\n')}');
+              '약관 철회 성공\n회원정보: ${userRevokedServiceTerms.id}\n철회한 약관: \n${userRevokedServiceTerms.revokedServiceTerms?.join('\n')}');
         } catch (e) {
-          Log.e(context, tag, '약관 철회하기 실패', e);
+          Log.e(context, tag, '약관 철회 실패', e);
         }
       }),
       ApiItem('+scopes()', backgroundColor: plusColor, api: () async {
@@ -475,15 +475,15 @@ class ApiListState extends State<ApiList> {
 
         if (parameters == null) return;
 
-        // 동의 항목 확인하기
+        // 동의 항목 whghl
 
         try {
           ScopeInfo scopeInfo =
               await UserApi.instance.scopes(scopes: parameters.scopes);
           Log.i(
-              context, tag, '동의 정보 확인 성공\n현재 가지고 있는 동의 항목 ${scopeInfo.scopes}');
+              context, tag, '동의 정보 조회 성공\n현재 가지고 있는 동의 항목 ${scopeInfo.scopes}');
         } catch (e) {
-          Log.e(context, tag, '동의 정보 확인 실패', e);
+          Log.e(context, tag, '동의 정보 조회 실패', e);
         }
       }),
       ApiItem('+revokeScopes()', backgroundColor: plusColor, api: () async {
@@ -913,14 +913,14 @@ class ApiListState extends State<ApiList> {
 
         if (parameters == null) return;
 
-        // 카카오톡 채널 관계 확인하기
+        // 카카오톡 채널 관계 조회
 
         try {
           Channels relations =
               await TalkApi.instance.channels(parameters.publicIds);
-          Log.i(context, tag, '채널 관계 확인 성공\n${relations.channels}');
+          Log.i(context, tag, '채널 관계 조회 성공\n${relations.channels}');
         } catch (e) {
-          Log.e(context, tag, '채널 관계 확인 실패', e);
+          Log.e(context, tag, '채널 관계 조회 실패', e);
         }
       }),
       ApiItem('+followChannel', backgroundColor: plusColor, api: () async {
@@ -956,7 +956,7 @@ class ApiListState extends State<ApiList> {
         String channelId = parameters.channelPublicId;
 
         try {
-          // 카카오톡 채널 추가하기
+          // 카카오톡 채널 추가
           await TalkApi.instance.addChannel(channelId);
         } catch (e) {
           Log.e(context, tag, '채널 추가 실패', e);
@@ -976,7 +976,7 @@ class ApiListState extends State<ApiList> {
         String channelId = parameters.channelPublicId;
 
         try {
-          // 카카오톡 채널 채팅하기
+          // 카카오톡 채널 채팅
           await TalkApi.instance.chatChannel(channelId);
         } catch (e) {
           Log.e(context, tag, '채널 채팅 실패', e);
@@ -993,7 +993,7 @@ class ApiListState extends State<ApiList> {
 
         if (parameters == null) return;
 
-        // 카카오톡 채널 추가하기 URL
+        // 카카오톡 채널 추가 URL
         String channelId = parameters.channelPublicId;
         Uri url = await TalkApi.instance.addChannelUrl(channelId);
 
@@ -1031,7 +1031,7 @@ class ApiListState extends State<ApiList> {
           api: () => Navigator.pushNamed(context, '/picker')),
       ApiItem('KakaoTalk Sharing API'),
       ApiItem('isKakaoTalkSharingAvailable()', api: () async {
-        // 카카오톡 설치여부 확인
+        // 카카오톡 설치여부 조회
         bool result = await ShareClient.instance.isKakaoTalkSharingAvailable();
         if (result) {
           Log.i(context, tag, '카카오톡 공유 가능');
@@ -1040,7 +1040,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('customTemplate()', api: () async {
-        // 커스텀 템플릿으로 카카오톡 공유하기
+        // 커스텀 템플릿으로 카카오톡 공유
         //  * 만들기 가이드: https://developers.kakao.com/docs/latest/ko/message/message-template
         int templateId = customData['customMemo']!;
 
@@ -1054,7 +1054,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('scrapTemplate()', api: () async {
-        // 스크랩 템플릿으로 카카오톡 공유하기
+        // 스크랩 템플릿으로 카카오톡 공유
 
         // 공유할 웹페이지 URL
         // * 주의: 개발자사이트 Web 플랫폼 설정에 공유할 URL의 도메인이 등록되어 있어야 합니다.
@@ -1069,7 +1069,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('defaultTemplate() - feed', api: () async {
-        // 디폴트 템플릿으로 카카오톡 공유하기 - Feed
+        // 디폴트 템플릿으로 카카오톡 공유 - Feed
 
         try {
           Uri uri =
@@ -1081,7 +1081,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('defaultTemplate() - list', api: () async {
-        // 디폴트 템플릿으로 카카오톡 공유하기 - List
+        // 디폴트 템플릿으로 카카오톡 공유 - List
 
         try {
           Uri uri =
@@ -1093,7 +1093,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('defaultTemplate() - location', api: () async {
-        // 디폴트 템플릿으로 카카오톡 공유하기 - Location
+        // 디폴트 템플릿으로 카카오톡 공유 - Location
 
         try {
           Uri uri = await ShareClient.instance
@@ -1105,7 +1105,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('defaultTemplate() - commerce', api: () async {
-        // 디폴트 템플릿으로 카카오톡 공유하기 - Commerce
+        // 디폴트 템플릿으로 카카오톡 공유 - Commerce
 
         try {
           Uri uri = await ShareClient.instance
@@ -1117,7 +1117,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('defaultTemplate() - text', api: () async {
-        // 디폴트 템플릿으로 카카오톡 공유하기 - Text
+        // 디폴트 템플릿으로 카카오톡 공유 - Text
 
         try {
           Uri uri =
@@ -1129,7 +1129,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('defaultTemplate() - calendar', api: () async {
-        // 디폴트 템플릿으로 카카오톡 공유하기 - Calendar
+        // 디폴트 템플릿으로 카카오톡 공유 - Calendar
 
         try {
           Uri uri = await ShareClient.instance.shareDefault(
@@ -1141,7 +1141,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('customTemplateUri() - web sharer', api: () async {
-        // 커스텀 템플릿으로 웹에서 카카오톡 공유하기
+        // 커스텀 템플릿으로 웹에서 카카오톡 공유
 
         // 메시지 템플릿 아이디
         // * 만들기 가이드: https://developers.kakao.com/docs/latest/ko/message/message-template
@@ -1156,7 +1156,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('scrapTemplateUri() - web sharer', api: () async {
-        // 스크랩 템플릿으로 웹에서 카카오톡 공유하기
+        // 스크랩 템플릿으로 웹에서 카카오톡 공유
 
         // 공유할 웹페이지 URL
         // * 주의: 개발자사이트 Web 플랫폼 설정에 공유할 URL의 도메인이 등록되어 있어야 합니다.
@@ -1171,7 +1171,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('defaultTemplateUri() - web sharer - feed', api: () async {
-        // 커스텀 템플릿으로 웹에서 카카오톡 공유하기 - Feed
+        // 커스텀 템플릿으로 웹에서 카카오톡 공유 - Feed
 
         try {
           Uri shareUrl = await WebSharerClient.instance
@@ -1182,7 +1182,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('defaultTemplateUri() - web sharer - location', api: () async {
-        // 커스텀 템플릿으로 웹에서 카카오톡 공유하기 - Location
+        // 커스텀 템플릿으로 웹에서 카카오톡 공유 - Location
 
         try {
           Uri shareUrl = await WebSharerClient.instance
@@ -1193,7 +1193,7 @@ class ApiListState extends State<ApiList> {
         }
       }),
       ApiItem('defaultTemplateUri() - web sharer - calendar', api: () async {
-        // 커스텀 템플릿으로 웹에서 카카오톡 공유하기 - Feed
+        // 커스텀 템플릿으로 웹에서 카카오톡 공유 - Feed
 
         try {
           Uri shareUrl = await WebSharerClient.instance.makeDefaultUrl(
@@ -1266,7 +1266,7 @@ class ApiListState extends State<ApiList> {
       }),
       ApiItem('KakaoNavi API'),
       ApiItem('isKakaoNaviInstalled()', api: () async {
-        // 카카오내비 설치여부 확인
+        // 카카오내비 설치여부 조회
         bool result = await NaviApi.instance.isKakaoNaviInstalled();
         if (result) {
           Log.i(context, tag, '카카오내비 앱으로 길안내 가능');
@@ -1276,7 +1276,7 @@ class ApiListState extends State<ApiList> {
       }),
       ApiItem('shareDestination - KATEC', api: () async {
         if (await NaviApi.instance.isKakaoNaviInstalled()) {
-          // 카카오내비 앱으로 목적지 공유하기 - KATEC
+          // 카카오내비 앱으로 목적지 공유 - KATEC
           await NaviApi.instance.shareDestination(
             destination: Location(name: '카카오 판교오피스', x: '321286', y: '533707'),
           );
@@ -1288,7 +1288,7 @@ class ApiListState extends State<ApiList> {
       }),
       ApiItem('shareDestination - WGS84', api: () async {
         if (await NaviApi.instance.isKakaoNaviInstalled()) {
-          // 카카오내비 앱으로 목적지 공유하기 - WGS84
+          // 카카오내비 앱으로 목적지 공유 - WGS84
           await NaviApi.instance.shareDestination(
             destination:
                 Location(name: '카카오 판교오피스', x: '127.108640', y: '37.402111'),
@@ -1302,7 +1302,7 @@ class ApiListState extends State<ApiList> {
       }),
       ApiItem('navigate - KATEC - viaList', api: () async {
         if (await NaviApi.instance.isKakaoNaviInstalled()) {
-          // 카카오내비 앱으로 목적지 공유하기 - KATEC - 경유지 추가
+          // 카카오내비 앱으로 목적지 공유 - KATEC - 경유지 추가
           await NaviApi.instance.navigate(
             destination: Location(name: '카카오 판교오피스', x: '321286', y: '533707'),
             viaList: [
@@ -1317,7 +1317,7 @@ class ApiListState extends State<ApiList> {
       }),
       ApiItem('navigate - WGS84 - viaList', api: () async {
         if (await NaviApi.instance.isKakaoNaviInstalled()) {
-          // 카카오내비 앱으로 목적지 공유하기 - WGS84 - 경유지 추가
+          // 카카오내비 앱으로 목적지 공유 - WGS84 - 경유지 추가
           await NaviApi.instance.navigate(
             destination:
                 Location(name: '카카오 판교오피스', x: '127.108640', y: '37.402111'),
@@ -1467,7 +1467,7 @@ class ApiListState extends State<ApiList> {
       }),
       ApiItem('ETC'),
       ApiItem('Get Current Token', api: () async {
-        // 현재 토큰 저장소에서 토큰 가져오기
+        // 현재 토큰 저장소에서 토큰 조회
         Log.i(context, tag,
             '${await TokenManagerProvider.instance.manager.getToken()}');
       }),

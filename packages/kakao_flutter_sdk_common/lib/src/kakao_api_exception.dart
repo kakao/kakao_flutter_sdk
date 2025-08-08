@@ -103,7 +103,7 @@ enum ApiErrorCause {
   @JsonValue(-101)
   notRegisteredUser,
 
-  /// KO: 이미 앱과 연결되어 있는 사용자에 대해 연결하기 요청한 경우
+  /// KO: 이미 앱과 연결된 사용자를 연결 요청한 경우
   /// <br>
   /// EN: Requested manual sign-up to a linked user
   @JsonValue(-102)

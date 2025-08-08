@@ -33,7 +33,7 @@ class NaviApi {
   /// @nodoc
   NaviApi({Platform? platform}) : _platform = platform ?? const LocalPlatform();
 
-  /// KO: 카카오내비 앱 실행 가능 여부 확인
+  /// KO: 카카오내비 앱 실행 가능 여부 조회
   /// <br>
   /// EN: Check whether the Kakao Navi app is available
   Future<bool> isKakaoNaviInstalled() async {
