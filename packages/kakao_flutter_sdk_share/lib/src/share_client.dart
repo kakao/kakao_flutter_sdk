@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_share/src/constants.dart';
 import 'package:kakao_flutter_sdk_share/src/model/image_upload_result.dart';
+import 'package:kakao_flutter_sdk_share/src/model/share_type.dart';
 import 'package:kakao_flutter_sdk_share/src/model/sharing_result.dart';
 import 'package:kakao_flutter_sdk_share/src/share_api.dart';
 import 'package:kakao_flutter_sdk_template/kakao_flutter_sdk_template.dart';
@@ -57,9 +58,16 @@ class ShareClient {
   Future<Uri> shareCustom({
     required int templateId,
     Map<String, String>? templateArgs,
+    ShareType? shareType,
+    int? limit,
     Map<String, String>? serverCallbackArgs,
   }) async {
-    final response = await api.custom(templateId, templateArgs: templateArgs);
+    final response = await api.custom(
+      templateId,
+      templateArgs: templateArgs,
+      shareType: shareType,
+      limit: limit,
+    );
     return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
@@ -72,9 +80,15 @@ class ShareClient {
   /// Pass the keys and values for the Kakao Talk Sharing success callback to [serverCallbackArgs]
   Future<Uri> shareDefault({
     required DefaultTemplate template,
+    ShareType? shareType,
+    int? limit,
     Map<String, String>? serverCallbackArgs,
   }) async {
-    final response = await api.defaultTemplate(template);
+    final response = await api.defaultTemplate(
+      template,
+      shareType: shareType,
+      limit: limit,
+    );
     return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
@@ -93,10 +107,17 @@ class ShareClient {
     required String url,
     int? templateId,
     Map<String, String>? templateArgs,
+    ShareType? shareType,
+    int? limit,
     Map<String, String>? serverCallbackArgs,
   }) async {
-    final response = await api.scrap(url,
-        templateId: templateId, templateArgs: templateArgs);
+    final response = await api.scrap(
+      url,
+      templateId: templateId,
+      templateArgs: templateArgs,
+      shareType: shareType,
+      limit: limit,
+    );
     return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
   }
 
@@ -154,15 +175,20 @@ class ShareClient {
         "Exceeded message template v2 size limit (${attachmentSize / 1024}kb > 10kb).",
       );
     }
-    Map<String, String> params = {
+
+    Map<String, String?> params = {
       Constants.linkVer: Constants.linkVersion_40,
       Constants.appKey: appKey ?? KakaoSdk.appKey,
       Constants.appVer: await KakaoSdk.appVer,
       Constants.templateId: response.templateId.toString(),
       Constants.templateArgs: jsonEncode(response.templateArgs),
       Constants.templateJson: jsonEncode(response.templateMsg),
-      Constants.extras: jsonEncode(await _extras(serverCallbackArgs))
+      Constants.extras: jsonEncode(await _extras(serverCallbackArgs)),
+      Constants.list: response.schemeParams?[Constants.list],
+      Constants.limit: response.schemeParams?[Constants.limit].toString(),
     };
+
+    params.removeWhere((k, v) => v == null);
 
     String scheme;
     if (kIsWeb) {

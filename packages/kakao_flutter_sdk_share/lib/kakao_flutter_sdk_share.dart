@@ -7,6 +7,7 @@ export 'package:kakao_flutter_sdk_share/src/model/image_info.dart';
 export 'package:kakao_flutter_sdk_share/src/model/image_infos.dart';
 export 'package:kakao_flutter_sdk_share/src/model/image_upload_result.dart';
 export 'package:kakao_flutter_sdk_share/src/model/sharing_result.dart';
+export 'package:kakao_flutter_sdk_share/src/model/share_type.dart';
 export 'package:kakao_flutter_sdk_share/src/share_api.dart';
 export 'package:kakao_flutter_sdk_share/src/share_client.dart';
 export 'package:kakao_flutter_sdk_share/src/web_sharer_client.dart';

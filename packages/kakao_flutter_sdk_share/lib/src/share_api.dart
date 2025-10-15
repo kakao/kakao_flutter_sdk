@@ -9,6 +9,8 @@ import 'package:kakao_flutter_sdk_share/src/model/image_upload_result.dart';
 import 'package:kakao_flutter_sdk_share/src/model/sharing_result.dart';
 import 'package:kakao_flutter_sdk_template/kakao_flutter_sdk_template.dart';
 
+import 'model/share_type.dart';
+
 // Kakao SDK의 카카오톡 공유 내부 동작에 사용되는 클라이언트
 /// @nodoc
 class ShareApi {
@@ -20,29 +22,46 @@ class ShareApi {
   static final ShareApi instance = ShareApi(ApiFactory.appKeyApi);
 
   // 카카오디벨로퍼스에서 생성한 메시지 템플릿을 카카오톡 메시지로 공유
-  Future<SharingResult> custom(int templateId,
-      {Map<String, String>? templateArgs}) async {
+  Future<SharingResult> custom(
+    int templateId, {
+    Map<String, String>? templateArgs,
+    ShareType? shareType,
+    int? limit,
+  }) async {
     return _validate(Constants.validate, {
       Constants.templateId: templateId,
       Constants.templateArgs:
-          templateArgs == null ? null : jsonEncode(templateArgs)
+          templateArgs == null ? null : jsonEncode(templateArgs),
+      Constants.schemeParams: _createSchemeParams(shareType, limit),
     });
   }
 
   // 기본 템플릿을 카카오톡 메시지로 공유
-  Future<SharingResult> defaultTemplate(DefaultTemplate template) async {
-    return _validate(Constants.defaultTemplate,
-        {Constants.templateObject: jsonEncode(template)});
+  Future<SharingResult> defaultTemplate(
+    DefaultTemplate template, {
+    ShareType? shareType,
+    int? limit,
+  }) async {
+    return _validate(Constants.defaultTemplate, {
+      Constants.templateObject: jsonEncode(template),
+      Constants.schemeParams: _createSchemeParams(shareType, limit),
+    });
   }
 
   // 지정된 URL을 스크랩하여 만들어진 템플릿을 카카오톡 메시지로 공유
-  Future<SharingResult> scrap(String url,
-      {int? templateId, Map<String, String>? templateArgs}) async {
+  Future<SharingResult> scrap(
+    String url, {
+    int? templateId,
+    Map<String, String>? templateArgs,
+    ShareType? shareType,
+    int? limit,
+  }) async {
     var params = {
       Constants.requestUrl: url,
       Constants.templateId: templateId,
       Constants.templateArgs:
-          templateArgs == null ? null : jsonEncode(templateArgs)
+          templateArgs == null ? null : jsonEncode(templateArgs),
+      Constants.schemeParams: _createSchemeParams(shareType, limit),
     };
     params.removeWhere((k, v) => v == null);
     return _validate(Constants.scrap, params);
@@ -85,12 +104,26 @@ class ShareApi {
 
   Future<SharingResult> _validate(String postfix, Map<String, dynamic> data) {
     return ApiFactory.handleApiError(() async {
-      Response res = await dio.get("${Constants.validatePath}/$postfix",
-          queryParameters: {
-            Constants.linkVersion: Constants.linkVersion_40,
-            ...data
-          });
+      Response res =
+          await dio.get("${Constants.validatePath}/$postfix", queryParameters: {
+        Constants.linkVersion: Constants.linkVersion_40,
+        ...data,
+      });
       return SharingResult.fromJson(res.data);
     });
+  }
+
+  String? _createSchemeParams(ShareType? shareType, int? limit) {
+    if (shareType == null && limit == null) {
+      return null;
+    }
+
+    var params = <String, dynamic>{
+      if (shareType != null)
+        Constants.list:
+            shareType == ShareType.defaultType ? "default" : shareType.name,
+      if (limit != null) Constants.limit: limit,
+    };
+    return jsonEncode(params);
   }
 }
