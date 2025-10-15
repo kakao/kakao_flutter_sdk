@@ -1,0 +1,35 @@
+import 'package:flutter/material.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/dialog_item/radio_button_item.dart';
+import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/dialog_item/text_field_item.dart';
+import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/parameter_dialog.dart';
+
+class ShareApiDialog extends StatelessWidget {
+  final String title;
+
+  final Map<String, dynamic> result = {};
+
+  ShareApiDialog(this.title, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ParameterDialog(
+      title: title,
+      callback: (parameters) => result,
+      items: [
+        RadioButtonItem(
+            title: 'ShareType',
+            fontSize: 12.0,
+            onValueChanged: (value) => result['shareType'] = value,
+            items: ShareType.values),
+        TextFieldItem(
+          visible: true,
+          title: 'limit',
+          fontSize: 12.0,
+          onValueChanged: (value) => result['limit'] = int.parse(value),
+          keyboardType: TextInputType.number,
+        ),
+      ],
+    );
+  }
+}
