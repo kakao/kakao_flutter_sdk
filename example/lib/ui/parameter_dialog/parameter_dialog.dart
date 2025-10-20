@@ -52,7 +52,7 @@ class ParameterDialog extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 3,
+            flex: 2,
             child: actionButton(
               'Request',
               () => Navigator.of(context).pop(callback(result)),
