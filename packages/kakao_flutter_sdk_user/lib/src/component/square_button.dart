@@ -34,7 +34,7 @@ class SquareButton extends StatelessWidget {
         backgroundColor: backgroundColor,
         foregroundColor: Colors.black54,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
       ),
       child: SizedBox(height: 46, child: _buildIconAndText()),
     );
@@ -42,7 +42,6 @@ class SquareButton extends StatelessWidget {
 
   Widget _buildIconAndText() {
     return Row(
-      spacing: 4,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SvgPicture.asset(
@@ -52,6 +51,7 @@ class SquareButton extends StatelessWidget {
           width: 19,
           height: 19,
         ),
+        const SizedBox(width: 4),
         Text(
           title,
           textAlign: TextAlign.center,

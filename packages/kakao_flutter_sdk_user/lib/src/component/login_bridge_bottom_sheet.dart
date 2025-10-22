@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widget_previews.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,6 +8,18 @@ import 'package:kakao_flutter_sdk_user/src/model/login_ui_mode.dart';
 
 class LoginBridgeBottomSheet extends StatelessWidget {
   final LoginUiMode uiMode;
+  static final _lightModeColors = LightMode();
+  static final _darkModeColors = DarkMode();
+  static const _borderRadius = BorderRadius.only(
+    topLeft: Radius.circular(16),
+    topRight: Radius.circular(16),
+  );
+
+  // 플랫폼별 패딩 값 캐싱
+  static const double _iosPortraitPadding = 25.0;
+  static const double _iosLandscapePadding = 73.0;
+  static const double _androidPortraitPadding = 8.5;
+  static const double _androidLandscapePadding = 16.0;
 
   const LoginBridgeBottomSheet({
     required this.uiMode,
@@ -15,21 +28,21 @@ class LoginBridgeBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = _isDarkMode(context) ? DarkMode() : LightMode();
+    final mediaQuery = MediaQuery.of(context);
+    final colors = _isDarkMode(mediaQuery) ? _darkModeColors : _lightModeColors;
+    final horizontalPadding = _getBottomSheetHorizontalPadding(mediaQuery);
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8.5),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       decoration: BoxDecoration(
         color: colors.white001s,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
-        ),
+        borderRadius: _borderRadius,
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _buildDragHandler(),
+          _buildDragHandler(colors),
           _buildTitleText(colors),
           _buildButtons(colors),
           _buildKakaoLogo(colors),
@@ -47,43 +60,44 @@ class LoginBridgeBottomSheet extends StatelessWidget {
         colorFilter: ColorFilter.mode(colors.gray900s, BlendMode.srcIn),
         width: 44,
         height: 14,
-        clipBehavior: Clip.antiAlias,
       ),
     );
   }
 
-  Column _buildButtons(KakaoColorScheme colors) {
-    return Column(
-      children: [
-        const SizedBox(height: 10),
-        SquareButton(
-          iconAsset: 'assets/images/icon_account_login.svg',
-          title: '카카오톡으로 로그인',
-          backgroundColor: colors.yellow500s,
-          onPressed: () {},
-        ),
-        const SizedBox(height: 12),
-        SquareButton(
-          iconAsset: 'assets/images/icon_talk_login.svg',
-          title: '카카오계정 직접 입력',
-          backgroundColor: colors.gray070a,
-          iconColor: colors.gray900s,
-          textColor: colors.gray900s,
-          onPressed: () {},
-        ),
-      ],
+  Widget _buildButtons(KakaoColorScheme colors) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: Column(
+        children: [
+          SquareButton(
+            iconAsset: 'assets/images/icon_account_login.svg',
+            title: '카카오톡으로 로그인',
+            backgroundColor: colors.yellow500s,
+            onPressed: () {},
+          ),
+          const SizedBox(height: 12),
+          SquareButton(
+            iconAsset: 'assets/images/icon_talk_login.svg',
+            title: '카카오계정 직접 입력',
+            backgroundColor: colors.gray070a,
+            iconColor: colors.gray900s,
+            textColor: colors.gray900s,
+            onPressed: () {},
+          ),
+        ],
+      ),
     );
   }
 
-  Padding _buildDragHandler() {
+  Widget _buildDragHandler(KakaoColorScheme colors) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Container(
         width: 36,
         height: 4,
         decoration: ShapeDecoration(
-          color: const Color(0xFF949494),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+          color: colors.gray500s,
+          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(2))),
         ),
       ),
     );
@@ -104,10 +118,21 @@ class LoginBridgeBottomSheet extends StatelessWidget {
     );
   }
 
-  bool _isDarkMode(BuildContext context) {
+  bool _isDarkMode(MediaQueryData mediaQuery) {
     return uiMode == LoginUiMode.dark ||
-        uiMode == LoginUiMode.auto &&
-            MediaQuery.of(context).platformBrightness == Brightness.dark;
+        (uiMode == LoginUiMode.auto &&
+            mediaQuery.platformBrightness == Brightness.dark);
+  }
+
+  double _getBottomSheetHorizontalPadding(MediaQueryData mediaQuery) {
+    final isPortrait = mediaQuery.orientation == Orientation.portrait;
+    final isIOS = defaultTargetPlatform == TargetPlatform.iOS;
+
+    if (isIOS) {
+      return isPortrait ? _iosPortraitPadding : _iosLandscapePadding;
+    } else {
+      return isPortrait ? _androidPortraitPadding : _androidLandscapePadding;
+    }
   }
 }
 
