@@ -3,9 +3,12 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
+import 'package:kakao_flutter_sdk_user/src/component/login_bridge_bottom_sheet.dart';
 import 'package:kakao_flutter_sdk_user/src/constants.dart';
+import 'package:kakao_flutter_sdk_user/src/model/login_ui_mode.dart';
 import 'package:kakao_flutter_sdk_user/src/model/user_response.dart';
 import 'package:kakao_flutter_sdk_user/src/model/user_revoked_service_terms.dart';
 import 'package:kakao_flutter_sdk_user/src/model/user_service_terms.dart';
@@ -113,6 +116,15 @@ class UserApi {
     );
     await TokenManagerProvider.instance.manager.setToken(token);
     return token;
+  }
+
+  Future loginWithKakao(BuildContext context, {LoginUiMode uiMode = LoginUiMode.auto}) {
+    return showModalBottomSheet(
+        context: context,
+        constraints:
+            const BoxConstraints.expand(width: double.infinity, height: 246),
+        isScrollControlled: true,
+        builder: (_) => LoginBridgeBottomSheet(uiMode: uiMode));
   }
 
   /// KO: 동의항목 추가 동의 요청<br>

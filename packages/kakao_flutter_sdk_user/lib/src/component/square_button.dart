@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widget_previews.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kakao_flutter_sdk_user/src/component/kakao_colors.dart';
 
 @immutable
 class SquareButton extends StatelessWidget {
   final String iconAsset;
   final String title;
   final Color backgroundColor;
+  final Color iconColor;
+  final Color textColor;
   final VoidCallback onPressed;
 
-  const SquareButton({
+  SquareButton({
     required this.iconAsset,
     required this.title,
     required this.backgroundColor,
+    iconColor,
+    textColor,
     required this.onPressed,
     super.key,
-  });
+  })  : iconColor = iconColor ?? KakaoColorScheme.lightGray900s,
+        textColor = textColor ?? KakaoColorScheme.lightGray900s;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +47,7 @@ class SquareButton extends StatelessWidget {
       children: [
         SvgPicture.asset(
           iconAsset,
+          colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
           package: 'kakao_flutter_sdk_user',
           width: 19,
           height: 19,
@@ -48,8 +55,11 @@ class SquareButton extends StatelessWidget {
         Text(
           title,
           textAlign: TextAlign.center,
-          style: const TextStyle(
-              fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black),
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+            color: textColor,
+          ),
         )
       ],
     );
@@ -59,9 +69,10 @@ class SquareButton extends StatelessWidget {
 @Preview(name: 'SquareButtonPreview', size: Size(360, 640))
 Widget previewSquareButton() {
   return SquareButton(
-    iconAsset: 'assets/images/icon_talk_login_light.svg',
+    iconAsset: 'assets/images/icon_account_login.svg',
     title: '카카오톡으로 로그인',
-    backgroundColor: Color(0xFFFFE812),
+    backgroundColor: const Color(0xFFFFE812),
+    textColor: Colors.black54,
     onPressed: () {},
   );
 }
