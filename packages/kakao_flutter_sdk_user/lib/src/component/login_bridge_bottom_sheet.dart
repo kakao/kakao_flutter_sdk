@@ -10,6 +10,8 @@ import 'package:kakao_flutter_sdk_user/src/model/login_ui_mode.dart';
 class LoginBridgeBottomSheet extends StatelessWidget {
   final LoginUiMode uiMode;
   final LocalizationOptions? _localization;
+  final VoidCallback onTalkLoginPressed;
+  final VoidCallback onAccountLoginPressed;
 
   static const _lightModeColors = LightMode();
   static const _darkModeColors = DarkMode();
@@ -28,9 +30,12 @@ class LoginBridgeBottomSheet extends StatelessWidget {
   LoginBridgeBottomSheet({
     required this.uiMode,
     LocalizationOptions? localization,
+    required this.onTalkLoginPressed,
+    required this.onAccountLoginPressed,
     super.key,
   }) : _localization = localization {
-    _localString = _localization ?? LocalizationOptions.getLocalizationOptions();
+    _localString =
+        _localization ?? LocalizationOptions.getLocalizationOptions();
   }
 
   @override
@@ -51,7 +56,7 @@ class LoginBridgeBottomSheet extends StatelessWidget {
         children: [
           _buildDragHandler(colors),
           _buildTitleText(colors),
-          _buildButtons(colors),
+          _buildButtons(colors, onTalkLoginPressed, onAccountLoginPressed),
           _buildKakaoLogo(colors),
         ],
       ),
@@ -71,7 +76,11 @@ class LoginBridgeBottomSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildButtons(KakaoColorScheme colors) {
+  Widget _buildButtons(
+    KakaoColorScheme colors,
+    VoidCallback onKakaoTalkLoginPressed,
+    VoidCallback onKakaoAccountLoginPressed,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Column(
@@ -80,7 +89,7 @@ class LoginBridgeBottomSheet extends StatelessWidget {
             iconAsset: 'assets/images/icon_account_login.svg',
             title: _localString.loginWithKakaoTalk,
             backgroundColor: colors.yellow500s,
-            onPressed: () {},
+            onPressed: onKakaoTalkLoginPressed,
           ),
           const SizedBox(height: 12),
           SquareButton(
@@ -89,7 +98,7 @@ class LoginBridgeBottomSheet extends StatelessWidget {
             backgroundColor: colors.gray070a,
             iconColor: colors.gray900s,
             textColor: colors.gray900s,
-            onPressed: () {},
+            onPressed: onKakaoAccountLoginPressed,
           ),
         ],
       ),
@@ -146,5 +155,9 @@ class LoginBridgeBottomSheet extends StatelessWidget {
 
 @Preview(name: 'LoginBridgeBottomSheet', size: Size(360, 640))
 Widget previewLoginBridgeBottomSheet() {
-  return LoginBridgeBottomSheet(uiMode: LoginUiMode.light);
+  return LoginBridgeBottomSheet(
+    uiMode: LoginUiMode.light,
+    onTalkLoginPressed: () {},
+    onAccountLoginPressed: () {},
+  );
 }

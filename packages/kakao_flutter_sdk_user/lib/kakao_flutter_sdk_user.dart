@@ -18,4 +18,5 @@ export 'package:kakao_flutter_sdk_user/src/model/user_revoked_service_terms.dart
 export 'package:kakao_flutter_sdk_user/src/model/user_service_terms.dart';
 export 'package:kakao_flutter_sdk_user/src/model/user_shipping_addresses.dart';
 export 'package:kakao_flutter_sdk_user/src/model/login_ui_mode.dart';
+export 'package:kakao_flutter_sdk_user/src/model/account_login_params.dart';
 export 'package:kakao_flutter_sdk_user/src/user_api.dart';

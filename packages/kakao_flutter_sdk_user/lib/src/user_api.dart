@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:kakao_flutter_sdk_user/src/component/login_bridge_bottom_sheet.dart';
 import 'package:kakao_flutter_sdk_user/src/constants.dart';
+import 'package:kakao_flutter_sdk_user/src/model/account_login_params.dart';
 import 'package:kakao_flutter_sdk_user/src/model/login_ui_mode.dart';
 import 'package:kakao_flutter_sdk_user/src/model/user_response.dart';
 import 'package:kakao_flutter_sdk_user/src/model/user_revoked_service_terms.dart';
@@ -118,13 +119,43 @@ class UserApi {
     return token;
   }
 
-  Future loginWithKakao(BuildContext context, {LoginUiMode uiMode = LoginUiMode.auto}) {
-    return showModalBottomSheet(
-        context: context,
-        constraints:
-            const BoxConstraints.expand(width: double.infinity, height: 246),
-        isScrollControlled: true,
-        builder: (_) => LoginBridgeBottomSheet(uiMode: uiMode));
+  Future<OAuthToken> loginWithKakao(
+    BuildContext context, {
+    LoginUiMode uiMode = LoginUiMode.auto,
+    AccountLoginParams? accountParams,
+    List<String>? channelPublicIds,
+    List<String>? serviceTerms,
+    String? nonce,
+  }) async {
+    final loginMethod = await showModalBottomSheet(
+      context: context,
+      constraints:
+          const BoxConstraints.expand(width: double.infinity, height: 246),
+      isScrollControlled: true,
+      builder: (_) => LoginBridgeBottomSheet(
+        uiMode: uiMode,
+        onTalkLoginPressed: () async => Navigator.of(context).pop('talk'),
+        onAccountLoginPressed: () async => Navigator.of(context).pop('account'),
+      ),
+    );
+
+    if (loginMethod == 'talk') {
+      return await loginWithKakaoTalk(
+        channelPublicIds: channelPublicIds,
+        serviceTerms: serviceTerms,
+        nonce: nonce,
+      );
+    } else if (loginMethod == 'account') {
+      return await loginWithKakaoAccount(
+        prompts: accountParams?.prompts,
+        channelPublicIds: channelPublicIds,
+        serviceTerms: serviceTerms,
+        loginHint: accountParams?.loginHint,
+        nonce: nonce,
+      );
+    }
+
+    throw KakaoClientException(ClientErrorCause.cancelled, 'User Cancelled');
   }
 
   /// KO: 동의항목 추가 동의 요청<br>
