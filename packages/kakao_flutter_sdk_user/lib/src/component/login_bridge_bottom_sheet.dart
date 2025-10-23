@@ -3,28 +3,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widget_previews.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kakao_flutter_sdk_user/src/component/kakao_colors.dart';
+import 'package:kakao_flutter_sdk_user/src/component/localization_options.dart';
 import 'package:kakao_flutter_sdk_user/src/component/square_button.dart';
 import 'package:kakao_flutter_sdk_user/src/model/login_ui_mode.dart';
 
 class LoginBridgeBottomSheet extends StatelessWidget {
   final LoginUiMode uiMode;
-  static final _lightModeColors = LightMode();
-  static final _darkModeColors = DarkMode();
+  final LocalizationOptions? _localization;
+
+  static const _lightModeColors = LightMode();
+  static const _darkModeColors = DarkMode();
   static const _borderRadius = BorderRadius.only(
     topLeft: Radius.circular(16),
     topRight: Radius.circular(16),
   );
 
-  // 플랫폼별 패딩 값 캐싱
   static const double _iosPortraitPadding = 25.0;
   static const double _iosLandscapePadding = 73.0;
   static const double _androidPortraitPadding = 8.5;
   static const double _androidLandscapePadding = 16.0;
 
-  const LoginBridgeBottomSheet({
+  late final LocalizationOptions _localString;
+
+  LoginBridgeBottomSheet({
     required this.uiMode,
+    LocalizationOptions? localization,
     super.key,
-  });
+  }) : _localization = localization {
+    _localString = _localization ?? LocalizationOptions.getLocalizationOptions();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,14 +78,14 @@ class LoginBridgeBottomSheet extends StatelessWidget {
         children: [
           SquareButton(
             iconAsset: 'assets/images/icon_account_login.svg',
-            title: '카카오톡으로 로그인',
+            title: _localString.loginWithKakaoTalk,
             backgroundColor: colors.yellow500s,
             onPressed: () {},
           ),
           const SizedBox(height: 12),
           SquareButton(
             iconAsset: 'assets/images/icon_talk_login.svg',
-            title: '카카오계정 직접 입력',
+            title: _localString.loginWithKakaoAccount,
             backgroundColor: colors.gray070a,
             iconColor: colors.gray900s,
             textColor: colors.gray900s,
@@ -97,7 +104,8 @@ class LoginBridgeBottomSheet extends StatelessWidget {
         height: 4,
         decoration: ShapeDecoration(
           color: colors.gray500s,
-          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(2))),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(2))),
         ),
       ),
     );
@@ -107,7 +115,7 @@ class LoginBridgeBottomSheet extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 14),
       child: Text(
-        "로그인 방법을 선택해 주세요",
+        _localString.selectLoginMethod,
         style: TextStyle(
           fontSize: 16,
           height: 0.9,
@@ -138,5 +146,5 @@ class LoginBridgeBottomSheet extends StatelessWidget {
 
 @Preview(name: 'LoginBridgeBottomSheet', size: Size(360, 640))
 Widget previewLoginBridgeBottomSheet() {
-  return const LoginBridgeBottomSheet(uiMode: LoginUiMode.light);
+  return LoginBridgeBottomSheet(uiMode: LoginUiMode.light);
 }

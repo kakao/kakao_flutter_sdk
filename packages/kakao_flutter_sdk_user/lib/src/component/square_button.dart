@@ -12,7 +12,7 @@ class SquareButton extends StatelessWidget {
   final Color textColor;
   final VoidCallback onPressed;
 
-  SquareButton({
+  const SquareButton({
     required this.iconAsset,
     required this.title,
     required this.backgroundColor,
