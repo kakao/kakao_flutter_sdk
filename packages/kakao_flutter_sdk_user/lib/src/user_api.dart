@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -127,10 +128,21 @@ class UserApi {
     List<String>? serviceTerms,
     String? nonce,
   }) async {
+    if (kIsWeb) {
+      throw KakaoClientException(
+        ClientErrorCause.notSupported,
+        'loginWithKakao() is not supported on web platform.',
+      );
+    }
+
     final loginMethod = await showModalBottomSheet(
       context: context,
-      constraints:
-          const BoxConstraints.expand(width: double.infinity, height: 246),
+      constraints: BoxConstraints.fromViewConstraints(
+        const ViewConstraints(
+          maxWidth: double.infinity,
+          minHeight: 246,
+        ),
+      ),
       isScrollControlled: true,
       builder: (_) => LoginBridgeBottomSheet(
         uiMode: uiMode,

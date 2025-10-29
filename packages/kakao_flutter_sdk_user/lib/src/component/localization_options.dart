@@ -11,9 +11,9 @@ class LocalizationOptions {
   static String? _prevLocale;
   static const LocalizationOptions _englishOptions = LocalizationOptions(
     'en',
-    selectLoginMethod: 'Select Login Method',
-    loginWithKakaoTalk: 'Login With KakaoTalk',
-    loginWithKakaoAccount: 'Login With KakaoAccount',
+    selectLoginMethod: 'Select a method to log in',
+    loginWithKakaoTalk: 'Log in with Kakao Talk',
+    loginWithKakaoAccount: 'Enter your Kakao Account',
   );
 
   static const LocalizationOptions _koreanOptions = LocalizationOptions(
@@ -25,9 +25,9 @@ class LocalizationOptions {
 
   static const LocalizationOptions _japaneseOptions = LocalizationOptions(
     'ja',
-    selectLoginMethod: 'ログイン方法を選択してください',
-    loginWithKakaoTalk: 'KakaoTalkでログイン',
-    loginWithKakaoAccount: 'Kakaoアカウントでログイン',
+    selectLoginMethod: 'ログイン方法を選択してください。',
+    loginWithKakaoTalk: 'カカオトークでログイン',
+    loginWithKakaoAccount: 'カカオアカウントを直接入力',
   );
 
   static const Map<String, LocalizationOptions> _languageMap = {

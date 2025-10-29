@@ -30,13 +30,18 @@ class SquareButton extends StatelessWidget {
       style: OutlinedButton.styleFrom(
         minimumSize: Size.zero,
         padding: EdgeInsets.zero,
+        // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 13.5),
         side: BorderSide.none,
         backgroundColor: backgroundColor,
         foregroundColor: Colors.black54,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8))),
       ),
-      child: SizedBox(height: 46, child: _buildIconAndText()),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 13.5, horizontal: 20),
+        child: _buildIconAndText(),
+      ),
     );
   }
 
@@ -52,13 +57,16 @@ class SquareButton extends StatelessWidget {
           height: 19,
         ),
         const SizedBox(width: 4),
-        Text(
-          title,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-            color: textColor,
+        Flexible(
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 15,
+              height: 1.0,
+              fontWeight: FontWeight.w500,
+              color: textColor,
+            ),
           ),
         )
       ],

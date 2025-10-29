@@ -120,7 +120,8 @@ class LoginBridgeBottomSheet extends StatelessWidget {
     );
   }
 
-  Padding _buildTitleText(KakaoColorScheme colors) {
+  // Padding _buildTitleText(KakaoColorScheme colors) {
+  Widget _buildTitleText(KakaoColorScheme colors) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 14),
       child: Text(
@@ -131,6 +132,7 @@ class LoginBridgeBottomSheet extends StatelessWidget {
           fontWeight: FontWeight.w600,
           color: colors.gray900s,
         ),
+        textAlign: TextAlign.center,
       ),
     );
   }
