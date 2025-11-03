@@ -10,6 +10,7 @@ class SquareButton extends StatelessWidget {
   final Color backgroundColor;
   final Color iconColor;
   final Color textColor;
+  final Color rippleColor;
   final VoidCallback onPressed;
 
   const SquareButton({
@@ -18,10 +19,12 @@ class SquareButton extends StatelessWidget {
     required this.backgroundColor,
     iconColor,
     textColor,
+    rippleColor,
     required this.onPressed,
     super.key,
   })  : iconColor = iconColor ?? KakaoColorScheme.lightGray900s,
-        textColor = textColor ?? KakaoColorScheme.lightGray900s;
+        textColor = textColor ?? KakaoColorScheme.lightGray900s,
+        rippleColor = rippleColor ?? KakaoColorScheme.lightGray900s;
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +33,9 @@ class SquareButton extends StatelessWidget {
       style: OutlinedButton.styleFrom(
         minimumSize: Size.zero,
         padding: EdgeInsets.zero,
-        // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 13.5),
         side: BorderSide.none,
         backgroundColor: backgroundColor,
-        foregroundColor: Colors.black54,
+        overlayColor: rippleColor,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(8))),

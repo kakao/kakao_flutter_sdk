@@ -4,6 +4,7 @@ import 'package:flutter/widget_previews.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kakao_flutter_sdk_user/src/component/kakao_colors.dart';
 import 'package:kakao_flutter_sdk_user/src/component/localization_options.dart';
+import 'package:kakao_flutter_sdk_user/src/component/login_bridge_paddings.dart';
 import 'package:kakao_flutter_sdk_user/src/component/square_button.dart';
 import 'package:kakao_flutter_sdk_user/src/model/login_ui_mode.dart';
 
@@ -20,10 +21,7 @@ class LoginBridgeBottomSheet extends StatelessWidget {
     topRight: Radius.circular(16),
   );
 
-  static const double _iosPortraitPadding = 25.0;
-  static const double _iosLandscapePadding = 73.0;
-  static const double _androidPortraitPadding = 8.5;
-  static const double _androidLandscapePadding = 16.0;
+  late final LoginBridgePaddings paddings;
 
   late final LocalizationOptions _localString;
 
@@ -42,6 +40,8 @@ class LoginBridgeBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final colors = _isDarkMode(mediaQuery) ? _darkModeColors : _lightModeColors;
+    final isIOS = defaultTargetPlatform == TargetPlatform.iOS;
+    paddings = isIOS ? IosPaddings() : AndroidPaddings();
     final horizontalPadding = _getBottomSheetHorizontalPadding(mediaQuery);
 
     return Container(
@@ -57,15 +57,22 @@ class LoginBridgeBottomSheet extends StatelessWidget {
           _buildDragHandler(colors),
           _buildTitleText(colors),
           _buildButtons(colors, onTalkLoginPressed, onAccountLoginPressed),
-          _buildKakaoLogo(colors),
+          _buildKakaoLogo(mediaQuery, colors),
         ],
       ),
     );
   }
 
-  Padding _buildKakaoLogo(KakaoColorScheme colors) {
+  Padding _buildKakaoLogo(MediaQueryData mediaQuery, KakaoColorScheme colors) {
+    final isPortrait = mediaQuery.orientation == Orientation.portrait;
+
     return Padding(
-      padding: const EdgeInsets.only(top: 24, bottom: 30),
+      padding: EdgeInsets.only(
+        top: 24,
+        bottom: isPortrait
+            ? paddings.logoPortraitBottomPadding
+            : paddings.logoLandscapeBottomPadding,
+      ),
       child: SvgPicture.asset(
         'assets/images/logo_light.svg',
         package: 'kakao_flutter_sdk_user',
@@ -86,18 +93,19 @@ class LoginBridgeBottomSheet extends StatelessWidget {
       child: Column(
         children: [
           SquareButton(
-            iconAsset: 'assets/images/icon_account_login.svg',
+            iconAsset: 'assets/images/icon_talk_login.svg',
             title: _localString.loginWithKakaoTalk,
             backgroundColor: colors.yellow500s,
             onPressed: onKakaoTalkLoginPressed,
           ),
           const SizedBox(height: 12),
           SquareButton(
-            iconAsset: 'assets/images/icon_talk_login.svg',
+            iconAsset: 'assets/images/icon_account_login.svg',
             title: _localString.loginWithKakaoAccount,
             backgroundColor: colors.gray070a,
             iconColor: colors.gray900s,
             textColor: colors.gray900s,
+            rippleColor: colors.gray900s,
             onPressed: onKakaoAccountLoginPressed,
           ),
         ],
@@ -120,10 +128,10 @@ class LoginBridgeBottomSheet extends StatelessWidget {
     );
   }
 
-  // Padding _buildTitleText(KakaoColorScheme colors) {
-  Widget _buildTitleText(KakaoColorScheme colors) {
+  Padding _buildTitleText(KakaoColorScheme colors) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 14),
+      padding: EdgeInsets.fromLTRB(
+          0, paddings.titleTopPadding, 0, paddings.titleBottomPadding),
       child: Text(
         _localString.selectLoginMethod,
         style: TextStyle(
@@ -145,13 +153,7 @@ class LoginBridgeBottomSheet extends StatelessWidget {
 
   double _getBottomSheetHorizontalPadding(MediaQueryData mediaQuery) {
     final isPortrait = mediaQuery.orientation == Orientation.portrait;
-    final isIOS = defaultTargetPlatform == TargetPlatform.iOS;
-
-    if (isIOS) {
-      return isPortrait ? _iosPortraitPadding : _iosLandscapePadding;
-    } else {
-      return isPortrait ? _androidPortraitPadding : _androidLandscapePadding;
-    }
+    return isPortrait ? paddings.portraitPadding : paddings.landscapePadding;
   }
 }
 
