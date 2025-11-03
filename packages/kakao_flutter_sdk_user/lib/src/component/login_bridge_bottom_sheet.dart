@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widget_previews.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:kakao_flutter_sdk_user/src/component/kakao_colors.dart';
 import 'package:kakao_flutter_sdk_user/src/component/localization_options.dart';
 import 'package:kakao_flutter_sdk_user/src/component/login_bridge_paddings.dart';
@@ -94,14 +95,14 @@ class LoginBridgeBottomSheet extends StatelessWidget {
         children: [
           SquareButton(
             iconAsset: 'assets/images/icon_talk_login.svg',
-            title: _localString.loginWithKakaoTalk,
+            title: _localString.loginWithKakaoTalk.keepWord(),
             backgroundColor: colors.yellow500s,
             onPressed: onKakaoTalkLoginPressed,
           ),
           const SizedBox(height: 12),
           SquareButton(
             iconAsset: 'assets/images/icon_account_login.svg',
-            title: _localString.loginWithKakaoAccount,
+            title: _localString.loginWithKakaoAccount.keepWord(),
             backgroundColor: colors.gray070a,
             iconColor: colors.gray900s,
             textColor: colors.gray900s,
@@ -133,7 +134,7 @@ class LoginBridgeBottomSheet extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(
           0, paddings.titleTopPadding, 0, paddings.titleBottomPadding),
       child: Text(
-        _localString.selectLoginMethod,
+        _localString.selectLoginMethod.keepWord(),
         style: TextStyle(
           fontSize: 16,
           height: 0.9,
