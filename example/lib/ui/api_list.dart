@@ -68,37 +68,6 @@ class ApiListState extends State<ApiList> {
 
   _initApiList(Map<String, dynamic> customData) {
     apiList.addAll([
-      ApiItem('loginWithKakao()', api: () async {
-        try {
-          OAuthToken token = await UserApi.instance.loginWithKakao(context);
-          Log.i(context, tag, '로그인 성공 ${token.accessToken}');
-        } catch (e) {
-          Log.e(context, tag, '로그인 실패', e);
-        }
-      }),
-      ApiItem('loginWithKakao() - light', api: () async {
-        try {
-          OAuthToken token = await UserApi.instance.loginWithKakao(
-            context,
-            uiMode: LoginUiMode.light,
-          );
-          Log.i(context, tag, '로그인 성공 ${token.accessToken}');
-        } catch (e) {
-          Log.e(context, tag, '로그인 실패', e);
-        }
-      }),
-      ApiItem('loginWithKakao() - dark', api: () async {
-        try {
-          OAuthToken token = await UserApi.instance.loginWithKakao(
-            context,
-            uiMode: LoginUiMode.dark,
-            accountParams: AccountLoginParams(prompts: [Prompt.login], loginHint: "tony.mb@kakaocorp.com"),
-          );
-          Log.i(context, tag, '로그인 성공 ${token.accessToken}');
-        } catch (e) {
-          Log.e(context, tag, '로그인 실패', e);
-        }
-      }),
       ApiItem('User API'),
       ApiItem('isKakaoTalkInstalled()', api: () async {
         // 카카오톡 설치여부 조회
@@ -147,6 +116,14 @@ class ApiListState extends State<ApiList> {
             serviceTerms: parameters.serviceTerms,
             nonce: parameters.nonce,
           );
+          Log.i(context, tag, '로그인 성공 ${token.accessToken}');
+        } catch (e) {
+          Log.e(context, tag, '로그인 실패', e);
+        }
+      }),
+      ApiItem('loginWithKakao()', api: () async {
+        try {
+          OAuthToken token = await UserApi.instance.loginWithKakao(context);
           Log.i(context, tag, '로그인 성공 ${token.accessToken}');
         } catch (e) {
           Log.e(context, tag, '로그인 실패', e);
