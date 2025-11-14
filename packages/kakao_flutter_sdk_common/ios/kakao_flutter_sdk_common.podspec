@@ -18,10 +18,10 @@ A new flutter plugin project.
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'tony.mb' => 'tony.mb@kakaocorp.com' }
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*'
+  s.source_files = 'kakao_flutter_sdk_common/Sources/kakao_flutter_sdk_common/**/*.swift'
   s.dependency 'Flutter'
 
   s.ios.deployment_target = '13.0'
   s.swift_version = '5.0'
-  s.resource_bundles = {'kakao_flutter_sdk_common_privacy' => ['Resources/PrivacyInfo.xcprivacy']}
+  s.resource_bundles = {'kakao_flutter_sdk_common_privacy' => ['kakao_flutter_sdk_common/Sources/kakao_flutter_sdk_common/PrivacyInfo.xcprivacy']}
 end
