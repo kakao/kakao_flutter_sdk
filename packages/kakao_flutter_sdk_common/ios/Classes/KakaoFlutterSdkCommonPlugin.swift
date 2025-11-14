@@ -4,7 +4,7 @@ import AuthenticationServices
 import SafariServices
 import CommonCrypto
 
-public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamHandler, ASWebAuthenticationPresentationContextProviding {
+public class KakaoFlutterSdkCommonPlugin: NSObject, FlutterPlugin, FlutterStreamHandler, ASWebAuthenticationPresentationContextProviding {
     var result: FlutterResult? = nil
     var redirectUri: String? = nil
     var authorizeTalkCompletionHandler : ((URL?, FlutterError?) -> Void)?
@@ -15,7 +15,7 @@ public class SwiftKakaoFlutterSdkPlugin: NSObject, FlutterPlugin, FlutterStreamH
     public static func register(with registrar: FlutterPluginRegistrar) {
         let methodChannel = FlutterMethodChannel(name: Constants.methodChannel, binaryMessenger: registrar.messenger())
         let eventChannel = FlutterEventChannel(name: Constants.eventChannel, binaryMessenger: registrar.messenger())
-        let instance = SwiftKakaoFlutterSdkPlugin()
+        let instance = KakaoFlutterSdkCommonPlugin()
         registrar.addMethodCallDelegate(instance, channel: methodChannel)
         eventChannel.setStreamHandler(instance)
         registrar.addApplicationDelegate(instance) // This is necessary to receive open url delegate method.

@@ -50,7 +50,7 @@ flutter:
         package: com.kakao.sdk.flutter
         pluginClass: KakaoFlutterSdkPlugin
       ios:
-        pluginClass: KakaoFlutterSdkPlugin
+        pluginClass: KakaoFlutterSdkCommonPlugin
       web:
         pluginClass: KakaoFlutterSdkPlugin
         fileName: src/web/kakao_flutter_sdk_plugin.dart
