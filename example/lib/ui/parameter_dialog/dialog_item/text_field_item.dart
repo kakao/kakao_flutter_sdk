@@ -9,6 +9,7 @@ class TextFieldItem extends StatefulWidget {
   final ValueChanged<String>? onValueChanged;
   final bool visible;
   final bool editable;
+  final TextInputType? keyboardType;
 
   const TextFieldItem({
     required this.title,
@@ -19,6 +20,7 @@ class TextFieldItem extends StatefulWidget {
     this.text,
     this.editable = true,
     this.visible = false,
+    this.keyboardType,
     super.key,
   });
 
@@ -70,6 +72,7 @@ class _TextFieldItemState extends State<TextFieldItem> {
             child: TextField(
               controller: _controller,
               enabled: widget.editable,
+              keyboardType: widget.keyboardType,
               decoration: InputDecoration(
                 hintText: widget.hintText,
                 isDense: true,

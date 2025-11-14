@@ -1,0 +1,88 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widget_previews.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kakao_flutter_sdk_user/src/component/kakao_colors.dart';
+
+@immutable
+class SquareButton extends StatelessWidget {
+  final String iconAsset;
+  final String title;
+  final Color backgroundColor;
+  final Color iconColor;
+  final Color textColor;
+  final Color rippleColor;
+  final VoidCallback onPressed;
+
+  const SquareButton({
+    required this.iconAsset,
+    required this.title,
+    required this.backgroundColor,
+    iconColor,
+    textColor,
+    rippleColor,
+    required this.onPressed,
+    super.key,
+  })  : iconColor = iconColor ?? KakaoColorScheme.lightGray900s,
+        textColor = textColor ?? KakaoColorScheme.lightGray900s,
+        rippleColor = rippleColor ?? KakaoColorScheme.lightGray900s;
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+      onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+        minimumSize: Size.zero,
+        padding: EdgeInsets.zero,
+        side: BorderSide.none,
+        backgroundColor: backgroundColor,
+        overlayColor: rippleColor,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8))),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 13.5, horizontal: 20),
+        child: _buildIconAndText(),
+      ),
+    );
+  }
+
+  Widget _buildIconAndText() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SvgPicture.asset(
+          iconAsset,
+          colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
+          package: 'kakao_flutter_sdk_user',
+          width: 19,
+          height: 19,
+        ),
+        const SizedBox(width: 4),
+        Flexible(
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 15,
+              height: 1.0,
+              fontWeight: FontWeight.w500,
+              color: textColor,
+            ),
+          ),
+        )
+      ],
+    );
+  }
+}
+
+@Preview(name: 'SquareButtonPreview', size: Size(360, 640))
+Widget previewSquareButton() {
+  return SquareButton(
+    iconAsset: 'assets/images/icon_account_login.svg',
+    title: '카카오톡으로 로그인',
+    backgroundColor: const Color(0xFFFFE812),
+    textColor: Colors.black54,
+    onPressed: () {},
+  );
+}

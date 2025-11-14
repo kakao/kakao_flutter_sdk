@@ -9,6 +9,9 @@ class Constants {
   static const String validate = 'validate';
   static const String templateId = 'template_id';
   static const String templateArgs = 'template_args';
+  static const String schemeParams = 'scheme_params';
+  static const String list = 'list';
+  static const String limit = 'limit';
   static const String templateObject = 'template_object';
   static const String requestUrl = 'request_url';
   static const String scrap = 'scrap';

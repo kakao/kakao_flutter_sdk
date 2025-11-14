@@ -14,6 +14,7 @@ import 'package:kakao_flutter_sdk_example/model/picker_item.dart';
 import 'package:kakao_flutter_sdk_example/ui/friend_page.dart';
 import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/login/login_dialog.dart';
 import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/login/login_parameter.dart';
+import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/share/share_api_dialog.dart';
 import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/talk/talk_api_dialog.dart';
 import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/talk/talk_api_parameter.dart';
 import 'package:kakao_flutter_sdk_example/ui/parameter_dialog/user/user_api_dialog.dart';
@@ -115,6 +116,14 @@ class ApiListState extends State<ApiList> {
             serviceTerms: parameters.serviceTerms,
             nonce: parameters.nonce,
           );
+          Log.i(context, tag, '로그인 성공 ${token.accessToken}');
+        } catch (e) {
+          Log.e(context, tag, '로그인 실패', e);
+        }
+      }),
+      ApiItem('loginWithKakao()', api: () async {
+        try {
+          OAuthToken token = await UserApi.instance.loginWithKakao(context);
           Log.i(context, tag, '로그인 성공 ${token.accessToken}');
         } catch (e) {
           Log.e(context, tag, '로그인 실패', e);
@@ -1037,6 +1046,81 @@ class ApiListState extends State<ApiList> {
           Log.i(context, tag, '카카오톡 공유 가능');
         } else {
           Log.i(context, tag, '카카오톡 미설치: 웹 공유 사용 권장');
+        }
+      }),
+      ApiItem('+customTemplate()', api: () async {
+        // 커스텀 템플릿으로 카카오톡 공유 메시지 발송
+        //  * 만들기 가이드: https://developers.kakao.com/docs/latest/ko/message/message-template
+        int templateId = customData['customMemo']!;
+
+        Map<String, dynamic> parameters = await showDialog(
+            context: context,
+            builder: (context) => ShareApiDialog('customTemplate'));
+
+        try {
+          final shareType = parameters['shareType'] as ShareType?;
+          final limit = parameters['limit'] as int?;
+
+          Uri uri = await ShareClient.instance.shareCustom(
+              templateId: templateId, shareType: shareType, limit: limit);
+          await ShareClient.instance.launchKakaoTalk(uri);
+          Log.d(context, tag, '카카오톡 공유 성공');
+        } catch (e) {
+          Log.e(context, tag, '카카오톡 공유 실패', e);
+        }
+      }),
+      ApiItem('+scrapTemplate()', api: () async {
+        // 스크랩 템플릿으로 카카오톡 공유 메시지 발송
+
+        // 공유할 웹페이지 URL
+        // * 주의: 개발자사이트 Web 플랫폼 설정에 공유할 URL의 도메인이 등록되어 있어야 합니다.
+        String url = "https://developers.kakao.com";
+
+        Map<String, dynamic> parameters = await showDialog(
+            context: context,
+            builder: (context) => ShareApiDialog('customTemplate'));
+
+        try {
+          final shareType = parameters['shareType'] as ShareType?;
+          final limit = parameters['limit'] as int?;
+
+          Uri uri = await ShareClient.instance
+              .shareScrap(url: url, shareType: shareType, limit: limit);
+          await ShareClient.instance.launchKakaoTalk(uri);
+          Log.d(context, tag, '카카오톡 공유 성공');
+        } catch (e) {
+          Log.e(context, tag, '카카오톡 공유 실패', e);
+        }
+      }),
+      ApiItem('defaultTemplate() - feed', api: () async {
+        // 디폴트 템플릿으로 카카오톡 공유 메시지 발송 - Feed
+
+        try {
+          Uri uri =
+              await ShareClient.instance.shareDefault(template: defaultFeed);
+          await ShareClient.instance.launchKakaoTalk(uri);
+          Log.d(context, tag, '카카오톡 공유 성공');
+        } catch (e) {
+          Log.e(context, tag, '카카오톡 공유 실패', e);
+        }
+      }),
+      ApiItem('+defaultTemplate() - list', api: () async {
+        // 디폴트 템플릿으로 카카오톡 공유 메시지 발송 - List
+
+        Map<String, dynamic> parameters = await showDialog(
+            context: context,
+            builder: (context) => ShareApiDialog('customTemplate'));
+
+        try {
+          final shareType = parameters['shareType'] as ShareType?;
+          final limit = parameters['limit'] as int?;
+
+          Uri uri = await ShareClient.instance.shareDefault(
+              template: defaultList, shareType: shareType, limit: limit);
+          await ShareClient.instance.launchKakaoTalk(uri);
+          Log.d(context, tag, '카카오톡 공유 성공');
+        } catch (e) {
+          Log.e(context, tag, '카카오톡 공유 실패', e);
         }
       }),
       ApiItem('customTemplate()', api: () async {

@@ -1,11 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
+import 'package:kakao_flutter_sdk_user/src/component/login_bridge_bottom_sheet.dart';
 import 'package:kakao_flutter_sdk_user/src/constants.dart';
+import 'package:kakao_flutter_sdk_user/src/model/account_login_params.dart';
+import 'package:kakao_flutter_sdk_user/src/model/login_ui_mode.dart';
 import 'package:kakao_flutter_sdk_user/src/model/user_response.dart';
 import 'package:kakao_flutter_sdk_user/src/model/user_revoked_service_terms.dart';
 import 'package:kakao_flutter_sdk_user/src/model/user_service_terms.dart';
@@ -37,8 +42,8 @@ class UserApi {
   /// [serviceTerms] 서비스 약관 목록 전달<br>
   /// <br>
   /// EN: Login with Kakao Talk<br>
-  /// Pass Kakao Talk Channel's profile IDs to [channelPublicIds]<br>
-  /// Pass List of service terms to [serviceTerms]
+  /// Pass list of Kakao Talk Channel IDs to [channelPublicIds]<br>
+  /// Pass list of service terms to [serviceTerms]
   Future<OAuthToken> loginWithKakaoTalk({
     List<String>? channelPublicIds,
     List<String>? serviceTerms,
@@ -80,8 +85,8 @@ class UserApi {
   /// <br>
   /// EN: Login with Kakao Account<br>
   /// Pass the prompts to [prompts] for requests to add interactions<br>
-  /// Pass Kakao Talk Channel's profile IDs to [channelPublicIds]<br>
-  /// Pass List of service terms to [serviceTerms]<br>
+  /// Pass List of Kakao Talk Channel IDs to [channelPublicIds]<br>
+  /// Pass list of service terms to [serviceTerms]<br>
   /// Pass a value to fill in the ID field of the Kakao Account login page to [loginHint]<br>
   /// Pass a random string to prevent replay attacks to [nonce]
   Future<OAuthToken> loginWithKakaoAccount({
@@ -113,6 +118,69 @@ class UserApi {
     );
     await TokenManagerProvider.instance.manager.setToken(token);
     return token;
+  }
+
+  /// KO: 카카오톡으로 로그인과 카카오계정으로 로그인 중 하나를 선택할 수 있는 화면 제공<br>
+  /// [uiMode]에 로그인 선택 화면 모드 전달<br>
+  /// [accountParams]에 카카오계정으로 로그인 기능을 위한 설정 전달<br>
+  /// [channelPublicIds]에 카카오톡 채널 프로필 ID 전달<br>
+  /// [serviceTerms] 서비스 약관 목록 전달<br>
+  /// ID 토큰 재생 공격 방지를 위한 검증 값, 임의의 문자열은 [nonce]에 전달<br>
+  /// <br>
+  /// EN: Provides a screen where users can choose between logging in with Kakao Talk or Kakao Account.<br>
+  /// Pass the login selection screen mode to [uiMode]<br>
+  /// Pass the settings for the Kakao Account login feature to [accountParams]<br>
+  /// Pass list of Kakao Talk Channel IDs to [channelPublicIds]<br>
+  /// Pass list of service terms to [serviceTerms]<br>
+  /// Pass a random string to prevent replay attacks to [nonce]
+  Future<OAuthToken> loginWithKakao(
+    BuildContext context, {
+    LoginUiMode uiMode = LoginUiMode.auto,
+    AccountLoginParams? accountParams,
+    List<String>? channelPublicIds,
+    List<String>? serviceTerms,
+    String? nonce,
+  }) async {
+    if (kIsWeb) {
+      throw KakaoClientException(
+        ClientErrorCause.notSupported,
+        'loginWithKakao() is not supported on web platform.',
+      );
+    }
+
+    final loginMethod = await showModalBottomSheet(
+      context: context,
+      constraints: BoxConstraints.fromViewConstraints(
+        const ViewConstraints(
+          maxWidth: double.infinity,
+          minHeight: 246,
+        ),
+      ),
+      isScrollControlled: true,
+      builder: (_) => LoginBridgeBottomSheet(
+        uiMode: uiMode,
+        onTalkLoginPressed: () async => Navigator.of(context).pop('talk'),
+        onAccountLoginPressed: () async => Navigator.of(context).pop('account'),
+      ),
+    );
+
+    if (loginMethod == 'talk') {
+      return await loginWithKakaoTalk(
+        channelPublicIds: channelPublicIds,
+        serviceTerms: serviceTerms,
+        nonce: nonce,
+      );
+    } else if (loginMethod == 'account') {
+      return await loginWithKakaoAccount(
+        prompts: accountParams?.prompts,
+        channelPublicIds: channelPublicIds,
+        serviceTerms: serviceTerms,
+        loginHint: accountParams?.loginHint,
+        nonce: nonce,
+      );
+    }
+
+    throw KakaoClientException(ClientErrorCause.cancelled, 'User Cancelled');
   }
 
   /// KO: 동의항목 추가 동의 요청<br>
