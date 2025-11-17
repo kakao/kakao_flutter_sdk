@@ -1,8 +1,8 @@
-group 'com.kakao.sdk.flutter'
-version '1.0-SNAPSHOT'
+group = "com.kakao.sdk.flutter"
+version = "1.0-SNAPSHOT"
 
 buildscript {
-    ext.kotlin_version = '2.2.20'
+    val kotlinVersion = "2.2.20"
     repositories {
         google()
         mavenCentral()
@@ -10,7 +10,7 @@ buildscript {
 
     dependencies {
         classpath("com.android.tools.build:gradle:8.11.1")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     }
 }
 
@@ -21,8 +21,10 @@ allprojects {
     }
 }
 
-apply plugin: "com.android.library"
-apply plugin: "kotlin-android"
+plugins {
+    id("com.android.library")
+    id("org.jetbrains.kotlin.android")
+}
 
 android {
     namespace = "com.kakao.sdk.flutter"
@@ -35,12 +37,12 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
     sourceSets {
-        main.java.srcDirs += "src/main/kotlin"
-        test.java.srcDirs += "src/test/kotlin"
+        getByName("main").java.srcDirs("src/main/kotlin")
+        getByName("test").java.srcDirs("src/test/kotlin")
     }
 
     defaultConfig {
