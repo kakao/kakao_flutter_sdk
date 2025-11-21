@@ -77,7 +77,7 @@ enum ApiErrorCause {
   /// <br>
   /// EN: Requested by a blocked Kakao Account, or requested restricted actions to the Kakao Account
   @JsonValue(-4)
-  blockedAction,
+  blockedAccount,
 
   /// KO: 사용자가 동의 화면에서 카카오 로그인을 취소한 경우
   /// <br>
@@ -96,6 +96,12 @@ enum ApiErrorCause {
   /// EN: Exceeded the quota
   @JsonValue(-10)
   apiLimitExceeded,
+
+  /// KO: 카카오디벨로퍼스 앱 또는 개발자 계정이 제재된 경우
+  /// <br>
+  /// EN: Kakao Developers app or developer account has been suspended
+  @JsonValue(-12)
+  blockedApp,
 
   /// KO: 앱과 연결되지 않은 사용자가 요청한 경우
   /// <br>
