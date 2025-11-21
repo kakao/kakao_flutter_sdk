@@ -45,21 +45,23 @@ class LoginBridgeBottomSheet extends StatelessWidget {
     paddings = isIOS ? IosPaddings() : AndroidPaddings();
     final horizontalPadding = _getBottomSheetHorizontalPadding(mediaQuery);
 
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-      decoration: BoxDecoration(
-        color: colors.white001s,
-        borderRadius: _borderRadius,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          _buildDragHandler(colors),
-          _buildTitleText(colors),
-          _buildButtons(colors, onTalkLoginPressed, onAccountLoginPressed),
-          _buildKakaoLogo(mediaQuery, colors),
-        ],
+    return SafeArea(
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+        decoration: BoxDecoration(
+          color: colors.white001s,
+          borderRadius: _borderRadius,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _buildDragHandler(colors),
+            _buildTitleText(colors),
+            _buildButtons(colors, onTalkLoginPressed, onAccountLoginPressed),
+            _buildKakaoLogo(mediaQuery, colors),
+          ],
+        ),
       ),
     );
   }
