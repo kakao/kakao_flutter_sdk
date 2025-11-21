@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:kakao_flutter_sdk_example/ui/api_list.dart';
 
@@ -26,9 +27,16 @@ class MainPage extends StatelessWidget {
           .showSnackBar(const SnackBar(content: Text('에러가 발생했습니다')));
     });
 
+    final theme= Theme.of(context);
+
     return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         title: const Text('SDK Sample'),
+        systemOverlayStyle: SystemUiOverlayStyle(
+          systemNavigationBarColor: theme.scaffoldBackgroundColor,
+          systemNavigationBarIconBrightness: Brightness.dark,
+        ),
         actions: [
           GestureDetector(
             child: const Padding(

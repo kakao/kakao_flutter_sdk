@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_example/model/picker_item.dart';
 
 class FriendPage extends StatefulWidget {
@@ -13,9 +14,16 @@ class FriendPage extends StatefulWidget {
 class _FriendPageState extends State<FriendPage> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         title: const Text('친구 선택'),
+        systemOverlayStyle: SystemUiOverlayStyle(
+          systemNavigationBarColor: theme.scaffoldBackgroundColor,
+          systemNavigationBarIconBrightness: Brightness.dark,
+        ),
         actions: [
           GestureDetector(
             onTap: () {

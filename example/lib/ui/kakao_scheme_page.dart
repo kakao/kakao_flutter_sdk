@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 @immutable
 class KakaoSchemePage extends StatelessWidget {
@@ -12,12 +13,24 @@ class KakaoSchemePage extends StatelessWidget {
     queryParams?.forEach((key, value) {
       params += '$key : $value\n';
     });
+
+    final theme = Theme.of(context);
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Kakao Scheme Page')),
-      body: Center(
-        child: params.isNotEmpty
-            ? Text(params)
-            : const Text('No Query Parameters'),
+      backgroundColor: theme.scaffoldBackgroundColor,
+      appBar: AppBar(
+        title: const Text('Kakao Scheme Page'),
+        systemOverlayStyle: SystemUiOverlayStyle(
+          systemNavigationBarColor: theme.scaffoldBackgroundColor,
+          systemNavigationBarIconBrightness: Brightness.dark,
+        ),
+      ),
+      body: SafeArea(
+        child: Center(
+          child: params.isNotEmpty
+              ? Text(params)
+              : const Text('No Query Parameters'),
+        ),
       ),
     );
   }
