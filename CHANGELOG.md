@@ -1,3 +1,14 @@
+## 1.10.0
+
+- Added API to select login method.
+- Added app block status error: ApiErrorCause.blockedApp
+- Changed the error name for Kakao Account restrictions: ApiErrorCause.blockedAction →
+  ApiErrorCause.blockedAccount
+- iOS:
+    - Added SPM (Swift Package Manager) support.
+    - Updated not to pop up the login dialog when requesting additional consent.
+- Updated the internal source code.
+
 ## 1.9.7+3
 
 - Android: Changed compileSdk and targetSdk versions to 35.
