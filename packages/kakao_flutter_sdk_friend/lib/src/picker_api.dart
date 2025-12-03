@@ -20,7 +20,7 @@ class PickerApi {
   /// @nodoc
   PickerApi();
 
-  /// KO: 싱글 피커 요청
+  /// KO: 싱글 피커
   /// <br>
   /// EN: Requests a single picker
   Future selectFriend({
@@ -64,7 +64,7 @@ class PickerApi {
         context: context, params: params, isSingle: true);
   }
 
-  /// KO: 멀티 피커 요청
+  /// KO: 멀티 피커
   /// <br>
   /// EN: Requests a multi-picker
   Future selectFriends({

@@ -29,7 +29,7 @@ class TalkApi {
   /// @nodoc
   TalkApi(this._dio);
 
-  /// KO: 카카오톡 프로필 가져오기
+  /// KO: 카카오톡 프로필 조회
   /// <br>
   /// EN: Retrieve Kakao Talk profile
   Future<TalkProfile> profile() async {
@@ -40,7 +40,7 @@ class TalkApi {
     });
   }
 
-  /// KO: 나에게 사용자 정의 템플릿으로 메시지 보내기<br>
+  /// KO: 나에게 사용자 정의 템플릿으로 메시지 발송<br>
   /// [templateId]에 메시지 템플릿 ID 전달<br>
   /// <br>
   /// EN: Send message with custom template to me<br>
@@ -56,7 +56,7 @@ class TalkApi {
     return _memo("", params);
   }
 
-  /// KO: 나에게 기본 템플릿으로 메시지 보내기<br>
+  /// KO: 나에게 기본 템플릿으로 메시지 발송<br>
   /// [template]에 메시지 템플릿 객체 전달<br>
   /// <br>
   /// EN: Send message with default template to me<br>
@@ -66,7 +66,7 @@ class TalkApi {
         {Constants.templateObject: jsonEncode(template)});
   }
 
-  /// KO: 나에게 스크랩 메시지 보내기<br>
+  /// KO: 나에게 스크랩 메시지 발송<br>
   /// [url]에 스크랩할 URL 전달<br>
   /// [templateId]에 메시지 템플릿 ID 전달<br>
   /// [templateArgs]에 사용자 인자 전달<br>
@@ -97,7 +97,7 @@ class TalkApi {
     });
   }
 
-  /// KO: 카카오톡 채널 관계 확인하기<br>
+  /// KO: 카카오톡 채널 관계 조회<br>
   /// [publicIds]에 카카오톡 채널 프로필 ID 목록 전달<br>
   /// <br>
   /// EN: Check Kakao Talk Channel relationship<br>
@@ -118,7 +118,7 @@ class TalkApi {
     });
   }
 
-  /// KO: 카카오톡 친구 목록 가져오기<br>
+  /// KO: 카카오톡 친구 목록 조회<br>
   /// [offset]으로 친구 목록 시작 지점 변경<br>
   /// [limit]로 페이지당 결과 수 변경<br>
   /// [friendOrder]로 정렬 방식 변경<br>
@@ -157,7 +157,7 @@ class TalkApi {
     });
   }
 
-  /// KO: 친구에게 사용자 정의 템플릿으로 메시지 보내기<br>
+  /// KO: 친구에게 사용자 정의 템플릿으로 메시지 발송<br>
   /// [receiverUuids]에 수신자 UUID 전달<br>
   /// [templateId]에 메시지 템플릿 ID 전달<br>
   /// [templateArgs]에 사용자 인자 전달<br>
@@ -180,7 +180,7 @@ class TalkApi {
     return _message("", params);
   }
 
-  /// KO: 친구에게 기본 템플릿으로 메시지 보내기<br>
+  /// KO: 친구에게 기본 템플릿으로 메시지 발송<br>
   /// [receiverUuids]에 수신자 UUID 전달<br>
   /// [template]에 메시지 템플릿 객체 전달<br>
   /// <br>
@@ -198,7 +198,7 @@ class TalkApi {
     return _message(Constants.defaultPath, params);
   }
 
-  /// KO: 친구에게 스크랩 메시지 보내기<br>
+  /// KO: 친구에게 스크랩 메시지 발송<br>
   /// [receiverUuids]에 수신자 UUID 전달<br>
   /// [url]에 스크랩할 URL 전달<br>
   /// [templateId]에 메시지 템플릿 ID 전달<br>
@@ -225,7 +225,7 @@ class TalkApi {
     return _message(Constants.scrapPath, params);
   }
 
-  /// KO: 카카오톡 채널 간편 추가하기
+  /// KO: 카카오톡 채널 간편 추가
   /// <br>
   /// EN: Follow Kakao Talk Channel
   Future<FollowChannelResult> followChannel(
@@ -247,7 +247,7 @@ class TalkApi {
     }
   }
 
-  /// KO: 카카오톡 채널 친구 추가하기<br>
+  /// KO: 카카오톡 채널 친구 추가<br>
   /// [channelPublicId]에 카카오톡 채널 프로필 ID 전달<br>
   /// <br>
   /// EN: Add Kakao Talk Channel<br>
@@ -274,7 +274,7 @@ class TalkApi {
     });
   }
 
-  /// KO: 카카오톡 채널 채팅하기<br>
+  /// KO: 카카오톡 채널 채팅<br>
   /// [channelPublicId]에 카카오톡 채널 프로필 ID 전달<br>
   /// <br>
   /// EN: Start Kakao Talk Channel chat<br>

@@ -1,6 +1,6 @@
 name: kakao_flutter_sdk_example
 description: Demonstrates how to use the kakao_flutter_sdk plugin.
-version: 1.9.0
+version: 1.10.0
 publish_to: "none"
 environment:
   sdk: ">=3.3.0 <4.0.0"
@@ -22,6 +22,14 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
+
+  flutter_launcher_icons: ^0.14.4
+
+flutter_launcher_icons:
+  android: "ic_launcher"
+  ios: true
+  image_path: "assets/icon/icon.png"
+  min_sdk_android: 21
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.devs/tools/pub/pubspec

@@ -32,9 +32,11 @@ class SharingResult {
   /// EN: User argument validation result
   Map<String, dynamic> argumentMsg;
 
+  Map<String, dynamic>? schemeParams;
+
   /// @nodoc
   SharingResult(this.templateId, this.templateArgs, this.templateMsg,
-      this.warningMsg, this.argumentMsg);
+      this.warningMsg, this.argumentMsg, this.schemeParams);
 
   /// @nodoc
   factory SharingResult.fromJson(Map<String, dynamic> json) =>

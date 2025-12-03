@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_common.dart';
 
 class DebugPage extends StatefulWidget {
@@ -14,6 +15,10 @@ class _DebugPageState extends State<DebugPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Debug Page"),
+        systemOverlayStyle: SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.black,
+          systemNavigationBarIconBrightness: Brightness.light,
+        ),
         actions: [
           GestureDetector(
             child: const Padding(
@@ -30,27 +35,29 @@ class _DebugPageState extends State<DebugPage> {
           ),
         ],
       ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: Colors.black,
-        child: FutureBuilder(
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return const Center(child: Text('Error'));
-              }
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SingleChildScrollView(
-                    child: Text(
-                  '${snapshot.data}',
-                  style: const TextStyle(color: Colors.green),
-                )),
-              );
-            },
-            future: SdkLog.logs),
+      body: SafeArea(
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: Colors.black,
+          child: FutureBuilder(
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return const Center(child: Text('Error'));
+                }
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SingleChildScrollView(
+                      child: Text(
+                        '${snapshot.data}',
+                        style: const TextStyle(color: Colors.green),
+                      )),
+                );
+              },
+              future: SdkLog.logs),
+        ),
       ),
     );
   }

@@ -86,6 +86,9 @@ class AuthCodeClient {
         final authCode = await _channel.invokeMethod('accountLogin', {
           CommonConstants.url: url.toString(),
           CommonConstants.redirectUri: redirectUri,
+
+          // prevent popups from appearing on IOS.
+          CommonConstants.authorizeNewScopes: scopes != null,
         });
         return _parseCode(authCode);
       }
@@ -146,7 +149,7 @@ class AuthCodeClient {
     }
   }
 
-  /// KO: 추가 항목 동의 받기
+  /// KO: 동의항목 추가 동의 요청
   /// <br>
   /// EN: Request additional consent
   Future<String> authorizeWithNewScopes({
