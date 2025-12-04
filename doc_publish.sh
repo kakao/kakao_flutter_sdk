@@ -30,9 +30,12 @@ cp "./README.md" packages/kakao_flutter_sdk/
 cd ./packages/kakao_flutter_sdk || exit
 dartdoc --no-link-to-remote
 
+# 레퍼런스 링크 수정 (dartdoc 8.3.0 버전부터 패키지 루트 문서가 index.html로 생성되어 링크 수정 필요)
+dart ../../edit_doc_link.dart doc/api
+
 # 레퍼런스 zip (루트에서 zip 하면 서브 디렉토리까지 다 포함되므로 cd 로 디렉토리 이동 후 zip)
 cd doc/api || exit
-zip -r ../../../../kakao-flutter-sdk-doc-"$1".zip .
+zip -q -r ../../../../kakao-flutter-sdk-doc-"$1".zip .
 cd ../../../../
 
 # nexus 업로드
