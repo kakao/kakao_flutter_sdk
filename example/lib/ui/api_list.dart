@@ -68,6 +68,27 @@ class ApiListState extends State<ApiList> {
 
   _initApiList(Map<String, dynamic> customData) {
     apiList.addAll([
+      ApiItem('customTemplate() - 템플릿 변경', api: () async {
+        // 커스텀 템플릿으로 카카오톡 공유 메시지 발송
+        //  * 만들기 가이드: https://developers.kakao.com/docs/latest/ko/message/message-template
+
+        Map<String, dynamic> parameters = await showDialog(
+            context: context,
+            builder: (context) => ShareApiDialog('customTemplate'));
+
+        try {
+          final templateId = parameters['template_id'] as int;
+          final shareType = parameters['shareType'] as ShareType?;
+          final limit = parameters['limit'] as int?;
+
+          Uri uri = await ShareClient.instance.shareCustom(
+              templateId: templateId, shareType: shareType, limit: limit);
+          await ShareClient.instance.launchKakaoTalk(uri);
+          Log.d(context, tag, '카카오톡 공유 성공');
+        } catch (e) {
+          Log.e(context, tag, '카카오톡 공유 실패', e);
+        }
+      }),
       ApiItem('User API'),
       ApiItem('isKakaoTalkInstalled()', api: () async {
         // 카카오톡 설치여부 조회

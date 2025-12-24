@@ -13,10 +13,20 @@ class ShareApiDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    result['template_id'] = 4583;
     return ParameterDialog(
       title: title,
       callback: (parameters) => result,
       items: [
+        TextFieldItem(
+          visible: true,
+          title: 'templateId',
+          fontSize: 12.0,
+          onValueChanged: (value) => result['template_id'] = int.parse(value),
+          keyboardType: TextInputType.number,
+          switchChecked: true,
+          text: '4583',
+        ),
         RadioButtonItem(
             title: 'ShareType',
             fontSize: 12.0,
