@@ -35,7 +35,6 @@
         <package android:name="com.kakao.talk" />
         <package android:name="com.kakao.talk.alpha" />
         <package android:name="com.kakao.talk.sandbox" />
-        <package android:name="com.kakao.onetalk" />
         <package android:name="com.locnall.KimGiSa" />
         <package android:name="com.lguplus.navi" />
 

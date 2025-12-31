@@ -21,8 +21,10 @@ class IntentResolveClient {
             val cloned = intent.clone() as Intent
             cloned.setPackage(packageName)
             val info = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                pm.resolveActivity(cloned,
-                    PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong()))
+                pm.resolveActivity(
+                    cloned,
+                    PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong())
+                )
             } else {
                 @Suppress("DEPRECATION")
                 pm.resolveActivity(cloned, PackageManager.MATCH_DEFAULT_ONLY)
@@ -119,34 +121,14 @@ class IntentResolveClient {
                     "3a5d6f0a01dcad5b8c36ac4ac48caeff37888c36483c26b09aaa9689dbb896938d5afe40135bf7d9f12643046301867165d28be0baa3" +
                     "513a5084e182f7f9c044d5baa58bdce55fa1845241"
 
-        private const val ONE_RELEASE_SIGNATURE =
-            "30820303308201eba003020102020452441f49300d06092a864886f70d01010b0" +
-                    "5003031310b3009060355040613026b6f310e300c060355040a13056b616b616f31123010060355040b13096b616b616f7465616d302" +
-                    "0170d3137303631393039353135315a180f33303135313032313039353135315a3031310b3009060355040613026b6f310e300c06035" +
-                    "5040a13056b616b616f31123010060355040b13096b616b616f7465616d30820122300d06092a864886f70d01010105000382010f003" +
-                    "082010a0282010100c2867a4e6fb76eaa00d5ecac63c897ebd924bb40d3f7dd90f73599a2049ae40abc4c7b1dce10dafbfdabbebf365" +
-                    "3d7c6a18a3ade469dbe5bd0590748aae4151491001eadd8b02f7469646530595c028ed70feeacd7184fc5b0fd0ceb95addd03b7d1809" +
-                    "7a32a4afc830e209e25c65656587d891282c610429965cc44f3d63ea249d4df41453ac30ca1b3eaf4b1f8fc5cf41af4964f66f611b79" +
-                    "9f6246fcb1d6b42fff8cff202a433a90ccd25385c4d015ac770dedf8914d86c53b0eebdd4c5c5e3a509e360785fc38ee075b6d7faad1" +
-                    "9f7c876ff3949a85f601158f99c67ee14c20ff759d3057dc258146f579a5e3d90457d9996f004808f4aa625ab9a67dfc30203010001a" +
-                    "321301f301d0603551d0e041604141487897f76c0e76161888c86336325b6e58fce5d300d06092a864886f70d01010b0500038201010" +
-                    "07bf867fa1b4ef0ea4d6de127238319c84dcae79398e60f960ab71a8bdf488b0aa07888e994bba531f4419037cd006b7d9a64860a659" +
-                    "1b96534967444b8854bef6a6eff3161dbcbebfe5e6c979650c9d51f76676b217b8285992f4a172d4a857775c42dc3875796434b13b78" +
-                    "d6cfb174bfaa0c59976fb7a1cd4d26527881cfd39a61cd35843dd2cd49afd7d3966947b2662fc44dbff3704094687ce70ccabeb8a9d9" +
-                    "3f39974bd11fdb1dcb9404d8a6408cae45c315ced013f088c5264ce9c8738715ecf83bc991d4e3971e4a2cc39bcd11be426d79363898" +
-                    "1455d083cfd7bfd3b88ecd11e581260ae7fbf27b8c9cdf0da49a467e375f4273d6e01d7114ac7126f"
-
         private const val TALK_PACKAGE_NAME = "com.kakao.talk"
-        private const val ONE_TALK_PACKAGE_NAME = "com.kakao.onetalk"
         private const val SANDBOX_TALK_PACKAGE_NAME = "com.kakao.talk.sandbox"
         private const val ALPHA_TALK_PACKAGE_NAME = "com.kakao.talk.alpha"
 
-        private val ALLOWED_SIGNATURES =
-            arrayOf(RELEASE_SIGNATURE, DEBUG_SIGNATURE, ONE_RELEASE_SIGNATURE)
+        private val ALLOWED_SIGNATURES = arrayOf(RELEASE_SIGNATURE, DEBUG_SIGNATURE)
 
         private val ALLOWED_PACKAGES = arrayOf(
             TALK_PACKAGE_NAME,
-            ONE_TALK_PACKAGE_NAME,
             SANDBOX_TALK_PACKAGE_NAME,
             ALPHA_TALK_PACKAGE_NAME
         )
