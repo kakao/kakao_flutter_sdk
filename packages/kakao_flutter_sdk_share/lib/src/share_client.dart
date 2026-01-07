@@ -50,17 +50,21 @@ class ShareClient {
   /// [templateId]에 사용자 정의 템플릿 ID 전달<br>
   /// [templateArgs]에 사용자 인자 키와 값 전달<br>
   /// [serverCallbackArgs]에 카카오톡 공유 전송 성공 알림에 포함할 키와 값 전달<br>
+  /// [shareType]에 카카오톡 공유 대상 선택 화면 유형 전달<br>
+  /// [limit]에 공유할 대상의 최대 선택 개수 전달<br>
   /// <br>
   /// EN: Send message with custom template<br>
   /// Pass the custom template ID to [templateId]<br>
   /// Pass the keys and values of the user argument to [templateArgs]<br>
-  /// Pass the keys and values for the Kakao Talk Sharing success callback to [serverCallbackArgs]
+  /// Pass the keys and values for the Kakao Talk Sharing success callback to [serverCallbackArgs]<br>
+  /// Pass the type of share target selection screen in Kakao Talk to [shareType]<br>
+  /// Pass the maximum number of share targets that can be selected to [limit]
   Future<Uri> shareCustom({
     required int templateId,
     Map<String, String>? templateArgs,
+    Map<String, String>? serverCallbackArgs,
     ShareType? shareType,
     int? limit,
-    Map<String, String>? serverCallbackArgs,
   }) async {
     final response = await api.custom(
       templateId,
@@ -74,15 +78,19 @@ class ShareClient {
   /// KO: 기본 템플릿으로 메시지 발송<br>
   /// [template]에 메시지 템플릿 객체 전달<br>
   /// [serverCallbackArgs]에 카카오톡 공유 전송 성공 알림에 포함할 키와 값 전달<br>
+  /// [shareType]에 카카오톡 공유 대상 선택 화면 유형 전달<br>
+  /// [limit]에 공유할 대상의 최대 선택 개수 전달<br>
   /// <br>
   /// EN: Send message with default template<br>
   /// Pass an object of a message template to [template]<br>
-  /// Pass the keys and values for the Kakao Talk Sharing success callback to [serverCallbackArgs]
+  /// Pass the keys and values for the Kakao Talk Sharing success callback to [serverCallbackArgs]<br>
+  /// Pass the type of share target selection screen in Kakao Talk to [shareType]<br>
+  /// Pass the maximum number of share targets that can be selected to [limit]
   Future<Uri> shareDefault({
     required DefaultTemplate template,
+    Map<String, String>? serverCallbackArgs,
     ShareType? shareType,
     int? limit,
-    Map<String, String>? serverCallbackArgs,
   }) async {
     final response = await api.defaultTemplate(
       template,
@@ -97,19 +105,23 @@ class ShareClient {
   /// [templateId]에 사용자 정의 템플릿 ID 전달<br>
   /// [templateArgs]에 사용자 인자 키와 값 전달<br>
   /// [serverCallbackArgs]에 카카오톡 공유 전송 성공 알림에 포함할 키와 값 전달<br>
+  /// [shareType]에 카카오톡 공유 대상 선택 화면 유형 전달<br>
+  /// [limit]에 공유할 대상의 최대 선택 개수 전달<br>
   /// <br>
   /// EN: Send scrape message<br>
   /// Pass the URL to scrape [url]<br>
   /// Pass the custom template ID to [templateId]<br>
   /// Pass the keys and values of the user argument to [templateArgs]<br>
-  /// Pass the keys and values for the Kakao Talk Sharing success callback to [serverCallbackArgs]
+  /// Pass the keys and values for the Kakao Talk Sharing success callback to [serverCallbackArgs]<br>
+  /// Pass the type of share target selection screen in Kakao Talk to [shareType]<br>
+  /// Pass the maximum number of share targets that can be selected to [limit]
   Future<Uri> shareScrap({
     required String url,
     int? templateId,
     Map<String, String>? templateArgs,
+    Map<String, String>? serverCallbackArgs,
     ShareType? shareType,
     int? limit,
-    Map<String, String>? serverCallbackArgs,
   }) async {
     final response = await api.scrap(
       url,
