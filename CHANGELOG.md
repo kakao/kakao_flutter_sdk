@@ -1,6 +1,7 @@
 ## 1.10.0
 
 - Added API to select login method.
+- Added shareType and limit parameters for share target selection screen settings.
 - Added app block status error: ApiErrorCause.blockedApp
 - Changed the error name for Kakao Account restrictions: ApiErrorCause.blockedAction →
   ApiErrorCause.blockedAccount
