@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk_talk/src/model/channel.dart';
+
+import 'channel.dart';
 
 part 'channels.g.dart';
 
@@ -12,12 +13,12 @@ class Channels {
   /// KO: 회원번호
   /// <br>
   /// EN: Service user ID
-  int? userId;
+  final int? userId;
 
   /// KO: 카카오톡 채널 관계 목록
   /// <br>
   /// EN: List of the Kakao Talk Channel relationship
-  List<Channel>? channels;
+  final List<Channel>? channels;
 
   /// @nodoc
   Channels(this.userId, this.channels);

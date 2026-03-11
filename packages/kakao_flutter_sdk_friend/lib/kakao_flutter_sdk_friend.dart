@@ -1,8 +1,7 @@
-/// KO: 피커 API 패키지
-/// <br>
-/// EN: Package for the picker APIs
-library kakao_flutter_sdk_friend;
+library;
 
-export 'package:kakao_flutter_sdk_friend/src/model/picker_friend_request_params.dart';
-export 'package:kakao_flutter_sdk_friend/src/model/selected_user.dart';
-export 'package:kakao_flutter_sdk_friend/src/picker_api.dart';
+export 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
+
+export 'src/model/picker_friend_request_params.dart';
+export 'src/model/selected_user.dart';
+export 'src/picker_api.dart';

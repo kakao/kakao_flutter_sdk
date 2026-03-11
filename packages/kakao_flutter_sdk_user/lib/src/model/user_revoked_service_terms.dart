@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk_user/src/model/revoked_service_terms.dart';
+
+import 'revoked_service_terms.dart';
 
 part 'user_revoked_service_terms.g.dart';
 
@@ -12,12 +13,12 @@ class UserRevokedServiceTerms {
   /// KO: 회원번호
   /// <br>
   /// EN: Service user ID
-  int id;
+  final int id;
 
   /// KO: 동의 철회에 성공한 서비스 약관 목록
   /// <br>
   /// EN: List of revoked service terms
-  List<RevokedServiceTerms>? revokedServiceTerms;
+  final List<RevokedServiceTerms>? revokedServiceTerms;
 
   /// @nodoc
   UserRevokedServiceTerms(this.id, this.revokedServiceTerms);

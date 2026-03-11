@@ -18,9 +18,6 @@ MessageSendResult _$MessageSendResultFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$MessageSendResultToJson(MessageSendResult instance) =>
     <String, dynamic>{
-      if (instance.successfulReceiverUuids case final value?)
-        'successful_receiver_uuids': value,
-      if (instance.failureInfos?.map((e) => e.toJson()).toList()
-          case final value?)
-        'failure_info': value,
+      'successful_receiver_uuids': ?instance.successfulReceiverUuids,
+      'failure_info': ?instance.failureInfos?.map((e) => e.toJson()).toList(),
     };

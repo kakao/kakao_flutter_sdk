@@ -59,53 +59,47 @@ class FriendsContext {
   /// KO: 친구 목록 시작 지점
   /// <br>
   /// EN: Start point of the friend list
-  int? offset;
+  final int? offset;
 
   /// KO: 페이지당 결과 수
   /// <br>
   /// EN: Number of results in a page
-  int? limit;
+  final int? limit;
 
   /// KO: 정렬 방식
   /// <br>
   /// EN: Sorting method
-  Order? order;
+  final Order? order;
 
   /// KO: 페이지당 결과 수
   /// <br>
   /// EN: Number of results in a page
-  FriendOrder? friendOrder;
+  final FriendOrder? friendOrder;
 
   /// KO: 친구 목록 요청 URL
   /// <br>
   /// EN: URL to request the friend list
-  Uri url;
+  final Uri url;
 
   /// @nodoc
   FriendsContext({this.offset, this.limit, this.order, this.friendOrder})
       : url = Uri.parse('');
 
-  FriendsContext.fromUrl(this.url) {
-    offset = int.parse(url.queryParameters['offset']!);
-    limit = int.parse(url.queryParameters['limit']!);
-
-    if (url.queryParameters['order'] == Order.asc.name) {
-      order = Order.asc;
-    } else if (url.queryParameters['order'] == Order.desc.name) {
-      order = Order.desc;
-    } else {
-      order = null;
-    }
-
-    if (url.queryParameters['friend_order'] == FriendOrder.nickname.name) {
-      friendOrder = FriendOrder.nickname;
-    } else if (url.queryParameters['friend_order'] ==
-        FriendOrder.favorite.name) {
-      friendOrder = FriendOrder.favorite;
-    } else {
-      friendOrder = null;
-    }
-  }
+  FriendsContext.fromUrl(this.url)
+      : offset = int.parse(url.queryParameters['offset']!),
+        limit = int.parse(url.queryParameters['limit']!),
+        order = url.queryParameters['order'] == Order.asc.name
+            ? Order.asc
+            : url.queryParameters['order'] == Order.desc.name
+            ? Order.desc
+            : null,
+        friendOrder =
+        url.queryParameters['friend_order'] == FriendOrder.nickname.name
+            ? FriendOrder.nickname
+            : url.queryParameters['friend_order'] ==
+            FriendOrder.favorite.name
+            ? FriendOrder.favorite
+            : null;
 }
 
 /// KO: 정렬 방식

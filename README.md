@@ -6,8 +6,8 @@ This document introduces how to use the Kakao SDK for Flutter (Flutter SDK). The
 
 Here are what you need to use the Flutter SDK:
 
-- Dart 3.4.0 or higher
-- Flutter 3.22.0 or higher
+- Dart 3.9.0 or higher
+- Flutter 3.35.0 or higher
 - Target Android API level 21 or higher (Android 5.0 (Lollipop) or higher)
 - iOS Deployment Target 13.0 or higher
 - [Web browser support](https://developers.kakao.com/docs/latest/flutter/getting-started#before-you-begin-supported-browser)
@@ -19,8 +19,8 @@ To integrate the Kakao APIs with the Flutter SDK, read the following documentati
 - [Getting started](https://developers.kakao.com/docs/latest/flutter/getting-started)
 - [Kakao Login](https://developers.kakao.com/docs/latest/kakaologin/flutter)
 - [Kakao Talk Social](https://developers.kakao.com/docs/latest/kakaotalk-social/flutter)
-- [Kakao Talk Sharing](https://developers.kakao.com/docs/latest/message/flutter-link)
-- [Kakao Talk Messaging](https://developers.kakao.com/docs/latest/message/flutter)
+- [Kakao Talk Sharing](https://developers.kakao.com/docs/latest/kakaotalk-share/flutter-link)
+- [Kakao Talk Messaging](https://developers.kakao.com/docs/latest/kakaotalk-message/flutter)
 - [Kakao Talk Channel](https://developers.kakao.com/docs/latest/kakaotalk-channel/flutter)
 - [Kakao Sync](https://developers.kakao.com/docs/latest/kakaologin/flutter#terms)
 - [Kakao Navi](https://developers.kakao.com/docs/latest/kakaonavi/flutter)

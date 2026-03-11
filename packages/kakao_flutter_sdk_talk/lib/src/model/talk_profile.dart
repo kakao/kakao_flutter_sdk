@@ -10,25 +10,25 @@ class TalkProfile {
   /// KO: 프로필 닉네임
   /// <br>
   /// EN: Profile nickname
-  @JsonKey(name: "nickName")
-  String? nickname;
+  @JsonKey(name: 'nickName')
+  final String? nickname;
 
   /// KO: 프로필 이미지
   /// <br>
   /// EN: Profile image
-  @JsonKey(name: "profileImageURL")
-  String? profileImageUrl;
+  @JsonKey(name: 'profileImageURL')
+  final String? profileImageUrl;
 
   /// KO: 프로필 썸네일 이미지
   /// <br>
   /// EN: Profile thumbnail image
-  @JsonKey(name: "thumbnailURL")
-  String? thumbnailUrl;
+  @JsonKey(name: 'thumbnailURL')
+  final String? thumbnailUrl;
 
   /// KO: 국가 코드
   /// <br>
   /// EN: Country code
-  String? countryISO;
+  final String? countryISO;
 
   /// @nodoc
   TalkProfile(

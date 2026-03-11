@@ -11,7 +11,7 @@ ShippingAddress _$ShippingAddressFromJson(Map<String, dynamic> json) =>
       (json['id'] as num).toInt(),
       json['name'] as String?,
       json['is_default'] as bool,
-      Util.fromTimeStamp((json['updated_at'] as num?)?.toInt()),
+      ShippingAddress.fromTimeStamp((json['updated_at'] as num?)?.toInt()),
       json['type'] as String?,
       json['base_address'] as String?,
       json['detail_address'] as String?,
@@ -25,18 +25,15 @@ ShippingAddress _$ShippingAddressFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$ShippingAddressToJson(ShippingAddress instance) =>
     <String, dynamic>{
       'id': instance.id,
-      if (instance.name case final value?) 'name': value,
+      'name': ?instance.name,
       'is_default': instance.isDefault,
-      if (Util.fromDateTime(instance.updatedAt) case final value?)
-        'updated_at': value,
-      if (instance.type case final value?) 'type': value,
-      if (instance.baseAddress case final value?) 'base_address': value,
-      if (instance.detailAddress case final value?) 'detail_address': value,
-      if (instance.receiverName case final value?) 'receiver_name': value,
-      if (instance.receiverPhoneNumber1 case final value?)
-        'receiver_phone_number1': value,
-      if (instance.receiverPhoneNumber2 case final value?)
-        'receiver_phone_number2': value,
-      if (instance.zoneNumber case final value?) 'zone_number': value,
-      if (instance.zipCode case final value?) 'zip_code': value,
+      'updated_at': ?ShippingAddress.fromDateTime(instance.updatedAt),
+      'type': ?instance.type,
+      'base_address': ?instance.baseAddress,
+      'detail_address': ?instance.detailAddress,
+      'receiver_name': ?instance.receiverName,
+      'receiver_phone_number1': ?instance.receiverPhoneNumber1,
+      'receiver_phone_number2': ?instance.receiverPhoneNumber2,
+      'zone_number': ?instance.zoneNumber,
+      'zip_code': ?instance.zipCode,
     };

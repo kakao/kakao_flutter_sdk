@@ -7,16 +7,19 @@ part of 'service_terms.dart';
 // **************************************************************************
 
 ServiceTerms _$ServiceTermsFromJson(Map<String, dynamic> json) => ServiceTerms(
-      json['tag'] as String,
-      json['required'] as bool,
-      json['agreed'] as bool,
-      json['revocable'] as bool,
-      json['agreed_at'] == null
-          ? null
-          : DateTime.parse(json['agreed_at'] as String),
-      $enumDecodeNullable(_$RefererEnumMap, json['agreed_by'],
-          unknownValue: Referer.unknown),
-    );
+  json['tag'] as String,
+  json['required'] as bool,
+  json['agreed'] as bool,
+  json['revocable'] as bool,
+  json['agreed_at'] == null
+      ? null
+      : DateTime.parse(json['agreed_at'] as String),
+  $enumDecodeNullable(
+    _$RefererEnumMap,
+    json['agreed_by'],
+    unknownValue: Referer.unknown,
+  ),
+);
 
 Map<String, dynamic> _$ServiceTermsToJson(ServiceTerms instance) =>
     <String, dynamic>{
@@ -24,10 +27,8 @@ Map<String, dynamic> _$ServiceTermsToJson(ServiceTerms instance) =>
       'required': instance.required,
       'agreed': instance.agreed,
       'revocable': instance.revocable,
-      if (instance.agreedAt?.toIso8601String() case final value?)
-        'agreed_at': value,
-      if (_$RefererEnumMap[instance.referer] case final value?)
-        'agreed_by': value,
+      'agreed_at': ?instance.agreedAt?.toIso8601String(),
+      'agreed_by': ?_$RefererEnumMap[instance.referer],
     };
 
 const _$RefererEnumMap = {

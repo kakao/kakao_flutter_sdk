@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk_talk/src/constants.dart';
 
 part 'follow_channel_result.g.dart';
 
@@ -40,11 +39,8 @@ class StatusConverter implements JsonConverter<bool, String> {
   const StatusConverter();
 
   @override
-  bool fromJson(String status) =>
-      status == Constants.followChannelStatusSuccess;
+  bool fromJson(String status) => status == 'success';
 
   @override
-  String toJson(bool success) => success
-      ? Constants.followChannelStatusSuccess
-      : Constants.followChannelStatusFail;
+  String toJson(bool success) => success ? 'success' : 'fail';
 }

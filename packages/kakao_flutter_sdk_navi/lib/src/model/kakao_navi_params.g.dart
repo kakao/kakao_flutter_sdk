@@ -8,8 +8,9 @@ part of 'kakao_navi_params.dart';
 
 KakaoNaviParams _$KakaoNaviParamsFromJson(Map<String, dynamic> json) =>
     KakaoNaviParams(
-      destination:
-          Location.fromJson(json['destination'] as Map<String, dynamic>),
+      destination: Location.fromJson(
+        json['destination'] as Map<String, dynamic>,
+      ),
       option: json['option'] == null
           ? null
           : NaviOption.fromJson(json['option'] as Map<String, dynamic>),
@@ -21,7 +22,6 @@ KakaoNaviParams _$KakaoNaviParamsFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$KakaoNaviParamsToJson(KakaoNaviParams instance) =>
     <String, dynamic>{
       'destination': instance.destination.toJson(),
-      if (instance.option?.toJson() case final value?) 'option': value,
-      if (instance.viaList?.map((e) => e.toJson()).toList() case final value?)
-        'via_list': value,
+      'option': ?instance.option?.toJson(),
+      'via_list': ?instance.viaList?.map((e) => e.toJson()).toList(),
     };

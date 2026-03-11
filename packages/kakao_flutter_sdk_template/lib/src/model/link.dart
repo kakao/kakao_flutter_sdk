@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 
 part 'link.g.dart';
 
@@ -22,18 +21,20 @@ class Link {
   /// <br>
   /// EN: Parameters to pass to the Android app
   @JsonKey(
-      name: "android_execution_params",
-      fromJson: Util.stringToMap,
-      toJson: Util.mapToString)
+    name: 'android_execution_params',
+    fromJson: _queryStringToMap,
+    toJson: _mapToQueryString,
+  )
   final Map<String, String>? androidExecutionParams;
 
   /// KO: iOS 앱 실행 시 전달할 파라미터
   /// <br>
   /// EN: Parameters to pass to the iOS app
   @JsonKey(
-      name: "ios_execution_params",
-      fromJson: Util.stringToMap,
-      toJson: Util.mapToString)
+    name: 'ios_execution_params',
+    fromJson: _queryStringToMap,
+    toJson: _mapToQueryString,
+  )
   final Map<String, String>? iosExecutionParams;
 
   /// @nodoc
@@ -49,4 +50,26 @@ class Link {
 
   /// @nodoc
   Map<String, dynamic> toJson() => _$LinkToJson(this);
+
+  static Map<String, String>? _queryStringToMap(String? queries) {
+    if (queries == null) return null;
+
+    final queryMap = <String, String>{};
+    queries.split('&').forEach((query) {
+      final splitQuery = query.split('=');
+      final key = splitQuery.firstOrNull;
+      final value = splitQuery.lastOrNull;
+
+      if (key != null && value != null) {
+        queryMap[key] = value;
+      }
+    });
+    return Map.from(queryMap);
+  }
+
+  static String? _mapToQueryString(Map<String, String>? map) {
+    if (map == null) return null;
+
+    return Uri(queryParameters: map).query;
+  }
 }

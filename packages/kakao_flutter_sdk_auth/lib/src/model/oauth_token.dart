@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk_auth/src/model/access_token_response.dart';
+
+import 'access_token_response.dart';
 
 part 'oauth_token.g.dart';
 
@@ -11,37 +12,42 @@ class OAuthToken {
   /// KO: 액세스 토큰
   /// <br>
   /// EN: Access token
-  String accessToken;
+  final String accessToken;
 
   /// KO: 액세스 토큰 만료시각
   /// <br>
   /// EN: The expiration time of the access token
-  DateTime expiresAt;
+  final DateTime expiresAt;
 
   /// KO: 리프레시 토큰
   /// <br>
   /// EN: Refresh token
-  String? refreshToken;
+  final String? refreshToken;
 
   /// KO: 리프레시 토큰 만료시각
   /// <br>
   /// EN: The expiration time of the refresh token
-  DateTime? refreshTokenExpiresAt;
+  final DateTime? refreshTokenExpiresAt;
 
   /// KO: 인가된 동의항목
   /// <br>
   /// EN: Authorized scopes
-  List<String>? scopes;
+  final List<String>? scopes;
 
   /// KO: ID 토큰
   /// <br>
   /// EN: ID token
-  String? idToken;
+  final String? idToken;
 
   /// @nodoc
-  OAuthToken(this.accessToken, this.expiresAt, this.refreshToken,
-      this.refreshTokenExpiresAt, this.scopes,
-      {this.idToken});
+  OAuthToken(
+    this.accessToken,
+    this.expiresAt,
+    this.refreshToken,
+    this.refreshTokenExpiresAt,
+    this.scopes, {
+    this.idToken,
+  });
 
   /// @nodoc
   factory OAuthToken.fromJson(Map<String, dynamic> json) =>
@@ -56,18 +62,21 @@ class OAuthToken {
 
   /// @nodoc
   /// [AccessTokenResponse] 객체로부터 OAuthToken 객체 생성
-  static OAuthToken fromResponse(AccessTokenResponse response,
-      {OAuthToken? oldToken}) {
+  static OAuthToken fromResponse(
+    AccessTokenResponse response, {
+    OAuthToken? oldToken,
+  }) {
     final atExpiresAt =
         DateTime.now().millisecondsSinceEpoch + response.expiresIn * 1000;
 
-    String? refreshToken;
+    final String? refreshToken;
     int? rtExpiresAt;
 
     if (response.refreshToken != null) {
       refreshToken = response.refreshToken;
       if (refreshToken != null && response.refreshTokenExpiresIn != null) {
-        rtExpiresAt = DateTime.now().millisecondsSinceEpoch +
+        rtExpiresAt =
+            DateTime.now().millisecondsSinceEpoch +
             response.refreshTokenExpiresIn! * 1000;
       }
     } else {

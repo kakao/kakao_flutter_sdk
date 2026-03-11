@@ -7,94 +7,88 @@ part of 'account.dart';
 // **************************************************************************
 
 Account _$AccountFromJson(Map<String, dynamic> json) => Account(
-      json['profile_needs_agreement'] as bool?,
-      json['profile_nickname_needs_agreement'] as bool?,
-      json['profile_image_needs_agreement'] as bool?,
-      json['profile'] == null
-          ? null
-          : Profile.fromJson(json['profile'] as Map<String, dynamic>),
-      json['name_needs_agreement'] as bool?,
-      json['name'] as String?,
-      json['email_needs_agreement'] as bool?,
-      json['is_email_valid'] as bool?,
-      json['is_email_verified'] as bool?,
-      json['email'] as String?,
-      json['age_range_needs_agreement'] as bool?,
-      $enumDecodeNullable(_$AgeRangeEnumMap, json['age_range'],
-          unknownValue: AgeRange.unknown),
-      json['birthyear_needs_agreement'] as bool?,
-      json['birthyear'] as String?,
-      json['birthday_needs_agreement'] as bool?,
-      json['birthday'] as String?,
-      $enumDecodeNullable(_$BirthdayTypeEnumMap, json['birthday_type'],
-          unknownValue: BirthdayType.unknown),
-      json['is_leap_month'] as bool?,
-      json['gender_needs_agreement'] as bool?,
-      $enumDecodeNullable(_$GenderEnumMap, json['gender'],
-          unknownValue: Gender.other),
-      json['legal_name_needs_agreement'] as bool?,
-      json['legal_name'] as String?,
-      json['legal_gender_needs_agreement'] as bool?,
-      $enumDecodeNullable(_$GenderEnumMap, json['legal_gender'],
-          unknownValue: Gender.other),
-      json['legal_birth_date_needs_agreement'] as bool?,
-      json['legal_birth_date'] as String?,
-      json['phone_number_needs_agreement'] as bool?,
-      json['phone_number'] as String?,
-      json['is_korean_needs_agreement'] as bool?,
-      json['is_korean'] as bool?,
-    );
+  json['profile_needs_agreement'] as bool?,
+  json['profile_nickname_needs_agreement'] as bool?,
+  json['profile_image_needs_agreement'] as bool?,
+  json['profile'] == null
+      ? null
+      : Profile.fromJson(json['profile'] as Map<String, dynamic>),
+  json['name_needs_agreement'] as bool?,
+  json['name'] as String?,
+  json['email_needs_agreement'] as bool?,
+  json['is_email_valid'] as bool?,
+  json['is_email_verified'] as bool?,
+  json['email'] as String?,
+  json['age_range_needs_agreement'] as bool?,
+  $enumDecodeNullable(
+    _$AgeRangeEnumMap,
+    json['age_range'],
+    unknownValue: AgeRange.unknown,
+  ),
+  json['birthyear_needs_agreement'] as bool?,
+  json['birthyear'] as String?,
+  json['birthday_needs_agreement'] as bool?,
+  json['birthday'] as String?,
+  $enumDecodeNullable(
+    _$BirthdayTypeEnumMap,
+    json['birthday_type'],
+    unknownValue: BirthdayType.unknown,
+  ),
+  json['is_leap_month'] as bool?,
+  json['gender_needs_agreement'] as bool?,
+  $enumDecodeNullable(
+    _$GenderEnumMap,
+    json['gender'],
+    unknownValue: Gender.other,
+  ),
+  json['legal_name_needs_agreement'] as bool?,
+  json['legal_name'] as String?,
+  json['legal_gender_needs_agreement'] as bool?,
+  $enumDecodeNullable(
+    _$GenderEnumMap,
+    json['legal_gender'],
+    unknownValue: Gender.other,
+  ),
+  json['legal_birth_date_needs_agreement'] as bool?,
+  json['legal_birth_date'] as String?,
+  json['phone_number_needs_agreement'] as bool?,
+  json['phone_number'] as String?,
+  json['is_korean_needs_agreement'] as bool?,
+  json['is_korean'] as bool?,
+);
 
 Map<String, dynamic> _$AccountToJson(Account instance) => <String, dynamic>{
-      if (instance.profileNeedsAgreement case final value?)
-        'profile_needs_agreement': value,
-      if (instance.profileNicknameNeedsAgreement case final value?)
-        'profile_nickname_needs_agreement': value,
-      if (instance.profileImageNeedsAgreement case final value?)
-        'profile_image_needs_agreement': value,
-      if (instance.profile?.toJson() case final value?) 'profile': value,
-      if (instance.nameNeedsAgreement case final value?)
-        'name_needs_agreement': value,
-      if (instance.name case final value?) 'name': value,
-      if (instance.emailNeedsAgreement case final value?)
-        'email_needs_agreement': value,
-      if (instance.isEmailValid case final value?) 'is_email_valid': value,
-      if (instance.isEmailVerified case final value?)
-        'is_email_verified': value,
-      if (instance.email case final value?) 'email': value,
-      if (instance.ageRangeNeedsAgreement case final value?)
-        'age_range_needs_agreement': value,
-      if (_$AgeRangeEnumMap[instance.ageRange] case final value?)
-        'age_range': value,
-      if (instance.birthyearNeedsAgreement case final value?)
-        'birthyear_needs_agreement': value,
-      if (instance.birthyear case final value?) 'birthyear': value,
-      if (instance.birthdayNeedsAgreement case final value?)
-        'birthday_needs_agreement': value,
-      if (instance.birthday case final value?) 'birthday': value,
-      if (_$BirthdayTypeEnumMap[instance.birthdayType] case final value?)
-        'birthday_type': value,
-      if (instance.isLeapMonth case final value?) 'is_leap_month': value,
-      if (instance.genderNeedsAgreement case final value?)
-        'gender_needs_agreement': value,
-      if (_$GenderEnumMap[instance.gender] case final value?) 'gender': value,
-      if (instance.legalNameNeedsAgreement case final value?)
-        'legal_name_needs_agreement': value,
-      if (instance.legalName case final value?) 'legal_name': value,
-      if (instance.legalBirthDateNeedsAgreement case final value?)
-        'legal_birth_date_needs_agreement': value,
-      if (instance.legalBirthDate case final value?) 'legal_birth_date': value,
-      if (instance.legalGenderNeedsAgreement case final value?)
-        'legal_gender_needs_agreement': value,
-      if (_$GenderEnumMap[instance.legalGender] case final value?)
-        'legal_gender': value,
-      if (instance.phoneNumberNeedsAgreement case final value?)
-        'phone_number_needs_agreement': value,
-      if (instance.phoneNumber case final value?) 'phone_number': value,
-      if (instance.isKoreanNeedsAgreement case final value?)
-        'is_korean_needs_agreement': value,
-      if (instance.isKorean case final value?) 'is_korean': value,
-    };
+  'profile_needs_agreement': ?instance.profileNeedsAgreement,
+  'profile_nickname_needs_agreement': ?instance.profileNicknameNeedsAgreement,
+  'profile_image_needs_agreement': ?instance.profileImageNeedsAgreement,
+  'profile': ?instance.profile?.toJson(),
+  'name_needs_agreement': ?instance.nameNeedsAgreement,
+  'name': ?instance.name,
+  'email_needs_agreement': ?instance.emailNeedsAgreement,
+  'is_email_valid': ?instance.isEmailValid,
+  'is_email_verified': ?instance.isEmailVerified,
+  'email': ?instance.email,
+  'age_range_needs_agreement': ?instance.ageRangeNeedsAgreement,
+  'age_range': ?_$AgeRangeEnumMap[instance.ageRange],
+  'birthyear_needs_agreement': ?instance.birthyearNeedsAgreement,
+  'birthyear': ?instance.birthyear,
+  'birthday_needs_agreement': ?instance.birthdayNeedsAgreement,
+  'birthday': ?instance.birthday,
+  'birthday_type': ?_$BirthdayTypeEnumMap[instance.birthdayType],
+  'is_leap_month': ?instance.isLeapMonth,
+  'gender_needs_agreement': ?instance.genderNeedsAgreement,
+  'gender': ?_$GenderEnumMap[instance.gender],
+  'legal_name_needs_agreement': ?instance.legalNameNeedsAgreement,
+  'legal_name': ?instance.legalName,
+  'legal_birth_date_needs_agreement': ?instance.legalBirthDateNeedsAgreement,
+  'legal_birth_date': ?instance.legalBirthDate,
+  'legal_gender_needs_agreement': ?instance.legalGenderNeedsAgreement,
+  'legal_gender': ?_$GenderEnumMap[instance.legalGender],
+  'phone_number_needs_agreement': ?instance.phoneNumberNeedsAgreement,
+  'phone_number': ?instance.phoneNumber,
+  'is_korean_needs_agreement': ?instance.isKoreanNeedsAgreement,
+  'is_korean': ?instance.isKorean,
+};
 
 const _$AgeRangeEnumMap = {
   AgeRange.age_0_9: '0~9',

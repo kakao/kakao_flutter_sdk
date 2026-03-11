@@ -18,14 +18,13 @@ AccessTokenResponse _$AccessTokenResponseFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$AccessTokenResponseToJson(
-        AccessTokenResponse instance) =>
-    <String, dynamic>{
-      'access_token': instance.accessToken,
-      'expires_in': instance.expiresIn,
-      if (instance.refreshToken case final value?) 'refresh_token': value,
-      if (instance.refreshTokenExpiresIn case final value?)
-        'refresh_token_expires_in': value,
-      if (instance.scope case final value?) 'scope': value,
-      'token_type': instance.tokenType,
-      if (instance.idToken case final value?) 'id_token': value,
-    };
+  AccessTokenResponse instance,
+) => <String, dynamic>{
+  'access_token': instance.accessToken,
+  'expires_in': instance.expiresIn,
+  'refresh_token': ?instance.refreshToken,
+  'refresh_token_expires_in': ?instance.refreshTokenExpiresIn,
+  'scope': ?instance.scope,
+  'token_type': instance.tokenType,
+  'id_token': ?instance.idToken,
+};

@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk_template/src/default_template.dart';
-import 'package:kakao_flutter_sdk_template/src/model/button.dart';
-import 'package:kakao_flutter_sdk_template/src/model/content.dart';
-import 'package:kakao_flutter_sdk_template/src/model/social.dart';
 
+import 'default_template.dart';
+import 'model/button.dart';
+import 'model/content.dart';
 import 'model/item_content.dart';
+import 'model/social.dart';
 
 part 'feed_template.g.dart';
 
@@ -12,7 +12,10 @@ part 'feed_template.g.dart';
 /// <br>
 /// EN: Default template for feed messages
 @JsonSerializable(
-    fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
+  fieldRename: FieldRename.snake,
+  explicitToJson: true,
+  includeIfNull: false,
+)
 class FeedTemplate extends DefaultTemplate {
   /// KO: 메시지 콘텐츠
   /// <br>
@@ -51,7 +54,7 @@ class FeedTemplate extends DefaultTemplate {
     this.social,
     this.buttons,
     this.buttonTitle,
-    this.objectType = "feed",
+    this.objectType = 'feed',
   });
 
   /// @nodoc

@@ -6,7 +6,7 @@ import 'package:kakao_flutter_sdk_user/src/constants.dart';
 import 'package:kakao_flutter_sdk_user/src/model/account.dart';
 import 'package:kakao_flutter_sdk_user/src/model/user.dart';
 
-import '../../kakao_flutter_sdk_common/test/helper.dart';
+import '../../kakao_flutter_sdk_common/test/shared/utils/load_data.dart';
 import 'test_enum_map.dart';
 
 void main() {
@@ -14,16 +14,16 @@ void main() {
     void parse(String data) {
       test(data, () async {
         final path = uriPathToFilePath(Constants.v2MePath);
-        var body = await loadJson("user/$path/$data.json");
-        Map<String, dynamic> expected = jsonDecode(body);
-        var response = User.fromJson(expected);
+        final body = await loadJson('user/$path/$data.json');
+        final expected = jsonDecode(body);
+        final response = User.fromJson(expected);
 
         expect(response.id, expected['id']);
         expect(response.properties, expected['properties']);
 
         if (response.kakaoAccount != null) {
-          var account = response.kakaoAccount!;
-          var expectedAccount = expected['kakao_account'];
+          final account = response.kakaoAccount!;
+          final expectedAccount = expected['kakao_account'];
 
           expect(
             account.profileNeedsAgreement,
@@ -49,16 +49,19 @@ void main() {
           expect(account.isEmailVerified, expectedAccount['is_email_verified']);
           expect(account.isEmailValid, expectedAccount['is_email_valid']);
           expect(account.email, expectedAccount['email']);
-          expect(account.ageRangeNeedsAgreement,
-              expectedAccount['age_range_needs_agreement']);
+          expect(
+            account.ageRangeNeedsAgreement,
+            expectedAccount['age_range_needs_agreement'],
+          );
 
           expect(
-              account.ageRange,
-              $enumDecodeNullable(
-                $AgeRangeEnumMap,
-                expectedAccount['age_range'],
-                unknownValue: AgeRange.unknown,
-              ));
+            account.ageRange,
+            $enumDecodeNullable(
+              $AgeRangeEnumMap,
+              expectedAccount['age_range'],
+              unknownValue: AgeRange.unknown,
+            ),
+          );
 
           expect(
             account.birthyearNeedsAgreement,
@@ -109,8 +112,11 @@ void main() {
 
           expect(
             account.legalGender,
-            $enumDecodeNullable($GenderEnumMap, expectedAccount['legal_gender'],
-                unknownValue: Gender.other),
+            $enumDecodeNullable(
+              $GenderEnumMap,
+              expectedAccount['legal_gender'],
+              unknownValue: Gender.other,
+            ),
           );
           expect(
             account.phoneNumberNeedsAgreement,
@@ -121,8 +127,8 @@ void main() {
           expect(account.isKorean, expectedAccount['is_korean']);
 
           if (account.profile != null) {
-            var profile = account.profile!;
-            var expectedProfile = expectedAccount['profile'];
+            final profile = account.profile!;
+            final expectedProfile = expectedAccount['profile'];
 
             expect(profile.nickname, expectedProfile['nickname']);
             expect(
@@ -162,8 +168,11 @@ void main() {
     test('AgeRange Test', () {
       expect(
         AgeRange.age_0_9,
-        $enumDecodeNullable($AgeRangeEnumMap, '0~9',
-            unknownValue: AgeRange.unknown),
+        $enumDecodeNullable(
+          $AgeRangeEnumMap,
+          '0~9',
+          unknownValue: AgeRange.unknown,
+        ),
       );
       expect(
         AgeRange.age_10_14,
@@ -213,26 +222,44 @@ void main() {
 
     test('BirthdayType Test', () {
       expect(
-          BirthdayType.solar,
-          $enumDecode($BirthdayTypeEnumMap, 'SOLAR',
-              unknownValue: BirthdayType.unknown));
+        BirthdayType.solar,
+        $enumDecode(
+          $BirthdayTypeEnumMap,
+          'SOLAR',
+          unknownValue: BirthdayType.unknown,
+        ),
+      );
       expect(
-          BirthdayType.lunar,
-          $enumDecode($BirthdayTypeEnumMap, 'LUNAR',
-              unknownValue: BirthdayType.unknown));
+        BirthdayType.lunar,
+        $enumDecode(
+          $BirthdayTypeEnumMap,
+          'LUNAR',
+          unknownValue: BirthdayType.unknown,
+        ),
+      );
       expect(
-          BirthdayType.unknown,
-          $enumDecode($BirthdayTypeEnumMap, 'test',
-              unknownValue: BirthdayType.unknown));
+        BirthdayType.unknown,
+        $enumDecode(
+          $BirthdayTypeEnumMap,
+          'test',
+          unknownValue: BirthdayType.unknown,
+        ),
+      );
     });
 
     test('Gender Test', () {
-      expect(Gender.female,
-          $enumDecode($GenderEnumMap, 'female', unknownValue: Gender.other));
-      expect(Gender.male,
-          $enumDecode($GenderEnumMap, 'male', unknownValue: Gender.other));
-      expect(Gender.other,
-          $enumDecode($GenderEnumMap, 'test', unknownValue: Gender.other));
+      expect(
+        Gender.female,
+        $enumDecode($GenderEnumMap, 'female', unknownValue: Gender.other),
+      );
+      expect(
+        Gender.male,
+        $enumDecode($GenderEnumMap, 'male', unknownValue: Gender.other),
+      );
+      expect(
+        Gender.other,
+        $enumDecode($GenderEnumMap, 'test', unknownValue: Gender.other),
+      );
     });
   });
 }

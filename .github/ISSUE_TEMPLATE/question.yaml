@@ -1,7 +1,7 @@
 name: I need help
 description: 특정 API를 사용하는데 도움이 필요합니다. You need help with using a particular API.
 title: "[Question] "
-labels: ["question", "help wanted"]
+labels: [ "question", "help wanted" ]
 body:
   - type: markdown
     attributes:

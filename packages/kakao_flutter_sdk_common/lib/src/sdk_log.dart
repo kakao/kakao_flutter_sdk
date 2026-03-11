@@ -1,57 +1,34 @@
 import 'dart:collection';
 import 'dart:developer' as developer;
 
-import 'package:flutter/foundation.dart';
-import 'package:kakao_flutter_sdk_common/src/kakao_sdk.dart';
+import 'kakao_sdk.dart';
 
 /// @nodoc
-enum SdkLogLevel { v, d, i, w, e }
+enum SdkLogLevel {
+  v('[\uD83D\uDCAC]', 0),
+  d('[ℹ️]', 1),
+  i('[\uD83D\uDD2C]', 2),
+  w('[⚠️]', 3),
+  e('[‼️]', 4);
 
-/// @nodoc
-extension SdkLogLevelExtension on SdkLogLevel {
-  int get level {
-    switch (this) {
-      case SdkLogLevel.v:
-        return 0;
-      case SdkLogLevel.d:
-        return 1;
-      case SdkLogLevel.i:
-        return 2;
-      case SdkLogLevel.w:
-        return 3;
-      case SdkLogLevel.e:
-        return 4;
-    }
-  }
+  const SdkLogLevel(this.prefix, this.level);
 
-  String get prefix {
-    switch (this) {
-      case SdkLogLevel.v:
-        return "[\uD83D\uDCAC]";
-      case SdkLogLevel.d:
-        return "[ℹ️]";
-      case SdkLogLevel.i:
-        return "[\uD83D\uDD2C]";
-      case SdkLogLevel.w:
-        return "[⚠️]";
-      case SdkLogLevel.e:
-        return "[‼️]";
-    }
-  }
+  final int level;
+  final String prefix;
 }
 
 /// @nodoc
 class SdkLog {
-  static final bool _enabled = KakaoSdk.logging;
+  static bool get _enabled => KakaoSdk.logging;
 
-  static final LinkedList<LogData> _logs = LinkedList();
+  static final List<LogData> _logs = [];
 
   static const int _maxSize = 100;
 
   SdkLog._();
 
-  static Future<String> get logs async {
-    return '==== sdk version: ${KakaoSdk.sdkVersion}\n==== app version: ${await KakaoSdk.appVer}\n${_logs.join("\n")}';
+  static String get logs {
+    return '==== sdk version: ${KakaoSdk.sdkVersion} ====\n==== app version: ${KakaoSdk.platformInfo.appVer} ====\n${_logs.join('\n')}';
   }
 
   static void v(Object? logged) => _log(logged, SdkLogLevel.v);
@@ -65,16 +42,17 @@ class SdkLog {
   static void e(Object? logged) => _log(logged, SdkLogLevel.e);
 
   static void _log(Object? logged, SdkLogLevel logLevel) {
-    String log = "${logLevel.prefix} $logged";
+    final log = '${logLevel.prefix} $logged';
 
-    if (kDebugMode && _enabled) {
+    if (_enabled) {
       developer.log(log, level: logLevel.level);
     }
     if (_enabled && logLevel.level >= SdkLogLevel.i.level) {
-      String currentTime = DateTime.now().toString();
-      // format time to [MM-dd HH:mm:ss.SSS]
-      String loggingTime = currentTime.substring(0, currentTime.length - 3);
-      _logs.add(LogData("$loggingTime $log"));
+      final currentTime = DateTime.now().toString();
+      // [MM-dd HH:mm:ss.SSS] 형식으로 변환. (년도, 타임존 제거)
+      final time = currentTime.substring(5, currentTime.length - 3);
+      _logs.add(LogData('$time $log'));
+
       if (_logs.length > _maxSize) {
         _logs.remove(_logs.first);
       }

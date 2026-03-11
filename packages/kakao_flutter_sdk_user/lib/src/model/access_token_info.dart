@@ -11,18 +11,18 @@ class AccessTokenInfo {
   /// <br>
   /// EN: App ID
   @JsonKey(name: 'app_id')
-  int appId;
+  final int appId;
 
   /// KO: 회원번호
   /// <br>
   /// EN: Service user ID
-  int? id;
+  final int? id;
 
   /// KO: 만료 시간(단위: 초)
   /// <br>
   /// EN: Remaining expiration time (Unit: second)
-  @JsonKey(name: "expires_in")
-  int expiresIn;
+  @JsonKey(name: 'expires_in')
+  final int expiresIn;
 
   /// @nodoc
   AccessTokenInfo(this.appId, this.id, this.expiresIn);

@@ -7,17 +7,15 @@ part of 'profile.dart';
 // **************************************************************************
 
 Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
-      json['nickname'] as String?,
-      json['thumbnail_image_url'] as String?,
-      json['profile_image_url'] as String?,
-      json['is_default_image'] as bool?,
-    );
+  json['nickname'] as String?,
+  json['thumbnail_image_url'] as String?,
+  json['profile_image_url'] as String?,
+  json['is_default_image'] as bool?,
+);
 
 Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
-      if (instance.nickname case final value?) 'nickname': value,
-      if (instance.thumbnailImageUrl case final value?)
-        'thumbnail_image_url': value,
-      if (instance.profileImageUrl case final value?)
-        'profile_image_url': value,
-      if (instance.isDefaultImage case final value?) 'is_default_image': value,
-    };
+  'nickname': ?instance.nickname,
+  'thumbnail_image_url': ?instance.thumbnailImageUrl,
+  'profile_image_url': ?instance.profileImageUrl,
+  'is_default_image': ?instance.isDefaultImage,
+};

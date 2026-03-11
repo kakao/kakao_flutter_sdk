@@ -14,6 +14,7 @@ class AccountLoginParams {
   /// EN: A value to fill in ID field of the Kakao Account login page
   final String? loginHint;
 
+  /// @nodoc
   AccountLoginParams({
     this.prompts,
     this.loginHint,

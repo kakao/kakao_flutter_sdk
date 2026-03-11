@@ -1,8 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk_template/src/default_template.dart';
-import 'package:kakao_flutter_sdk_template/src/model/button.dart';
-import 'package:kakao_flutter_sdk_template/src/model/content.dart';
-import 'package:kakao_flutter_sdk_template/src/model/link.dart';
+
+import 'default_template.dart';
+import 'model/button.dart';
+import 'model/content.dart';
+import 'model/link.dart';
 
 part 'list_template.g.dart';
 
@@ -10,7 +11,10 @@ part 'list_template.g.dart';
 /// <br>
 /// EN: Default template for list messages
 @JsonSerializable(
-    fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
+  fieldRename: FieldRename.snake,
+  explicitToJson: true,
+  includeIfNull: false,
+)
 class ListTemplate extends DefaultTemplate {
   /// KO: 헤더 문구
   /// <br>
@@ -49,7 +53,7 @@ class ListTemplate extends DefaultTemplate {
     required this.contents,
     this.buttons,
     this.buttonTitle,
-    this.objectType = "list",
+    this.objectType = 'list',
   });
 
   /// @nodoc

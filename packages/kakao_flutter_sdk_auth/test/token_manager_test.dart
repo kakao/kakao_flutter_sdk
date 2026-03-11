@@ -1,208 +1,197 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kakao_flutter_sdk_auth/src/constants.dart';
-import 'package:kakao_flutter_sdk_auth/src/model/access_token_response.dart';
-import 'package:kakao_flutter_sdk_auth/src/model/oauth_token.dart';
-import 'package:kakao_flutter_sdk_auth/src/token_manager.dart';
+import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../kakao_flutter_sdk_common/test/helper.dart';
-import 'test_double.dart';
+import '../../kakao_flutter_sdk_common/test/shared/doubles/fake_common_platform.dart';
+import 'support/doubles/fake_token_manager.dart';
+import '../../kakao_flutter_sdk_common/test/shared/utils/shared_preferences.dart';
+
+const _tokenKey = 'com.kakao.token.OAuthToken';
+const _versionKey = 'com.kakao.token.version';
 
 void main() {
-  Map<String, dynamic>? map;
-  AccessTokenResponse? response;
-  late DefaultTokenManager tokenManager;
   TestWidgetsFlutterBinding.ensureInitialized();
 
+  late SharedPreferences legacyPreferences;
+  late SharedPreferencesAsync preferences;
+
   setUp(() async {
-    registerMockMethodChannel();
-    registerMockSharedPreferencesMethodChannel();
+    (legacyPreferences, preferences) = await initializeSharedPreferences();
 
-    final path = uriPathToFilePath(Constants.tokenPath);
-    map = await loadJsonIntoMap('auth/$path/has_rt_and_scopes.json');
-    response = AccessTokenResponse.fromJson(map!);
-    tokenManager = DefaultTokenManager();
+    await KakaoSdk.init(
+      nativeAppKey: 'test_app_key',
+      platformProvider: FakeCommonPlatform(),
+    );
   });
 
-  test('toCache', () async {
-    expect(response!.accessToken, map!["access_token"]);
-    expect(response!.refreshToken, map!["refresh_token"]);
-    await tokenManager.setToken(OAuthToken.fromResponse(response!));
-    var newToken = await tokenManager.getToken();
+  group('TokenManagerProvider', () {
+    test('should be singleton', () {
+      final instance1 = TokenManagerProvider.instance;
+      final instance2 = TokenManagerProvider.instance;
+      expect(identical(instance1, instance2), isTrue);
+    });
 
-    expect(true, newToken != null);
-    expect(newToken!.accessToken, response!.accessToken);
-    expect(newToken.refreshToken, response!.refreshToken);
-    expect(newToken.scopes?.join(" "), response!.scope);
+    test('should have default manager', () {
+      expect(TokenManagerProvider.instance.manager, isA<DefaultTokenManager>());
+    });
+
+    test('should allow custom manager', () {
+      final customManager = FakeTokenManager();
+      TokenManagerProvider.instance.manager = customManager;
+      expect(TokenManagerProvider.instance.manager, equals(customManager));
+
+      // Reset to default
+      TokenManagerProvider.instance.manager = DefaultTokenManager();
+    });
   });
 
-  test("clear", () async {
-    var token = OAuthToken.fromResponse(response!);
-    await tokenManager.setToken(token);
-    await tokenManager.clear();
-    var newToken = await tokenManager.getToken();
-    expect(null, newToken);
+  group('DefaultTokenManager', () {
+    late Cipher cipher;
+    late DefaultTokenManager manager;
+    late OAuthToken testToken;
+
+    setUp(() async {
+      cipher = AESCipher.create(
+        KakaoSdk.platformInfo.origin,
+        KakaoSdk.platformInfo.platformId,
+      );
+      manager = DefaultTokenManager();
+      testToken = OAuthToken(
+        'test_access_token',
+        DateTime.now().add(const Duration(hours: 1)),
+        'test_refresh_token',
+        DateTime.now().add(const Duration(days: 30)),
+        ['profile', 'friends'],
+      );
+    });
+
+    tearDown(() async {
+      await legacyPreferences.clear();
+      await preferences.clear();
+    });
+
+    test('should return null when no token is saved', () async {
+      final token = await manager.getToken();
+      expect(token, isNull);
+    });
+
+    test('should save and retrieve token', () async {
+      await manager.setToken(testToken);
+      final retrievedToken = await manager.getToken();
+
+      expect(retrievedToken, isNotNull);
+      expect(retrievedToken?.accessToken, equals(testToken.accessToken));
+      expect(retrievedToken?.refreshToken, equals(testToken.refreshToken));
+    });
+
+    test('should return cached token on second call', () async {
+      await manager.setToken(testToken);
+
+      final token1 = await manager.getToken();
+      final token2 = await manager.getToken();
+
+      expect(identical(token1, token2), isTrue);
+    });
+
+    test('should clear token', () async {
+      await manager.setToken(testToken);
+      await manager.clear();
+
+      final token = await manager.getToken();
+      expect(token, isNull);
+    });
+
+    test('should detect v1 SDK version', () {
+      expect(manager.isV1Sdk('1.0.0'), isTrue);
+      expect(manager.isV1Sdk('1.9.9'), isTrue);
+      expect(manager.isV1Sdk('1.0.0+1'), isTrue);
+      expect(manager.isV1Sdk('2.0.0'), isFalse);
+      expect(manager.isV1Sdk('0.9.0'), isFalse);
+    });
+
+    test('should handle token update', () async {
+      await manager.setToken(testToken);
+
+      final newToken = OAuthToken(
+        'new_access_token',
+        DateTime.now().add(const Duration(hours: 2)),
+        'new_refresh_token',
+        DateTime.now().add(const Duration(days: 60)),
+        ['profile', 'friends', 'email'],
+      );
+
+      await manager.setToken(newToken);
+      final retrievedToken = await manager.getToken();
+
+      expect(retrievedToken?.accessToken, equals('new_access_token'));
+    });
+
+    test(
+      'token migration check  (SharedPreferences -> SharedPreferencesAsync)',
+      () async {
+        // 저장된 토큰 없는지 확인
+        expect(await manager.getToken(), isNull);
+
+        // 저장된 키 값 없는지 확인
+        expect(await preferences.getString(_versionKey), isNull);
+        expect(await preferences.getString(_tokenKey), isNull);
+
+        // v1 토큰 세팅
+        final encryptedV1Token = cipher.encrypt(jsonEncode(testToken));
+
+        await legacyPreferences.setString(_tokenKey, encryptedV1Token);
+        await legacyPreferences.setString(_versionKey, '1.0.0');
+
+        manager = DefaultTokenManager();
+        await manager.getToken(); // 토큰 마이그레이션 진행되어야함
+
+        final newVersion = await preferences.getString(_versionKey);
+        final v2Token = await preferences.getString(_tokenKey);
+
+        //
+        expect(newVersion, equals(KakaoSdk.sdkVersion));
+        expect(v2Token, equals(encryptedV1Token));
+      },
+    );
+
+    test('should handle decryption error', () async {
+      // Manually set invalid encrypted token
+      final preferences = await SharedPreferences.getInstance();
+      await preferences.setString(_tokenKey, 'invalid_encrypted_data');
+      await preferences.setString(_versionKey, KakaoSdk.sdkVersion);
+
+      manager = DefaultTokenManager();
+      final token = await manager.getToken();
+
+      expect(token, isNull);
+    });
+
+    test('should persist token with encryption', () async {
+      await manager.setToken(testToken);
+
+      final preferencesAsync = SharedPreferencesAsync();
+      final encryptedToken = await preferencesAsync.getString(_tokenKey);
+
+      expect(encryptedToken, isNotNull);
+      expect(encryptedToken, isNot(contains('test_access_token')));
+    });
+
+    test('should save SDK version', () async {
+      await manager.setToken(testToken);
+
+      final preferencesAsync = SharedPreferencesAsync();
+      final version = await preferencesAsync.getString(_versionKey);
+      expect(version, equals(KakaoSdk.sdkVersion));
+    });
+
+    test('clear should reset cached token', () async {
+      await manager.setToken(testToken);
+      expect(await manager.getToken(), isNotNull);
+
+      await manager.clear();
+      expect(await manager.getToken(), isNull);
+    });
   });
-
-  test("token migration test ( ~ 0.9.0)", () async {
-    var oldTokenManager = OldTokenManager();
-    await oldTokenManager.setToken(OAuthToken.fromResponse(response!));
-    final oldToken = await oldTokenManager.getToken();
-    expect(true, oldToken != null);
-
-    // token migration
-    final newToken = await tokenManager.getToken();
-    expect(true, newToken != null);
-
-    // oldTokenManager can't get token after token migration
-    try {
-      final prevToken = await oldTokenManager.getToken();
-      fail("should not reach here $prevToken");
-    } catch (_) {}
-  });
-
-  test("token migration test (0.9.0 <= version < 1.0.0)", () async {
-    // Remove token and version key
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove(DefaultTokenManager.versionKey);
-    await tokenManager.clear();
-
-    var oldTokenManager = BetaTokenManager();
-    await oldTokenManager.setToken(OAuthToken.fromResponse(response!));
-    final oldToken = await oldTokenManager.getToken();
-    expect(true, oldToken != null);
-
-    // token migration
-    final newToken = await tokenManager.getToken();
-    expect(true, newToken != null);
-
-    // oldTokenManager can't get token after token migration
-    try {
-      final prevToken = await oldTokenManager.getToken();
-      fail("should not reach here $prevToken");
-    } catch (_) {}
-  });
-}
-
-const tokenKey = "com.kakao.token.OAuthToken";
-const atKey = "com.kakao.token.AccessToken";
-const expiresAtKey = "com.kakao.token.AccessToken.ExpiresAt";
-const rtKey = "com.kakao.token.RefreshToken";
-const rtExpiresAtKey = "com.kakao.token.RefreshToken.ExpiresAt";
-const secureModeKey = "com.kakao.token.KakaoSecureMode";
-const scopesKey = "com.kakao.token.Scopes";
-
-// old version token manager ( ~ 0.8.2)
-class OldTokenManager implements TokenManager {
-  @override
-  Future<void> clear() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.remove(atKey);
-    await preferences.remove(expiresAtKey);
-    await preferences.remove(rtKey);
-    await preferences.remove(rtExpiresAtKey);
-    await preferences.remove(secureModeKey);
-    await preferences.remove(scopesKey);
-  }
-
-  @override
-  Future<OAuthToken?> getToken() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    var accessToken = preferences.getString(atKey);
-    var atExpiresAtMillis = preferences.getInt(expiresAtKey);
-
-    var expiresAt = atExpiresAtMillis != null
-        ? DateTime.fromMillisecondsSinceEpoch(atExpiresAtMillis)
-        : null;
-    var refreshToken = preferences.getString(rtKey);
-    var rtExpiresAtMillis = preferences.getInt(rtExpiresAtKey);
-    var refreshTokenExpiresAt = rtExpiresAtMillis != null
-        ? DateTime.fromMillisecondsSinceEpoch(rtExpiresAtMillis)
-        : null;
-    List<String>? scopes = preferences.getStringList(scopesKey);
-
-    return OAuthToken(accessToken!, expiresAt!, refreshToken!,
-        refreshTokenExpiresAt!, scopes);
-  }
-
-  @override
-  Future<void> setToken(OAuthToken token) async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.setString(atKey, token.accessToken);
-    await preferences.setInt(
-        expiresAtKey, token.expiresAt.millisecondsSinceEpoch);
-
-    if (token.refreshToken != null) {
-      await preferences.setString(rtKey, token.refreshToken!);
-    }
-
-    if (token.refreshTokenExpiresAt != null) {
-      await preferences.setInt(
-          rtExpiresAtKey, token.refreshTokenExpiresAt!.millisecondsSinceEpoch);
-    }
-    await preferences.setStringList(scopesKey, token.scopes!);
-  }
-}
-
-// old version token manager (0.9.0 <= version < 1.0.0)
-class BetaTokenManager implements TokenManager {
-  @override
-  Future<void> clear() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.remove(tokenKey);
-  }
-
-  @override
-  Future<void> setToken(OAuthToken token) async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.setString(tokenKey, jsonEncode(token));
-  }
-
-  @override
-  Future<OAuthToken?> getToken() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    var jsonToken = preferences.getString(tokenKey);
-
-    if (jsonToken == null) {
-      return await _migrateOldToken();
-    }
-    return OAuthToken.fromJson(jsonDecode(jsonToken));
-  }
-
-  // Token management logic has been changed from 0.9.0 version.
-  // This code has been added for compatibility with previous versions.
-  Future<OAuthToken?> _migrateOldToken() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    var accessToken = preferences.getString(atKey);
-    var refreshToken = preferences.getString(rtKey);
-    var atExpiresAtMillis = preferences.getInt(expiresAtKey);
-    var rtExpiresAtMillis = preferences.getInt(rtExpiresAtKey);
-    List<String>? scopes = preferences.getStringList(scopesKey);
-
-    // If token that issued before 0.9.0 version are loaded, then return OAuthToken.
-    if (accessToken != null &&
-        refreshToken != null &&
-        atExpiresAtMillis != null &&
-        rtExpiresAtMillis != null) {
-      var expiresAt = DateTime.fromMillisecondsSinceEpoch(atExpiresAtMillis);
-      var refreshTokenExpiresAt =
-          DateTime.fromMillisecondsSinceEpoch(rtExpiresAtMillis);
-
-      final token = OAuthToken(
-          accessToken, expiresAt, refreshToken, refreshTokenExpiresAt, scopes);
-
-// Remove all token properties that saved before 0.9.0 version and save migrated token.
-      await preferences.remove(atKey);
-      await preferences.remove(expiresAtKey);
-      await preferences.remove(rtKey);
-      await preferences.remove(rtExpiresAtKey);
-      await preferences.remove(secureModeKey);
-      await preferences.remove(scopesKey);
-      await preferences.setString(tokenKey, jsonEncode(token));
-      return token;
-    }
-    return null;
-  }
 }

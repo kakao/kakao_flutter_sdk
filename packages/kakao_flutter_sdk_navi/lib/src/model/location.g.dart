@@ -7,15 +7,15 @@ part of 'location.dart';
 // **************************************************************************
 
 Location _$LocationFromJson(Map<String, dynamic> json) => Location(
-      name: json['name'] as String,
-      x: json['x'] as String,
-      y: json['y'] as String,
-      rpFlag: json['rpflag'] as String?,
-    );
+  name: json['name'] as String,
+  x: json['x'] as String,
+  y: json['y'] as String,
+  rpFlag: json['rpflag'] as String?,
+);
 
 Map<String, dynamic> _$LocationToJson(Location instance) => <String, dynamic>{
-      'name': instance.name,
-      'x': instance.x,
-      'y': instance.y,
-      if (instance.rpFlag case final value?) 'rpflag': value,
-    };
+  'name': instance.name,
+  'x': instance.x,
+  'y': instance.y,
+  'rpflag': ?instance.rpFlag,
+};

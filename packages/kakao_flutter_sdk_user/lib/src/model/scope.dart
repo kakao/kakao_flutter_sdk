@@ -66,13 +66,17 @@ enum ScopeType {
   /// KO: 개인정보 보호 동의항목
   /// <br>
   /// EN: Scope for personal information
-  @JsonValue("PRIVACY")
+  @JsonValue('PRIVACY')
   privacy,
 
   /// KO: 접근권한 관리 동의항목
   /// <br>
   /// EN: Scope for permission
-  @JsonValue("SERVICE")
+  @JsonValue('SERVICE')
   service,
+
+  /// KO: 알 수 없음
+  /// <br>
+  /// EN: Unknown
   unknown,
 }

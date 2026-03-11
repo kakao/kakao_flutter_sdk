@@ -14,15 +14,14 @@ CommerceTemplate _$CommerceTemplateFromJson(Map<String, dynamic> json) =>
           ?.map((e) => Button.fromJson(e as Map<String, dynamic>))
           .toList(),
       buttonTitle: json['button_title'] as String?,
-      objectType: json['object_type'] as String? ?? "commerce",
+      objectType: json['object_type'] as String? ?? 'commerce',
     );
 
 Map<String, dynamic> _$CommerceTemplateToJson(CommerceTemplate instance) =>
     <String, dynamic>{
       'content': instance.content.toJson(),
       'commerce': instance.commerce.toJson(),
-      if (instance.buttons?.map((e) => e.toJson()).toList() case final value?)
-        'buttons': value,
-      if (instance.buttonTitle case final value?) 'button_title': value,
+      'buttons': ?instance.buttons?.map((e) => e.toJson()).toList(),
+      'button_title': ?instance.buttonTitle,
       'object_type': instance.objectType,
     };

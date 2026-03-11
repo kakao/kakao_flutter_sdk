@@ -1,0 +1,28 @@
+name: Prepare Publish Environment
+description: Set up Flutter/Dart and bootstrap melos workspace.
+
+inputs:
+  flutter-version:
+    description: Flutter SDK version to use.
+    required: false
+    default: 3.38.4
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ inputs.flutter-version }}
+        cache: true
+
+    - name: Setup Dart
+      uses: dart-lang/setup-dart@v1
+
+    - name: Install dependencies
+      shell: bash
+      run: flutter pub get
+
+    - name: Melos bootstrap
+      shell: bash
+      run: dart run melos bs

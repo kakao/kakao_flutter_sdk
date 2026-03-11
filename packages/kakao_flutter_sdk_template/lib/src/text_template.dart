@@ -1,7 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk_template/src/default_template.dart';
-import 'package:kakao_flutter_sdk_template/src/model/button.dart';
-import 'package:kakao_flutter_sdk_template/src/model/link.dart';
+
+import 'default_template.dart';
+import 'model/button.dart';
+import 'model/link.dart';
 
 part 'text_template.g.dart';
 
@@ -9,7 +10,10 @@ part 'text_template.g.dart';
 /// <br>
 /// EN: Default template for text messages
 @JsonSerializable(
-    fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
+  fieldRename: FieldRename.snake,
+  explicitToJson: true,
+  includeIfNull: false,
+)
 class TextTemplate extends DefaultTemplate {
   /// KO: 텍스트
   /// <br>
@@ -42,7 +46,7 @@ class TextTemplate extends DefaultTemplate {
     required this.link,
     this.buttons,
     this.buttonTitle,
-    this.objectType = "text",
+    this.objectType = 'text',
   });
 
   /// @nodoc

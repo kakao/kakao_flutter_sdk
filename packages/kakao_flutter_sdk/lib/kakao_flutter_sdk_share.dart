@@ -1,3 +1,3 @@
-library kakao_flutter_sdk_share;
+library;
 
 export 'package:kakao_flutter_sdk_share/kakao_flutter_sdk_share.dart';

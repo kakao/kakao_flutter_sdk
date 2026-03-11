@@ -19,9 +19,9 @@ SharingResult _$SharingResultFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$SharingResultToJson(SharingResult instance) =>
     <String, dynamic>{
       'template_id': instance.templateId,
-      if (instance.templateArgs case final value?) 'template_args': value,
+      'template_args': ?instance.templateArgs,
       'template_msg': instance.templateMsg,
       'warning_msg': instance.warningMsg,
       'argument_msg': instance.argumentMsg,
-      if (instance.schemeParams case final value?) 'scheme_params': value,
+      'scheme_params': ?instance.schemeParams,
     };

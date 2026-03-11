@@ -7,14 +7,13 @@ part of 'channels.dart';
 // **************************************************************************
 
 Channels _$ChannelsFromJson(Map<String, dynamic> json) => Channels(
-      (json['user_id'] as num?)?.toInt(),
-      (json['channels'] as List<dynamic>?)
-          ?.map((e) => Channel.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
+  (json['user_id'] as num?)?.toInt(),
+  (json['channels'] as List<dynamic>?)
+      ?.map((e) => Channel.fromJson(e as Map<String, dynamic>))
+      .toList(),
+);
 
 Map<String, dynamic> _$ChannelsToJson(Channels instance) => <String, dynamic>{
-      if (instance.userId case final value?) 'user_id': value,
-      if (instance.channels?.map((e) => e.toJson()).toList() case final value?)
-        'channels': value,
-    };
+  'user_id': ?instance.userId,
+  'channels': ?instance.channels?.map((e) => e.toJson()).toList(),
+};

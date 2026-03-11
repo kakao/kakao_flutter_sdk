@@ -1,0 +1,73 @@
+name: Publish SDK
+
+on:
+  push:
+    tags:
+      - '*'
+
+concurrency:
+  group: publish-sdk-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Prepare publish environment
+        uses: ./.github/actions/prepare-publish
+
+      - name: Fetch master
+        shell: bash
+        run: git fetch origin master --depth=1
+
+      - name: Validate release tag
+        shell: bash
+        run: dart run scripts/validate_release.dart "${{ github.ref_name }}"
+
+  publish:
+    needs: validate
+    runs-on: ubuntu-latest
+    environment:
+      name: pub.dev
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      PUBLISH_DRY_RUN: "false"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Prepare publish environment
+        uses: ./.github/actions/prepare-publish
+
+      - name: Publish to pub.dev via melos script
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "PUBLISH_DRY_RUN=$PUBLISH_DRY_RUN"
+          dart run scripts/publish.dart 2>&1 | tee publish.log
+
+      - name: Upload publish log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: publish-log
+          path: publish.log
+
+  docs-publish:
+    needs: publish
+    uses: ./.github/workflows/publish-docs.yml
+    with:
+      version: ${{ github.ref_name }}
+      repository: release
+    secrets: inherit

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widget_previews.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:kakao_flutter_sdk_user/src/component/kakao_colors.dart';
 
-@immutable
+import 'kakao_colors.dart';
+
+/// @nodoc
 class SquareButton extends StatelessWidget {
   final String iconAsset;
   final String title;

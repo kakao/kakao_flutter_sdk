@@ -2,7 +2,7 @@ name: Bug Report
 description: |
   kakao_flutter_sdk를 사용하는데 문제가 있습니다. There is a problem using kakao_flutter_sdk.
 title: "[Bug] "
-labels: ["bug"]
+labels: [ "bug" ]
 body:
   - type: markdown
     attributes:
@@ -23,8 +23,8 @@ body:
     attributes:
       label: 이슈 설명 (Issue description)
       description: |
-         이슈에 대해서 설명해주세요
-         Please explain the issue
+        이슈에 대해서 설명해주세요
+        Please explain the issue
     validations:
       required: true
   - type: input
@@ -32,8 +32,8 @@ body:
     attributes:
       label: 앱 ID (App ID)
       description: |
-         [카카오 디벨로퍼스](https://developers.kakao.com)에서 앱 ID를 확인해주세요
-         Please check your app id on [Kakao Developers](https://developers.kakao.com)
+        [카카오 디벨로퍼스](https://developers.kakao.com)에서 앱 ID를 확인해주세요
+        Please check your app id on [Kakao Developers](https://developers.kakao.com)
       placeholder: ex. 123456
     validations:
       required: true

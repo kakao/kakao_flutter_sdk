@@ -16,6 +16,6 @@ AccessTokenInfo _$AccessTokenInfoFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$AccessTokenInfoToJson(AccessTokenInfo instance) =>
     <String, dynamic>{
       'app_id': instance.appId,
-      if (instance.id case final value?) 'id': value,
+      'id': ?instance.id,
       'expires_in': instance.expiresIn,
     };

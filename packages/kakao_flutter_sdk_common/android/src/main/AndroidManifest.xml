@@ -1,48 +1,9 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <application>
-        <activity
-            android:name=".TalkAuthCodeActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden|uiMode"
-            android:exported="false"
-            android:launchMode="singleTask"
-            android:theme="@style/TransparentCompat" />
-        <activity
-            android:name=".CustomTabsActivity"
-            android:exported="true"
-            android:launchMode="singleTask"
-            android:theme="@style/TransparentCompat" />
-        <activity
-            android:name=".AuthCodeCustomTabsActivity"
-            android:exported="true"
-            android:launchMode="singleTask"
-            android:theme="@style/TransparentCompat" />
-
-        <activity
-            android:name=".FollowChannelHandlerActivity"
-            android:exported="true"
-            android:launchMode="singleTask"
-            android:theme="@style/TransparentCompat" />
-
-        <activity
-            android:name=".AppsHandlerActivity"
-            android:exported="true"
-            android:launchMode="singleTask"
-            android:theme="@style/TransparentCompat" />
-    </application>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.kakao.sdk.flutter.common">
 
     <queries>
         <package android:name="com.kakao.talk" />
-        <package android:name="com.kakao.talk.alpha" />
-        <package android:name="com.kakao.talk.sandbox" />
         <package android:name="com.locnall.KimGiSa" />
         <package android:name="com.lguplus.navi" />
-
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="https" />
-        </intent>
     </queries>
 </manifest>
-

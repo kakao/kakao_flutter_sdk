@@ -5,10 +5,13 @@ class Constants {
   static const String authorizePath = '/oauth/authorize';
   static const String apiWebCodeJson = '/apiweb/code.json';
 
-  static const String sdkVersion = "sdk_version";
+  static const String authorization = 'Authorization';
+  static const String bearer = 'Bearer';
+
   static const String agt = 'agt';
   static const String scope = 'scope';
   static const String code = 'code';
+  static const String error = 'error';
   static const String channelPublicId = 'channel_public_id';
   static const String serviceTerms = 'service_terms';
   static const String prompt = 'prompt';
@@ -29,8 +32,7 @@ class Constants {
   static const String iosBundleId = 'ios_bundle_id';
   static const String isPopup = 'is_popup';
   static const String stateToken = 'state_token';
-
+  static const String authTranId = 'auth_tran_id';
   static const String codeChallenge = 'code_challenge';
   static const String codeChallengeMethod = 'code_challenge_method';
-  static const String codeChallengeMethodValue = 'S256';
 }

@@ -25,7 +25,7 @@ class Location {
   /// KO: 도착 링크(현재 미지원)
   /// <br>
   /// EN: Link for the destination (Currently not available)
-  @JsonKey(name: "rpflag")
+  @JsonKey(name: 'rpflag')
   final String? rpFlag;
 
   /// @nodoc

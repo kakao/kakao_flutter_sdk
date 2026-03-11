@@ -11,12 +11,12 @@ class RevokedServiceTerms {
   /// KO: 태그
   /// <br>
   /// EN: Tag
-  String tag;
+  final String tag;
 
   /// KO: 동의 여부
   /// <br>
   /// EN: The consent status of the service terms
-  bool agreed;
+  final bool agreed;
 
   /// @nodoc
   RevokedServiceTerms(this.tag, this.agreed);

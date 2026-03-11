@@ -12,42 +12,42 @@ class ItemContent {
   /// KO: 프로필 텍스트
   /// <br>
   /// EN: Profile text
-  String? profileText;
+  final String? profileText;
 
   /// KO: 프로필 이미지 URL
   /// <br>
   /// EN: Profile image URL
-  Uri? profileImageUrl;
+  final Uri? profileImageUrl;
 
   /// KO: 이미지 아이템 제목
   /// <br>
   /// EN: Title of the image item
-  String? titleImageText;
+  final String? titleImageText;
 
   /// KO: 이미지 아이템 이미지 URL
   /// <br>
   /// EN: Image URL of the image item
-  Uri? titleImageUrl;
+  final Uri? titleImageUrl;
 
   /// KO: 이미지 아이템의 카테고리
   /// <br>
   /// EN: Category of the image item
-  String? titleImageCategory;
+  final String? titleImageCategory;
 
   /// KO: 아이템 정보
   /// <br>
   /// EN: Item information
-  List<ItemInfo>? items;
+  final List<ItemInfo>? items;
 
   /// KO: 요약 정보
   /// <br>
   /// EN: Summary
-  String? sum;
+  final String? sum;
 
   /// KO: 합산 가격
   /// <br>
   /// EN: Total price
-  String? sumOp;
+  final String? sumOp;
 
   /// @nodoc
   ItemContent({

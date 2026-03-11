@@ -6,7 +6,7 @@ import 'package:kakao_flutter_sdk_user/src/constants.dart';
 import 'package:kakao_flutter_sdk_user/src/model/scope.dart';
 import 'package:kakao_flutter_sdk_user/src/model/scope_info.dart';
 
-import '../../kakao_flutter_sdk_common/test/helper.dart';
+import '../../kakao_flutter_sdk_common/test/shared/utils/load_data.dart';
 import 'test_enum_map.dart';
 
 void main() {
@@ -14,15 +14,15 @@ void main() {
     void parse(String data) {
       test(data, () async {
         final path = uriPathToFilePath(Constants.v2ScopesPath);
-        var body = await loadJson("user/$path/$data.json");
-        Map<String, dynamic> expected = jsonDecode(body);
-        var response = ScopeInfo.fromJson(expected);
+        final body = await loadJson('user/$path/$data.json');
+        final Map<String, dynamic> expected = jsonDecode(body);
+        final response = ScopeInfo.fromJson(expected);
 
         expect(response.id, expected['id']);
 
         for (int i = 0; i < (response.scopes?.length ?? 0); i++) {
-          var scope = response.scopes![i];
-          var expectedScope = expected['scopes'][i];
+          final scope = response.scopes![i];
+          final expectedScope = expected['scopes'][i];
 
           expect(scope.id, expectedScope['id']);
           expect(scope.displayName, expectedScope['display_name']);
@@ -44,17 +44,25 @@ void main() {
   group('Enum Test', () {
     test('ScopeType Test', () {
       expect(
-          ScopeType.privacy,
-          $enumDecode($ScopeTypeEnumMap, 'PRIVACY',
-              unknownValue: ScopeType.unknown));
+        ScopeType.privacy,
+        $enumDecode(
+          $ScopeTypeEnumMap,
+          'PRIVACY',
+          unknownValue: ScopeType.unknown,
+        ),
+      );
       expect(
-          ScopeType.service,
-          $enumDecode($ScopeTypeEnumMap, 'SERVICE',
-              unknownValue: ScopeType.unknown));
+        ScopeType.service,
+        $enumDecode(
+          $ScopeTypeEnumMap,
+          'SERVICE',
+          unknownValue: ScopeType.unknown,
+        ),
+      );
       expect(
-          ScopeType.unknown,
-          $enumDecode($ScopeTypeEnumMap, 'test',
-              unknownValue: ScopeType.unknown));
+        ScopeType.unknown,
+        $enumDecode($ScopeTypeEnumMap, 'test', unknownValue: ScopeType.unknown),
+      );
     });
   });
 }

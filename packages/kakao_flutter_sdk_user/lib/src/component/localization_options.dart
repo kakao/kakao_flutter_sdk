@@ -1,5 +1,7 @@
-import 'dart:io';
+import 'dart:ui';
 
+// 로그인 브릿지에서 사용
+/// @nodoc
 class LocalizationOptions {
   final String languageCode;
   final String selectLoginMethod;
@@ -30,7 +32,7 @@ class LocalizationOptions {
     loginWithKakaoAccount: 'カカオアカウントを直接入力',
   );
 
-  static const Map<String, LocalizationOptions> _languageMap = {
+  static const _languageMap = <String, LocalizationOptions>{
     'ko': _koreanOptions,
     'ja': _japaneseOptions,
     'en': _englishOptions,
@@ -44,13 +46,13 @@ class LocalizationOptions {
   });
 
   static LocalizationOptions getLocalizationOptions() {
-    final platformLocale = Platform.localeName;
+    final platformLocale = PlatformDispatcher.instance.locale.toLanguageTag();
 
     if (_prevLocale == platformLocale && _prevOption != null) {
       return _prevOption!;
     }
 
-    final locale = platformLocale.split('_')[0];
+    final locale = platformLocale.split(RegExp('[-_]')).first;
     final localizationOptions = _languageMap[locale] ?? _englishOptions;
 
     _prevLocale = platformLocale;

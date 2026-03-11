@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk_user/src/model/service_terms.dart';
+
+import 'service_terms.dart';
 
 part 'user_service_terms.g.dart';
 
@@ -12,12 +13,12 @@ class UserServiceTerms {
   /// KO: 회원번호
   /// <br>
   /// EN: Service user ID
-  int id;
+  final int id;
 
   /// KO: 서비스 약관 목록
   /// <br>
   /// EN: List of service terms
-  List<ServiceTerms>? serviceTerms;
+  final List<ServiceTerms>? serviceTerms;
 
   /// @nodoc
   UserServiceTerms(this.id, this.serviceTerms);

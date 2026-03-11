@@ -7,19 +7,19 @@ part of 'user_revoked_service_terms.dart';
 // **************************************************************************
 
 UserRevokedServiceTerms _$UserRevokedServiceTermsFromJson(
-        Map<String, dynamic> json) =>
-    UserRevokedServiceTerms(
-      (json['id'] as num).toInt(),
-      (json['revoked_service_terms'] as List<dynamic>?)
-          ?.map((e) => RevokedServiceTerms.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
+  Map<String, dynamic> json,
+) => UserRevokedServiceTerms(
+  (json['id'] as num).toInt(),
+  (json['revoked_service_terms'] as List<dynamic>?)
+      ?.map((e) => RevokedServiceTerms.fromJson(e as Map<String, dynamic>))
+      .toList(),
+);
 
 Map<String, dynamic> _$UserRevokedServiceTermsToJson(
-        UserRevokedServiceTerms instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      if (instance.revokedServiceTerms?.map((e) => e.toJson()).toList()
-          case final value?)
-        'revoked_service_terms': value,
-    };
+  UserRevokedServiceTerms instance,
+) => <String, dynamic>{
+  'id': instance.id,
+  'revoked_service_terms': ?instance.revokedServiceTerms
+      ?.map((e) => e.toJson())
+      .toList(),
+};

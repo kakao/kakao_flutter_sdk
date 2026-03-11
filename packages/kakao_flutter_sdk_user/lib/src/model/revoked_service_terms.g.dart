@@ -7,14 +7,8 @@ part of 'revoked_service_terms.dart';
 // **************************************************************************
 
 RevokedServiceTerms _$RevokedServiceTermsFromJson(Map<String, dynamic> json) =>
-    RevokedServiceTerms(
-      json['tag'] as String,
-      json['agreed'] as bool,
-    );
+    RevokedServiceTerms(json['tag'] as String, json['agreed'] as bool);
 
 Map<String, dynamic> _$RevokedServiceTermsToJson(
-        RevokedServiceTerms instance) =>
-    <String, dynamic>{
-      'tag': instance.tag,
-      'agreed': instance.agreed,
-    };
+  RevokedServiceTerms instance,
+) => <String, dynamic>{'tag': instance.tag, 'agreed': instance.agreed};

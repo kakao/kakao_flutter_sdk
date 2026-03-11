@@ -1,7 +1,96 @@
-name: kakao_flutter_sdk
+name: kakao_flutter_sdk_workspace
+publish_to: none
 
 environment:
-  sdk: ">=3.3.0 <4.0.0"
-  flutter: '>=3.19.0'
+  sdk: ^3.9.0
+  flutter: ^3.35.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
 dev_dependencies:
-  melos: ^5.2.2
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  melos: ^7.3.0
+  dartdoc: ^9.0.0
+
+workspace:
+  - packages/kakao_flutter_sdk
+  - packages/kakao_flutter_sdk_auth
+  - packages/kakao_flutter_sdk_common
+  - packages/kakao_flutter_sdk_friend
+  - packages/kakao_flutter_sdk_navi
+  - packages/kakao_flutter_sdk_share
+  - packages/kakao_flutter_sdk_talk
+  - packages/kakao_flutter_sdk_template
+  - packages/kakao_flutter_sdk_user
+
+melos:
+  command:
+    bootstrap:
+      environment:
+        sdk: ^3.9.0
+        flutter: '>=3.35.0'
+      dependencies:
+        dio: ^5.9.1
+        encrypt: ^5.0.3
+
+        json_annotation: ^4.9.0
+        web: ^1.1.1
+        shared_preferences: ^2.5.4
+        crypto: ^3.0.7
+        flutter_svg: ^2.2.3
+        webview_flutter: ^4.13.1
+
+      dev_dependencies:
+        flutter_lints: ^6.0.0
+        build_runner: ^2.10.4
+        json_serializable: ^6.11.3
+        pigeon: ^26.1.5
+        shared_preferences_platform_interface: ^2.4.1
+  scripts:
+    generate:
+      run: dart run melos exec --order-dependents -- "dart run build_runner build --delete-conflicting-outputs"
+      description: Run build_runner to generate *.g.dart files.
+
+    pigeon:
+      run: |
+        dart run pigeon --input packages/kakao_flutter_sdk_common/pigeons/common_messages.dart
+        dart run pigeon --input packages/kakao_flutter_sdk_auth/pigeons/auth_messages.dart
+
+    analyze:
+      run: dart run melos exec --order-dependents -- "flutter analyze"
+      concurrency: 1
+      description: Analyze all packages.
+
+    test:
+      run: |
+        dart run melos exec --order-dependents -- \
+          "if [ -d test ] && find test -name '*_test.dart' -print -quit | grep -q .; then flutter test; else echo 'No tests in MELOS_PACKAGE_NAME'; fi"
+      description: Run flutter tests only in packages with test files.
+
+    coverage:
+      run: |
+        dart run melos exec --order-dependents -c 1 -- \
+        "if [ -d test ] && find test -name '*_test.dart' -print -quit | grep -q .; then\
+          mkdir -p ../../coverage/\$MELOS_PACKAGE_NAME\
+          && flutter test --reporter silent --coverage --coverage-path ../../coverage/\$MELOS_PACKAGE_NAME/lcov.info\
+          && if [ -s ../../coverage/\$MELOS_PACKAGE_NAME/lcov.info ]; then\
+            genhtml ../../coverage/\$MELOS_PACKAGE_NAME/lcov.info -o ../../coverage/\$MELOS_PACKAGE_NAME/html;\
+          else\
+            echo \"Empty coverage for \$MELOS_PACKAGE_NAME, skipping genhtml\";\
+          fi;\
+        else echo 'No tests in MELOS_PACKAGE_NAME';\
+        fi"
+      description: Run tests and collect coverage data. if genhtml is not installed, please install lcov package. 'brew install lcov' on macOS.
+
+    updateTestData:
+      run: |
+        if [ -d ./kakao-sdk-test-data ]; then
+          cd kakao-sdk-test-data && git fetch origin && git pull origin
+        else
+          git clone --quiet git@github.daumkakao.com:kops/kakao-sdk-test-data.git
+        fi || true
+      description: Update Test Data

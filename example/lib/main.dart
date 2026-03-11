@@ -1,72 +1,144 @@
+import 'package:example/app_router.dart';
+import 'package:example/model/custom_data.dart';
+import 'package:example/theme_mode_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
-import 'package:kakao_flutter_sdk_example/ui/debug_page.dart';
-import 'package:kakao_flutter_sdk_example/ui/main_page.dart';
-import 'package:kakao_flutter_sdk_example/ui/picker_page.dart';
-
-import './url_strategy_native.dart'
-    if (dart.library.html) './url_strategy_web.dart';
-import 'ui/kakao_scheme_page.dart';
-
-const Map<String, dynamic> customData = {
-  'customMemo': 67020,
-  'customMessage': 67020,
-  'channelId': '_ZeUTxl',
-  'calendarEventId': '63996425afcec577cce94f0b',
-  'settle_id': 'f3318663-771a-4b24-8714-3f3061fa17cd',
-};
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk_common.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk_share.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  urlConfig();
 
-  KakaoSdk.init(
+  final pendingSchemeUri = ValueNotifier<Uri?>(null);
+
+  receiveKakaoScheme((uri) {
+    pendingSchemeUri.value = uri;
+  });
+
+  final customData = CustomData(
+    templateId: 67020,
+    channelId: '_ZeUTxl',
+    calendarEventId: '63996425afcec577cce94f0b',
+    settleId: 'f3318663-771a-4b24-8714-3f3061fa17cd',
+    scopes: ['name', 'gender'],
+    serviceTerms: ['option'],
+  );
+
+  await KakaoSdk.init(
     nativeAppKey: '030ba7c59137629e86e8721eb1a22fd6',
     javaScriptAppKey: 'fa2d8e9f47b88445000592c9a293bbe2',
     loggingEnabled: true,
   );
-  runApp(const MyApp());
+
+  runApp(
+    ProviderScope(
+      child: MyApp(customData: customData, pendingSchemeUri: pendingSchemeUri),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends ConsumerStatefulWidget {
+  const MyApp({
+    super.key,
+    required this.customData,
+    required this.pendingSchemeUri,
+  });
+
+  final CustomData customData;
+  final ValueNotifier<Uri?> pendingSchemeUri;
+
+  @override
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
+  late final appRouter = createAppRouter(customData: widget.customData);
+  bool _navigationScheduled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    widget.pendingSchemeUri.addListener(_handlePendingScheme);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _handlePendingScheme());
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _handlePendingScheme();
+    }
+  }
+
+  void _handlePendingScheme() {
+    final uri = widget.pendingSchemeUri.value;
+    if (uri == null) {
+      return;
+    }
+
+    if (_navigationScheduled) {
+      return;
+    }
+    _navigationScheduled = true;
+
+    // iOS 웜 스타트에서는 새 프레임이 실행되지 않을 수 있어서 강제로 스케쥴링.
+    WidgetsBinding.instance.scheduleFrame();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _navigationScheduled = false;
+      if (!mounted) {
+        return;
+      }
+
+      final pendingUri = widget.pendingSchemeUri.value;
+      if (pendingUri == null) {
+        return;
+      }
+
+      final encodedUrl = Uri.encodeComponent(pendingUri.toString());
+      appRouter.push('/scheme?url=$encodedUrl');
+      widget.pendingSchemeUri.value = null;
+    });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    widget.pendingSchemeUri.removeListener(_handlePendingScheme);
+    widget.pendingSchemeUri.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      initialRoute: '/',
-      onGenerateRoute: (settings) {
-        Widget? pageView;
-        if (settings.name != null) {
-          var data = Uri.parse(settings.name!);
-          switch (data.path) {
-            case '/':
-              pageView = const MainPage(customData: customData);
-              break;
-            case '/debug':
-              pageView = const DebugPage();
-              break;
-            case '/picker':
-              if (data.queryParameters.containsKey('selected')) {
-                pageView = PickerPage(result: data.queryParameters['selected']);
-              } else if (data.queryParameters.containsKey('error')) {
-                pageView = PickerPage(error: data.queryParameters['error']);
-              } else {
-                pageView = const PickerPage();
-              }
-              break;
-            case '/talkSharing':
-              Map<String, dynamic>? params =
-                  settings.arguments as Map<String, dynamic>?;
-              pageView = KakaoSchemePage(queryParams: params);
-              break;
-          }
-        }
-        if (pageView != null) {
-          return MaterialPageRoute(builder: (context) => pageView!);
-        }
-        return null;
-      },
+    final themeMode = ref.watch(themeModeProvider);
+
+    return MaterialApp.router(
+      title: 'Kakao Flutter Sdk Example',
+      theme: _buildTheme(Brightness.light),
+      darkTheme: _buildTheme(Brightness.dark),
+      themeMode: themeMode,
+      routerConfig: appRouter,
+    );
+  }
+
+  ThemeData _buildTheme(Brightness brightness) {
+    final colorScheme = ColorScheme.fromSeed(
+      seedColor: Colors.amber,
+      brightness: brightness,
+    );
+
+    return ThemeData(
+      colorScheme: colorScheme,
+      brightness: brightness,
+      useMaterial3: true,
+      appBarTheme: AppBarTheme(
+        backgroundColor: colorScheme.surface,
+        foregroundColor: colorScheme.onSurface,
+      ),
+      listTileTheme: ListTileThemeData(
+        iconColor: colorScheme.onSurfaceVariant,
+        textColor: colorScheme.onSurface,
+      ),
     );
   }
 }

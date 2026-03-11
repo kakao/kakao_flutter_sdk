@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk_user/src/model/account.dart';
-import 'package:kakao_flutter_sdk_user/src/model/user.dart';
+
+import 'account.dart';
+import 'user.dart';
 
 part 'user_response.g.dart';
 
@@ -11,42 +12,42 @@ class UserResponse {
   /// KO: 회원번호
   /// <br>
   /// EN: Service user ID
-  int id;
+  final int id;
 
   /// KO: 사용자 프로퍼티
   /// <br>
   /// EN: User properties
-  Map<String, String>? properties;
+  final Map<String, String>? properties;
 
   /// KO: 카카오계정 정보
   /// <br>
   /// EN: Kakao Account information
-  Account? kakaoAccount;
+  final Account? kakaoAccount;
 
   /// KO: 그룹에서 맵핑 정보로 사용할 수 있는 값
   /// <br>
   /// EN: Token to map users in the group apps
-  String? groupUserToken;
+  final String? groupUserToken;
 
   /// KO: 서비스에 연결 완료된 시각, UTC
   /// <br>
   /// EN: Time connected to the service, UTC
-  DateTime? connectedAt;
+  final DateTime? connectedAt;
 
   /// KO: 카카오싱크 간편가입을 통해 로그인한 시각, UTC
   /// <br>
   /// EN: Time logged in through Kakao Sync Simple Signup, UTC
-  DateTime? synchedAt;
+  final DateTime? synchedAt;
 
   /// KO: 수동 연결 API 호출의 완료 여부
   /// <br>
   /// EN: Whether the user is completely linked with the app
-  bool? hasSignedUp;
+  final bool? hasSignedUp;
 
   /// KO: 카카오 및 공동체, 제휴 앱에만 제공되는 추가 정보
   /// <br>
   /// EN: Additional user information for Kakao and partners
-  ForPartner? forPartner;
+  final ForPartner? forPartner;
 
   /// @nodoc
   UserResponse(this.id, this.hasSignedUp, this.properties, this.kakaoAccount,
@@ -76,7 +77,7 @@ class UserResponse {
 @JsonSerializable(
     fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
 class ForPartner {
-  String? uuid;
+  final String? uuid;
 
   /// @nodoc
   ForPartner(this.uuid);

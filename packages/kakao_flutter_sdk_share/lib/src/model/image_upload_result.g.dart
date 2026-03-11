@@ -12,6 +12,4 @@ ImageUploadResult _$ImageUploadResultFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$ImageUploadResultToJson(ImageUploadResult instance) =>
-    <String, dynamic>{
-      'infos': instance.infos,
-    };
+    <String, dynamic>{'infos': instance.infos};

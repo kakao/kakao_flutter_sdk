@@ -4,24 +4,22 @@
 #
 require 'yaml'
 
-pubspec = YAML.load_file(File.join('..', 'pubspec.yaml'))
-library_version = pubspec['version'].gsub('+', '-')
+pubspec = YAML.load_file(File.expand_path('../pubspec.yaml', __dir__))
 
 Pod::Spec.new do |s|
-  s.name             = 'kakao_flutter_sdk_common'
-  s.version          = library_version
-  s.summary          = 'A new flutter plugin project.'
-  s.description      = <<-DESC
-A new flutter plugin project.
-                       DESC
-  s.homepage         = 'https://github.com/kakao/kakao_flutter_sdk'
+  s.name             = pubspec['name']
+  s.version          = pubspec['version']
+  s.summary          = pubspec['description']
+  s.description      = pubspec['description']
+  s.homepage         = pubspec['homepage']
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'tony.mb' => 'tony.mb@kakaocorp.com' }
+  s.author           = { 'Kakao Developers' => 'kakaoplatformdevelopers@gmail.com' }
   s.source           = { :path => '.' }
   s.source_files = 'kakao_flutter_sdk_common/Sources/kakao_flutter_sdk_common/**/*.swift'
   s.dependency 'Flutter'
+  s.platform = :ios, '13.0'
 
-  s.ios.deployment_target = '13.0'
+  # Flutter.framework does not contain a i386 slice.
+  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
   s.swift_version = '5.0'
-  s.resource_bundles = {'kakao_flutter_sdk_common_privacy' => ['kakao_flutter_sdk_common/Sources/kakao_flutter_sdk_common/PrivacyInfo.xcprivacy']}
 end

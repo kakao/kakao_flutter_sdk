@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk_user/src/model/scope.dart';
+import 'scope.dart';
 
 part 'scope_info.g.dart';
 

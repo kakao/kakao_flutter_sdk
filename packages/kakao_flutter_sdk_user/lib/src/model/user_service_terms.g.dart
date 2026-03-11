@@ -17,7 +17,5 @@ UserServiceTerms _$UserServiceTermsFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$UserServiceTermsToJson(UserServiceTerms instance) =>
     <String, dynamic>{
       'id': instance.id,
-      if (instance.serviceTerms?.map((e) => e.toJson()).toList()
-          case final value?)
-        'service_terms': value,
+      'service_terms': ?instance.serviceTerms?.map((e) => e.toJson()).toList(),
     };

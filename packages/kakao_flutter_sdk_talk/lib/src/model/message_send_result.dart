@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk_talk/src/model/message_failure_info.dart';
+import 'message_failure_info.dart';
 
 part 'message_send_result.g.dart';
 
@@ -17,7 +17,7 @@ class MessageSendResult {
   /// KO: 메시지 전송 실패 정보
   /// <br>
   /// EN: Failure information for sending a message
-  @JsonKey(name: "failure_info")
+  @JsonKey(name: 'failure_info')
   final List<MessageFailureInfo>? failureInfos;
 
   /// @nodoc

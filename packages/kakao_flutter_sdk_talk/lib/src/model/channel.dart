@@ -10,24 +10,24 @@ class Channel {
   /// KO: 카카오톡 채널 고유 ID
   /// <br>
   /// EN: Kakao Talk Channel unique ID
-  @JsonKey(name: "channel_uuid")
-  String uuid;
+  @JsonKey(name: 'channel_uuid')
+  final String uuid;
 
   /// KO: 카카오톡 채널 프로필 ID
   /// <br>
   /// EN: Kakao Talk Channel profile ID
-  @JsonKey(name: "channel_public_id")
-  String encodedId;
+  @JsonKey(name: 'channel_public_id')
+  final String encodedId;
 
   /// KO: 카카오톡 채널 관계
   /// <br>
   /// EN: Relationship with the Kakao Talk Channel
-  String relation;
+  final String relation;
 
   /// KO: 최종 변경 일시
   /// <br>
   /// EN: Last update time
-  DateTime? updatedAt;
+  final DateTime? updatedAt;
 
   /// @nodoc
   Channel(this.uuid, this.encodedId, this.relation, this.updatedAt);

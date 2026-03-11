@@ -7,36 +7,29 @@ part of 'navi_option.dart';
 // **************************************************************************
 
 NaviOption _$NaviOptionFromJson(Map<String, dynamic> json) => NaviOption(
-      coordType: $enumDecodeNullable(_$CoordTypeEnumMap, json['coord_type']),
-      vehicleType:
-          $enumDecodeNullable(_$VehicleTypeEnumMap, json['vehicle_type']),
-      rpOption: $enumDecodeNullable(_$RpOptionEnumMap, json['rpoption']),
-      routeInfo: json['route_info'] as bool?,
-      startX: json['s_x'] as String?,
-      startY: json['s_y'] as String?,
-      startAngle: (json['start_angle'] as num?)?.toInt(),
-      returnUri: json['return_uri'] as String?,
-    );
+  coordType: $enumDecodeNullable(_$CoordTypeEnumMap, json['coord_type']),
+  vehicleType: $enumDecodeNullable(_$VehicleTypeEnumMap, json['vehicle_type']),
+  rpOption: $enumDecodeNullable(_$RpOptionEnumMap, json['rpoption']),
+  routeInfo: json['route_info'] as bool?,
+  startX: json['s_x'] as String?,
+  startY: json['s_y'] as String?,
+  startAngle: (json['start_angle'] as num?)?.toInt(),
+  returnUri: json['return_uri'] as String?,
+);
 
 Map<String, dynamic> _$NaviOptionToJson(NaviOption instance) =>
     <String, dynamic>{
-      if (_$CoordTypeEnumMap[instance.coordType] case final value?)
-        'coord_type': value,
-      if (_$VehicleTypeEnumMap[instance.vehicleType] case final value?)
-        'vehicle_type': value,
-      if (_$RpOptionEnumMap[instance.rpOption] case final value?)
-        'rpoption': value,
-      if (instance.routeInfo case final value?) 'route_info': value,
-      if (instance.startX case final value?) 's_x': value,
-      if (instance.startY case final value?) 's_y': value,
-      if (instance.startAngle case final value?) 'start_angle': value,
-      if (instance.returnUri case final value?) 'return_uri': value,
+      'coord_type': ?_$CoordTypeEnumMap[instance.coordType],
+      'vehicle_type': ?_$VehicleTypeEnumMap[instance.vehicleType],
+      'rpoption': ?_$RpOptionEnumMap[instance.rpOption],
+      'route_info': ?instance.routeInfo,
+      's_x': ?instance.startX,
+      's_y': ?instance.startY,
+      'start_angle': ?instance.startAngle,
+      'return_uri': ?instance.returnUri,
     };
 
-const _$CoordTypeEnumMap = {
-  CoordType.wgs84: 'wgs84',
-  CoordType.katec: 'katec',
-};
+const _$CoordTypeEnumMap = {CoordType.wgs84: 'wgs84', CoordType.katec: 'katec'};
 
 const _$VehicleTypeEnumMap = {
   VehicleType.first: '1',

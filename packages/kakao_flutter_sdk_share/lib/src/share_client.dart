@@ -1,103 +1,90 @@
-import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
+import 'dart:typed_data';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-import 'package:kakao_flutter_sdk_share/src/constants.dart';
-import 'package:kakao_flutter_sdk_share/src/model/image_upload_result.dart';
-import 'package:kakao_flutter_sdk_share/src/model/share_type.dart';
-import 'package:kakao_flutter_sdk_share/src/model/sharing_result.dart';
-import 'package:kakao_flutter_sdk_share/src/share_api.dart';
+import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:kakao_flutter_sdk_template/kakao_flutter_sdk_template.dart';
-import 'package:platform/platform.dart';
 
-/// KO: KO: 카카오톡 공유 API 클라이언트
+import 'constants.dart';
+import 'model/image_upload_result.dart';
+import 'model/sharing_result.dart';
+import 'share_api.dart';
+import 'share_platform.dart';
+
+/// KO: 카카오톡 공유 API 클라이언트
 /// <br>
 /// EN: Client for the Kakao Talk Sharing APIs
+
 class ShareClient {
   /// @nodoc
-  final ShareApi api;
-  final Platform _platform;
+  ShareClient({ShareApi? api, SharePlatform? platform})
+    : _api = api ?? ShareApi(KakaoHttpClientFactory.appKeyApi),
+      _platform = platform ?? SharePlatform.instance;
 
-  static const MethodChannel _channel =
-      MethodChannel(CommonConstants.methodChannel);
-
-  static final ShareClient instance = ShareClient(ShareApi.instance);
+  final ShareApi _api;
+  final SharePlatform _platform;
 
   /// @nodoc
-  ShareClient(this.api, {Platform? platform})
-      : _platform = platform ?? const LocalPlatform();
+  static final ShareClient instance = ShareClient();
 
   /// KO: 카카오톡 공유 가능 여부 조회
   /// <br>
   /// EN: Checks whether the Kakao Talk Sharing is available
-  Future<bool> isKakaoTalkSharingAvailable() async {
-    var arguments = {};
-    if (kIsWeb) {
-    } else if (_platform.isIOS) {
-      arguments.addAll({
-        'talkSharingScheme':
-            '${KakaoSdk.platforms.ios.talkSharingScheme}://send'
-      });
-    }
-    return await _channel.invokeMethod(
-            CommonConstants.isKakaoTalkSharingAvailable, arguments) ??
-        false;
+  Future<bool> isKakaoTalkSharingAvailable() {
+    return _platform.isKakaoTalkSharingAvailable().then((available) {
+      SdkLog.i(
+        '[ShareClient.isKakaoTalkSharingAvailable] completed | available=$available',
+      );
+      return available;
+    });
   }
 
   /// KO: 사용자 정의 템플릿으로 메시지 발송<br>
   /// [templateId]에 사용자 정의 템플릿 ID 전달<br>
   /// [templateArgs]에 사용자 인자 키와 값 전달<br>
   /// [serverCallbackArgs]에 카카오톡 공유 전송 성공 알림에 포함할 키와 값 전달<br>
-  /// [shareType]에 카카오톡 공유 대상 선택 화면 유형 전달<br>
-  /// [limit]에 공유할 대상의 최대 선택 개수 전달<br>
   /// <br>
   /// EN: Send message with custom template<br>
   /// Pass the custom template ID to [templateId]<br>
   /// Pass the keys and values of the user argument to [templateArgs]<br>
   /// Pass the keys and values for the Kakao Talk Sharing success callback to [serverCallbackArgs]<br>
-  /// Pass the type of share target selection screen in Kakao Talk to [shareType]<br>
-  /// Pass the maximum number of share targets that can be selected to [limit]
-  Future<Uri> shareCustom({
+  Future<void> shareCustom({
     required int templateId,
     Map<String, String>? templateArgs,
     Map<String, String>? serverCallbackArgs,
-    ShareType? shareType,
-    int? limit,
   }) async {
-    final response = await api.custom(
-      templateId,
-      templateArgs: templateArgs,
-      shareType: shareType,
-      limit: limit,
+    SdkLog.d(
+      '[ShareClient.shareCustom] started | templateId=$templateId templateArgsCount=${templateArgs?.length ?? 0} callbackArgsCount=${serverCallbackArgs?.length ?? 0}',
     );
-    return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
+    final response = await _api.custom(templateId, templateArgs: templateArgs);
+
+    final url = _createUrl(response, serverCallbackArgs: serverCallbackArgs);
+    SdkLog.v('[ShareClient.shareCustom] launch_url_created | url=$url');
+
+    await _platform.launchKakaoTalk(url);
+    SdkLog.i('[ShareClient.shareCustom] completed');
   }
 
   /// KO: 기본 템플릿으로 메시지 발송<br>
   /// [template]에 메시지 템플릿 객체 전달<br>
   /// [serverCallbackArgs]에 카카오톡 공유 전송 성공 알림에 포함할 키와 값 전달<br>
-  /// [shareType]에 카카오톡 공유 대상 선택 화면 유형 전달<br>
-  /// [limit]에 공유할 대상의 최대 선택 개수 전달<br>
   /// <br>
   /// EN: Send message with default template<br>
   /// Pass an object of a message template to [template]<br>
   /// Pass the keys and values for the Kakao Talk Sharing success callback to [serverCallbackArgs]<br>
-  /// Pass the type of share target selection screen in Kakao Talk to [shareType]<br>
-  /// Pass the maximum number of share targets that can be selected to [limit]
-  Future<Uri> shareDefault({
+  Future<void> shareDefault({
     required DefaultTemplate template,
     Map<String, String>? serverCallbackArgs,
-    ShareType? shareType,
-    int? limit,
   }) async {
-    final response = await api.defaultTemplate(
-      template,
-      shareType: shareType,
-      limit: limit,
+    SdkLog.d(
+      '[ShareClient.shareDefault] started | templateType=${template.runtimeType} callbackArgsCount=${serverCallbackArgs?.length ?? 0}',
     );
-    return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
+    final response = await _api.defaultTemplate(template);
+
+    final url = _createUrl(response, serverCallbackArgs: serverCallbackArgs);
+    SdkLog.v('[ShareClient.shareDefault] launch_url_created | url=$url');
+
+    await _platform.launchKakaoTalk(url);
+    SdkLog.i('[ShareClient.shareDefault] completed');
   }
 
   /// KO: 스크랩 메시지 발송<br>
@@ -105,54 +92,57 @@ class ShareClient {
   /// [templateId]에 사용자 정의 템플릿 ID 전달<br>
   /// [templateArgs]에 사용자 인자 키와 값 전달<br>
   /// [serverCallbackArgs]에 카카오톡 공유 전송 성공 알림에 포함할 키와 값 전달<br>
-  /// [shareType]에 카카오톡 공유 대상 선택 화면 유형 전달<br>
-  /// [limit]에 공유할 대상의 최대 선택 개수 전달<br>
   /// <br>
   /// EN: Send scrape message<br>
   /// Pass the URL to scrape [url]<br>
   /// Pass the custom template ID to [templateId]<br>
   /// Pass the keys and values of the user argument to [templateArgs]<br>
   /// Pass the keys and values for the Kakao Talk Sharing success callback to [serverCallbackArgs]<br>
-  /// Pass the type of share target selection screen in Kakao Talk to [shareType]<br>
-  /// Pass the maximum number of share targets that can be selected to [limit]
-  Future<Uri> shareScrap({
+  Future<void> shareScrap({
     required String url,
     int? templateId,
     Map<String, String>? templateArgs,
     Map<String, String>? serverCallbackArgs,
-    ShareType? shareType,
-    int? limit,
   }) async {
-    final response = await api.scrap(
+    SdkLog.d(
+      '[ShareClient.shareScrap] started | url=$url templateId=$templateId templateArgsCount=${templateArgs?.length ?? 0} callbackArgsCount=${serverCallbackArgs?.length ?? 0}',
+    );
+    final response = await _api.scrap(
       url,
       templateId: templateId,
       templateArgs: templateArgs,
-      shareType: shareType,
-      limit: limit,
     );
-    return _talkWithResponse(response, serverCallbackArgs: serverCallbackArgs);
+
+    final appUrl = _createUrl(response, serverCallbackArgs: serverCallbackArgs);
+    SdkLog.v('[ShareClient.shareScrap] launch_url_created | url=$appUrl');
+
+    await _platform.launchKakaoTalk(appUrl);
+    SdkLog.i('[ShareClient.shareScrap] completed');
   }
 
   /// KO: 이미지 업로드<br>
-  /// [image]에 이미지 파일 전달<br>
+  /// [imagePath]에 이미지 파일 경로 전달<br>
   /// [secureResource]로 이미지 URL을 HTTPS로 설정<br>
   /// <br>
   /// EN: Upload image<br>
-  /// Pass the image file to [image]<br>
+  /// Pass image file path to [imagePath]<br>
   /// Set whether to use HTTPS for the image URL with [secureResource]
   Future<ImageUploadResult> uploadImage({
-    File? image,
+    String? imagePath,
     Uint8List? byteData,
     bool secureResource = true,
-  }) async {
-    if (image == null && byteData == null) {
+  }) {
+    if (imagePath == null && byteData == null) {
       throw KakaoClientException(
         ClientErrorCause.badParameter,
-        'Either parameter image or byteData must not be null.',
+        'Either image file or byte data must be provided.',
       );
     }
-    return await api.uploadImage(image, byteData,
-        secureResource: secureResource);
+
+    SdkLog.d(
+      '[ShareClient.uploadImage] started | hasImagePath=${imagePath != null} hasByteData=${byteData != null} secureResource=$secureResource',
+    );
+    return _api.uploadImage(imagePath, byteData, secureResource);
   }
 
   /// KO: 이미지 스크랩<br>
@@ -165,94 +155,84 @@ class ShareClient {
   Future<ImageUploadResult> scrapImage({
     required String imageUrl,
     bool secureResource = true,
-  }) async {
-    return await api.scrapImage(imageUrl, secureResource: secureResource);
+  }) {
+    SdkLog.d(
+      '[ShareClient.scrapImage] started | imageUrl=$imageUrl secureResource=$secureResource',
+    );
+    return _api.scrapImage(imageUrl, secureResource);
   }
 
-  /// KO: 카카오톡 공유 실행 URL로 카카오톡 실행
-  /// <br>
-  /// EN: Launches Kakao Talk with the URL to execute the Kakao Talk Sharing
-  Future<void> launchKakaoTalk(Uri uri) {
-    return _channel.invokeMethod(
-        CommonConstants.launchKakaoTalk, {Constants.uri: uri.toString()});
-  }
+  String _createUrl(
+    SharingResult response, {
+    Map<String, String>? serverCallbackArgs,
+  }) {
+    final attachmentSize = _calculateAttachmentSize(
+      response,
+      serverCallbackArgs,
+    );
 
-  Future<Uri> _talkWithResponse(SharingResult response,
-      {String? appKey, Map<String, String>? serverCallbackArgs}) async {
-    final attachmentSize = await _attachmentSize(response,
-        appKey: appKey, serverCallbackArgs: serverCallbackArgs);
     if (attachmentSize > 10 * 1024) {
       throw KakaoClientException(
         ClientErrorCause.badParameter,
-        "Exceeded message template v2 size limit (${attachmentSize / 1024}kb > 10kb).",
+        'Exceeded message template v2 size limit (${attachmentSize / 1024}kb > 10kb).',
       );
     }
 
-    Map<String, String?> params = {
-      Constants.linkVer: Constants.linkVersion_40,
-      Constants.appKey: appKey ?? KakaoSdk.appKey,
-      Constants.appVer: await KakaoSdk.appVer,
-      Constants.templateId: response.templateId.toString(),
-      Constants.templateArgs: jsonEncode(response.templateArgs),
-      Constants.templateJson: jsonEncode(response.templateMsg),
-      Constants.extras: jsonEncode(await _extras(serverCallbackArgs)),
-      Constants.list: response.schemeParams?[Constants.list],
-      Constants.limit: response.schemeParams?[Constants.limit].toString(),
-    };
+    SdkLog.v(
+      '[ShareClient.createUrl] validated | attachmentSizeBytes=$attachmentSize',
+    );
+    final appScheme = KakaoSdk.platform.talkSharingScheme;
+    final queryParameter = _createQueryParams(response, serverCallbackArgs);
 
-    params.removeWhere((k, v) => v == null);
-
-    String scheme;
-    if (kIsWeb) {
-      scheme = KakaoSdk.platforms.web.talkSharingScheme;
-    } else if (_platform.isAndroid) {
-      scheme = KakaoSdk.platforms.android.talkSharingScheme;
-    } else {
-      scheme = KakaoSdk.platforms.ios.talkSharingScheme;
-    }
-
-    var uri = Uri(
-        scheme: scheme, host: Constants.linkAuthority, queryParameters: params);
-    var linkUri = Uri.parse(uri.toString().replaceAll('+', '%20'));
-    SdkLog.i(linkUri);
-    return linkUri;
+    return '$appScheme://send?$queryParameter';
   }
 
-  Future<Map<String, String?>> _extras(
-      [Map<String, String>? serverCallbackArgs]) async {
-    var platformInfo = (kIsWeb
-        ? {}
-        : _platform.isAndroid
-            ? {
-                Constants.appPkg: await KakaoSdk.packageName,
-                Constants.keyHash: await KakaoSdk.origin
-              }
-            : _platform.isIOS
-                ? {Constants.iosBundleId: await KakaoSdk.origin}
-                : {});
-    Map<String, String?> extras = {
-      Constants.ka: await KakaoSdk.kaHeader,
-      Constants.lcba:
-          serverCallbackArgs == null ? null : jsonEncode(serverCallbackArgs),
-      ...platformInfo,
-    };
-    extras.removeWhere((k, v) => v == null);
-    return extras;
-  }
-
-  Future<int> _attachmentSize(SharingResult response,
-      {String? appKey, Map<String, String>? serverCallbackArgs}) async {
+  int _calculateAttachmentSize(
+    SharingResult response,
+    Map<String, String>? serverCallbackArgs,
+  ) {
     final templateMsg = response.templateMsg;
-    final attachment = {
+    final attachment = <String, Object>{
       Constants.lv: Constants.linkVersion_40,
       Constants.av: Constants.linkVersion_40,
-      Constants.ak: appKey ?? KakaoSdk.appKey,
+      Constants.ak: KakaoSdk.appKey,
       Constants.P: templateMsg[Constants.P],
       Constants.C: templateMsg[Constants.C],
       Constants.templateId: response.templateId,
-      Constants.templateArgs: response.templateArgs,
-      Constants.extras: jsonEncode(await _extras(serverCallbackArgs))
+      Constants.templateArgs: ?response.templateArgs,
+      Constants.extras: jsonEncode(_createExtras(serverCallbackArgs)),
     };
     return utf8.encode(jsonEncode(attachment)).length;
+  }
+
+  String _createQueryParams(
+    SharingResult response,
+    Map<String, String>? serverCallbackArgs,
+  ) {
+    final String? templateArgs = response.templateArgs?.toEncodedJson();
+    final String templateMsg = response.templateMsg.toEncodedJson();
+    final extras = _createExtras(serverCallbackArgs).toEncodedJson();
+
+    return <String, Object>{
+      Constants.linkVer: Constants.linkVersion_40,
+      Constants.appKey: KakaoSdk.appKey,
+      Constants.appVer: KakaoSdk.platformInfo.appVer,
+      Constants.templateId: response.templateId,
+      Constants.templateArgs: ?templateArgs,
+      Constants.templateJson: templateMsg,
+      Constants.extras: extras,
+      Constants.list: ?response.schemeParams?[Constants.list],
+      Constants.limit: ?response.schemeParams?[Constants.limit],
+    }.entries.map((entry) => '${entry.key}=${entry.value}').join('&');
+  }
+
+  Map<String, String> _createExtras(Map<String, String>? serverCallbackArgs) {
+    final platformExtras = _platform.platformExtras();
+
+    return <String, String>{
+      Constants.ka: KakaoSdk.platformInfo.kaHeader,
+      Constants.lcba: ?serverCallbackArgs?.toJson(),
+      ...platformExtras,
+    };
   }
 }

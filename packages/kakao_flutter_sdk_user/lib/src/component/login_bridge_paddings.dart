@@ -1,3 +1,4 @@
+/// @nodoc
 abstract class LoginBridgePaddings {
   double get portraitPadding;
 

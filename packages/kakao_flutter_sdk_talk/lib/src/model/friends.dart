@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk_talk/src/model/friend.dart';
+import 'friend.dart';
 
 part 'friends.g.dart';
 

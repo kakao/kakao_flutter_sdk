@@ -1,0 +1,21 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+
+linter:
+  rules:
+    always_declare_return_types: true
+    cancel_subscriptions: true
+    close_sinks: true
+    comment_references: true
+    one_member_abstracts: false
+    only_throw_errors: true
+    prefer_const_constructors: true
+    prefer_final_locals: true
+    sort_child_properties_last: true
+    unawaited_futures: true
+    unsafe_html: true
+    prefer_single_quotes: true
+    prefer_relative_imports: true
+    avoid_print: true
+    avoid_web_libraries_in_flutter: true

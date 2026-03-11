@@ -1,7 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk_template/src/default_template.dart';
-import 'package:kakao_flutter_sdk_template/src/model/button.dart';
-import 'package:kakao_flutter_sdk_template/src/model/content.dart';
+
+import 'default_template.dart';
+import 'model/button.dart';
+import 'model/content.dart';
 
 part 'calendar_template.g.dart';
 
@@ -9,7 +10,10 @@ part 'calendar_template.g.dart';
 /// <br>
 /// EN: Default template for calendar messages
 @JsonSerializable(
-    fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
+  fieldRename: FieldRename.snake,
+  explicitToJson: true,
+  includeIfNull: false,
+)
 class CalendarTemplate extends DefaultTemplate {
   /// KO: 구독 캘린더 또는 공개 일정 ID
   /// <br>
@@ -42,7 +46,7 @@ class CalendarTemplate extends DefaultTemplate {
     required this.idType,
     required this.content,
     this.buttons,
-    this.objectType = "calendar",
+    this.objectType = 'calendar',
   });
 
   /// @nodoc

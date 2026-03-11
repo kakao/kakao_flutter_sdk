@@ -10,12 +10,12 @@ class ItemInfo {
   /// KO: 아이템 이름
   /// <br>
   /// EN: Name of the item
-  String item;
+  final String item;
 
   /// KO: 아이템 가격
   /// <br>
   /// EN: Price of the item
-  String itemOp;
+  final String itemOp;
 
   /// @nodoc
   ItemInfo({required this.item, required this.itemOp});

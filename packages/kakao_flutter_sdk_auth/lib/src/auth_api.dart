@@ -1,69 +1,77 @@
-import 'dart:async';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:kakao_flutter_sdk_auth/src/auth_api_factory.dart';
-import 'package:kakao_flutter_sdk_auth/src/constants.dart';
-import 'package:kakao_flutter_sdk_auth/src/model/access_token_response.dart';
-import 'package:kakao_flutter_sdk_auth/src/model/oauth_token.dart';
-import 'package:kakao_flutter_sdk_auth/src/token_manager.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
-import 'package:platform/platform.dart';
+
+import 'auth_platform.dart';
+import 'constants.dart';
+import 'model/access_token_response.dart';
+import 'model/oauth_token.dart';
+import 'network/kakao_auth_http_client_factory.dart';
+import 'token_manager.dart';
 
 /// KO: 카카오 로그인 인증 및 토큰 관리 클래스
 /// <br>
 /// EN: Class for the authentication and token management through Kakao Login
 class AuthApi {
-  final Dio _dio;
-  final Platform _platform;
-
-  final TokenManagerProvider _tokenManagerProvider;
-  static final AuthApi instance = AuthApi();
-
   /// @nodoc
   AuthApi({
-    Dio? dio,
-    Platform? platform,
-    TokenManagerProvider? tokenManagerProvider,
-  })  : _dio = dio ?? AuthApiFactory.kauthApi,
-        _platform = platform ?? const LocalPlatform(),
-        _tokenManagerProvider =
-            tokenManagerProvider ?? TokenManagerProvider.instance;
+    KakaoHttpClient? client,
+    TokenManager? tokenManager,
+    AuthPlatform? platform,
+  }) : _client = client ?? KakaoAuthHttpClientFactory.kauthApi,
+       _tokenManager = tokenManager ?? TokenManagerProvider.instance.manager,
+       _platform = platform ?? AuthPlatform.instance;
+
+  final KakaoHttpClient _client;
+  final TokenManager _tokenManager;
+  final AuthPlatform _platform;
+
+  static final AuthApi instance = AuthApi();
 
   /// KO: 토큰 존재 여부 조회
   /// <br>
   /// EN: Check token presence
   Future<bool> hasToken() async {
-    final token = await _tokenManagerProvider.manager.getToken();
+    final token = await _tokenManager.getToken();
+    SdkLog.d('[AuthApi.hasToken] completed | tokenExists=${token != null}');
     return token != null;
   }
 
   /// @nodoc
   Future<OAuthToken> issueAccessToken({
     required String authCode,
-    String? redirectUri,
-    String? appKey,
-    String? codeVerifier,
+    required String redirectUri,
+    required String codeVerifier,
   }) async {
-    final data = {
+    if (kIsWeb) {
+      throw KakaoClientException(
+        ClientErrorCause.notSupported,
+        'This method is not supported on web platforms.',
+      );
+    }
+
+    final platformData = _platform.getPlatformData();
+    SdkLog.d(
+      '[AuthApi.issueAccessToken] started | redirectUri=$redirectUri platformDataKeys=${platformData.keys.join(',')}',
+    );
+    final data = <String, String>{
       Constants.code: authCode,
       Constants.grantType: Constants.authorizationCode,
-      Constants.clientId: appKey ?? KakaoSdk.appKey,
-      Constants.redirectUri: redirectUri ?? await _platformRedirectUri(),
+      Constants.clientId: KakaoSdk.appKey,
+      Constants.redirectUri: redirectUri,
       Constants.codeVerifier: codeVerifier,
-      ...await _platformData()
+      ...platformData,
     };
-    data.removeWhere((k, v) => v == null);
-    return await _issueAccessToken(data);
+
+    final token = await _issueAccessToken(data);
+    SdkLog.i(
+      '[AuthApi.issueAccessToken] completed | expiresAt=${token.expiresAt.toIso8601String()} hasRefreshToken=${token.refreshToken != null}',
+    );
+    return token;
   }
 
   /// @nodoc
-  Future<OAuthToken> refreshToken({
-    OAuthToken? oldToken,
-    String? redirectUri,
-    String? appKey,
-  }) async {
-    var token = oldToken ?? await _tokenManagerProvider.manager.getToken();
+  Future<OAuthToken> refreshToken({OAuthToken? oldToken}) async {
+    final token = oldToken ?? await _tokenManager.getToken();
 
     if (token == null || token.refreshToken == null) {
       throw KakaoClientException(
@@ -72,91 +80,74 @@ class AuthApi {
       );
     }
 
-    final data = {
-      Constants.refreshToken: token.refreshToken,
+    SdkLog.d(
+      '[AuthApi.refreshToken] started | source=${oldToken != null ? 'argument' : 'storage'} hasRefreshToken=${token.refreshToken != null}',
+    );
+    final data = <String, String>{
+      Constants.refreshToken: token.refreshToken!,
       Constants.grantType: Constants.refreshToken,
-      Constants.clientId: appKey ?? KakaoSdk.appKey,
-      Constants.redirectUri: redirectUri ?? await _platformRedirectUri(),
-      ...await _platformData()
+      Constants.clientId: KakaoSdk.appKey,
+      Constants.redirectUri: KakaoSdk.redirectUri,
+      ..._platform.getPlatformData(),
     };
-    final newToken = await _issueAccessToken(data, oldToken: token);
-    await _tokenManagerProvider.manager.setToken(newToken);
+
+    final newToken = await _issueAccessToken(data, oldToken: oldToken);
+    SdkLog.i(
+      '[AuthApi.refreshToken] completed | expiresAt=${newToken.expiresAt.toIso8601String()} hasRefreshToken=${newToken.refreshToken != null}',
+    );
     return newToken;
   }
 
   /// @nodoc
-  @Deprecated('This method is replaced with \'AuthApi#refreshToken\'')
-  Future<OAuthToken> refreshAccessToken({
-    required OAuthToken oldToken,
-    String? redirectUri,
-    String? appKey,
-  }) async {
-    return await refreshToken(
-        oldToken: oldToken, redirectUri: redirectUri, appKey: appKey);
-  }
+  Future<String> agt() async {
+    final token = await _tokenManager.getToken();
 
-  /// @nodoc
-  Future<String> agt({String? appKey, String? accessToken}) async {
-    final tokenInfo = await _tokenManagerProvider.manager.getToken();
-    if (accessToken == null && tokenInfo == null) {
+    if (token == null) {
       throw KakaoClientException(
         ClientErrorCause.tokenNotFound,
         'Token registered in TokenManager does not exist!',
       );
     }
-    final data = {
-      Constants.clientId: appKey ?? KakaoSdk.appKey,
-      Constants.accessToken: accessToken ?? tokenInfo!.accessToken
+
+    SdkLog.d('[AuthApi.agt] started');
+    final data = <String, String>{
+      Constants.clientId: KakaoSdk.appKey,
+      Constants.accessToken: token.accessToken,
     };
 
-    return await ApiFactory.handleApiError(() async {
-      final response = await _dio.post(Constants.agtPath, data: data);
-      return response.data[Constants.agt];
-    });
+    final response = await _client.post(Constants.agtPath, data: data);
+    SdkLog.i('[AuthApi.agt] completed');
+    return response.data[Constants.agt];
   }
 
   /// @nodoc
-  Future<String> codeForWeb({
-    required String stateToken,
-    required String kaHeader,
-  }) async {
-    var queryParams = {
-      'client_id': KakaoSdk.appKey,
-      'auth_tran_id': stateToken,
-      'ka': kaHeader,
+  Future<String> codeForWeb(String stateToken) async {
+    SdkLog.d('[AuthApi.codeForWeb] started');
+    final queryParams = <String, String>{
+      Constants.clientId: KakaoSdk.appKey,
+      Constants.authTranId: stateToken,
+      Constants.kaHeader: KakaoSdk.platformInfo.kaHeader,
     };
 
-    return await ApiFactory.handleApiError(() async {
-      var response = await _dio.get(Constants.apiWebCodeJson,
-          queryParameters: queryParams);
+    final response = await _client.get(
+      Constants.apiWebCodeJson,
+      queryParameters: queryParams,
+    );
 
-      if (response.data.toString().contains('error')) {
-        return 'error';
-      }
-      return response.data['code'];
-    });
+    if (response.data.toString().contains(Constants.error)) {
+      SdkLog.w('[AuthApi.codeForWeb] failed | reason=error_response');
+      return Constants.error;
+    }
+    SdkLog.i('[AuthApi.codeForWeb] completed');
+    return response.data[Constants.code];
   }
 
-  Future<OAuthToken> _issueAccessToken(data, {OAuthToken? oldToken}) async {
-    return await ApiFactory.handleApiError(() async {
-      Response response = await _dio.post(Constants.tokenPath, data: data);
-      final tokenResponse = AccessTokenResponse.fromJson(response.data);
-      return OAuthToken.fromResponse(tokenResponse, oldToken: oldToken);
-    });
-  }
-
-  Future<Map<String, String>> _platformData() async {
-    final origin = await KakaoSdk.origin;
-    if (kIsWeb) return {Constants.clientOrigin: origin};
-    return _platform.isAndroid
-        ? {Constants.androidKeyHash: origin}
-        : _platform.isIOS
-            ? {Constants.iosBundleId: origin}
-            : {};
-  }
-
-  Future<String> _platformRedirectUri() async {
-    if (kIsWeb) return await KakaoSdk.origin;
-    return KakaoSdk.redirectUri;
+  Future<OAuthToken> _issueAccessToken(
+    Map<String, Object> data, {
+    OAuthToken? oldToken,
+  }) async {
+    final response = await _client.post(Constants.tokenPath, data: data);
+    final tokenResponse = AccessTokenResponse.fromJson(response.data);
+    return OAuthToken.fromResponse(tokenResponse, oldToken: oldToken);
   }
 }

@@ -1,15 +1,12 @@
-/// KO: 카카오 로그인 인증 및 토큰 관리 패키지
-/// <br>
-/// EN: Package for the authentication and token management through Kakao Login
-library kakao_flutter_sdk_auth;
+library;
 
-export 'package:kakao_flutter_sdk_auth/src/access_token_interceptor.dart';
-export 'package:kakao_flutter_sdk_auth/src/auth_api.dart';
-export 'package:kakao_flutter_sdk_auth/src/auth_api_factory.dart';
-export 'package:kakao_flutter_sdk_auth/src/auth_code.dart';
-export 'package:kakao_flutter_sdk_auth/src/model/access_token_response.dart';
-export 'package:kakao_flutter_sdk_auth/src/model/oauth_token.dart';
-export 'package:kakao_flutter_sdk_auth/src/model/prompt.dart';
-export 'package:kakao_flutter_sdk_auth/src/token_manager.dart';
-export 'package:kakao_flutter_sdk_auth/src/utils.dart';
 export 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
+
+export 'src/auth_api.dart';
+export 'src/auth_code_client.dart';
+export 'src/auth_platform.dart';
+export 'src/model/access_token_response.dart';
+export 'src/model/oauth_token.dart';
+export 'src/model/prompt.dart';
+export 'src/network/kakao_auth_http_client_factory.dart';
+export 'src/token_manager.dart';

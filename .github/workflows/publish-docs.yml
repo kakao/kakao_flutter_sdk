@@ -1,0 +1,59 @@
+name: Publish Documentation
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      repository:
+        required: false
+        type: string
+        default: release
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Documentation version to publish
+        required: true
+        type: string
+      repository:
+        description: Target Nexus repository
+        required: true
+        default: release
+        type: choice
+        options:
+          - release
+          - snapshot
+
+jobs:
+  publish-docs:
+    runs-on: ubuntu-latest
+    environment:
+      name: docs-release
+    permissions:
+      contents: read
+    env:
+      NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+      NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+      DOC_VERSION: ${{ inputs.version || github.event.inputs.version }}
+      DOC_REPOSITORY: ${{ inputs.repository || github.event.inputs.repository }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Prepare publish environment
+        uses: ./.github/actions/prepare-publish
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Publish documentation
+        shell: bash
+        run: |
+          set -euo pipefail
+          dart run scripts/doc_publish.dart "$DOC_VERSION" "$DOC_REPOSITORY"

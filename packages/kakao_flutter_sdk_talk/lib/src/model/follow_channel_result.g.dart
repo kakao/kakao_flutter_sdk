@@ -13,8 +13,8 @@ FollowChannelResult _$FollowChannelResultFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$FollowChannelResultToJson(
-        FollowChannelResult instance) =>
-    <String, dynamic>{
-      'status': const StatusConverter().toJson(instance.success),
-      'channel_public_id': instance.channelPublicId,
-    };
+  FollowChannelResult instance,
+) => <String, dynamic>{
+  'status': const StatusConverter().toJson(instance.success),
+  'channel_public_id': instance.channelPublicId,
+};

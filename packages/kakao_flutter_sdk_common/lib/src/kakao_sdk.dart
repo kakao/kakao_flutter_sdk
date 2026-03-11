@@ -1,8 +1,11 @@
-import 'dart:async';
-
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
+
+import 'common_platform.dart';
+import 'model/kakao_client_exception.dart';
+import 'model/platform_info.dart';
+import 'platform_config.dart';
+import 'sdk_log.dart';
+import 'server_hosts.dart';
 
 /// KO: 주요 설정 및 초기화 클래스
 /// <br>
@@ -10,14 +13,10 @@ import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 class KakaoSdk {
   KakaoSdk._();
 
-  static const MethodChannel _channel =
-      MethodChannel(CommonConstants.methodChannel);
-
+  /// @nodoc
+  static String sdkVersion = '2.0.0';
   static late String _nativeKey;
   static late String _jsKey;
-
-  /// @nodoc
-  static String sdkVersion = "1.10.0";
 
   /// @nodoc
   static String get appKey => kIsWeb ? _jsKey : _nativeKey;
@@ -25,66 +24,21 @@ class KakaoSdk {
   /// @nodoc
   static bool logging = false;
 
-  // ServerHosts used by SDK.
-  //
-  // You can explicitly set this to your custom ServerHosts. One example can be
-  //
-  // ```
-  // class SandboxHosts extends ServerHosts {
-  // @override
-  // String get kapi => "sandbox-${super.kapi}";
-  //
-  // @override
-  // String get kauth => "sandbox-${super.kauth}";
-  //
-  // @override
-  //  String get sharer => "sandbox-${super.sharer}";
-  // }
-  // ```
+  /// @nodoc
+  static String get customScheme => _customScheme;
+  static late String _customScheme;
+
+  /// @nodoc
+  static String get redirectUri => '$customScheme://oauth';
+
   /// @nodoc
   static late ServerHosts hosts;
 
   /// @nodoc
-  static late PlatformSupport platforms;
-
-  // Origin value in KA header.
-  //
-  // Bundle id and Android keyhash for iOS and Android platform, respectively.
-  /// @nodoc
-  static Future<String> get origin async {
-    final String origin =
-        await _channel.invokeMethod(CommonConstants.getOrigin);
-    return origin;
-  }
-
-  /// KO: KA 헤더 정보
-  /// <br>
-  /// EN: KA header information
-  static Future<String> get kaHeader async {
-    final String kaHeader =
-        await _channel.invokeMethod(CommonConstants.getKaHeader);
-    return "sdk/$sdkVersion sdk_type/flutter $kaHeader";
-  }
+  static late PlatformInfo platformInfo;
 
   /// @nodoc
-  static Future<String> get appVer async {
-    return await _channel.invokeMethod(CommonConstants.appVer);
-  }
-
-  /// @nodoc
-  static Future<String> get packageName async {
-    return await _channel.invokeMethod(CommonConstants.packageName);
-  }
-
-  /// KO: 리다이렉트 URI
-  /// <br>
-  /// EN: Redirect URI
-  static String get redirectUri => "$customScheme://oauth";
-
-  static late String _customScheme;
-
-  /// @nodoc
-  static String get customScheme => _customScheme;
+  static late PlatformSupport platform;
 
   /// KO: Kakao SDK 초기화<br>
   /// 앱별 커스텀 URL 스킴은 [customScheme]으로 등록<br>
@@ -93,26 +47,36 @@ class KakaoSdk {
   /// EN: Initializes Kakao SDK<br>
   /// Register custom URL scheme for each app as [customScheme]<br>
   /// Set Whether to enable the internal log of the Kakao SDK with [loggingEnabled]
-  static void init({
+  static Future<void> init({
     String? nativeAppKey,
     String? javaScriptAppKey,
     String? customScheme,
+    bool? loggingEnabled,
     ServerHosts? serviceHosts,
     PlatformSupport? platformSupport,
-    bool? loggingEnabled,
-  }) {
+    CommonPlatform? platformProvider, // for testability
+  }) async {
     if (nativeAppKey == null && javaScriptAppKey == null) {
       throw KakaoClientException(
         ClientErrorCause.badParameter,
-        "A Native App Key or JavaScript App Key is required",
+        'A Native App Key or JavaScript App Key is required',
       );
     }
 
-    _nativeKey = nativeAppKey ?? "";
-    _jsKey = javaScriptAppKey ?? "";
-    _customScheme = customScheme ?? "kakao$appKey";
-    hosts = serviceHosts ?? ServerHosts();
-    platforms = platformSupport ?? PlatformSupport();
+    _nativeKey = nativeAppKey ?? '';
+    _jsKey = javaScriptAppKey ?? '';
+    _customScheme = customScheme ?? 'kakao$appKey';
     logging = loggingEnabled ?? false;
+    hosts = serviceHosts ?? ServerHosts();
+    platform = platformSupport ?? DefaultPlatformSupport();
+
+    platformInfo = await PlatformInfo.create(
+      sdkVersion: sdkVersion,
+      platform: platformProvider,
+    );
+
+    SdkLog.i(
+      '[KakaoSdk.init] completed | loggingEnabled=$logging appKeyType=${kIsWeb ? 'javascript' : 'native'}',
+    );
   }
 }

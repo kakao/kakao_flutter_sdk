@@ -2,18 +2,22 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kakao_flutter_sdk_friend/src/localization_options.dart';
-import 'package:kakao_flutter_sdk_friend/src/model/picker_friend_request_params.dart';
-import 'package:kakao_flutter_sdk_friend/src/picker_alert.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
+import 'constants.dart';
+import 'model/picker_friend_request_params.dart';
+
+/// nodoc
 class PickerWebView extends StatefulWidget {
-  final bool isSingle;
-  final PickerFriendRequestParams params;
+  const PickerWebView({
+    super.key,
+    required this.params,
+    required this.enableMulti,
+  });
 
-  const PickerWebView({super.key, this.isSingle = false, required this.params});
+  final bool enableMulti;
+  final PickerFriendRequestParams params;
 
   @override
   State<PickerWebView> createState() => _PickerWebViewState();
@@ -21,65 +25,16 @@ class PickerWebView extends StatefulWidget {
 
 class _PickerWebViewState extends State<PickerWebView> {
   static String domain = 'https://${KakaoSdk.hosts.picker}';
-  static String sdkPath = 'flutter/sdk';
-  static String singlePickerPath = 'select/single';
-  static String multiPickerPath = 'select/multiple';
-  static String initialUrl = '$domain/$sdkPath';
 
-  late final LocalizationOptions _localizationOptions;
-  late final WebViewController _controller;
-  bool pickerShown = false;
+  late final String _initialUrl = '$domain/${Constants.sdkPath}';
+  late final WebViewController _controller = _createWebViewController();
 
-  // In Android, onPageFinished() is called twice.
-  bool isDisposed = false;
+  bool _pickerShown = false;
 
   @override
   void initState() {
     super.initState();
-
-    _localizationOptions = LocalizationOptions.getLocalizationOptions();
-
-    late final PlatformWebViewControllerCreationParams params;
-    if (WebViewPlatform.instance is WebKitWebViewPlatform) {
-      params = WebKitWebViewControllerCreationParams();
-    } else {
-      params = const PlatformWebViewControllerCreationParams();
-    }
-
-    final WebViewController controller = _createWebViewController(params);
-    controller.loadRequest(Uri.parse(initialUrl));
-    _controller = controller;
-  }
-
-  WebViewController _createWebViewController(
-      PlatformWebViewControllerCreationParams params) {
-    final controller = WebViewController.fromPlatformCreationParams(params);
-
-    controller
-      ..enableZoom(false)
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..addJavaScriptChannel(
-        'Picker',
-        onMessageReceived: _handlePickerJavaScriptMessage,
-      )
-      ..addJavaScriptChannel(
-        'Alert',
-        onMessageReceived: _handleAlertJavaScriptMessage,
-      )
-      ..setBackgroundColor(const Color(0x00000000))
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onNavigationRequest: (NavigationRequest request) {
-            if (!request.url.contains(domain)) {
-              return NavigationDecision.prevent;
-            }
-            return NavigationDecision.navigate;
-          },
-          onPageFinished: _onPageFinishedCallback,
-        ),
-      );
-
-    return controller;
+    _controller.loadRequest(Uri.parse(_initialUrl));
   }
 
   @override
@@ -94,27 +49,65 @@ class _PickerWebViewState extends State<PickerWebView> {
       ),
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: SafeArea(
-          child: WebViewWidget(controller: _controller),
-        ),
+        body: SafeArea(child: WebViewWidget(controller: _controller)),
       ),
     );
   }
 
-  void _onPageFinishedCallback(String url) {
-    if (!pickerShown) {
-      _controller.runJavaScript('Picker.postMessage("navigatePicker")');
-      pickerShown = true;
-    } else if (url.contains('$domain/select')) {
-      var javascript = """
-          window.alert = function (e) {
-            Alert.postMessage(e);
-          }
-        """;
-      _controller.runJavaScript(javascript);
-    } else if (!isDisposed && url.contains('$domain/$sdkPath')) {
-      isDisposed = true;
-      var queryParameters = Uri.parse(url).queryParameters;
+  @override
+  void dispose() {
+    // Clean up the WebView to prevent memory leaks.
+    _controller.removeJavaScriptChannel(Constants.jsChannel);
+    // _controller.removeJavaScriptChannel(Constants.jsAlertChannel);
+    _controller.loadRequest(Uri.parse(Constants.aboutBlankUrl));
+    super.dispose();
+  }
+
+  WebViewController _createWebViewController() {
+    final params = const PlatformWebViewControllerCreationParams();
+
+    return WebViewController.fromPlatformCreationParams(params)
+      ..enableZoom(false)
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(Colors.black.withAlpha(0))
+      ..addJavaScriptChannel(
+        Constants.jsChannel,
+        onMessageReceived: _onJavaScriptMessage,
+      )
+      ..setOnJavaScriptAlertDialog(_onJavaScriptAlert)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onNavigationRequest: _onNavigationRequest,
+          onPageFinished: _onPageFinished,
+        ),
+      );
+  }
+
+  NavigationDecision _onNavigationRequest(NavigationRequest request) {
+    // Block unexpected external navigation.
+    if (!request.url.contains(KakaoSdk.hosts.picker)) {
+      return NavigationDecision.prevent;
+    }
+    return NavigationDecision.navigate;
+  }
+
+  Future<void> _onJavaScriptAlert(JavaScriptAlertDialogRequest request) {
+    final snackBar = SnackBar(content: Text(request.message));
+    return Future.sync(() {
+      final scaffoldMessenger = ScaffoldMessenger.maybeOf(context);
+      scaffoldMessenger?.hideCurrentSnackBar();
+      scaffoldMessenger?.showSnackBar(snackBar);
+    });
+  }
+
+  void _onPageFinished(String url) {
+    if (!_pickerShown) {
+      _startPickerNavigation();
+      return;
+    }
+
+    if (_isReturnUrl(url)) {
+      final queryParameters = Uri.parse(url).queryParameters;
       if (queryParameters.isNotEmpty) {
         Navigator.of(context).pop(queryParameters);
       } else {
@@ -123,50 +116,59 @@ class _PickerWebViewState extends State<PickerWebView> {
     }
   }
 
-  void _handlePickerJavaScriptMessage(JavaScriptMessage message) async {
-    if (message.message == "navigatePicker") {
-      var path = widget.isSingle ? singlePickerPath : multiPickerPath;
-      var url = '$domain/$path';
-      var params = widget.params;
-
-      String transId = generateRandomString(60);
-      var pickerParams = {
-        'transId': transId,
-        'appKey': KakaoSdk.appKey,
-        'ka': await KakaoSdk.kaHeader,
-        'token': (await TokenManagerProvider.instance.manager.getToken())!
-            .accessToken,
-        'title': params.title,
-        'enableSearch': params.enableSearch,
-        'showMyProfile': params.showMyProfile,
-        'showFavorite': params.showFavorite,
-        'showPickedFriend': params.showPickedFriend,
-        'maxPickableCount': params.maxPickableCount,
-        'minPickableCount': params.minPickableCount,
-        'enableBackButton': params.enableBackButton,
-        'returnUrl': '$domain/$sdkPath',
-      };
-      pickerParams.removeWhere((k, v) => v == null);
-
-      var javascript = '';
-      javascript += _submitForm(url, pickerParams);
-      await _controller.runJavaScript(javascript);
-    }
-  }
-
-  void _handleAlertJavaScriptMessage(JavaScriptMessage message) {
-    showDialog(
-      context: context,
-      builder: (context) => PickerAlert(
-        title: widget.params.title ?? _localizationOptions.pickerTitle,
-        message: message.message,
-        confirm: _localizationOptions.confirm,
-      ),
+  void _startPickerNavigation() {
+    _controller.runJavaScript(
+      '${Constants.jsChannel}.postMessage("${Constants.navigatePickerMessage}")',
     );
+    _pickerShown = true;
   }
 
-  String _submitForm(String url, Map<String, dynamic> pickerParams,
-      {String? popupName = ''}) {
+  bool _isReturnUrl(String url) => url.contains(_initialUrl);
+
+  Future<void> _onJavaScriptMessage(JavaScriptMessage message) async {
+    if (message.message != Constants.navigatePickerMessage) return;
+
+    final url = _pickerUrl(enableMulti: widget.enableMulti);
+    final pickerParams = await _createPickerParams();
+
+    final javascript = _submitForm(url, pickerParams);
+    await _controller.runJavaScript(javascript);
+  }
+
+  String _pickerUrl({required bool enableMulti}) {
+    final path = enableMulti
+        ? Constants.multiPickerPath
+        : Constants.singlePickerPath;
+    return '$domain/$path';
+  }
+
+  Future<Map<String, Object>> _createPickerParams() async {
+    final token =
+        (await TokenManagerProvider.instance.manager.getToken())!.accessToken;
+    final transId = generateRandomString(60);
+
+    return {
+      Constants.transId: transId,
+      Constants.appKey: KakaoSdk.appKey,
+      Constants.ka: KakaoSdk.platformInfo.kaHeader,
+      Constants.token: token,
+      Constants.title: ?widget.params.title,
+      Constants.enableSearch: ?widget.params.enableSearch,
+      Constants.showMyProfile: ?widget.params.showMyProfile,
+      Constants.showFavorite: ?widget.params.showFavorite,
+      Constants.showPickedFriend: ?widget.params.showPickedFriend,
+      Constants.maxPickableCount: ?widget.params.maxPickableCount,
+      Constants.minPickableCount: ?widget.params.minPickableCount,
+      Constants.enableBackButton: ?widget.params.enableBackButton,
+      Constants.returnUrl: _initialUrl,
+    };
+  }
+
+  String _submitForm(
+    String url,
+    Map<String, Object> pickerParams, {
+    String popupName = '',
+  }) {
     return """
       const param = ${jsonEncode(pickerParams)}
       const form = document.createElement('form')
@@ -175,15 +177,15 @@ class _PickerWebViewState extends State<PickerWebView> {
       form.setAttribute('action', '$url')
       form.setAttribute('target', '$popupName')
       form.setAttribute('style', 'display:none')
-      
-      for(var key in param) {
+
+      for (var key in param) {
         const input = document.createElement('input')
         input.type = 'hidden'
         input.name = key
-        input.value = param[key]
+        input.value = String(param[key])
         form.appendChild(input)
       }
-       
+
       document.body.appendChild(form);
       form.submit();
       document.body.removeChild(form);

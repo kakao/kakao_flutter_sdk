@@ -18,17 +18,16 @@ LocationTemplate _$LocationTemplateFromJson(Map<String, dynamic> json) =>
           ?.map((e) => Button.fromJson(e as Map<String, dynamic>))
           .toList(),
       buttonTitle: json['button_title'] as String?,
-      objectType: json['object_type'] as String? ?? "location",
+      objectType: json['object_type'] as String? ?? 'location',
     );
 
 Map<String, dynamic> _$LocationTemplateToJson(LocationTemplate instance) =>
     <String, dynamic>{
       'address': instance.address,
       'content': instance.content.toJson(),
-      if (instance.addressTitle case final value?) 'address_title': value,
-      if (instance.social?.toJson() case final value?) 'social': value,
-      if (instance.buttons?.map((e) => e.toJson()).toList() case final value?)
-        'buttons': value,
-      if (instance.buttonTitle case final value?) 'button_title': value,
+      'address_title': ?instance.addressTitle,
+      'social': ?instance.social?.toJson(),
+      'buttons': ?instance.buttons?.map((e) => e.toJson()).toList(),
+      'button_title': ?instance.buttonTitle,
       'object_type': instance.objectType,
     };

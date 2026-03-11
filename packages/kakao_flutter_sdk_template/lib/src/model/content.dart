@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk_template/src/model/link.dart';
+
+import 'link.dart';
 
 part 'content.g.dart';
 
@@ -7,7 +8,10 @@ part 'content.g.dart';
 /// <br>
 /// EN: Contents for the message
 @JsonSerializable(
-    fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
+  fieldRename: FieldRename.snake,
+  explicitToJson: true,
+  includeIfNull: false,
+)
 class Content {
   /// KO: 제목
   /// <br>

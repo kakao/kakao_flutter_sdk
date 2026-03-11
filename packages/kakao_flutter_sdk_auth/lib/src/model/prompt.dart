@@ -5,15 +5,21 @@ enum Prompt {
   /// KO: 사용자 재인증
   /// <br>
   /// EN: Reauthenticate users
-  login,
+  login('login'),
 
   /// KO: 카카오계정 신규 가입 후 로그인
   /// <br>
   /// EN: Login after signing up for a Kakao Account
-  create,
+  create('create'),
 
   /// KO: 카카오계정 간편로그인
   /// <br>
   /// EN: Kakao Account easy login
-  selectAccount,
+  selectAccount('select_account');
+
+  /// @nodoc
+  const Prompt(this.value);
+
+  /// @nodoc
+  final String value;
 }

@@ -1,8 +1,9 @@
 import 'dart:convert';
 
-import 'package:kakao_flutter_sdk_auth/src/model/oauth_token.dart';
-import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/util/legacy_to_async_migration_util.dart';
+
+import '../kakao_flutter_sdk_auth.dart';
 
 /// KO: 토큰 저장소 설정
 /// <br>
@@ -15,7 +16,8 @@ class TokenManagerProvider {
 
   TokenManagerProvider._();
 
-  static final instance = TokenManagerProvider._();
+  /// @nodoc
+  static final TokenManagerProvider instance = TokenManagerProvider._();
 }
 
 /// KO: 토큰 저장소의 추상 클래스
@@ -43,130 +45,103 @@ abstract class TokenManager {
 /// EN: Token manager
 class DefaultTokenManager implements TokenManager {
   /// @nodoc
-  static const tokenKey = "com.kakao.token.OAuthToken";
+  DefaultTokenManager()
+    : _preferences = SharedPreferencesAsync(),
+      _cipher = AESCipher.create(
+        KakaoSdk.platformInfo.origin,
+        KakaoSdk.platformInfo.platformId,
+      );
 
-  /// @nodoc
-  static const atKey = "com.kakao.token.AccessToken";
-
-  /// @nodoc
-  static const expiresAtKey = "com.kakao.token.AccessToken.ExpiresAt";
-
-  /// @nodoc
-  static const rtKey = "com.kakao.token.RefreshToken";
-
-  /// @nodoc
-  static const rtExpiresAtKey = "com.kakao.token.RefreshToken.ExpiresAt";
-
-  /// @nodoc
-  static const secureModeKey = "com.kakao.token.KakaoSecureMode";
-
-  /// @nodoc
-  static const scopesKey = "com.kakao.token.Scopes";
-
-  /// @nodoc
-  static const versionKey = "com.kakao.token.version";
-
-  static final _instance = DefaultTokenManager._();
-
-  Cipher? _encryptor;
-  SharedPreferences? _preferences;
-
+  final SharedPreferencesAsync _preferences;
+  SharedPreferences? _legacyPreferences;
+  final Cipher _cipher;
   OAuthToken? _currentToken;
 
-  DefaultTokenManager._();
+  @override
+  Future<OAuthToken?> getToken() async {
+    if (_currentToken != null) {
+      return Future.value(_currentToken);
+    }
 
-  /// @nodoc
-  factory DefaultTokenManager() {
-    return _instance;
+    final version = await _preferences.getString(_versionKey);
+
+    // v1에서는 SharedPreferences에 저장했기 때문에 SharedPreferencesAsync에는 버전 값이 없을 수 있음.
+    if (version == null) {
+      _legacyPreferences ??= await SharedPreferences.getInstance();
+      final legacyVersion = _legacyPreferences?.getString(_versionKey);
+
+      if (legacyVersion != null && isV1Sdk(legacyVersion)) {
+        await _migrateV1Token();
+      }
+    }
+
+    final encryptedToken = await _preferences.getString(_tokenKey);
+
+    if (encryptedToken == null) {
+      return null;
+    }
+
+    try {
+      final jsonToken = _cipher.decrypt(encryptedToken);
+
+      _currentToken = OAuthToken.fromJson(jsonDecode(jsonToken));
+    } catch (e) {
+      await clear();
+      SdkLog.e(
+        '[DefaultTokenManager.getToken] decrypt_failed | action=cleared_saved_token',
+      );
+    }
+
+    return _currentToken;
+  }
+
+  @override
+  Future<void> setToken(OAuthToken token) async {
+    _currentToken = token;
+    await _persistToken(token);
+    SdkLog.i(
+      '[DefaultTokenManager.setToken] completed | hasRefreshToken=${token.refreshToken != null} expiresAt=${token.expiresAt.toIso8601String()}',
+    );
   }
 
   @override
   Future<void> clear() async {
     _currentToken = null;
-    _preferences ??= await SharedPreferences.getInstance();
-    await _preferences!.remove(tokenKey);
+    await _preferences.remove(_tokenKey);
+    SdkLog.i('[DefaultTokenManager.clear] completed');
   }
 
-  @override
-  Future<void> setToken(OAuthToken token) async {
-    _encryptor ??= await AESCipher.create();
-    _preferences ??= await SharedPreferences.getInstance();
-    _preferences!.setString(versionKey, KakaoSdk.sdkVersion);
-    await _preferences!
-        .setString(tokenKey, _encryptor!.encrypt(jsonEncode(token)));
-    _currentToken = token;
+  bool isV1Sdk(String version) {
+    // 1.x.x or 1.x.x+x
+    final regExp = RegExp(r'^1\.\d+\.\d+');
+    return regExp.hasMatch(version);
   }
 
-  @override
-  Future<OAuthToken?> getToken() async {
-    if (_currentToken != null) {
-      return _currentToken;
-    }
+  Future<void> _migrateV1Token() async {
+    SdkLog.d('[DefaultTokenManager.migrateV1Token] started');
 
-    _encryptor ??= await AESCipher.create();
-    _preferences ??= await SharedPreferences.getInstance();
-    var version = _preferences!.getString(versionKey);
-    var jsonToken = _preferences!.getString(tokenKey);
+    // https://pub.dev/packages/shared_preferences#migration-and-prefixes
+    await migrateLegacySharedPreferencesToSharedPreferencesAsyncIfNecessary(
+      legacySharedPreferencesInstance: _legacyPreferences!,
+      sharedPreferencesAsyncOptions: const SharedPreferencesOptions(),
+      migrationCompletedKey: _migrationCompletedKey,
+    );
 
-    if (jsonToken == null || version == null) {
-      _currentToken = await _migrateOldToken();
-    } else {
-      try {
-        _currentToken =
-            OAuthToken.fromJson(jsonDecode(_encryptor!.decrypt(jsonToken)));
-      } catch (e) {
-        await clear();
-        SdkLog.e(
-            'A previously saved token was deleted due to an error during decryption. Please login again.');
-      }
-    }
-    return _currentToken;
+    await _preferences.setString(_versionKey, KakaoSdk.sdkVersion);
+
+    SdkLog.i('[DefaultTokenManager.migrateV1Token] completed');
   }
 
-  // Token management logic has been changed from 0.9.0 version.
-  // This code has been added for compatibility with previous versions.
-  Future<OAuthToken?> _migrateOldToken() async {
-    _preferences ??= await SharedPreferences.getInstance();
-    var accessToken = _preferences!.getString(atKey);
-    var refreshToken = _preferences!.getString(rtKey);
-    var expiresAtMillis = _preferences!.getInt(expiresAtKey);
-    var rtExpiresAtMillis = _preferences!.getInt(rtExpiresAtKey);
-    List<String>? scopes = _preferences!.getStringList(scopesKey);
+  Future<void> _persistToken(OAuthToken token) async {
+    final jsonToken = jsonEncode(token);
+    final encryptedToken = _cipher.encrypt(jsonToken);
 
-    // If token that issued before 0.9.0 version are loaded, then return OAuthToken.
-    if (accessToken != null &&
-        refreshToken != null &&
-        expiresAtMillis != null &&
-        rtExpiresAtMillis != null) {
-      SdkLog.i("=== Migrate from old version token ===");
-
-      var expiresAt = DateTime.fromMillisecondsSinceEpoch(expiresAtMillis);
-      var refreshTokenExpiresAt =
-          DateTime.fromMillisecondsSinceEpoch(rtExpiresAtMillis);
-
-      final token = OAuthToken(
-          accessToken, expiresAt, refreshToken, refreshTokenExpiresAt, scopes);
-
-      // Remove all token properties that saved before 0.9.0 version and save migrated token.
-      await _preferences!.remove(atKey);
-      await _preferences!.remove(expiresAtKey);
-      await _preferences!.remove(rtKey);
-      await _preferences!.remove(rtExpiresAtKey);
-      await _preferences!.remove(secureModeKey);
-      await _preferences!.remove(scopesKey);
-      await _preferences!
-          .setString(tokenKey, _encryptor!.encrypt(jsonEncode(token)));
-      await _preferences!.setString(versionKey, KakaoSdk.sdkVersion);
-      return token;
-    }
-
-    // if a token is issued between version 0.9.0 and version 1.0.0, save the versionKey and encrypt previous token
-    var jsonToken = _preferences!.getString(tokenKey);
-    if (jsonToken != null) {
-      await _preferences!.setString(versionKey, KakaoSdk.sdkVersion);
-      await _preferences!.setString(tokenKey, _encryptor!.encrypt(jsonToken));
-      return OAuthToken.fromJson(jsonDecode(jsonToken));
-    }
-    return null;
+    await _preferences.setString(_versionKey, KakaoSdk.sdkVersion);
+    await _preferences.setString(_tokenKey, encryptedToken);
   }
+
+  static const _tokenKey = 'com.kakao.token.OAuthToken';
+  static const _versionKey = 'com.kakao.token.version';
+  static const _migrationCompletedKey =
+      'com.kakao.sdk.flutter.v2.migration.completed';
 }

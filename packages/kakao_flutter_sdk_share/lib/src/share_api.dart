@@ -1,129 +1,139 @@
-import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
-import 'package:kakao_flutter_sdk_share/src/constants.dart';
-import 'package:kakao_flutter_sdk_share/src/model/image_upload_result.dart';
-import 'package:kakao_flutter_sdk_share/src/model/sharing_result.dart';
+import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:kakao_flutter_sdk_template/kakao_flutter_sdk_template.dart';
 
-import 'model/share_type.dart';
+import 'constants.dart';
+import 'model/image_upload_result.dart';
+import 'model/sharing_result.dart';
 
-// Kakao SDK의 카카오톡 공유 내부 동작에 사용되는 클라이언트
 /// @nodoc
 class ShareApi {
-  ShareApi(this.dio);
+  ShareApi(this._client);
 
-  // DIO instance used by this class to make network requests.
-  final Dio dio;
+  final KakaoHttpClient _client;
 
-  static final ShareApi instance = ShareApi(ApiFactory.appKeyApi);
-
-  // 카카오디벨로퍼스에서 생성한 메시지 템플릿을 카카오톡 메시지로 공유
   Future<SharingResult> custom(
     int templateId, {
     Map<String, String>? templateArgs,
-    ShareType? shareType,
-    int? limit,
-  }) async {
-    return _validate(Constants.validate, {
+  }) {
+    SdkLog.d(
+      '[ShareApi.custom] started | templateId=$templateId templateArgsCount=${templateArgs?.length ?? 0}',
+    );
+    final data = <String, Object>{
       Constants.templateId: templateId,
-      Constants.templateArgs:
-          templateArgs == null ? null : jsonEncode(templateArgs),
-      Constants.schemeParams: _createSchemeParams(shareType, limit),
-    });
+      Constants.templateArgs: ?templateArgs?.toJson(),
+    };
+
+    return _validate(Constants.validate, data);
   }
 
-  // 기본 템플릿을 카카오톡 메시지로 공유
-  Future<SharingResult> defaultTemplate(
-    DefaultTemplate template, {
-    ShareType? shareType,
-    int? limit,
-  }) async {
-    return _validate(Constants.defaultTemplate, {
+  Future<SharingResult> defaultTemplate(DefaultTemplate template) async {
+    SdkLog.d(
+      '[ShareApi.defaultTemplate] started | templateType=${template.runtimeType}',
+    );
+    final data = <String, String>{
       Constants.templateObject: jsonEncode(template),
-      Constants.schemeParams: _createSchemeParams(shareType, limit),
-    });
+    };
+
+    return _validate(Constants.defaultTemplate, data);
   }
 
-  // 지정된 URL을 스크랩하여 만들어진 템플릿을 카카오톡 메시지로 공유
   Future<SharingResult> scrap(
     String url, {
     int? templateId,
     Map<String, String>? templateArgs,
-    ShareType? shareType,
-    int? limit,
   }) async {
-    var params = {
+    SdkLog.d(
+      '[ShareApi.scrap] started | url=$url templateId=$templateId templateArgsCount=${templateArgs?.length ?? 0}',
+    );
+    final data = <String, Object>{
       Constants.requestUrl: url,
-      Constants.templateId: templateId,
-      Constants.templateArgs:
-          templateArgs == null ? null : jsonEncode(templateArgs),
-      Constants.schemeParams: _createSchemeParams(shareType, limit),
+      Constants.templateId: ?templateId,
+      Constants.templateArgs: ?templateArgs?.toJson(),
     };
-    params.removeWhere((k, v) => v == null);
-    return _validate(Constants.scrap, params);
+
+    return _validate(Constants.scrap, data);
   }
 
-  // 로컬 이미지를 카카오톡 공유 컨텐츠 이미지로 활용하기 위해 카카오 이미지 서버로 업로드
-  Future<ImageUploadResult> uploadImage(File? image, Uint8List? byteData,
-      {bool secureResource = true}) async {
-    return ApiFactory.handleApiError(() async {
-      var formData = FormData();
+  Future<ImageUploadResult> uploadImage(
+    String? imagePath,
+    Uint8List? byteData,
+    bool secureResource,
+  ) async {
+    assert(imagePath != null || byteData != null);
+    SdkLog.d(
+      '[ShareApi.uploadImage] started | source=${imagePath != null ? 'file' : 'bytes'} secureResource=$secureResource',
+    );
 
-      final MultipartFile file;
+    final MultipartFile file;
 
-      if (image != null) {
-        file = await MultipartFile.fromFile(image.path,
-            filename: image.path.split("/").last);
-      } else {
-        file = MultipartFile.fromBytes(byteData!, filename: "image");
-      }
-      formData.files.add(MapEntry(Constants.file, file));
-      formData.fields
-          .add(MapEntry(Constants.secureResource, secureResource.toString()));
-      Response response =
-          await dio.post(Constants.uploadImagePath, data: formData);
-      return ImageUploadResult.fromJson(response.data);
-    });
-  }
-
-  // 원격 이미지를 카카오톡 공유 컨텐츠 이미지로 활용하기 위해 카카오 이미지 서버로 업로드
-  Future<ImageUploadResult> scrapImage(String imageUrl,
-      {bool secureResource = true}) {
-    return ApiFactory.handleApiError(() async {
-      Response response = await dio.post(Constants.scrapImagePath, data: {
-        Constants.imageUrl: imageUrl,
-        Constants.secureResource: secureResource
-      });
-      return ImageUploadResult.fromJson(response.data);
-    });
-  }
-
-  Future<SharingResult> _validate(String postfix, Map<String, dynamic> data) {
-    return ApiFactory.handleApiError(() async {
-      Response res =
-          await dio.get("${Constants.validatePath}/$postfix", queryParameters: {
-        Constants.linkVersion: Constants.linkVersion_40,
-        ...data,
-      });
-      return SharingResult.fromJson(res.data);
-    });
-  }
-
-  String? _createSchemeParams(ShareType? shareType, int? limit) {
-    if (shareType == null && limit == null) {
-      return null;
+    if (imagePath != null) {
+      file = await MultipartFile.fromFile(
+        imagePath,
+        filename: imagePath.split('/').last,
+      );
+    } else {
+      file = MultipartFile.fromBytes(byteData!, filename: 'image');
     }
 
-    var params = <String, dynamic>{
-      if (shareType != null)
-        Constants.list:
-            shareType == ShareType.defaultType ? "default" : shareType.name,
-      if (limit != null) Constants.limit: limit,
+    final formData = FormData()
+      ..files.add(MapEntry(Constants.file, file))
+      ..fields.add(
+        MapEntry(Constants.secureResource, secureResource.toString()),
+      );
+
+    final response = await _client.post(
+      Constants.uploadImagePath,
+      data: formData,
+    );
+    final result = ImageUploadResult.fromJson(response.data);
+    SdkLog.i(
+      '[ShareApi.uploadImage] completed | infoCount=${result.infos.original.length}',
+    );
+    return result;
+  }
+
+  Future<ImageUploadResult> scrapImage(
+    String imageUrl,
+    bool secureResource,
+  ) async {
+    SdkLog.d(
+      '[ShareApi.scrapImage] started | imageUrl=$imageUrl secureResource=$secureResource',
+    );
+    final response = await _client.post(
+      Constants.scrapImagePath,
+      data: {
+        Constants.imageUrl: imageUrl,
+        Constants.secureResource: secureResource.toString(),
+      },
+    );
+    final result = ImageUploadResult.fromJson(response.data);
+    SdkLog.i(
+      '[ShareApi.scrapImage] completed | infoCount=${result.infos.original.length}',
+    );
+    return result;
+  }
+
+  Future<SharingResult> _validate(
+    String postfix,
+    Map<String, Object> data,
+  ) async {
+    SdkLog.v('[ShareApi.validate] started | postfix=$postfix');
+    final queryParams = <String, Object>{
+      Constants.linkVersion: Constants.linkVersion_40,
+      ...data,
     };
-    return jsonEncode(params);
+    final response = await _client.get(
+      '${Constants.validatePath}/$postfix',
+      queryParameters: queryParams,
+    );
+    final result = SharingResult.fromJson(response.data);
+    SdkLog.i(
+      '[ShareApi.validate] completed | templateId=${result.templateId} schemeParamKeys=${result.schemeParams?.keys.join(',')}',
+    );
+    return result;
   }
 }

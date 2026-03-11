@@ -20,7 +20,7 @@ class NaviOption {
   /// KO: 경로 최적화 기준
   /// <br>
   /// EN: Criteria to optimize the route
-  @JsonKey(name: "rpoption")
+  @JsonKey(name: 'rpoption')
   final RpOption? rpOption;
 
   /// KO: 전체 경로 정보 보기 사용 여부
@@ -31,13 +31,13 @@ class NaviOption {
   /// KO: 시작 위치의 경도 좌표
   /// <br>
   /// EN: Longitude coordinate of the start point
-  @JsonKey(name: "s_x")
+  @JsonKey(name: 's_x')
   final String? startX;
 
   /// KO: 시작 위치의 위도 좌표
   /// <br>
   /// EN: Latitude coordinate of the start point
-  @JsonKey(name: "s_y")
+  @JsonKey(name: 's_y')
   final String? startY;
 
   /// KO: 시작 차량 각도(최소: 0, 최대: 359)
@@ -72,6 +72,27 @@ class NaviOption {
   /// @nodoc
   @override
   String toString() => toJson().toString();
+
+  /// @nodoc
+  NaviOption clone({
+    CoordType? coordType,
+    VehicleType? vehicleType,
+    RpOption? rpOption,
+    bool? routeInfo,
+    String? startX,
+    String? startY,
+    int? startAngle,
+    String? returnUri,
+  }) => NaviOption(
+    coordType: coordType ?? this.coordType,
+    vehicleType: vehicleType ?? this.vehicleType,
+    rpOption: rpOption ?? this.rpOption,
+    routeInfo: routeInfo ?? this.routeInfo,
+    startX: startX ?? this.startX,
+    startY: startY ?? this.startY,
+    startAngle: startAngle ?? this.startAngle,
+    returnUri: returnUri ?? this.returnUri,
+  );
 }
 
 /// KO: 좌표계 타입
@@ -86,7 +107,7 @@ enum CoordType {
   /// KO: Katec, 서버 기본값
   /// <br>
   /// EN: Katec, the default value on the server side
-  katec
+  katec,
 }
 
 /// KO: 경로 최적화 기준
@@ -96,50 +117,50 @@ enum RpOption {
   /// KO: 가장 빠른 경로
   /// <br>
   /// EN: Fastest route
-  @JsonValue("1")
+  @JsonValue('1')
   fast,
 
   /// KO: 무료 도로
   /// <br>
   /// EN: Free route
-  @JsonValue("2")
+  @JsonValue('2')
   free,
 
   /// KO: 가장 짧은 경로
   /// <br>
   /// EN: Shortest route
-  @JsonValue("3")
+  @JsonValue('3')
   shortest,
 
   /// KO: 자동차 전용 도로 제외
   /// <br>
   /// EN: Exclude motorway
-  @JsonValue("4")
+  @JsonValue('4')
   noAuto,
 
   /// KO: 큰길 우선
   /// <br>
   /// EN: Wide road first
-  @JsonValue("5")
+  @JsonValue('5')
   wide,
 
   /// KO: 고속도로 우선
   /// <br>
   /// EN: Highway first
-  @JsonValue("6")
+  @JsonValue('6')
   highway,
 
   /// KO: 일반 도로 우선
   /// <br>
   /// EN: Normal road first
-  @JsonValue("8")
+  @JsonValue('8')
   normal,
 
   /// KO: 추천 경로(기본값)
   /// <br>
   /// EN: Recommended route (Default)
-  @JsonValue("100")
-  recommended
+  @JsonValue('100')
+  recommended,
 }
 
 /// KO: 차종
@@ -149,42 +170,42 @@ enum VehicleType {
   /// KO: 1종, 승용차, 소형승합차, 소형화물차
   /// <br>
   /// EN: Class 1, passenger car, small van, small truck
-  @JsonValue("1")
+  @JsonValue('1')
   first,
 
   /// KO: 2종, 중형승합차, 중형화물차
   /// <br>
   /// EN: Class 2, mid-size van, mid-size truck
-  @JsonValue("2")
+  @JsonValue('2')
   second,
 
   /// KO: 3종, 대형승합차, 2축 대형화물차
   /// <br>
   /// EN: Class 3, large van, 2-axis large truck
-  @JsonValue("3")
+  @JsonValue('3')
   third,
 
   /// KO: 4종, 3축 대형화물차
   /// <br>
   /// EN: Class 4, 3-axis large truck
-  @JsonValue("4")
+  @JsonValue('4')
   fourth,
 
   /// KO: 5종, 4축 이상 특수화물차
   /// <br>
   /// EN: Class 5, special truck with four axes or more
-  @JsonValue("5")
+  @JsonValue('5')
   fifth,
 
   /// KO: 6종, 경차
   /// <br>
   /// EN: Class 6, compact car
-  @JsonValue("6")
+  @JsonValue('6')
   sixth,
 
   /// KO: 이륜차
   /// <br>
   /// EN: Two-wheeled vehicle
-  @JsonValue("7")
-  twoWheel
+  @JsonValue('7')
+  twoWheel,
 }

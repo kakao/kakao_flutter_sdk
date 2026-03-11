@@ -13,12 +13,12 @@ class SelectedUsers {
   /// KO: 선택한 사용자 수
   /// <br>
   /// EN: Number of selected users
-  int totalCount;
+  final int totalCount;
 
   /// KO: 선택한 사용자 정보 목록, 정보 제공이 불가능한 사용자 제외
   /// <br>
   /// EN: A list of the selected user information, except for unavailable user information
-  List<SelectedUser>? users;
+  final List<SelectedUser>? users;
 
   /// @nodoc
   SelectedUsers({required this.totalCount, this.users});
@@ -40,32 +40,32 @@ class SelectedUser {
   /// KO: 회원번호, 앱과 연결된 사용자에게만 존재
   /// <br>
   /// EN: Service user ID, only provided for users linked with the app
-  String? id;
+  final String? id;
 
   /// KO: 고유 ID
   /// <br>
   /// EN: Unique ID
-  String uuid;
+  final String uuid;
 
   /// KO: 프로필 닉네임
   /// <br>
   /// EN: Profile nickname
-  String? profileNickname;
+  final String? profileNickname;
 
   /// KO: 프로필 썸네일 이미지
   /// <br>
   /// EN: Profile thumbnail image
-  String? profileThumbnailImage;
+  final String? profileThumbnailImage;
 
   /// KO: 즐겨찾기 친구 여부
   /// <br>
   /// EN: Whether a favorite friend
-  bool? favorite;
+  final bool? favorite;
 
   /// @nodoc
   SelectedUser({
-    this.id,
     required this.uuid,
+    this.id,
     this.profileNickname,
     this.profileThumbnailImage,
     this.favorite,

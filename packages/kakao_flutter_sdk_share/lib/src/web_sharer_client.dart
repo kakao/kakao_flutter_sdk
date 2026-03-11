@@ -1,25 +1,24 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
-
-import 'package:kakao_flutter_sdk_share/src/constants.dart';
-import 'package:kakao_flutter_sdk_share/src/model/image_upload_result.dart';
-import 'package:kakao_flutter_sdk_share/src/model/sharing_result.dart';
-import 'package:kakao_flutter_sdk_share/src/share_api.dart';
+import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:kakao_flutter_sdk_template/kakao_flutter_sdk_template.dart';
+
+import 'constants.dart';
+import 'model/sharing_result.dart';
+import 'share_api.dart';
+import 'share_platform.dart';
 
 /// KO: 카카오톡 공유 API 클라이언트, 웹 공유 기능 제공
 /// <br>
 /// EN: Client for the Kakao Talk Sharing APIs, provides sharing features for the web
 class WebSharerClient {
   /// @nodoc
-  final ShareApi api;
-
-  static final WebSharerClient instance = WebSharerClient(ShareApi.instance);
+  WebSharerClient({ShareApi? api, SharePlatform? platform})
+    : _api = api ?? ShareApi(KakaoHttpClientFactory.appKeyApi);
 
   /// @nodoc
-  WebSharerClient(this.api);
+  final ShareApi _api;
+
+  /// @nodoc
+  static final WebSharerClient instance = WebSharerClient();
 
   /// KO: 사용자 정의 템플릿을 카카오톡으로 공유하기 위한 URL 생성<br>
   /// [templateId]에 사용자 정의 템플릿 ID 전달<br>
@@ -35,9 +34,13 @@ class WebSharerClient {
     Map<String, String>? templateArgs,
     Map<String, String>? serverCallbackArgs,
   }) async {
-    final response = await api.custom(templateId, templateArgs: templateArgs);
-    return _sharerWithResponse(response,
-        serverCallbackArgs: serverCallbackArgs);
+    SdkLog.d(
+      '[WebSharerClient.makeCustomUrl] started | templateId=$templateId templateArgsCount=${templateArgs?.length ?? 0} callbackArgsCount=${serverCallbackArgs?.length ?? 0}',
+    );
+    final response = await _api.custom(templateId, templateArgs: templateArgs);
+    final url = _createUrl(response, serverCallbackArgs);
+    SdkLog.i('[WebSharerClient.makeCustomUrl] completed | url=$url');
+    return url;
   }
 
   /// KO: 기본 템플릿을 카카오톡으로 공유하기 위한 URL 생성<br>
@@ -51,9 +54,13 @@ class WebSharerClient {
     required DefaultTemplate template,
     Map<String, String>? serverCallbackArgs,
   }) async {
-    final response = await api.defaultTemplate(template);
-    return _sharerWithResponse(response,
-        serverCallbackArgs: serverCallbackArgs);
+    SdkLog.d(
+      '[WebSharerClient.makeDefaultUrl] started | templateType=${template.runtimeType} callbackArgsCount=${serverCallbackArgs?.length ?? 0}',
+    );
+    final response = await _api.defaultTemplate(template);
+    final url = _createUrl(response, serverCallbackArgs);
+    SdkLog.i('[WebSharerClient.makeDefaultUrl] completed | url=$url');
+    return url;
   }
 
   /// KO: 스크랩 정보로 구성된 메시지 템플릿을 카카오톡으로 공유하기 위한 URL 생성<br>
@@ -73,64 +80,45 @@ class WebSharerClient {
     Map<String, String>? templateArgs,
     Map<String, String>? serverCallbackArgs,
   }) async {
-    final response = await api.scrap(url,
-        templateId: templateId, templateArgs: templateArgs);
-    return _sharerWithResponse(response,
-        serverCallbackArgs: serverCallbackArgs);
+    SdkLog.d(
+      '[WebSharerClient.makeScrapUrl] started | url=$url templateId=$templateId templateArgsCount=${templateArgs?.length ?? 0} callbackArgsCount=${serverCallbackArgs?.length ?? 0}',
+    );
+    final response = await _api.scrap(
+      url,
+      templateId: templateId,
+      templateArgs: templateArgs,
+    );
+
+    final sharerUrl = _createUrl(response, serverCallbackArgs);
+    SdkLog.i('[WebSharerClient.makeScrapUrl] completed | url=$sharerUrl');
+    return sharerUrl;
   }
 
-  /// KO: 이미지 업로드<br>
-  /// [image]에 이미지 파일 전달<br>
-  /// [secureResource]로 이미지 URL을 HTTPS로 설정<br>
-  /// <br>
-  /// EN: Upload image<br>
-  /// Pass the image file to [image]<br>
-  /// Set whether to use HTTPS for the image URL with [secureResource]
-  Future<ImageUploadResult> uploadImage({
-    File? image,
-    Uint8List? byteData,
-    bool secureResource = true,
-  }) async {
-    if (image == null && byteData == null) {
-      throw KakaoClientException(
-        ClientErrorCause.badParameter,
-        'Either parameter image or byteData must not be null.',
-      );
-    }
-    return await api.uploadImage(image, byteData,
-        secureResource: secureResource);
-  }
-
-  /// KO: 이미지 스크랩<br>
-  /// [imageUrl]에 이미지 URL 전달<br>
-  /// [secureResource]로 이미지 URL을 HTTPS로 설정<br>
-  /// <br>
-  /// EN: Scrape image<br>
-  /// Pass the image URL to [imageUrl]<br>
-  /// Set whether to use HTTPS for the image URL with [secureResource]
-  Future<ImageUploadResult> scrapImage({
-    required String imageUrl,
-    bool secureResource = true,
-  }) async {
-    return await api.scrapImage(imageUrl, secureResource: secureResource);
-  }
-
-  Future<Uri> _sharerWithResponse(SharingResult response,
-      {Map<String, String>? serverCallbackArgs}) async {
-    final params = {
+  Uri _createUrl(
+    SharingResult response,
+    Map<String, String>? serverCallbackArgs,
+  ) {
+    final params = <String, Object>{
       Constants.sharerAppKey: KakaoSdk.appKey,
-      Constants.sharerKa: await KakaoSdk.kaHeader,
+      Constants.sharerKa: KakaoSdk.platformInfo.kaHeader,
       Constants.validationAction: Constants.custom,
-      Constants.validationParams: jsonEncode({
-        Constants.templateId: response.templateId,
-        Constants.templateArgs: response.templateArgs,
-        Constants.linkVersion: Constants.linkVersion_40
-      }),
-      Constants.lcba:
-          serverCallbackArgs == null ? null : jsonEncode(serverCallbackArgs)
+      Constants.validationParams: _createValidationParams(response),
+      Constants.lcba: ?serverCallbackArgs,
     };
 
-    params.removeWhere((k, v) => v == null);
-    return Uri.https(KakaoSdk.hosts.sharer, Constants.sharerPath, params);
+    return Uri(
+      scheme: 'https',
+      host: KakaoSdk.hosts.sharer,
+      path: Constants.sharerPath,
+      query: params.toQuery(),
+    );
+  }
+
+  String _createValidationParams(SharingResult response) {
+    return <String, Object>{
+      Constants.templateId: response.templateId,
+      Constants.templateArgs: ?response.templateArgs,
+      Constants.linkVersion: Constants.linkVersion_40,
+    }.toJson();
   }
 }

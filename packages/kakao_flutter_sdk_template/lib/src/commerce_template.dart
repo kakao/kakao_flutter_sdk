@@ -1,8 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk_template/src/default_template.dart';
-import 'package:kakao_flutter_sdk_template/src/model/button.dart';
-import 'package:kakao_flutter_sdk_template/src/model/commerce.dart';
-import 'package:kakao_flutter_sdk_template/src/model/content.dart';
+
+import 'default_template.dart';
+import 'model/button.dart';
+import 'model/commerce.dart';
+import 'model/content.dart';
 
 part 'commerce_template.g.dart';
 
@@ -10,7 +11,10 @@ part 'commerce_template.g.dart';
 /// <br>
 /// EN: Default template for commerce messages
 @JsonSerializable(
-    fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
+  fieldRename: FieldRename.snake,
+  explicitToJson: true,
+  includeIfNull: false,
+)
 class CommerceTemplate extends DefaultTemplate {
   /// KO: 메시지 콘텐츠
   /// <br>
@@ -43,7 +47,7 @@ class CommerceTemplate extends DefaultTemplate {
     required this.commerce,
     this.buttons,
     this.buttonTitle,
-    this.objectType = "commerce",
+    this.objectType = 'commerce',
   });
 
   /// @nodoc

@@ -10,7 +10,7 @@ class UserIdResponse {
   /// KO: 회원번호
   /// <br>
   /// EN: User ID
-  int id;
+  final int id;
 
   /// @nodoc
   UserIdResponse(this.id);

@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk_template/src/model/link.dart';
+
+import '/src/model/link.dart';
 
 part 'button.g.dart';
 
@@ -7,7 +8,10 @@ part 'button.g.dart';
 /// <br>
 /// EN: Button at the bottom of the message
 @JsonSerializable(
-    fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
+  fieldRename: FieldRename.snake,
+  explicitToJson: true,
+  includeIfNull: false,
+)
 class Button {
   /// KO: 버튼 문구
   /// <br>

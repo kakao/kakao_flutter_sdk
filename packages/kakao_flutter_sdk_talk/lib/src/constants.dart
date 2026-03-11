@@ -8,15 +8,16 @@ class Constants {
   static const String followChannelPath = 'talk/channel/follow';
   static const String defaultPath = 'default/';
   static const String scrapPath = 'scrap/';
+  static const String validatePath = '/v1/app/validate/sdk';
+  static const String validateAdd = '/sdk/channel/add';
+  static const String validateChat = '/sdk/channel/chat';
   static const String send = 'send';
   static const String friend = 'friend';
   static const String chat = 'chat';
-  static const String scheme = 'https';
   static const String ka = 'ka';
   static const String agt = 'agt';
   static const String accessToken = 'accessToken';
   static const String transId = 'trans_id';
-  static const String url = 'url';
 
   static const String offset = 'offset';
   static const String limit = 'limit';
@@ -29,13 +30,12 @@ class Constants {
   static const String requestUrl = 'request_url';
   static const String channelIds = 'channel_ids';
   static const String channelIdType = 'channel_id_type';
+  static const String uri = 'uri';
   static const String channelPublicId = 'channel_public_id';
+  static const String quotaProperties = 'quota_properties';
   static const String receiverUuids = 'receiver_uuids';
 
   static const String status = 'status';
-  static const String followChannel = 'followChannel';
-  static const String followChannelStatusSuccess = 'success';
-  static const String followChannelStatusFail = 'fail';
   static const String followChannelStatusError = 'error';
   static const String returnUrl = 'return_url';
   static const String followChannelScheme = 'channel';

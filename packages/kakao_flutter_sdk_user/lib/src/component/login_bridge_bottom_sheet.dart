@@ -2,16 +2,18 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widget_previews.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
-import 'package:kakao_flutter_sdk_user/src/component/kakao_colors.dart';
-import 'package:kakao_flutter_sdk_user/src/component/localization_options.dart';
-import 'package:kakao_flutter_sdk_user/src/component/login_bridge_paddings.dart';
-import 'package:kakao_flutter_sdk_user/src/component/square_button.dart';
-import 'package:kakao_flutter_sdk_user/src/model/login_ui_mode.dart';
+import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 
+import '../model/login_ui_mode.dart';
+import 'kakao_colors.dart';
+import 'localization_options.dart';
+import 'login_bridge_paddings.dart';
+import 'square_button.dart';
+
+/// @nodoc
 class LoginBridgeBottomSheet extends StatelessWidget {
   final LoginUiMode uiMode;
-  final LocalizationOptions? _localization;
+  final LocalizationOptions _localString;
   final VoidCallback onTalkLoginPressed;
   final VoidCallback onAccountLoginPressed;
 
@@ -22,53 +24,75 @@ class LoginBridgeBottomSheet extends StatelessWidget {
     topRight: Radius.circular(16),
   );
 
-  late final LoginBridgePaddings paddings;
-
-  late final LocalizationOptions _localString;
-
   LoginBridgeBottomSheet({
     required this.uiMode,
     LocalizationOptions? localization,
     required this.onTalkLoginPressed,
     required this.onAccountLoginPressed,
     super.key,
-  }) : _localization = localization {
-    _localString =
-        _localization ?? LocalizationOptions.getLocalizationOptions();
-  }
+  }) : _localString =
+           localization ?? LocalizationOptions.getLocalizationOptions();
 
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final colors = _isDarkMode(mediaQuery) ? _darkModeColors : _lightModeColors;
     final isIOS = defaultTargetPlatform == TargetPlatform.iOS;
-    paddings = isIOS ? IosPaddings() : AndroidPaddings();
-    final horizontalPadding = _getBottomSheetHorizontalPadding(mediaQuery);
 
-    return SafeArea(
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-        decoration: BoxDecoration(
-          color: colors.white001s,
-          borderRadius: _borderRadius,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _buildDragHandler(colors),
-            _buildTitleText(colors),
-            _buildButtons(colors, onTalkLoginPressed, onAccountLoginPressed),
-            _buildKakaoLogo(mediaQuery, colors),
-          ],
-        ),
+    final paddings = isIOS ? IosPaddings() : AndroidPaddings();
+
+    final isPortrait = mediaQuery.orientation == Orientation.portrait;
+    final horizontalPadding = isPortrait
+        ? paddings.portraitPadding
+        : paddings.landscapePadding;
+
+    return Container(
+      padding: EdgeInsets.only(
+        left: horizontalPadding,
+        right: horizontalPadding,
+        bottom: isIOS ? 0 : mediaQuery.padding.bottom, // android edge to edge 대응
+      ),
+      decoration: BoxDecoration(
+        color: colors.white001s,
+        borderRadius: _borderRadius,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _buildDragHandler(colors),
+          _buildTitleText(colors, paddings),
+          _buildButtons(colors, onTalkLoginPressed, onAccountLoginPressed),
+          _buildKakaoLogo(isPortrait, paddings, colors),
+        ],
       ),
     );
+    // return SafeArea(
+    //   child: Container(
+    //     padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+    //     decoration: BoxDecoration(
+    //       color: colors.white001s,
+    //       borderRadius: _borderRadius,
+    //     ),
+    //     child: Column(
+    //       mainAxisSize: MainAxisSize.min,
+    //       crossAxisAlignment: CrossAxisAlignment.center,
+    //       children: [
+    //         _buildDragHandler(colors),
+    //         _buildTitleText(colors, paddings),
+    //         _buildButtons(colors, onTalkLoginPressed, onAccountLoginPressed),
+    //         _buildKakaoLogo(isPortrait, paddings, colors),
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 
-  Padding _buildKakaoLogo(MediaQueryData mediaQuery, KakaoColorScheme colors) {
-    final isPortrait = mediaQuery.orientation == Orientation.portrait;
-
+  Padding _buildKakaoLogo(
+    bool isPortrait,
+    LoginBridgePaddings paddings,
+    KakaoColorScheme colors,
+  ) {
     return Padding(
       padding: EdgeInsets.only(
         top: 24,
@@ -125,16 +149,24 @@ class LoginBridgeBottomSheet extends StatelessWidget {
         decoration: ShapeDecoration(
           color: colors.gray500s,
           shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(2))),
+            borderRadius: BorderRadius.all(Radius.circular(2)),
+          ),
         ),
       ),
     );
   }
 
-  Padding _buildTitleText(KakaoColorScheme colors) {
+  Padding _buildTitleText(
+    KakaoColorScheme colors,
+    LoginBridgePaddings paddings,
+  ) {
     return Padding(
       padding: EdgeInsets.fromLTRB(
-          0, paddings.titleTopPadding, 0, paddings.titleBottomPadding),
+        0,
+        paddings.titleTopPadding,
+        0,
+        paddings.titleBottomPadding,
+      ),
       child: Text(
         _localString.selectLoginMethod.keepWord(),
         style: TextStyle(
@@ -152,11 +184,6 @@ class LoginBridgeBottomSheet extends StatelessWidget {
     return uiMode == LoginUiMode.dark ||
         (uiMode == LoginUiMode.auto &&
             mediaQuery.platformBrightness == Brightness.dark);
-  }
-
-  double _getBottomSheetHorizontalPadding(MediaQueryData mediaQuery) {
-    final isPortrait = mediaQuery.orientation == Orientation.portrait;
-    return isPortrait ? paddings.portraitPadding : paddings.landscapePadding;
   }
 }
 

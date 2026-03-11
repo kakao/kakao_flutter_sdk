@@ -1,8 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kakao_flutter_sdk_template/src/default_template.dart';
-import 'package:kakao_flutter_sdk_template/src/model/button.dart';
-import 'package:kakao_flutter_sdk_template/src/model/content.dart';
-import 'package:kakao_flutter_sdk_template/src/model/social.dart';
+import 'default_template.dart';
+import 'model/button.dart';
+import 'model/content.dart';
+import 'model/social.dart';
 
 part 'location_template.g.dart';
 
@@ -10,7 +10,10 @@ part 'location_template.g.dart';
 /// <br>
 /// EN: Default template for location messages
 @JsonSerializable(
-    fieldRename: FieldRename.snake, explicitToJson: true, includeIfNull: false)
+  fieldRename: FieldRename.snake,
+  explicitToJson: true,
+  includeIfNull: false,
+)
 class LocationTemplate extends DefaultTemplate {
   /// KO: 주소
   /// <br>
@@ -55,7 +58,7 @@ class LocationTemplate extends DefaultTemplate {
     this.social,
     this.buttons,
     this.buttonTitle,
-    this.objectType = "location",
+    this.objectType = 'location',
   });
 
   /// @nodoc

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// 로그인 브릿지에서 사용
+/// @nodoc
 class LightMode extends KakaoColorScheme {
   const LightMode();
 

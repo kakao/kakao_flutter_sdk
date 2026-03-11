@@ -7,11 +7,11 @@ part of 'button.dart';
 // **************************************************************************
 
 Button _$ButtonFromJson(Map<String, dynamic> json) => Button(
-      title: json['title'] as String,
-      link: Link.fromJson(json['link'] as Map<String, dynamic>),
-    );
+  title: json['title'] as String,
+  link: Link.fromJson(json['link'] as Map<String, dynamic>),
+);
 
 Map<String, dynamic> _$ButtonToJson(Button instance) => <String, dynamic>{
-      'title': instance.title,
-      'link': instance.link.toJson(),
-    };
+  'title': instance.title,
+  'link': instance.link.toJson(),
+};
