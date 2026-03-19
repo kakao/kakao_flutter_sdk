@@ -7,7 +7,7 @@ This document introduces how to use the Kakao SDK for Flutter (Flutter SDK). The
 Here are what you need to use the Flutter SDK:
 
 - Dart 3.9.0 or higher
-- Flutter 3.35.0 or higher
+- Flutter 3.38.0 or higher
 - Target Android API level 21 or higher (Android 5.0 (Lollipop) or higher)
 - iOS Deployment Target 13.0 or higher
 - [Web browser support](https://developers.kakao.com/docs/latest/flutter/getting-started#before-you-begin-supported-browser)
