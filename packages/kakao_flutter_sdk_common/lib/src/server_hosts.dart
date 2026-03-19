@@ -1,6 +1,5 @@
 /// @nodoc
 class ServerHosts {
-  final String phase = 'production';
   final String kapi = 'kapi.kakao.com';
   final String kauth = 'kauth.kakao.com';
   final String apps = 'apps.kakao.com';

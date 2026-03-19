@@ -14,6 +14,7 @@ export 'src/model/platform_info.dart';
 export 'src/network/kakao_dio_http_client.dart';
 export 'src/network/kakao_http_client.dart';
 export 'src/network/kakao_http_client_factory.dart';
+export 'src/platform_support.dart';
 export 'src/sdk_log.dart';
 export 'src/server_hosts.dart';
 export 'src/util.dart';

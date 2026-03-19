@@ -6,6 +6,10 @@ import '../talk_platform.dart';
 
 /// @nodoc
 class TalkPlatformImpl extends TalkPlatform {
+  String get scheme => KakaoSdk.platformInfo.isAndroid
+      ? KakaoSdk.platform.android.talkChannelScheme
+      : KakaoSdk.platform.ios.talkChannelScheme;
+
   @override
   Future<FollowChannelResult> followChannel(String channelPublicId) async {
     final hasToken = await AuthApi.instance.hasToken();
@@ -50,7 +54,7 @@ class TalkPlatformImpl extends TalkPlatform {
   @override
   Future<void> addChannel(String channelPublicId) async {
     final isTalkAvailable = await CommonPlatform.instance.isKakaoTalkAvailable(
-      KakaoSdk.platform.talkChannelScheme,
+      scheme,
     );
 
     if (!isTalkAvailable) {
@@ -59,8 +63,6 @@ class TalkPlatformImpl extends TalkPlatform {
         'KakaoTalk is not installed on the device.',
       );
     }
-
-    final scheme = KakaoSdk.platform.talkChannelScheme;
 
     await _validate(Constants.validateAdd, channelPublicId);
 
@@ -71,7 +73,7 @@ class TalkPlatformImpl extends TalkPlatform {
   @override
   Future<void> chatChannel(String channelPublicId) async {
     final isTalkAvailable = await CommonPlatform.instance.isKakaoTalkAvailable(
-      KakaoSdk.platform.talkChannelScheme,
+      scheme,
     );
 
     if (!isTalkAvailable) {
@@ -80,8 +82,6 @@ class TalkPlatformImpl extends TalkPlatform {
         'KakaoTalk is not installed on the device.',
       );
     }
-
-    final scheme = KakaoSdk.platform.talkChannelScheme;
 
     await _validate(Constants.validateChat, channelPublicId);
 

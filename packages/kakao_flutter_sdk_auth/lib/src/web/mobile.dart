@@ -60,7 +60,7 @@ String iosLoginUniversalLink(
     serviceTerms,
   );
 
-  return '${KakaoSdk.platform.iosLoginUniversalLink}${Uri.encodeComponent("${KakaoSdk.platform.iosInAppLoginScheme}?url=${Uri.encodeComponent(iosLoginScheme)}")}&web=${Uri.encodeComponent(iosLoginScheme)}';
+  return '${KakaoSdk.platform.web.iosLoginUniversalLink}${Uri.encodeComponent("${KakaoSdk.platform.web.iosInAppLoginScheme}?url=${Uri.encodeComponent(iosLoginScheme)}")}&web=${Uri.encodeComponent(iosLoginScheme)}';
 }
 
 String _redirectLoginThroughWeb(

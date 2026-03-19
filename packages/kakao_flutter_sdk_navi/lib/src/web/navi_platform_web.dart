@@ -50,16 +50,16 @@ class NaviPlatformImpl extends NaviPlatform {
 
   void _navigateAndroid(String queryParams) {
     final intent = _makeAndroidIntent(
-      KakaoSdk.platform.kakaoNaviScheme,
+      KakaoSdk.platform.web.kakaoNaviScheme,
       queryParams,
     );
     window.location.href = intent;
   }
 
   void _navigateIos(String queryParams) {
-    final schemeUrl = '${KakaoSdk.platform.kakaoNaviScheme}?$queryParams';
+    final schemeUrl = '${KakaoSdk.platform.web.kakaoNaviScheme}?$queryParams';
     final fallbackUrl =
-        '${KakaoSdk.platform.kakaoNaviInstallPage}?$queryParams';
+        '${KakaoSdk.platform.web.kakaoNaviInstallPage}?$queryParams';
 
     _navigateWithFallback(schemeUrl, fallbackUrl);
   }
@@ -76,12 +76,12 @@ class NaviPlatformImpl extends NaviPlatform {
   String _makeAndroidIntent(String scheme, String queries) {
     final url = '$scheme?$queries';
     final fallbackUrl = Uri.encodeComponent(
-      '${KakaoSdk.platform.kakaoNaviInstallPage}?$queries',
+      '${KakaoSdk.platform.web.kakaoNaviInstallPage}?$queries',
     );
 
     final intent = [
       'intent:$url#Intent',
-      'package=${KakaoSdk.platform.kakaoNaviPackage}',
+      'package=${KakaoSdk.platform.web.kakaoNaviOrigin}',
       'S.browser_fallback_url=$fallbackUrl',
       'end;',
     ].join(';');

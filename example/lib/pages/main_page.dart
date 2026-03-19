@@ -6,10 +6,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class MainPage extends ConsumerWidget {
-  const MainPage({super.key, required this.title, required this.customData});
+  const MainPage({
+    super.key,
+    required this.title,
+    required this.customData,
+    this.extraAppBarActionsBuilder,
+  });
 
   final String title;
   final CustomData customData;
+  final List<Widget> Function(BuildContext context)? extraAppBarActionsBuilder;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,16 +25,14 @@ class MainPage extends ConsumerWidget {
       appBar: AppBar(
         title: Text(title),
         actions: [
-          Padding(
-            padding: const EdgeInsetsDirectional.only(end: 4),
-            child: IconButton(
-              onPressed: () => _showThemePickerSheet(context, ref, themeMode),
-              icon: Icon(themeModeIcon(themeMode)),
-            ),
+          ...?extraAppBarActionsBuilder?.call(context),
+          IconButton(
+            onPressed: () => _showThemePickerSheet(context, ref, themeMode),
+            icon: Icon(themeModeIcon(themeMode)),
           ),
-          TextButton(
-            child: const Text('DEBUG'),
+          IconButton(
             onPressed: () => context.push('/debug'),
+            icon: Icon(Icons.bug_report_outlined),
           ),
         ],
       ),
@@ -45,14 +49,21 @@ class MainPage extends ConsumerWidget {
 
     return showModalBottomSheet<void>(
       context: context,
-      useSafeArea: true,
+      useSafeArea: false,
       backgroundColor: colorScheme.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
       ),
       builder: (sheetContext) {
+        final bottomPadding = MediaQuery.of(sheetContext).padding.bottom;
+
         return Padding(
-          padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+          padding: EdgeInsets.only(
+            left: 20,
+            top: 12,
+            right: 20,
+            bottom: 24 + bottomPadding,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,

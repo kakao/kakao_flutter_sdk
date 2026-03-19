@@ -138,11 +138,9 @@ class AuthPlatformImpl extends AuthPlatform {
       nonce,
       channelPublicIds,
       serviceTerms,
-      // android
-      KakaoSdk.platform.talkPackageName,
-      // ios
-      KakaoSdk.platform.talkLoginScheme,
-      KakaoSdk.platform.iosLoginUniversalLink,
+      KakaoSdk.platform.android.talkPackage,
+      KakaoSdk.platform.ios.talkLoginScheme,
+      KakaoSdk.platform.ios.iosLoginUniversalLink,
     );
   }
 

@@ -5,14 +5,21 @@ import 'package:example/pages/friend_page.dart';
 import 'package:example/pages/friend_picker_config_page.dart';
 import 'package:example/pages/main_page.dart';
 import 'package:example/pages/scheme_page.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-GoRouter createAppRouter({required CustomData customData}) => GoRouter(
+GoRouter createAppRouter({
+  required CustomData customData,
+  List<Widget> Function(BuildContext context)? mainPageExtraActionsBuilder,
+}) => GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) =>
-          MainPage(title: 'Kakao Flutter Sdk', customData: customData),
+      builder: (context, state) => MainPage(
+        title: 'SDK Sample',
+        customData: customData,
+        extraAppBarActionsBuilder: mainPageExtraActionsBuilder,
+      ),
     ),
     GoRoute(path: '/debug', builder: (context, state) => const DebugPage()),
     GoRoute(

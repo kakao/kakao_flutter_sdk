@@ -8,18 +8,21 @@ import '../navi_platform.dart';
 
 /// @nodoc
 class NaviPlatformImpl extends NaviPlatform {
+  String get scheme => KakaoSdk.platformInfo.isAndroid
+  ? KakaoSdk.platform.android.kakaoNaviScheme
+      : KakaoSdk.platform.ios.kakaoNaviScheme;
+
   @override
   Future<bool> isKakaoNaviInstalled() {
     return CommonPlatform.instance.isAppInstalled(
-      packageName: KakaoSdk.platform.kakaoNaviPackage,
-      appScheme: KakaoSdk.platform.kakaoNaviScheme,
+      packageName: KakaoSdk.platform.android.kakaoNaviOrigin,
+      appScheme: scheme,
     );
   }
 
   @override
   Future<void> navigate(KakaoNaviParams params) {
-    final url =
-        '${KakaoSdk.platform.kakaoNaviScheme}?${_getQueryParams(params)}';
+    final url = '$scheme?${_getQueryParams(params)}';
     return CommonPlatform.instance.launchUrl(url.toString());
   }
 

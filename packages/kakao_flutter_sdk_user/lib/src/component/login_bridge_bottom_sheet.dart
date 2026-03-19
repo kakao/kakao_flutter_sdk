@@ -67,25 +67,6 @@ class LoginBridgeBottomSheet extends StatelessWidget {
         ],
       ),
     );
-    // return SafeArea(
-    //   child: Container(
-    //     padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-    //     decoration: BoxDecoration(
-    //       color: colors.white001s,
-    //       borderRadius: _borderRadius,
-    //     ),
-    //     child: Column(
-    //       mainAxisSize: MainAxisSize.min,
-    //       crossAxisAlignment: CrossAxisAlignment.center,
-    //       children: [
-    //         _buildDragHandler(colors),
-    //         _buildTitleText(colors, paddings),
-    //         _buildButtons(colors, onTalkLoginPressed, onAccountLoginPressed),
-    //         _buildKakaoLogo(isPortrait, paddings, colors),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 
   Padding _buildKakaoLogo(

@@ -67,7 +67,7 @@ class TalkPlatformImpl extends TalkPlatform {
 
     final path = 'home/$channelPublicId/add';
 
-    final scheme = KakaoSdk.platform.talkChannelScheme;
+    final scheme = KakaoSdk.platform.web.talkChannelScheme;
     final url = isAndroidWeb()
         ? androidChannelIntent(scheme, channelPublicId, path)
         : iosChannelScheme(scheme, channelPublicId, path);
@@ -92,7 +92,7 @@ class TalkPlatformImpl extends TalkPlatform {
     final extra = <String, String>{'referer': window.location.href};
     final extraParam = <String, String>{'extra': extra.toJson()};
 
-    final scheme = KakaoSdk.platform.talkChannelScheme;
+    final scheme = KakaoSdk.platform.web.talkChannelScheme;
     final url = isAndroidWeb()
         ? androidChannelIntent(
             scheme,

@@ -14,7 +14,6 @@ linter:
     prefer_final_locals: true
     sort_child_properties_last: true
     unawaited_futures: true
-    unsafe_html: true
     prefer_single_quotes: true
     prefer_relative_imports: true
     avoid_print: true

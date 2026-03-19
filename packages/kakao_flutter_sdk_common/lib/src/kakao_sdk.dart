@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'common_platform.dart';
 import 'model/kakao_client_exception.dart';
 import 'model/platform_info.dart';
-import 'platform_config.dart';
+import 'platform_support.dart';
 import 'sdk_log.dart';
 import 'server_hosts.dart';
 

@@ -20,7 +20,6 @@ void main() {
             templateId: 67020,
             channelId: '_ZeUTxl',
             calendarEventId: '63996425afcec577cce94f0b',
-            settleId: 'f3318663-771a-4b24-8714-3f3061fa17cd',
             scopes: ['name', 'gender'],
             serviceTerms: ['option'],
           ),

@@ -19,7 +19,7 @@ class NaviApi {
   static final NaviApi instance = NaviApi();
 
   /// @nodoc
-  static String get webNaviInstall => KakaoSdk.platform.kakaoNaviInstallPage;
+  static String get webNaviInstall => KakaoSdk.platform.web.kakaoNaviInstallPage;
 
   /// KO: 카카오내비 앱 실행 가능 여부 조회
   /// <br>

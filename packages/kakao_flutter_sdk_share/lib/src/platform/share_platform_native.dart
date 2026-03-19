@@ -7,7 +7,9 @@ import '../share_platform.dart';
 class SharePlatformImpl extends SharePlatform {
   @override
   Future<bool> isKakaoTalkSharingAvailable() async {
-    final appScheme = KakaoSdk.platform.talkSharingScheme;
+    final appScheme = KakaoSdk.platformInfo.isAndroid
+        ? KakaoSdk.platform.android.talkSharingScheme
+        : KakaoSdk.platform.ios.talkSharingScheme;
     return CommonPlatform.instance.isKakaoTalkAvailable('$appScheme://send');
   }
 

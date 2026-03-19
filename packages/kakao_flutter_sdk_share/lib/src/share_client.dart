@@ -181,7 +181,9 @@ class ShareClient {
     SdkLog.v(
       '[ShareClient.createUrl] validated | attachmentSizeBytes=$attachmentSize',
     );
-    final appScheme = KakaoSdk.platform.talkSharingScheme;
+    final appScheme = KakaoSdk.platformInfo.isAndroid
+        ? KakaoSdk.platform.android.talkSharingScheme
+        : KakaoSdk.platform.ios.talkSharingScheme;
     final queryParameter = _createQueryParams(response, serverCallbackArgs);
 
     return '$appScheme://send?$queryParameter';
