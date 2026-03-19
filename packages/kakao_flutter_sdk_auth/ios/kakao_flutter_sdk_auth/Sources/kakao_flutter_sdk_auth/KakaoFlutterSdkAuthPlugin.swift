@@ -225,7 +225,7 @@ import AuthenticationServices
             channelPublicIds:  channelPublicIds,
             serviceTerms: serviceTerms,
             iosLoginScheme: iosLoginScheme,
-            launchMethod: isUniversalLinkLogin ? .UniversalLink : .CustomScheme,
+            launchMethod: isUniversalLinkLogin ? .UniversalLink : .CustomScheme
         )
         
         guard let universalLink = iosUniversalLink else {
