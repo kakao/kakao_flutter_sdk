@@ -71,8 +71,8 @@ List<ListItem> createTalkApis(CustomData customData) => <ListItem>[
       final Friends friends = await TalkApi.instance.friends(
         offset: 0,
         limit: 5,
-        order: .desc,
-        friendOrder: .nickname,
+        order: Order.desc,
+        friendOrder: FriendOrder.nickname,
       );
       Log.i(
         _tag,
@@ -84,12 +84,12 @@ List<ListItem> createTalkApis(CustomData customData) => <ListItem>[
       Log.e(_tag, '카카오톡 친구 목록 받기 실패', e);
     }
   }),
-  Api('friends(order: .desc)', (context) async {
+  Api('friends(order: Order.desc)', (context) async {
     // 카카오톡 친구 목록 받기 (파라미터)
 
     try {
       // 내림차순으로 받기
-      final Friends friends = await TalkApi.instance.friends(order: .desc);
+      final Friends friends = await TalkApi.instance.friends(order: Order.desc);
       Log.i(
         _tag,
         '카카오톡 친구 목록 받기 성공\n${friends.elements?.map((e) => e.profileNickname).join('\n')}',
