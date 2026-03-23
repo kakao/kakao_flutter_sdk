@@ -5,8 +5,8 @@ import 'package:kakao_flutter_sdk_auth/kakao_flutter_sdk_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../kakao_flutter_sdk_common/test/shared/doubles/fake_common_platform.dart';
-import 'support/doubles/fake_token_manager.dart';
 import '../../kakao_flutter_sdk_common/test/shared/utils/shared_preferences.dart';
+import 'support/doubles/fake_token_manager.dart';
 
 const _tokenKey = 'com.kakao.token.OAuthToken';
 const _versionKey = 'com.kakao.token.version';
@@ -16,6 +16,7 @@ void main() {
 
   late SharedPreferences legacyPreferences;
   late SharedPreferencesAsync preferences;
+  late Cipher legacyCipher;
 
   setUp(() async {
     (legacyPreferences, preferences) = await initializeSharedPreferences();
@@ -23,6 +24,11 @@ void main() {
     await KakaoSdk.init(
       nativeAppKey: 'test_app_key',
       platformProvider: FakeCommonPlatform(),
+    );
+
+    legacyCipher = LegacyAesCbcCipher.create(
+      KakaoSdk.platformInfo.origin,
+      KakaoSdk.platformInfo.platformId,
     );
   });
 
@@ -48,15 +54,10 @@ void main() {
   });
 
   group('DefaultTokenManager', () {
-    late Cipher cipher;
     late DefaultTokenManager manager;
     late OAuthToken testToken;
 
     setUp(() async {
-      cipher = AESCipher.create(
-        KakaoSdk.platformInfo.origin,
-        KakaoSdk.platformInfo.platformId,
-      );
       manager = DefaultTokenManager();
       testToken = OAuthToken(
         'test_access_token',
@@ -81,6 +82,20 @@ void main() {
       await manager.setToken(testToken);
       final retrievedToken = await manager.getToken();
 
+      expect(retrievedToken, isNotNull);
+      expect(retrievedToken?.accessToken, equals(testToken.accessToken));
+      expect(retrievedToken?.refreshToken, equals(testToken.refreshToken));
+    });
+
+    test('should retrieve token after recreating manager', () async {
+      // 토큰 저장
+      await manager.setToken(testToken);
+
+      // 앱 재시작 상황을 가정하여 매니저 재생성
+      manager = DefaultTokenManager();
+      final retrievedToken = await manager.getToken();
+
+      // 저장된 토큰을 다시 읽을 수 있어야 함
       expect(retrievedToken, isNotNull);
       expect(retrievedToken?.accessToken, equals(testToken.accessToken));
       expect(retrievedToken?.refreshToken, equals(testToken.refreshToken));
@@ -139,22 +154,64 @@ void main() {
         expect(await preferences.getString(_tokenKey), isNull);
 
         // v1 토큰 세팅
-        final encryptedV1Token = cipher.encrypt(jsonEncode(testToken));
+        final encryptedV1Token = legacyCipher.encrypt(jsonEncode(testToken));
 
         await legacyPreferences.setString(_tokenKey, encryptedV1Token);
         await legacyPreferences.setString(_versionKey, '1.0.0');
 
+        // v1 저장소 값을 읽으면 SharedPreferencesAsync로 마이그레이션되어야 함
         manager = DefaultTokenManager();
-        await manager.getToken(); // 토큰 마이그레이션 진행되어야함
+        final migratedToken = await manager.getToken(); // 토큰 마이그레이션 진행되어야함
 
         final newVersion = await preferences.getString(_versionKey);
-        final v2Token = await preferences.getString(_tokenKey);
+        final migratedEncryptedToken = await preferences.getString(_tokenKey);
 
-        //
+        // 마이그레이션 후에는 현재 버전과 새 암호문이 저장되어야 함
+        expect(migratedToken, isNotNull);
+        expect(migratedToken?.accessToken, equals(testToken.accessToken));
         expect(newVersion, equals(KakaoSdk.sdkVersion));
-        expect(v2Token, equals(encryptedV1Token));
+        expect(migratedEncryptedToken, isNotNull);
+        expect(migratedEncryptedToken, isNot(equals(encryptedV1Token)));
       },
     );
+
+    test(
+      'should keep migrated token readable after recreating manager',
+      () async {
+        // v1 방식으로 암호화된 토큰 세팅
+        final encryptedV1Token = legacyCipher.encrypt(jsonEncode(testToken));
+
+        await legacyPreferences.setString(_tokenKey, encryptedV1Token);
+        await legacyPreferences.setString(_versionKey, '1.0.0');
+
+        // 최초 조회 시 마이그레이션 진행
+        await manager.getToken();
+
+        // 앱 재시작 상황을 가정하여 매니저 재생성
+        manager = DefaultTokenManager();
+        final retrievedToken = await manager.getToken();
+
+        // 마이그레이션된 토큰은 재시작 후에도 읽을 수 있어야 함
+        expect(retrievedToken, isNotNull);
+        expect(retrievedToken?.accessToken, equals(testToken.accessToken));
+        expect(retrievedToken?.refreshToken, equals(testToken.refreshToken));
+      },
+    );
+
+    test('should generate different ciphertext for each save', () async {
+      // 첫 번째 저장 결과 확인
+      await manager.setToken(testToken);
+      final firstEncryptedToken = await preferences.getString(_tokenKey);
+
+      // 동일 토큰을 다시 저장
+      await manager.setToken(testToken);
+      final secondEncryptedToken = await preferences.getString(_tokenKey);
+
+      // 랜덤 IV를 사용하면 암호문이 달라져야 함
+      expect(firstEncryptedToken, isNotNull);
+      expect(secondEncryptedToken, isNotNull);
+      expect(secondEncryptedToken, isNot(equals(firstEncryptedToken)));
+    });
 
     test('should handle decryption error', () async {
       // Manually set invalid encrypted token

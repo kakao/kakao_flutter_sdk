@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared_preferences/util/legacy_to_async_migration_util.dart';
 
@@ -47,44 +48,37 @@ class DefaultTokenManager implements TokenManager {
   /// @nodoc
   DefaultTokenManager()
     : _preferences = SharedPreferencesAsync(),
-      _cipher = AESCipher.create(
+      _cipher = AesGcmCipher.create(
         KakaoSdk.platformInfo.origin,
         KakaoSdk.platformInfo.platformId,
       );
 
   final SharedPreferencesAsync _preferences;
-  SharedPreferences? _legacyPreferences;
   final Cipher _cipher;
   OAuthToken? _currentToken;
+  Future<OAuthToken?>? _migrationFuture;
+  bool migrationNeeded = true;
 
   @override
   Future<OAuthToken?> getToken() async {
     if (_currentToken != null) {
-      return Future.value(_currentToken);
+      return _currentToken;
     }
 
-    final version = await _preferences.getString(_versionKey);
-
-    // v1에서는 SharedPreferences에 저장했기 때문에 SharedPreferencesAsync에는 버전 값이 없을 수 있음.
-    if (version == null) {
-      _legacyPreferences ??= await SharedPreferences.getInstance();
-      final legacyVersion = _legacyPreferences?.getString(_versionKey);
-
-      if (legacyVersion != null && isV1Sdk(legacyVersion)) {
-        await _migrateV1Token();
-      }
+    final migratedToken = await _getMigratedV1TokenIfNeeded();
+    if (migratedToken != null) {
+      _currentToken = migratedToken;
+      return _currentToken;
     }
 
     final encryptedToken = await _preferences.getString(_tokenKey);
-
     if (encryptedToken == null) {
       return null;
     }
 
     try {
       final jsonToken = _cipher.decrypt(encryptedToken);
-
-      _currentToken = OAuthToken.fromJson(jsonDecode(jsonToken));
+      _currentToken = _parseToken(jsonToken);
     } catch (e) {
       await clear();
       SdkLog.e(
@@ -111,33 +105,117 @@ class DefaultTokenManager implements TokenManager {
     SdkLog.i('[DefaultTokenManager.clear] completed');
   }
 
-  bool isV1Sdk(String version) {
-    // 1.x.x or 1.x.x+x
-    final regExp = RegExp(r'^1\.\d+\.\d+');
-    return regExp.hasMatch(version);
-  }
-
-  Future<void> _migrateV1Token() async {
-    SdkLog.d('[DefaultTokenManager.migrateV1Token] started');
-
-    // https://pub.dev/packages/shared_preferences#migration-and-prefixes
-    await migrateLegacySharedPreferencesToSharedPreferencesAsyncIfNecessary(
-      legacySharedPreferencesInstance: _legacyPreferences!,
-      sharedPreferencesAsyncOptions: const SharedPreferencesOptions(),
-      migrationCompletedKey: _migrationCompletedKey,
-    );
-
-    await _preferences.setString(_versionKey, KakaoSdk.sdkVersion);
-
-    SdkLog.i('[DefaultTokenManager.migrateV1Token] completed');
-  }
-
   Future<void> _persistToken(OAuthToken token) async {
     final jsonToken = jsonEncode(token);
     final encryptedToken = _cipher.encrypt(jsonToken);
 
     await _preferences.setString(_versionKey, KakaoSdk.sdkVersion);
     await _preferences.setString(_tokenKey, encryptedToken);
+  }
+
+  Future<OAuthToken?> _getMigratedV1TokenIfNeeded() async {
+    if (!migrationNeeded) return null;
+
+    final version = await _preferences.getString(_versionKey);
+
+    // v1에서는 SharedPreferences에 저장했기 때문에 SharedPreferencesAsync에는 버전 값이 없을 수 있음.
+    if (version != null) {
+      migrationNeeded = false;
+      return null;
+    }
+
+    final legacyPreferences = await SharedPreferences.getInstance();
+    final legacyVersion = legacyPreferences.getString(_versionKey);
+
+    if (legacyVersion == null || !isV1Sdk(legacyVersion)) {
+      migrationNeeded = false;
+      return null;
+    }
+
+    try {
+      return await _ensureV1Migration(legacyPreferences);
+    } catch (e) {
+      SdkLog.e(
+        '[DefaultTokenManager.getMigratedV1TokenIfNeeded] v1_token_migration_failed | action=cleared_saved_token',
+      );
+      await clear();
+      return null;
+    } finally {
+      migrationNeeded = false;
+    }
+  }
+
+  bool isV1Sdk(String version) {
+    // 1.x.x or 1.x.x+x
+    final regExp = RegExp(r'^1\.\d+\.\d+');
+    return regExp.hasMatch(version);
+  }
+
+  Future<OAuthToken?> _ensureV1Migration(SharedPreferences legacyPreferences) {
+    return _migrationFuture ??= _migrateV1Token(
+      legacyPreferences,
+    ).whenComplete(() => _migrationFuture = null);
+  }
+
+  // TODO: SDK 사용 앱들이 모두 v2로 마이그레이션되면 관련 코드 제거
+  Future<OAuthToken?> _migrateV1Token(
+    SharedPreferences legacyPreferences,
+  ) async {
+    SdkLog.d('[DefaultTokenManager.migrateV1Token] started');
+
+    // https://pub.dev/packages/shared_preferences#migration-and-prefixes
+    await migrateLegacySharedPreferencesToSharedPreferencesAsyncIfNecessary(
+      legacySharedPreferencesInstance: legacyPreferences,
+      sharedPreferencesAsyncOptions: const SharedPreferencesOptions(),
+      migrationCompletedKey: _migrationCompletedKey,
+    );
+
+    // v1 token is encrypted with CBC mode, so it needs to be migrated to GCM mode
+    final migratedToken = await _migrateLegacyTokenToGcm();
+    if (migratedToken == null) {
+      return null;
+    }
+
+    await _preferences.setString(_versionKey, KakaoSdk.sdkVersion);
+
+    SdkLog.i('[DefaultTokenManager.migrateV1Token] completed');
+    return migratedToken;
+  }
+
+  // LegacyAesCbcCipher.decrypt is a CPU intensive operation, so it is executed in a separate isolate using compute.
+  static String _decryptLegacyToken(List<Object> args) {
+    // args: [legacyEncryptedToken, origin, platformId]
+    final legacyEncryptedToken = args[0] as String;
+    final origin = args[1] as String;
+    final platformId = args[2] as Uint8List;
+
+    final legacyCipher = LegacyAesCbcCipher.create(origin, platformId);
+    return legacyCipher.decrypt(legacyEncryptedToken);
+  }
+
+  Future<OAuthToken?> _migrateLegacyTokenToGcm() async {
+    SdkLog.d('[DefaultTokenManager.migrateLegacyTokenToGcm] started');
+
+    final legacyEncryptedToken = await _preferences.getString(_tokenKey);
+    if (legacyEncryptedToken == null) {
+      return null;
+    }
+
+    final legacyDecryptedToken = await compute(_decryptLegacyToken, <Object>[
+      legacyEncryptedToken,
+      KakaoSdk.platformInfo.origin,
+      KakaoSdk.platformInfo.platformId,
+    ]);
+
+    final encryptedToken = _cipher.encrypt(legacyDecryptedToken);
+    await _preferences.setString(_tokenKey, encryptedToken);
+
+    SdkLog.i('[DefaultTokenManager.migrateLegacyTokenToGcm] completed');
+    return _parseToken(legacyDecryptedToken);
+  }
+
+  OAuthToken _parseToken(String jsonToken) {
+    return OAuthToken.fromJson(jsonDecode(jsonToken));
   }
 
   static const _tokenKey = 'com.kakao.token.OAuthToken';

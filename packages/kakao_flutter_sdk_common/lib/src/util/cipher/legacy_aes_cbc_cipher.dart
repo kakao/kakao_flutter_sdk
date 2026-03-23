@@ -3,16 +3,11 @@ import 'dart:typed_data';
 
 import 'package:encrypt/encrypt.dart';
 
-/// @nodoc
-abstract class Cipher {
-  String encrypt(String value);
-
-  String decrypt(String encrypted);
-}
+import 'cipher.dart';
 
 /// @nodoc
-class AESCipher extends Cipher {
-  AESCipher._(this._encrypter);
+class LegacyAesCbcCipher extends Cipher {
+  LegacyAesCbcCipher._(this._encrypter);
 
   static Cipher create(
     String keyValue,
@@ -32,7 +27,7 @@ class AESCipher extends Cipher {
     );
 
     final encryptor = Encrypter(AES(key, mode: AESMode.cbc));
-    return AESCipher._(encryptor);
+    return LegacyAesCbcCipher._(encryptor);
   }
 
   final IV _iv = IV(_initVector);
