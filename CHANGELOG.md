@@ -1,3 +1,11 @@
+## Unreleased
+
+- Android: Fixed a bug where Login with Kakao Account gets stuck on a blank screen on devices
+  where `bindCustomTabsService` binds successfully but `onCustomTabsServiceConnected` never fires
+  (commonly observed on Xiaomi MIUI with Brave, Samsung Internet, or other third-party browsers
+  set as default). A 3-second timeout now triggers a fallback to a direct `Intent.ACTION_VIEW`
+  browser launch so the login page always opens.
+
 ## 1.10.0
 
 - Added API to select login method.

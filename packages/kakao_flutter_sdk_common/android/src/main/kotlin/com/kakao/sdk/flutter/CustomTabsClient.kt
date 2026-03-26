@@ -14,8 +14,22 @@ import androidx.browser.customtabs.CustomTabsService
 import androidx.browser.customtabs.CustomTabsServiceConnection
 
 object CustomTabsCommonClient {
+    /**
+     * Opens [uri] in a Custom Tabs browser using service pre-warming (warm path).
+     *
+     * @param onServiceConnected Optional callback invoked immediately after the browser
+     *   activity is launched via [CustomTabsServiceConnection.onCustomTabsServiceConnected].
+     *   Callers can use this to cancel a pending timeout that guards against the case where
+     *   [onCustomTabsServiceConnected] never fires (e.g. Brave / Samsung Internet on MIUI).
+     *
+     * @throws UnsupportedOperationException if no browser on the device supports Custom Tabs.
+     */
     @Throws(UnsupportedOperationException::class)
-    fun openWithDefault(context: Context, uri: Uri): ServiceConnection? {
+    fun openWithDefault(
+        context: Context,
+        uri: Uri,
+        onServiceConnected: (() -> Unit)? = null,
+    ): ServiceConnection? {
         val packageName = resolveCustomTabsPackage(context, uri)
             ?: throw UnsupportedOperationException("No browser supports custom tabs protocol on this device.")
         Log.d("CustomTabsCommonClient", "Choosing $packageName as custom tabs browser")
@@ -30,6 +44,9 @@ object CustomTabsCommonClient {
                 customTabsIntent.intent.data = uri
                 customTabsIntent.intent.setPackage(packageName)
                 context.startActivity(customTabsIntent.intent)
+                // Notify the caller that the browser was successfully launched so it can
+                // cancel any timeout fallback it may have scheduled.
+                onServiceConnected?.invoke()
             }
 
             override fun onServiceDisconnected(name: ComponentName?) {
