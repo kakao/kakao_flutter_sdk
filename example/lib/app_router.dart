@@ -5,6 +5,7 @@ import 'package:example/pages/friend_page.dart';
 import 'package:example/pages/friend_picker_config_page.dart';
 import 'package:example/pages/main_page.dart';
 import 'package:example/pages/scheme_page.dart';
+import 'package:example/pages/web_login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -22,6 +23,7 @@ GoRouter createAppRouter({
       ),
     ),
     GoRoute(path: '/debug', builder: (context, state) => const DebugPage()),
+    GoRoute(path: '/login', builder: (context, state) => const WebLoginPage()),
     GoRoute(
       path: '/picker/config',
       builder: (context, state) => const PickerConfigPage(),
