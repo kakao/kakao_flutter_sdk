@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
@@ -74,7 +75,25 @@ class CommonPlatformImpl extends CommonPlatform {
       'version.json',
       queryParameters: {'cachebuster': cacheBuster},
     );
-    return response.data;
+    final data = response.data;
+
+    // 릴리즈 빌드는 version.json이 Map 형태로 제공되는데, 디버그 빌드는 String 형태로 제공될 수 있으므로 두 가지 경우 모두 처리
+    if (data is Map) {
+      return data.map(
+        (key, value) => MapEntry(key.toString(), value.toString()),
+      );
+    }
+
+    if (data is String) {
+      final decoded = jsonDecode(data);
+      if (decoded is Map) {
+        return decoded.map(
+          (key, value) => MapEntry(key.toString(), value.toString()),
+        );
+      }
+    }
+
+    throw const FormatException('Invalid version.json response');
   }
 
   KakaoHttpClient _createHttpClient({String? baseUrl}) {
