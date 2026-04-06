@@ -1,3 +1,6 @@
+## 2.0.0
+- Released Flutter SDK v2. (See [Migrate v1 to v2](https://developers.kakao.com/docs/latest/flutter/migration-v2).)
+
 ## 1.10.0
 
 - Added API to select login method.
