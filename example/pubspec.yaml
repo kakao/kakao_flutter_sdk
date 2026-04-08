@@ -2,7 +2,7 @@ name: example
 description: Demonstrates how to use the kakao_flutter_sdk plugin.
 publish_to: "none"
 
-version: 2.0.0
+version: 2.0.0+1
 
 environment:
   sdk: ^3.9.0
