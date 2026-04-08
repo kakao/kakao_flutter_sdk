@@ -12,36 +12,54 @@ object TalkValidator {
     fun resolveIntent(context: Context, intent: Intent): Intent? {
         val pm = context.packageManager
 
-        val candidates = ALLOWED_PACKAGES.map { packageName ->
+        val targetIntents = mutableListOf<Intent>()
+        val labeledIntents = mutableListOf<LabeledIntent>()
+
+        for (packageName in ALLOWED_PACKAGES) {
             val candidateIntent = (intent.clone() as Intent).apply { setPackage(packageName) }
-            val info = pm.resolveActivity(candidateIntent, PackageManager.MATCH_DEFAULT_ONLY)
-                ?: return@map null
+            val info = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                val flags = PackageManager.ResolveInfoFlags.of(
+                    PackageManager.MATCH_DEFAULT_ONLY.toLong()
+                )
+                pm.resolveActivity(candidateIntent, flags)
+            } else {
+                @Suppress("DEPRECATION")
+                pm.resolveActivity(candidateIntent, PackageManager.MATCH_DEFAULT_ONLY)
+            } ?: continue
 
-            if (!isKakaoTalk(pm, info)) return@map null
+            if (!validateSignature(pm, info)) continue
 
-            LabeledIntent(
-                candidateIntent,
-                info.activityInfo.applicationInfo.packageName,
-                info.activityInfo.applicationInfo.labelRes,
-                info.activityInfo.applicationInfo.icon
+            targetIntents.add(candidateIntent)
+            labeledIntents.add(
+                LabeledIntent(
+                    intent,
+                    info.activityInfo.applicationInfo.packageName,
+                    info.activityInfo.applicationInfo.labelRes,
+                    info.activityInfo.applicationInfo.icon
+                )
             )
         }
 
-        return when (candidates.size) {
-            0 -> null
-            1 -> candidates.first()
-            else -> {
-                val target = candidates.first()
-                val others = candidates.drop(1).toTypedArray()
-                Intent.createChooser(
-                    target,
-                    "Which version of KakaoTalk would you like to use?",
-                ).apply { putExtra(Intent.EXTRA_INITIAL_INTENTS, others) }
+        if (targetIntents.isEmpty()) {
+            return null
+        }
+
+        if (targetIntents.size == 1) {
+            return targetIntents.first()
+        }
+
+        val chooserTarget = labeledIntents.removeAt(0)
+        return Intent.createChooser(
+            chooserTarget,
+            "Which version of KakaoTalk would you like to use?",
+        ).apply {
+            if (labeledIntents.isNotEmpty()) {
+                putExtra(Intent.EXTRA_INITIAL_INTENTS, labeledIntents.toTypedArray())
             }
         }
     }
 
-    private fun isKakaoTalk(pm: PackageManager, info: ResolveInfo): Boolean {
+    private fun validateSignature(pm: PackageManager, info: ResolveInfo): Boolean {
         val packageInfo = getPackageInfo(pm, info.activityInfo.applicationInfo.packageName)
             ?: return false
 
@@ -57,13 +75,21 @@ object TalkValidator {
 
     private fun getPackageInfo(pm: PackageManager, packageName: String): PackageInfo? {
         return runCatching {
-            val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                PackageManager.GET_SIGNING_CERTIFICATES
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                val flags = PackageManager.PackageInfoFlags.of(
+                    PackageManager.GET_SIGNING_CERTIFICATES.toLong()
+                )
+                pm.getPackageInfo(packageName, flags)
             } else {
+                val packageInfoFlags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    PackageManager.GET_SIGNING_CERTIFICATES
+                } else {
+                    @Suppress("DEPRECATION")
+                    PackageManager.GET_SIGNATURES
+                }
                 @Suppress("DEPRECATION")
-                PackageManager.GET_SIGNATURES
+                pm.getPackageInfo(packageName, packageInfoFlags)
             }
-            pm.getPackageInfo(packageName, flags)
         }.getOrNull()
     }
 
