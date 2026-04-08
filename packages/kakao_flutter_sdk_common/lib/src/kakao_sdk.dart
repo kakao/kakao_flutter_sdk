@@ -14,7 +14,7 @@ class KakaoSdk {
   KakaoSdk._();
 
   /// @nodoc
-  static String sdkVersion = '2.0.0';
+  static String sdkVersion = '2.0.0+1';
   static late String _nativeKey;
   static late String _jsKey;
 
