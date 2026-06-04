@@ -23,7 +23,11 @@ extension StringExtension on String {
 
 String generateRandomString(int length) {
   const ch = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-  final r = Random();
+  // Use a cryptographically secure RNG: this generator backs security-sensitive
+  // values such as the PKCE code_verifier (RFC 7636) and the OAuth state token
+  // (CSRF protection). The non-secure Random() is predictable (e.g. Math.random
+  // on web) and must not be used for these.
+  final r = Random.secure();
   return String.fromCharCodes(
     Iterable.generate(length, (_) => ch.codeUnitAt(r.nextInt(ch.length))),
   );
