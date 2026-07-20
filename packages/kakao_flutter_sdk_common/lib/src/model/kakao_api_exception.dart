@@ -108,6 +108,12 @@ enum ApiErrorCause {
   @JsonValue(-12)
   blockedApp,
 
+  /// KO: 카카오디벨로퍼스 앱이 장기 미이용 상태인 경우
+  /// <br>
+  /// EN: If a Kakao Developers app is suspended(in long-term inactive) status
+  @JsonValue(-13)
+  suspendedApp,
+
   /// KO: 앱과 연결되지 않은 사용자가 요청한 경우
   /// <br>
   /// EN: Requested by a user who is not linked to the app

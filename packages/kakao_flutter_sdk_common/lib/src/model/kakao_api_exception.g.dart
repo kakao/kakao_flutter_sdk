@@ -41,6 +41,7 @@ const _$ApiErrorCauseEnumMap = {
   ApiErrorCause.deprecatedApi: -9,
   ApiErrorCause.apiLimitExceeded: -10,
   ApiErrorCause.blockedApp: -12,
+  ApiErrorCause.suspendedApp: -13,
   ApiErrorCause.notRegisteredUser: -101,
   ApiErrorCause.alreadyRegisteredUser: -102,
   ApiErrorCause.accountDoesNotExist: -103,
