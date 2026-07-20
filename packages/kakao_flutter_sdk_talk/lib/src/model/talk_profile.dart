@@ -7,6 +7,11 @@ part 'talk_profile.g.dart';
 /// EN: Kakao Talk profile
 @JsonSerializable(includeIfNull: false)
 class TalkProfile {
+  /// KO: 회원번호
+  /// <br>
+  /// EN: Service user ID
+  final int id;
+
   /// KO: 프로필 닉네임
   /// <br>
   /// EN: Profile nickname
@@ -32,7 +37,12 @@ class TalkProfile {
 
   /// @nodoc
   TalkProfile(
-      this.nickname, this.profileImageUrl, this.thumbnailUrl, this.countryISO);
+    this.id,
+    this.nickname,
+    this.profileImageUrl,
+    this.thumbnailUrl,
+    this.countryISO,
+  );
 
   /// @nodoc
   factory TalkProfile.fromJson(Map<String, dynamic> json) =>
