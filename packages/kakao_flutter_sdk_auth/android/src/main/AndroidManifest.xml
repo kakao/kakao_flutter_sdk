@@ -9,17 +9,26 @@
             android:theme="@style/TransparentCompat" />
 
         <activity
+            android:name=".CustomTabsActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:theme="@style/TransparentCompat" />
+
+        <activity
             android:name=".AuthCodeHandlerActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:excludeFromRecents="true"
             android:exported="true"
-            android:launchMode="singleTask"
+            android:taskAffinity=""
             android:theme="@style/TransparentCompat" />
 
         <activity
             android:name=".AppsHandlerActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:excludeFromRecents="true"
             android:exported="true"
-            android:launchMode="singleTask"
+            android:taskAffinity=""
             android:theme="@style/TransparentCompat" />
     </application>
 </manifest>

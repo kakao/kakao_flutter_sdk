@@ -10,9 +10,10 @@ import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
 
-open class CustomTabsActivity : FragmentActivity() {
+class CustomTabsActivity : FragmentActivity() {
     private var receiver: ResultReceiver? = null
     private var activityName: String? = null
+    private var redirectUri: String? = null
     private var customTabsOpened = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,10 +25,11 @@ open class CustomTabsActivity : FragmentActivity() {
             Constants.KEY_RESULT_RECEIVER,
             ResultReceiver::class.java
         )
+        redirectUri = intent.getStringExtra(Constants.KEY_REDIRECT_URI)
         val url = intent.getStringExtra(Constants.KEY_URL) ?: run {
             sendError(
                 "INVALID_REQUEST",
-                "No URL was passed to AuthCodeHandlerActivity."
+                "No URL was passed to CustomTabsActivity."
             )
             return
         }
@@ -47,6 +49,25 @@ open class CustomTabsActivity : FragmentActivity() {
         }
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+
+        val url = intent.dataString
+        val redirectUri = this.redirectUri
+        if (redirectUri != null) {
+            // authorize 흐름: 콜백이 요청한 redirectUri 로 시작하는지 검증한다.
+            if (url?.startsWith(redirectUri) == true) {
+                sendOk(url)
+            } else {
+                sendError("MISMATCHED", "Expected RedirectUri: $redirectUri, Actual: $url")
+            }
+        } else {
+            // apps 흐름.
+            url?.let { sendOk(it) }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
 
@@ -58,12 +79,12 @@ open class CustomTabsActivity : FragmentActivity() {
         }
     }
 
-    fun sendOk(url: String) {
+    private fun sendOk(url: String) {
         receiver?.send(RESULT_OK, bundleOf(Constants.KEY_RESULT_URL to url))
         finishAndRemoveTask()
     }
 
-    fun sendError(errorCode: String, errorMessage: String) {
+    private fun sendError(errorCode: String, errorMessage: String) {
         val resultData = bundleOf(
             Constants.KEY_ERROR_CODE to errorCode,
             Constants.KEY_ERROR_MESSAGE to errorMessage,
