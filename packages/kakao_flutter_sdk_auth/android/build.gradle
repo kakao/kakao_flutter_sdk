@@ -24,8 +24,18 @@ allprojects {
 apply plugin: "com.android.library"
 
 def agpMajorVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize(".")[0] as int
-if (agpMajorVersion < 9) {
-    apply plugin: "kotlin-android"
+
+// AGP 9 enables built-in Kotlin support by default, but it can be turned off via
+// android.builtInKotlin=false, in which case KGP is still required. KGP is applied
+// programmatically instead of through a declarative `apply plugin:` statement so that
+// the Flutter tool does not report this plugin as an unmigrated KGP user.
+def builtInKotlinProperty = project.findProperty("android.builtInKotlin")
+def builtInKotlin =
+    builtInKotlinProperty == null
+        ? agpMajorVersion >= 9
+        : Boolean.parseBoolean(builtInKotlinProperty.toString())
+if (!builtInKotlin && project.extensions.findByName("kotlin") == null) {
+    project.pluginManager.apply("org.jetbrains.kotlin.android")
 }
 
 android {
