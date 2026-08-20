@@ -141,12 +141,10 @@ List<ListItem> createShareApis(CustomData customData) => <ListItem>[
     // 이미지 업로드
 
     // 이 샘플에서는 file_picker를 사용해 이미지 파일을 가져왔습니다.
-    final filePickerResult = await FilePicker.platform.pickFiles(
-      withData: true,
-    );
+    final pickedFile = await FilePicker.pickFile();
 
-    if (filePickerResult != null) {
-      final byteData = filePickerResult.files.first.bytes;
+    if (pickedFile != null) {
+      final byteData = await pickedFile.readAsBytes();
 
       try {
         // 카카오 이미지 서버로 업로드
