@@ -68,7 +68,7 @@ class AuthHostApiImpl : AuthHostApi {
             return
         }
 
-        val intent = IntentFactory.customTabsActivityIntent<AppsHandlerActivity>(
+        val intent = IntentFactory.customTabsActivityIntent(
             context = activity,
             url = url,
             resultReceiver = createAuthResultReceiver(callback),

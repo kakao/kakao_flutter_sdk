@@ -37,12 +37,12 @@ object IntentFactory {
         )
     }
 
-    inline fun <reified T : CustomTabsActivity> customTabsActivityIntent(
+    fun customTabsActivityIntent(
         context: Context,
         url: String,
         resultReceiver: ResultReceiver,
     ): Intent {
-        return Intent(context, T::class.java).apply {
+        return Intent(context, CustomTabsActivity::class.java).apply {
             putExtra(Constants.KEY_URL, url)
             putExtra(Constants.KEY_RESULT_RECEIVER, resultReceiver)
 
@@ -57,7 +57,7 @@ object IntentFactory {
         redirectUri: String,
         resultReceiver: ResultReceiver,
     ): Intent {
-        return customTabsActivityIntent<AuthCodeHandlerActivity>(
+        return customTabsActivityIntent(
             context,
             url,
             resultReceiver
