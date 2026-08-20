@@ -82,9 +82,9 @@ class AccessTokenInterceptor extends Interceptor {
     }
 
     final hasResponse = error.response?.requestOptions != null;
-    final isTokenError = _isTokenError(error);
+    final isTokenExpired = _isAccessTokenExpired(error);
 
-    return hasResponse && isTokenError;
+    return hasResponse && isTokenExpired;
   }
 
   Future<Response> _retryAfterRefresh(DioException error) async {
@@ -175,7 +175,7 @@ class AccessTokenInterceptor extends Interceptor {
       return await _dio.fetch(retryRequest);
     } on Exception catch (error) {
       // 재시도 후에도 토큰 에러가 발생하면 토큰 삭제
-      if (_isTokenError(error)) {
+      if (_isAccessTokenExpired(error)) {
         SdkLog.e(
           '[AccessTokenInterceptor.retryWithNewToken] failed | path=${retryRequest.path} reason=token_error_persisted action=clear_token',
         );
@@ -185,25 +185,8 @@ class AccessTokenInterceptor extends Interceptor {
     }
   }
 
-  bool _isTokenError(Exception exception) {
-    return _isKapiInvalidTokenError(exception) || _isKauthError(exception);
-  }
-
-  bool _isKauthError(Exception exception) {
+  bool _isAccessTokenExpired(Exception exception) {
     if (exception is! DioException) {
-      return false;
-    }
-
-    final kauthBaseUrl = 'https://${KakaoSdk.hosts.kauth}';
-    return exception.requestOptions.baseUrl == kauthBaseUrl;
-  }
-
-  bool _isKapiInvalidTokenError(Exception exception) {
-    if (exception is! DioException) {
-      return false;
-    }
-
-    if (exception.requestOptions.baseUrl != 'https://${KakaoSdk.hosts.kapi}') {
       return false;
     }
 
@@ -214,7 +197,7 @@ class AccessTokenInterceptor extends Interceptor {
 
     try {
       final kapiException = KakaoApiException.fromJson(errorData);
-      return kapiException.code == ApiErrorCause.invalidToken;
+      return kapiException.isAccessTokenExpired();
     } catch (_) {
       return false;
     }

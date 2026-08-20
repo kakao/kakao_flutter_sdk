@@ -216,7 +216,7 @@ void main() {
       // KAPI 401 에러 응답
       httpClientAdapter.mockFirstRequestFails = true;
       httpClientAdapter.mockResponse = ResponseBody.fromString(
-        '{"msg":"Invalid access token","code":-401}',
+        '{"msg":"Invalid access token","code":-401,"reason":"ACCESS_TOKEN_EXPIRED"}',
         401,
         headers: {
           Headers.contentTypeHeader: [Headers.jsonContentType],
@@ -267,7 +267,7 @@ void main() {
         httpClientAdapter.mockFirstRequestFails = true;
         httpClientAdapter.mockInvalidTokenError();
         httpClientAdapter.mockRetryResponse = ResponseBody.fromString(
-          '{"msg":"Invalid access token","code":-401}',
+          '{"msg":"Invalid access token","code":-401,"reason":"ACCESS_TOKEN_EXPIRED"}',
           401,
           headers: {
             Headers.contentTypeHeader: [Headers.jsonContentType],
@@ -303,7 +303,7 @@ void main() {
           response: Response(
             requestOptions: RequestOptions(),
             statusCode: 401,
-            data: {'msg': 'Invalid refresh token', 'code': -401},
+            data: {'msg': 'Invalid refresh token', 'code': -401, 'reason': 'ACCESS_TOKEN_EXPIRED'},
           ),
         );
 
@@ -363,7 +363,7 @@ void main() {
             response: Response(
               requestOptions: httpClientAdapter.lastRequestOptions!,
               statusCode: 401,
-              data: {'msg': 'Invalid access token', 'code': -401},
+              data: {'msg': 'Invalid access token', 'code': -401, 'reason': 'ACCESS_TOKEN_EXPIRED'},
             ),
             type: DioExceptionType.badResponse,
           );
@@ -437,7 +437,7 @@ void main() {
               response: Response(
                 requestOptions: httpClientAdapter.lastRequestOptions!,
                 statusCode: 401,
-                data: {'msg': 'Invalid access token', 'code': -401},
+                data: {'msg': 'Invalid access token', 'code': -401, 'reason': 'ACCESS_TOKEN_EXPIRED'},
               ),
               type: DioExceptionType.badResponse,
             );

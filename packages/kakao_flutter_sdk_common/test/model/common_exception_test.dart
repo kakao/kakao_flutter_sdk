@@ -12,6 +12,7 @@ void main() {
     final invalidTokenError = KakaoApiException(
       ApiErrorCause.invalidToken,
       'Invalid token',
+      reason: 'UNKNOWN'
     );
 
     final otherKApiError = KakaoApiException(

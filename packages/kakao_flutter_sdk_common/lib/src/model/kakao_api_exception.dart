@@ -13,6 +13,7 @@ class KakaoApiException extends KakaoException {
   KakaoApiException(
     this.code,
     this.msg, {
+    this.reason,
     this.apiType,
     this.requiredScopes,
     this.allowedScopes,
@@ -29,6 +30,8 @@ class KakaoApiException extends KakaoException {
   /// EN: Error message
   final String msg;
 
+  final String? reason;
+
   /// KO: API 종류
   /// <br>
   /// EN: API type
@@ -43,6 +46,10 @@ class KakaoApiException extends KakaoException {
   /// <br>
   /// EN: Scopes that user agreed to
   final List<String>? allowedScopes;
+
+  bool isAccessTokenExpired() {
+    return code == ApiErrorCause.invalidToken && reason == 'ACCESS_TOKEN_EXPIRED';
+  }
 
   /// @nodoc
   factory KakaoApiException.fromJson(Map<String, dynamic> json) =>

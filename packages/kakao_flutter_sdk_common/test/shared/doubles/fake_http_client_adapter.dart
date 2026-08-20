@@ -15,7 +15,7 @@ class FakeHttpClientAdapter implements HttpClientAdapter {
   void setResponse(ResponseBody response) {}
 
   void mockInvalidTokenError() {
-    errorData = {'msg': 'Invalid access token', 'code': -401};
+    errorData = {'msg': 'Invalid access token', 'code': -401, 'reason': 'ACCESS_TOKEN_EXPIRED'};
     errorStatusCode = 401;
   }
 

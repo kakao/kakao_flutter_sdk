@@ -14,6 +14,7 @@ KakaoApiException _$KakaoApiExceptionFromJson(Map<String, dynamic> json) =>
         unknownValue: ApiErrorCause.unknown,
       ),
       json['msg'] as String,
+      reason: json['reason'] as String?,
       apiType: json['api_type'] as String?,
       requiredScopes: (json['required_scopes'] as List<dynamic>?)
           ?.map((e) => e as String)
@@ -27,6 +28,7 @@ Map<String, dynamic> _$KakaoApiExceptionToJson(KakaoApiException instance) =>
     <String, dynamic>{
       'code': _$ApiErrorCauseEnumMap[instance.code]!,
       'msg': instance.msg,
+      'reason': ?instance.reason,
       'api_type': ?instance.apiType,
       'required_scopes': ?instance.requiredScopes,
       'allowed_scopes': ?instance.allowedScopes,
