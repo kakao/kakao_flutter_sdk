@@ -1,5 +1,14 @@
+## 2.0.1
+
+- Added id to the Retrieve Kakao Talk profile API response.
+- Added an error code for Suspended apps.
+- Android: Updated to support AGP 9.0 or higher.
+- Updated the internal source code.
+
 ## 2.0.0+1
-- Released Flutter SDK v2. (See [Migrate v1 to v2](https://developers.kakao.com/docs/latest/flutter/migration-v2).)
+
+- Released Flutter SDK v2. (
+  See [Migrate v1 to v2](https://developers.kakao.com/docs/latest/flutter/migration-v2).)
 
 ## 1.10.0
 
