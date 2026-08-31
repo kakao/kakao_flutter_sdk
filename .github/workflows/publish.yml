@@ -47,6 +47,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      # pub.dev OIDC 인증(PUB_TOKEN) 설정.
+      # composite action 안에서 호출하면 GITHUB_ACTION_PATH가 부모 액션 경로로
+      # 해석되어 problem matcher 등록이 실패하므로 반드시 job 레벨에서 호출한다.
+      - name: Setup Dart (pub.dev OIDC)
+        uses: dart-lang/setup-dart@v1
+
       - name: Prepare publish environment
         uses: ./.github/actions/prepare-publish
 

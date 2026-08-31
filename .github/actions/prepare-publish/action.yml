@@ -16,9 +16,6 @@ runs:
         flutter-version: ${{ inputs.flutter-version }}
         cache: true
 
-    - name: Setup Dart
-      uses: dart-lang/setup-dart@v1
-
     - name: Install dependencies
       shell: bash
       run: flutter pub get
