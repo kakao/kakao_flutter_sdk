@@ -66,6 +66,28 @@ class CommonHostApiImpl(private val context: Context) : CommonHostApi {
             .onFailure { callback(Result.failure(it)) }
     }
 
+    override fun launchKakaoTalk(url: String, callback: (Result<Unit>) -> Unit) {
+        runCatching {
+            val intent = Intent(Intent.ACTION_VIEW, url.toUri())
+            val talkIntent = TalkValidator.resolveIntent(context, intent)
+                ?: throw FlutterError(
+                    "TALK_NOT_AVAILABLE",
+                    "KakaoTalk is not installed or its signature is invalid.",
+                    url
+                )
+
+            val activity = activity
+            if (activity != null) {
+                activity.startActivity(talkIntent)
+            } else {
+                talkIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                context.startActivity(talkIntent)
+            }
+        }
+            .onSuccess { callback(Result.success(it)) }
+            .onFailure { callback(Result.failure(it)) }
+    }
+
     private fun getAppVersion(): String {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             context.packageManager.getPackageInfo(

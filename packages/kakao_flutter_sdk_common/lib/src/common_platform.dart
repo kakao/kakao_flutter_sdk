@@ -18,5 +18,8 @@ abstract class CommonPlatform {
   // useBrowserSession은 ios에서만 사용
   Future<void> launchUrl(String url, {bool useBrowserSession = false});
 
+  // 카카오톡 앱 실행. 안드로이드는 TalkValidator로 검증된 intent를 사용
+  Future<void> launchKakaoTalk(String url);
+
   void setDeepLinkCallback(Function(String url)? callback);
 }

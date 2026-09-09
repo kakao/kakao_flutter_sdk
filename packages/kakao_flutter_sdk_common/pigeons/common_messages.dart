@@ -33,6 +33,10 @@ abstract class CommonHostApi {
 
   @async
   void launchUrl(String url, bool useBrowserSession);
+
+  // 카카오톡 앱 실행. android: TalkValidator로 검증된 intent 사용, ios: 앱 스킴 실행
+  @async
+  void launchKakaoTalk(String url);
 }
 
 // / Flutter API for receiving deep link events from native platforms

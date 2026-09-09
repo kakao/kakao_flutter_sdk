@@ -49,6 +49,11 @@ class CommonHostApiImpl: CommonHostApi {
         }
     }
     
+    func launchKakaoTalk(url: String, completion: @escaping (Result<Void, any Error>) -> Void) {
+        // iOS는 앱 스킴 실행으로 카카오톡을 여는 기존 동작을 유지
+        launchUrl(url: url, useBrowserSession: true, completion: completion)
+    }
+    
     func getPlatformData() throws -> PlatformData {
         return PlatformData(
             platformId: try getPlatformId(),

@@ -25,6 +25,11 @@ class CommonPlatformImpl extends CommonPlatform {
   }
 
   @override
+  Future<void> launchKakaoTalk(String url) async {
+    throw _notSupportedError();
+  }
+
+  @override
   void setDeepLinkCallback(Function(String url)? callback) {
     throw _notSupportedError();
   }

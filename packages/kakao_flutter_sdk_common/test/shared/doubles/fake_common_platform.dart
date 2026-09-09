@@ -31,6 +31,11 @@ class FakeCommonPlatform extends CommonPlatform {
   }
 
   @override
+  Future<void> launchKakaoTalk(String url) async {
+    throw UnimplementedError();
+  }
+
+  @override
   void setDeepLinkCallback(Function(String url)? callback) {
     throw UnimplementedError();
   }

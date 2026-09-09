@@ -44,6 +44,12 @@ class CommonPlatformImpl extends CommonPlatform {
   }
 
   @override
+  Future<void> launchKakaoTalk(String url) {
+    // 안드로이드에서 TalkValidator.resolveIntent()로 검증된 intent로 카카오톡 실행
+    return _api.launchKakaoTalk(url);
+  }
+
+  @override
   void setDeepLinkCallback(Function(String url)? callback) {
     if (callback == null) {
       pigeon.CommonFlutterApi.setUp(null);

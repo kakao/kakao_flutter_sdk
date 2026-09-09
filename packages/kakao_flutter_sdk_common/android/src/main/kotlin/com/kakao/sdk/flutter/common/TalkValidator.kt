@@ -2,7 +2,6 @@ package com.kakao.sdk.flutter.common
 
 import android.content.Context
 import android.content.Intent
-import android.content.pm.LabeledIntent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
@@ -13,7 +12,6 @@ object TalkValidator {
         val pm = context.packageManager
 
         val targetIntents = mutableListOf<Intent>()
-        val labeledIntents = mutableListOf<LabeledIntent>()
 
         for (packageName in ALLOWED_PACKAGES) {
             val candidateIntent = (intent.clone() as Intent).apply { setPackage(packageName) }
@@ -30,31 +28,18 @@ object TalkValidator {
             if (!validateSignature(pm, info)) continue
 
             targetIntents.add(candidateIntent)
-            labeledIntents.add(
-                LabeledIntent(
-                    intent,
-                    info.activityInfo.applicationInfo.packageName,
-                    info.activityInfo.applicationInfo.labelRes,
-                    info.activityInfo.applicationInfo.icon
-                )
-            )
         }
 
-        if (targetIntents.isEmpty()) {
-            return null
+        if (targetIntents.size <= 1) {
+            return targetIntents.getOrNull(0)
         }
 
-        if (targetIntents.size == 1) {
-            return targetIntents.first()
-        }
-
-        val chooserTarget = labeledIntents.removeAt(0)
         return Intent.createChooser(
-            chooserTarget,
-            "Which version of KakaoTalk would you like to use?",
+            targetIntents.removeAt(0),
+            "",
         ).apply {
-            if (labeledIntents.isNotEmpty()) {
-                putExtra(Intent.EXTRA_INITIAL_INTENTS, labeledIntents.toTypedArray())
+            if (targetIntents.isNotEmpty()) {
+                putExtra(Intent.EXTRA_INITIAL_INTENTS, targetIntents.toTypedArray())
             }
         }
     }

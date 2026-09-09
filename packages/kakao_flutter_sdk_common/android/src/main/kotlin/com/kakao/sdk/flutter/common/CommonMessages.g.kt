@@ -149,6 +149,7 @@ interface CommonHostApi {
   fun isAppInstalled(appIdentifier: String): Boolean
   fun isKakaoTalkAvailable(appScheme: String?): Boolean
   fun launchUrl(url: String, useBrowserSession: Boolean, callback: (Result<Unit>) -> Unit)
+  fun launchKakaoTalk(url: String, callback: (Result<Unit>) -> Unit)
 
   companion object {
     /** The codec used by CommonHostApi. */
@@ -216,6 +217,25 @@ interface CommonHostApi {
             val urlArg = args[0] as String
             val useBrowserSessionArg = args[1] as Boolean
             api.launchUrl(urlArg, useBrowserSessionArg) { result: Result<Unit> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(CommonMessagesPigeonUtils.wrapError(error))
+              } else {
+                reply.reply(CommonMessagesPigeonUtils.wrapResult(null))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.kakao_flutter_sdk_common.CommonHostApi.launchKakaoTalk$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val urlArg = args[0] as String
+            api.launchKakaoTalk(urlArg) { result: Result<Unit> ->
               val error = result.exceptionOrNull()
               if (error != null) {
                 reply.reply(CommonMessagesPigeonUtils.wrapError(error))

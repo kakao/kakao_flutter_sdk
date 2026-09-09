@@ -41,6 +41,11 @@ class CommonPlatformImpl extends CommonPlatform {
     return Future.sync(() => _windowOpen(url, '_blank'));
   }
 
+  @override
+  Future<void> launchKakaoTalk(String url) {
+    return launchUrl(url);
+  }
+
   Uint8List _getPlatformId() {
     final origin = Uri.parse(
       window.location.origin,

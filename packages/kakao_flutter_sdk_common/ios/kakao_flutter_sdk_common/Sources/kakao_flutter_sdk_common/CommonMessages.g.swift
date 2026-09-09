@@ -216,6 +216,7 @@ protocol CommonHostApi {
   func isAppInstalled(appIdentifier: String) throws -> Bool
   func isKakaoTalkAvailable(appScheme: String?) throws -> Bool
   func launchUrl(url: String, useBrowserSession: Bool, completion: @escaping (Result<Void, Error>) -> Void)
+  func launchKakaoTalk(url: String, completion: @escaping (Result<Void, Error>) -> Void)
 }
 
 /// Generated setup class from Pigeon to handle messages through the `binaryMessenger`.
@@ -284,6 +285,23 @@ class CommonHostApiSetup {
       }
     } else {
       launchUrlChannel.setMessageHandler(nil)
+    }
+    let launchKakaoTalkChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.kakao_flutter_sdk_common.CommonHostApi.launchKakaoTalk\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      launchKakaoTalkChannel.setMessageHandler { message, reply in
+        let args = message as! [Any?]
+        let urlArg = args[0] as! String
+        api.launchKakaoTalk(url: urlArg) { result in
+          switch result {
+          case .success:
+            reply(wrapResult(nil))
+          case .failure(let error):
+            reply(wrapError(error))
+          }
+        }
+      }
+    } else {
+      launchKakaoTalkChannel.setMessageHandler(nil)
     }
   }
 }

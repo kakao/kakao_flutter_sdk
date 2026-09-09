@@ -15,7 +15,7 @@ class SharePlatformImpl extends SharePlatform {
 
   @override
   Future<void> launchKakaoTalk(String url) async {
-    await CommonPlatform.instance.launchUrl(url, useBrowserSession: true);
+    await CommonPlatform.instance.launchKakaoTalk(url);
   }
 
   @override
