@@ -28,6 +28,7 @@ class ShareApi {
       Constants.templateId: templateId,
       Constants.templateArgs: ?templateArgs?.toJson(),
       Constants.schemeParams: ?_createSchemeParams(pickerSettings),
+      Constants.pickerExtras: ?_createPickerExtras(pickerSettings),
     };
 
     return _validate(Constants.validate, data);
@@ -43,6 +44,7 @@ class ShareApi {
     final data = <String, String>{
       Constants.templateObject: jsonEncode(template),
       Constants.schemeParams: ?_createSchemeParams(pickerSettings),
+      Constants.pickerExtras: ?_createPickerExtras(pickerSettings),
     };
 
     return _validate(Constants.defaultTemplate, data);
@@ -62,6 +64,7 @@ class ShareApi {
       Constants.templateId: ?templateId,
       Constants.templateArgs: ?templateArgs?.toJson(),
       Constants.schemeParams: ?_createSchemeParams(pickerSettings),
+      Constants.pickerExtras: ?_createPickerExtras(pickerSettings),
     };
 
     return _validate(Constants.scrap, data);
@@ -148,6 +151,10 @@ class ShareApi {
 
   String? _createSchemeParams(PickerSettings? pickerSettings) {
     return _encodeOrNull(pickerSettings?.toSchemeParams());
+  }
+
+  String? _createPickerExtras(PickerSettings? pickerSettings) {
+    return _encodeOrNull(pickerSettings?.toPickerExtras());
   }
 
   String? _encodeOrNull(Map<String, dynamic>? params) {

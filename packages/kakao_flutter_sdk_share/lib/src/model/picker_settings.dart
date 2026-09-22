@@ -12,10 +12,12 @@ part 'picker_settings.g.dart';
 class PickerSettings {
   /// KO: [type]에 공유 대상 선택 화면 유형 전달<br>
   /// [limit]에 선택 가능한 공유 대상 수 전달<br>
+  /// [showSendToMe]로 나에게 보내기 노출 여부 설정<br>
   /// <br>
   /// EN: Pass the type of the share target selection screen to [type]<br>
   /// Pass the number of selectable share targets to [limit]<br>
-  const PickerSettings({this.type, this.limit});
+  /// Set whether to show the Send to me menu with [showSendToMe]
+  const PickerSettings({this.type, this.limit, this.showSendToMe});
 
   /// KO: 공유 대상 선택 화면 유형
   /// <br>
@@ -27,10 +29,20 @@ class PickerSettings {
   /// EN: Number of selectable share targets
   final int? limit;
 
+  /// KO: 나에게 보내기 노출 여부
+  /// <br>
+  /// EN: Whether to show the Send to me menu
+  final bool? showSendToMe;
+
   /// @nodoc
   Map<String, dynamic> toSchemeParams() => <String, dynamic>{
     Constants.list: ?type?.value,
     Constants.limit: ?limit,
+  };
+
+  /// @nodoc
+  Map<String, dynamic> toPickerExtras() => <String, dynamic>{
+    Constants.showSendToMe: ?showSendToMe,
   };
 
   Map<String, dynamic> toJson() => _$PickerSettingsToJson(this);

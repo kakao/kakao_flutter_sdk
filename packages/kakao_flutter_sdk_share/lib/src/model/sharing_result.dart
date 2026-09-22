@@ -12,9 +12,10 @@ class SharingResult {
   final Map<String, dynamic> warningMsg;
   final Map<String, dynamic> argumentMsg;
   final Map<String, dynamic>? schemeParams;
+  final Map<String, dynamic>? pickerExtras;
 
   SharingResult(this.templateId, this.templateArgs, this.templateMsg,
-      this.warningMsg, this.argumentMsg, this.schemeParams);
+      this.warningMsg, this.argumentMsg, this.schemeParams, this.pickerExtras);
 
   factory SharingResult.fromJson(Map<String, dynamic> json) =>
       _$SharingResultFromJson(json);

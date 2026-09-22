@@ -243,7 +243,17 @@ class ShareClient {
       Constants.extras: extras,
       Constants.list: ?response.schemeParams?[Constants.list],
       Constants.limit: ?response.schemeParams?[Constants.limit],
+      Constants.pickerExtras: ?_createPickerExtras(response),
     }.entries.map((entry) => '${entry.key}=${entry.value}').join('&');
+  }
+
+  String? _createPickerExtras(SharingResult response) {
+    final pickerExtras = response.pickerExtras;
+
+    if (pickerExtras == null || pickerExtras.isEmpty) {
+      return null;
+    }
+    return pickerExtras.toEncodedJson();
   }
 
   Map<String, String> _createExtras(Map<String, String>? serverCallbackArgs) {

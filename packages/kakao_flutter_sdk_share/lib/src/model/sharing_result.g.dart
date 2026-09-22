@@ -14,6 +14,7 @@ SharingResult _$SharingResultFromJson(Map<String, dynamic> json) =>
       json['warning_msg'] as Map<String, dynamic>,
       json['argument_msg'] as Map<String, dynamic>,
       json['scheme_params'] as Map<String, dynamic>?,
+      json['picker_extras'] as Map<String, dynamic>?,
     );
 
 Map<String, dynamic> _$SharingResultToJson(SharingResult instance) =>
@@ -24,4 +25,5 @@ Map<String, dynamic> _$SharingResultToJson(SharingResult instance) =>
       'warning_msg': instance.warningMsg,
       'argument_msg': instance.argumentMsg,
       'scheme_params': ?instance.schemeParams,
+      'picker_extras': ?instance.pickerExtras,
     };

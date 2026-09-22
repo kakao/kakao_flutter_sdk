@@ -23,6 +23,7 @@ class Constants {
   static const String pickerExtras = 'picker_extras';
   static const String list = 'list';
   static const String limit = 'limit';
+  static const String showSendToMe = 'show_send_to_me';
   static const String requestUrl = 'request_url';
 
   // Image Upload Parameters
