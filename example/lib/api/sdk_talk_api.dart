@@ -1,6 +1,7 @@
 import 'package:example/model/custom_data.dart';
 import 'package:example/model/friend_page_item.dart';
 import 'package:example/model/list_item.dart';
+import 'package:example/util/input_dialog.dart';
 import 'package:example/util/log.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
@@ -444,8 +445,18 @@ List<ListItem> createTalkApis(CustomData customData) => <ListItem>[
       Log.e(_tag, '채널 관계 조회 실패', e);
     }
   }),
-  Api('followChannel()', (context) async {
-    final String channelId = customData.channelId;
+  Api('+followChannel()', (context) async {
+    final String? channelId = await showTextInputDialog(
+      context: context,
+      title: '채널 추가',
+      labelText: '채널 ID',
+      initialValue: customData.channelId,
+    );
+
+    if (channelId == null) {
+      Log.i(_tag, '채널 추가 취소');
+      return;
+    }
 
     try {
       final result = await TalkApi.instance.followChannel(channelId);
