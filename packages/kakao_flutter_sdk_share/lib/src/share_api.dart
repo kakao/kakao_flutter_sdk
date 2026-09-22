@@ -7,6 +7,7 @@ import 'package:kakao_flutter_sdk_template/kakao_flutter_sdk_template.dart';
 
 import 'constants.dart';
 import 'model/image_upload_result.dart';
+import 'model/picker_settings.dart';
 import 'model/sharing_result.dart';
 
 /// @nodoc
@@ -18,24 +19,30 @@ class ShareApi {
   Future<SharingResult> custom(
     int templateId, {
     Map<String, String>? templateArgs,
+    PickerSettings? pickerSettings,
   }) {
     SdkLog.d(
-      '[ShareApi.custom] started | templateId=$templateId templateArgsCount=${templateArgs?.length ?? 0}',
+      '[ShareApi.custom] started | templateId=$templateId templateArgsCount=${templateArgs?.length ?? 0} pickerSettings=$pickerSettings',
     );
     final data = <String, Object>{
       Constants.templateId: templateId,
       Constants.templateArgs: ?templateArgs?.toJson(),
+      Constants.schemeParams: ?_createSchemeParams(pickerSettings),
     };
 
     return _validate(Constants.validate, data);
   }
 
-  Future<SharingResult> defaultTemplate(DefaultTemplate template) async {
+  Future<SharingResult> defaultTemplate(
+    DefaultTemplate template, {
+    PickerSettings? pickerSettings,
+  }) async {
     SdkLog.d(
-      '[ShareApi.defaultTemplate] started | templateType=${template.runtimeType}',
+      '[ShareApi.defaultTemplate] started | templateType=${template.runtimeType} pickerSettings=$pickerSettings',
     );
     final data = <String, String>{
       Constants.templateObject: jsonEncode(template),
+      Constants.schemeParams: ?_createSchemeParams(pickerSettings),
     };
 
     return _validate(Constants.defaultTemplate, data);
@@ -45,14 +52,16 @@ class ShareApi {
     String url, {
     int? templateId,
     Map<String, String>? templateArgs,
+    PickerSettings? pickerSettings,
   }) async {
     SdkLog.d(
-      '[ShareApi.scrap] started | url=$url templateId=$templateId templateArgsCount=${templateArgs?.length ?? 0}',
+      '[ShareApi.scrap] started | url=$url templateId=$templateId templateArgsCount=${templateArgs?.length ?? 0} pickerSettings=$pickerSettings',
     );
     final data = <String, Object>{
       Constants.requestUrl: url,
       Constants.templateId: ?templateId,
       Constants.templateArgs: ?templateArgs?.toJson(),
+      Constants.schemeParams: ?_createSchemeParams(pickerSettings),
     };
 
     return _validate(Constants.scrap, data);
@@ -135,5 +144,16 @@ class ShareApi {
       '[ShareApi.validate] completed | templateId=${result.templateId} schemeParamKeys=${result.schemeParams?.keys.join(',')}',
     );
     return result;
+  }
+
+  String? _createSchemeParams(PickerSettings? pickerSettings) {
+    return _encodeOrNull(pickerSettings?.toSchemeParams());
+  }
+
+  String? _encodeOrNull(Map<String, dynamic>? params) {
+    if (params == null || params.isEmpty) {
+      return null;
+    }
+    return params.toJson();
   }
 }

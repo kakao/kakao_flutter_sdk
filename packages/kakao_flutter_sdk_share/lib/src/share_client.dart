@@ -6,6 +6,7 @@ import 'package:kakao_flutter_sdk_template/kakao_flutter_sdk_template.dart';
 
 import 'constants.dart';
 import 'model/image_upload_result.dart';
+import 'model/picker_settings.dart';
 import 'model/sharing_result.dart';
 import 'share_api.dart';
 import 'share_platform.dart';
@@ -42,20 +43,27 @@ class ShareClient {
   /// [templateId]에 사용자 정의 템플릿 ID 전달<br>
   /// [templateArgs]에 사용자 인자 키와 값 전달<br>
   /// [serverCallbackArgs]에 카카오톡 공유 전송 성공 알림에 포함할 키와 값 전달<br>
+  /// [pickerSettings]에 공유 대상 선택 화면 설정 전달<br>
   /// <br>
   /// EN: Send message with custom template<br>
   /// Pass the custom template ID to [templateId]<br>
   /// Pass the keys and values of the user argument to [templateArgs]<br>
   /// Pass the keys and values for the Kakao Talk Sharing success callback to [serverCallbackArgs]<br>
+  /// Pass the settings of the share target selection screen to [pickerSettings]<br>
   Future<void> shareCustom({
     required int templateId,
     Map<String, String>? templateArgs,
     Map<String, String>? serverCallbackArgs,
+    PickerSettings? pickerSettings,
   }) async {
     SdkLog.d(
-      '[ShareClient.shareCustom] started | templateId=$templateId templateArgsCount=${templateArgs?.length ?? 0} callbackArgsCount=${serverCallbackArgs?.length ?? 0}',
+      '[ShareClient.shareCustom] started | templateId=$templateId templateArgsCount=${templateArgs?.length ?? 0} callbackArgsCount=${serverCallbackArgs?.length ?? 0} pickerSettings=$pickerSettings',
     );
-    final response = await _api.custom(templateId, templateArgs: templateArgs);
+    final response = await _api.custom(
+      templateId,
+      templateArgs: templateArgs,
+      pickerSettings: pickerSettings,
+    );
 
     final url = _createUrl(response, serverCallbackArgs: serverCallbackArgs);
     SdkLog.v('[ShareClient.shareCustom] launch_url_created | url=$url');
@@ -67,18 +75,24 @@ class ShareClient {
   /// KO: 기본 템플릿으로 메시지 발송<br>
   /// [template]에 메시지 템플릿 객체 전달<br>
   /// [serverCallbackArgs]에 카카오톡 공유 전송 성공 알림에 포함할 키와 값 전달<br>
+  /// [pickerSettings]에 공유 대상 선택 화면 설정 전달<br>
   /// <br>
   /// EN: Send message with default template<br>
   /// Pass an object of a message template to [template]<br>
   /// Pass the keys and values for the Kakao Talk Sharing success callback to [serverCallbackArgs]<br>
+  /// Pass the settings of the share target selection screen to [pickerSettings]<br>
   Future<void> shareDefault({
     required DefaultTemplate template,
     Map<String, String>? serverCallbackArgs,
+    PickerSettings? pickerSettings,
   }) async {
     SdkLog.d(
-      '[ShareClient.shareDefault] started | templateType=${template.runtimeType} callbackArgsCount=${serverCallbackArgs?.length ?? 0}',
+      '[ShareClient.shareDefault] started | templateType=${template.runtimeType} callbackArgsCount=${serverCallbackArgs?.length ?? 0} pickerSettings=$pickerSettings',
     );
-    final response = await _api.defaultTemplate(template);
+    final response = await _api.defaultTemplate(
+      template,
+      pickerSettings: pickerSettings,
+    );
 
     final url = _createUrl(response, serverCallbackArgs: serverCallbackArgs);
     SdkLog.v('[ShareClient.shareDefault] launch_url_created | url=$url');
@@ -92,25 +106,29 @@ class ShareClient {
   /// [templateId]에 사용자 정의 템플릿 ID 전달<br>
   /// [templateArgs]에 사용자 인자 키와 값 전달<br>
   /// [serverCallbackArgs]에 카카오톡 공유 전송 성공 알림에 포함할 키와 값 전달<br>
+  /// [pickerSettings]에 공유 대상 선택 화면 설정 전달<br>
   /// <br>
   /// EN: Send scrape message<br>
   /// Pass the URL to scrape [url]<br>
   /// Pass the custom template ID to [templateId]<br>
   /// Pass the keys and values of the user argument to [templateArgs]<br>
   /// Pass the keys and values for the Kakao Talk Sharing success callback to [serverCallbackArgs]<br>
+  /// Pass the settings of the share target selection screen to [pickerSettings]<br>
   Future<void> shareScrap({
     required String url,
     int? templateId,
     Map<String, String>? templateArgs,
     Map<String, String>? serverCallbackArgs,
+    PickerSettings? pickerSettings,
   }) async {
     SdkLog.d(
-      '[ShareClient.shareScrap] started | url=$url templateId=$templateId templateArgsCount=${templateArgs?.length ?? 0} callbackArgsCount=${serverCallbackArgs?.length ?? 0}',
+      '[ShareClient.shareScrap] started | url=$url templateId=$templateId templateArgsCount=${templateArgs?.length ?? 0} callbackArgsCount=${serverCallbackArgs?.length ?? 0} pickerSettings=$pickerSettings',
     );
     final response = await _api.scrap(
       url,
       templateId: templateId,
       templateArgs: templateArgs,
+      pickerSettings: pickerSettings,
     );
 
     final appUrl = _createUrl(response, serverCallbackArgs: serverCallbackArgs);

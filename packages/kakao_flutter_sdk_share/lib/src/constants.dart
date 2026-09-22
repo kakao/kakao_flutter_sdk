@@ -20,6 +20,7 @@ class Constants {
 
   // Sharing Parameters
   static const String schemeParams = 'scheme_params';
+  static const String pickerExtras = 'picker_extras';
   static const String list = 'list';
   static const String limit = 'limit';
   static const String requestUrl = 'request_url';

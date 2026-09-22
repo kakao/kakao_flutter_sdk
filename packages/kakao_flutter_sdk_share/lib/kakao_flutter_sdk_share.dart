@@ -5,6 +5,7 @@ export 'package:kakao_flutter_sdk_template/kakao_flutter_sdk_template.dart';
 
 export 'src/model/image_infos.dart';
 export 'src/model/image_upload_result.dart';
+export 'src/model/picker_settings.dart';
 export 'src/model/share_type.dart';
 export 'src/model/sharing_result.dart';
 export 'src/share_client.dart';
