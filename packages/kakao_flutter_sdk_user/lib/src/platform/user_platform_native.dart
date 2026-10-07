@@ -11,7 +11,10 @@ class UserPlatformImpl extends UserPlatform {
     bool? mobileView, // web only
     bool? enableBackButton, // web only
   }) async {
-    await AuthApi.instance.refreshToken();
+    final tokenManager = TokenManagerProvider.instance.manager;
+
+    final newToken = await AuthApi.instance.refreshToken();
+    await tokenManager.setToken(newToken);
 
     final agt = await AuthApi.instance.agt();
 

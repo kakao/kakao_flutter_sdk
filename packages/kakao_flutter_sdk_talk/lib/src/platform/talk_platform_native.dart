@@ -13,10 +13,12 @@ class TalkPlatformImpl extends TalkPlatform {
   @override
   Future<FollowChannelResult> followChannel(String channelPublicId) async {
     final hasToken = await AuthApi.instance.hasToken();
+    final tokenManager = TokenManagerProvider.instance.manager;
 
     String? agt;
     if (hasToken) {
-      await AuthApi.instance.refreshToken();
+      final newToken = await AuthApi.instance.refreshToken();
+      await tokenManager.setToken(newToken);
       agt = await AuthApi.instance.agt();
     }
 
