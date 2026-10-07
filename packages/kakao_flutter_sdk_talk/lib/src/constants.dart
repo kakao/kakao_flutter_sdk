@@ -18,6 +18,7 @@ class Constants {
   static const String agt = 'agt';
   static const String accessToken = 'accessToken';
   static const String transId = 'trans_id';
+  static const String state = 'state';
 
   static const String offset = 'offset';
   static const String limit = 'limit';

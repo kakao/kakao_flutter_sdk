@@ -5,7 +5,6 @@ import '../user_platform.dart';
 
 /// @nodoc
 class UserPlatformImpl extends UserPlatform {
-
   @override
   Future<int> selectShippingAddress({
     bool? mobileView, // web only
@@ -17,6 +16,7 @@ class UserPlatformImpl extends UserPlatform {
     await tokenManager.setToken(newToken);
 
     final agt = await AuthApi.instance.agt();
+    final state = generateRandomString(20);
 
     final params = <String, String>{
       Constants.appKey: KakaoSdk.appKey,
@@ -24,6 +24,7 @@ class UserPlatformImpl extends UserPlatform {
       Constants.returnUrl:
           '${KakaoSdk.customScheme}://${Constants.shippingAddressesScheme}',
       Constants.enableBackButton: false.toString(),
+      Constants.state: state,
     };
 
     final continueUrl = Uri(
@@ -48,9 +49,11 @@ class UserPlatformImpl extends UserPlatform {
     final result = await AuthPlatform.instance.handleAppsUrl(url);
     final resultUri = Uri.parse(result);
 
-    if (resultUri.queryParameters[Constants.status] == Constants.error) {
-      throw KakaoAppsException.fromJson(resultUri.queryParameters);
+    if (resultUri.queryParameters[Constants.status] != Constants.error &&
+        resultUri.queryParameters[Constants.state] == state) {
+      return int.parse(resultUri.queryParameters[Constants.addressId]!);
     }
-    return int.parse(resultUri.queryParameters[Constants.addressId]!);
+
+    throw KakaoAppsException.fromJson(resultUri.queryParameters);
   }
 }
