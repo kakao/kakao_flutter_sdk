@@ -33,10 +33,8 @@ class SharePlatformImpl extends SharePlatform {
   }
 
   String _getAndroidShareIntent(String url) {
-    final scheme = KakaoSdk.platform.web.talkSharingScheme;
-
     final queryParams = Uri.parse(url).query;
-    final intentScheme = 'intent://send?$queryParams#Intent;scheme=$scheme';
+    final intentScheme = 'intent://send?$queryParams#Intent;scheme=kakaolink';
 
     final intent = [
       intentScheme,
