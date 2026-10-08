@@ -68,9 +68,20 @@ class TalkPlatformImpl extends TalkPlatform {
     final path = 'home/$channelPublicId/add';
 
     final scheme = KakaoSdk.platform.web.talkChannelScheme;
+    final query = 'logReferer=PLUG';
     final url = isAndroidWeb()
-        ? androidChannelIntent(scheme, channelPublicId, path)
-        : iosChannelScheme(scheme, channelPublicId, path);
+        ? androidChannelIntent(
+            scheme,
+            channelPublicId,
+            path,
+            queryParameters: query,
+          )
+        : iosChannelScheme(
+            scheme,
+            channelPublicId,
+            path,
+            queryParameters: query,
+          );
 
     return Future.sync(() => window.location.href = url);
   }

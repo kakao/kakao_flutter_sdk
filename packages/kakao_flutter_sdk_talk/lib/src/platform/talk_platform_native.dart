@@ -66,7 +66,7 @@ class TalkPlatformImpl extends TalkPlatform {
 
     await _validate(Constants.validateAdd, channelPublicId);
 
-    final url = '$scheme/home/$channelPublicId/add';
+    final url = '$scheme/home/$channelPublicId/add?logReferer=PLUG';
     await CommonPlatform.instance.launchUrl(url);
   }
 
