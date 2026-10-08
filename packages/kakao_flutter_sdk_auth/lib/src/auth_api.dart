@@ -91,7 +91,7 @@ class AuthApi {
       ..._platform.getPlatformData(),
     };
 
-    final newToken = await _issueAccessToken(data, oldToken: oldToken);
+    final newToken = await _issueAccessToken(data, oldToken: token);
     SdkLog.i(
       '[AuthApi.refreshToken] completed | expiresAt=${newToken.expiresAt.toIso8601String()} hasRefreshToken=${newToken.refreshToken != null}',
     );

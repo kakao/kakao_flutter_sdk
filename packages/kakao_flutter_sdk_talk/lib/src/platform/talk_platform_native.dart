@@ -13,13 +13,16 @@ class TalkPlatformImpl extends TalkPlatform {
   @override
   Future<FollowChannelResult> followChannel(String channelPublicId) async {
     final hasToken = await AuthApi.instance.hasToken();
+    final tokenManager = TokenManagerProvider.instance.manager;
 
     String? agt;
     if (hasToken) {
-      await AuthApi.instance.refreshToken();
+      final newToken = await AuthApi.instance.refreshToken();
+      await tokenManager.setToken(newToken);
       agt = await AuthApi.instance.agt();
     }
 
+    final state = generateRandomString(20);
     final params = <String, String>{
       Constants.appKey: KakaoSdk.appKey,
       Constants.channelPublicId: channelPublicId,
@@ -27,6 +30,7 @@ class TalkPlatformImpl extends TalkPlatform {
           '${KakaoSdk.customScheme}://${Constants.followChannelScheme}',
       Constants.ka: KakaoSdk.platformInfo.kaHeader,
       Constants.agt: ?agt,
+      Constants.state: state,
     };
 
     final url = Uri(
@@ -44,11 +48,12 @@ class TalkPlatformImpl extends TalkPlatform {
       '[TalkPlatformImpl.followChannel] completed | resultUrl=$resultUrl',
     );
 
-    if (resultUrl.queryParameters[Constants.status] ==
-        Constants.followChannelStatusError) {
-      throw KakaoAppsException.fromJson(resultUrl.queryParameters);
+    if (resultUrl.queryParameters[Constants.status] !=
+            Constants.followChannelStatusError &&
+        resultUrl.queryParameters[Constants.state] == state) {
+      return FollowChannelResult.fromJson(resultUrl.queryParameters);
     }
-    return FollowChannelResult.fromJson(resultUrl.queryParameters);
+    throw KakaoAppsException.fromJson(resultUrl.queryParameters);
   }
 
   @override

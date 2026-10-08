@@ -36,5 +36,6 @@ class Constants {
   static const String enableBackButton = 'enable_back_button';
   static const String status = 'status';
   static const String error = 'error';
+  static const String state = 'state';
   static const String addressId = 'address_id';
 }
