@@ -12,40 +12,43 @@ void main() {
   group('parse test', () {
     void parse(String data) {
       test(data, () async {
-        final path = uriPathToFilePath(Constants.v1ShippingAddressesPath);
+        final path = uriPathToFilePath(Constants.v2ShippingAddressPath);
         final body = await loadJson('user/$path/$data.json');
         final expected = jsonDecode(body);
-        final response = UserShippingAddresses.fromJson(expected);
+        final response = UserShippingAddress.fromJson(expected);
 
         expect(response.userId, expected['user_id']);
         expect(
           response.needsAgreement,
-          expected['shipping_addresses_needs_agreement'],
+          expected['shipping_address_needs_agreement'],
         );
 
-        for (int i = 0; i < (response.shippingAddresses?.length ?? 0); i++) {
-          final shippingAddress = response.shippingAddresses![i];
-          final expectedShippingAddress = expected['shipping_addresses'][i];
-          expect(shippingAddress.id, expectedShippingAddress['id']);
+        final shippingAddress = response.shippingAddress;
+        final expectedShippingAddress = expected['shipping_address'];
+        if (expectedShippingAddress == null) {
+          expect(shippingAddress, isNull);
+        } else {
+          expect(shippingAddress, isNotNull);
+          expect(shippingAddress!.id, expectedShippingAddress['id']);
           expect(shippingAddress.name, expectedShippingAddress['name']);
           expect(
             shippingAddress.isDefault,
             expectedShippingAddress['is_default'],
           );
-
-          if (shippingAddress.updatedAt != null) {
-            expect(
-              shippingAddress.updatedAt,
-              ShippingAddress.fromTimeStamp(
-                expectedShippingAddress['updated_at'],
-              ),
-            );
-          }
-
+          expect(
+            shippingAddress.updatedAt,
+            ShippingAddress.fromTimeStamp(
+              expectedShippingAddress['updated_at'],
+            ),
+          );
           expect(shippingAddress.type, expectedShippingAddress['type']);
           expect(
             shippingAddress.baseAddress,
             expectedShippingAddress['base_address'],
+          );
+          expect(
+            shippingAddress.detailAddress,
+            expectedShippingAddress['detail_address'],
           );
           expect(
             shippingAddress.receiverName,
@@ -65,11 +68,22 @@ void main() {
           );
           expect(shippingAddress.zipCode, expectedShippingAddress['zip_code']);
         }
+        expect(response.toJson(), expected);
       });
     }
 
     parse('empty');
     parse('normal');
+
+    test('forbidden', () async {
+      final path = uriPathToFilePath(Constants.v2ShippingAddressPath);
+      final body = await loadJson('user/$path/forbidden.json');
+      final expected = jsonDecode(body);
+      final exception = KakaoApiException.fromJson(expected);
+
+      expect(exception.code, ApiErrorCause.unsupportedApi);
+      expect(exception.msg, expected['msg']);
+    });
   });
 
   group('Enum Test', () {

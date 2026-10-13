@@ -16,5 +16,5 @@ export 'src/model/user.dart';
 export 'src/model/user_id_response.dart';
 export 'src/model/user_revoked_service_terms.dart';
 export 'src/model/user_service_terms.dart';
-export 'src/model/user_shipping_addresses.dart';
+export 'src/model/user_shipping_address.dart';
 export 'src/user_api.dart';

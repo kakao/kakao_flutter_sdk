@@ -16,7 +16,7 @@ import 'model/user_id_response.dart';
 import 'model/user_response.dart';
 import 'model/user_revoked_service_terms.dart';
 import 'model/user_service_terms.dart';
-import 'model/user_shipping_addresses.dart';
+import 'model/user_shipping_address.dart';
 import 'user_platform.dart';
 
 /// KO: 카카오 로그인 API 클래스
@@ -337,36 +337,20 @@ class UserApi {
   }
 
   /// KO: 배송지 조회<br>
-  /// [addressId]에 배송지 ID 전달<br>
-  /// [fromUpdatedAt]에 이전 페이지의 마지막 배송지 수정 시각 전달, `0` 전달 시 처음부터 조회<br>
-  /// [pageSize]에 한 페이지에 포함할 배송지 수 전달(기본값: 10)<br>
+  /// [addressId]에 배송지 ID 전달, 미전달 시 기본 배송지 조회<br>
   /// <br>
   /// EN: Retrieve shipping address<br>
-  /// Pass the Shipping address ID to [addressId]<br>
-  /// Pass the last shipping address modification on the previous page to [fromUpdatedAt], retrieve from beginning if passing `0'<br>
-  /// Pass the number of shipping addresses displayed on a page to [pageSize](Default: 10)
-  Future<UserShippingAddresses> shippingAddresses({
-    int? addressId,
-    DateTime? fromUpdatedAt,
-    int? pageSize,
-  }) async {
-    SdkLog.d(
-      '[UserApi.shippingAddresses] started | addressId=$addressId fromUpdatedAt=${fromUpdatedAt?.toIso8601String()} pageSize=$pageSize',
-    );
-    final params = <String, Object>{
-      Constants.addressId: ?addressId,
-      Constants.fromUpdatedAt: ?(fromUpdatedAt != null
-          ? fromUpdatedAt.millisecondsSinceEpoch / 1000
-          : null),
-      Constants.pageSize: ?pageSize,
-    };
+  /// Pass the Shipping address ID to [addressId], retrieve the default shipping address if not passed
+  Future<UserShippingAddress> shippingAddress({int? addressId}) async {
+    SdkLog.d('[UserApi.shippingAddress] started | addressId=$addressId');
+    final params = <String, Object>{Constants.addressId: ?addressId};
     final response = await _client.get(
-      Constants.v1ShippingAddressesPath,
+      Constants.v2ShippingAddressPath,
       queryParameters: params,
     );
-    final result = UserShippingAddresses.fromJson(response.data);
+    final result = UserShippingAddress.fromJson(response.data);
     SdkLog.i(
-      '[UserApi.shippingAddresses] completed | count=${result.shippingAddresses?.length ?? 0}',
+      '[UserApi.shippingAddress] completed | id=${result.shippingAddress?.id} needsAgreement=${result.needsAgreement}',
     );
     return result;
   }

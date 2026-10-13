@@ -165,28 +165,61 @@ void main() {
     expect(request.queryParameters?[Constants.secureResource], 'false');
   });
 
-  test('shippingAddresses sends pagination filters', () async {
+  test('shippingAddress requests v2 with addressId', () async {
     client.enqueueJson({
       'user_id': 1,
-      'shipping_addresses_needs_agreement': false,
-      'shipping_addresses': [],
+      'shipping_address_needs_agreement': false,
+      'shipping_address': {
+        'id': 10,
+        'name': '집',
+        'is_default': true,
+        'updated_at': 1767225600,
+        'type': 'NEW',
+        'base_address': '서울특별시 중구 세종대로 110',
+        'detail_address': '예시 상세 주소',
+        'receiver_name': '홍길동',
+        'receiver_phone_number1': '010-1234-5678',
+        'zone_number': '04524',
+      },
     });
-    final fromUpdatedAt = DateTime.fromMillisecondsSinceEpoch(1710000000000);
 
-    await api.shippingAddresses(
-      addressId: 10,
-      fromUpdatedAt: fromUpdatedAt,
-      pageSize: 20,
-    );
+    final result = await api.shippingAddress(addressId: 10);
 
     final request = client.lastRequest;
-    expect(request.path, Constants.v1ShippingAddressesPath);
+    expect(request.path, Constants.v2ShippingAddressPath);
     expect(request.queryParameters?[Constants.addressId], 10);
+    expect(result.userId, 1);
+    expect(result.needsAgreement, false);
+    expect(result.shippingAddress?.id, 10);
+    expect(result.shippingAddress?.isDefault, true);
     expect(
-      request.queryParameters?[Constants.fromUpdatedAt],
-      fromUpdatedAt.millisecondsSinceEpoch / 1000,
+      result.shippingAddress?.updatedAt,
+      DateTime.fromMillisecondsSinceEpoch(1767225600 * 1000),
     );
-    expect(request.queryParameters?[Constants.pageSize], 20);
+    expect(result.shippingAddress?.zoneNumber, '04524');
+    expect(result.shippingAddress?.receiverPhoneNumber2, isNull);
+  });
+
+  test('shippingAddress omits addressId when not passed', () async {
+    client.enqueueJson({
+      'user_id': 1,
+      'shipping_address_needs_agreement': true,
+    });
+
+    final result = await api.shippingAddress();
+
+    final request = client.lastRequest;
+    expect(request.path, Constants.v2ShippingAddressPath);
+    expect(
+      request.queryParameters?.containsKey(Constants.addressId) ?? false,
+      false,
+    );
+    expect(result.needsAgreement, true);
+    expect(result.shippingAddress, isNull);
+    expect(result.toJson(), {
+      'user_id': 1,
+      'shipping_address_needs_agreement': true,
+    });
   });
 
   test('serviceTerms sends tags and result filters', () async {
