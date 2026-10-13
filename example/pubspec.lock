@@ -406,63 +406,63 @@ packages:
       path: "../packages/kakao_flutter_sdk"
       relative: true
     source: path
-    version: "2.0.0+1"
+    version: "2.0.1"
   kakao_flutter_sdk_auth:
     dependency: "direct overridden"
     description:
       path: "../packages/kakao_flutter_sdk_auth"
       relative: true
     source: path
-    version: "2.0.0+1"
+    version: "2.0.1"
   kakao_flutter_sdk_common:
     dependency: "direct overridden"
     description:
       path: "../packages/kakao_flutter_sdk_common"
       relative: true
     source: path
-    version: "2.0.0+1"
+    version: "2.0.1"
   kakao_flutter_sdk_friend:
     dependency: "direct overridden"
     description:
       path: "../packages/kakao_flutter_sdk_friend"
       relative: true
     source: path
-    version: "2.0.0+1"
+    version: "2.0.1"
   kakao_flutter_sdk_navi:
     dependency: "direct overridden"
     description:
       path: "../packages/kakao_flutter_sdk_navi"
       relative: true
     source: path
-    version: "2.0.0+1"
+    version: "2.0.1"
   kakao_flutter_sdk_share:
     dependency: "direct overridden"
     description:
       path: "../packages/kakao_flutter_sdk_share"
       relative: true
     source: path
-    version: "2.0.0+1"
+    version: "2.0.1"
   kakao_flutter_sdk_talk:
     dependency: "direct overridden"
     description:
       path: "../packages/kakao_flutter_sdk_talk"
       relative: true
     source: path
-    version: "2.0.0+1"
+    version: "2.0.1"
   kakao_flutter_sdk_template:
     dependency: "direct overridden"
     description:
       path: "../packages/kakao_flutter_sdk_template"
       relative: true
     source: path
-    version: "2.0.0+1"
+    version: "2.0.1"
   kakao_flutter_sdk_user:
     dependency: "direct overridden"
     description:
       path: "../packages/kakao_flutter_sdk_user"
       relative: true
     source: path
-    version: "2.0.0+1"
+    version: "2.0.1"
   leak_tracker:
     dependency: transitive
     description:

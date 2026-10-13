@@ -19,7 +19,7 @@ class _WebLoginPageState extends State<WebLoginPage> {
 
   Future<void> _completeWebLogin() async {
     try {
-      final token = await ThirdServerApi('http://172.20.29.239:3000').getToken();
+      final token = await ThirdServerApi('http://172.20.28.183:3000').getToken();
       await TokenManagerProvider.instance.manager.setToken(token);
 
       if (!mounted) {

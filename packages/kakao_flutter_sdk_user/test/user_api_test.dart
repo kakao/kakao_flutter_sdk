@@ -94,28 +94,23 @@ void main() {
     expect(tokenInfo.toJson(), map);
   });
 
-  test('/v1/user/shipping_addresses 200', () async {
-    final path = uriPathToFilePath(Constants.v1ShippingAddressesPath);
+  test('/v2/user/shipping_address 200', () async {
+    final path = uriPathToFilePath(Constants.v2ShippingAddressPath);
     final String body = await loadJson('user/$path/normal.json');
     final Map<String, dynamic> map = jsonDecode(body);
     client.enqueueJson(map);
 
-    final res = await api.shippingAddresses();
+    final res = await api.shippingAddress();
 
     expect(res.userId, map['user_id']);
-    expect(res.needsAgreement, map['shipping_addresses_needs_agreement']);
-    final addresses = res.shippingAddresses;
-    final elements = map['shipping_addresses'];
-    expect(addresses?.length, elements.length);
-
-    addresses?.asMap().forEach((index, it) {
-      final element = elements[index];
-      expect(it.isDefault, element['is_default']);
-      expect(it.id, element['id']);
-      expect(it.name, element['name']);
-      expect(it.baseAddress, element['base_address']);
-      expect(it.detailAddress, element['detail_address']);
-    });
+    expect(res.needsAgreement, map['shipping_address_needs_agreement']);
+    final address = res.shippingAddress;
+    final element = map['shipping_address'];
+    expect(address?.isDefault, element['is_default']);
+    expect(address?.id, element['id']);
+    expect(address?.name, element['name']);
+    expect(address?.baseAddress, element['base_address']);
+    expect(address?.detailAddress, element['detail_address']);
     res.toJson();
   });
 

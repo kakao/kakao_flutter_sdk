@@ -21,8 +21,8 @@ Map<String, dynamic> _$SelectedUsersToJson(SelectedUsers instance) =>
     };
 
 SelectedUser _$SelectedUserFromJson(Map<String, dynamic> json) => SelectedUser(
-  id: json['id'] as String?,
   uuid: json['uuid'] as String,
+  id: json['id'] as String?,
   profileNickname: json['profile_nickname'] as String?,
   profileThumbnailImage: json['profile_thumbnail_image'] as String?,
   favorite: json['favorite'] as bool?,

@@ -250,21 +250,21 @@ List<ListItem> createUserApis(CustomData customData) => <ListItem>[
       Log.e(_tag, '배송지 선택 실패 $e');
     }
   }),
-  Api('shippingAddresses()', (context) async {
+  Api('shippingAddress()', (context) async {
     // 배송지 조회 (추가 동의)
 
-    UserShippingAddresses userShippingAddress;
+    UserShippingAddress userShippingAddress;
     try {
-      userShippingAddress = await UserApi.instance.shippingAddresses();
+      userShippingAddress = await UserApi.instance.shippingAddress();
     } catch (e) {
       Log.e(_tag, '배송지 조회 실패', e);
       return;
     }
 
-    if (userShippingAddress.shippingAddresses != null) {
+    if (userShippingAddress.shippingAddress != null) {
       Log.i(
         _tag,
-        '배송지 조회 성공\n회원번호: ${userShippingAddress.userId}\n배송지: \n${userShippingAddress.shippingAddresses?.join('\n')}',
+        '배송지 조회 성공\n회원번호: ${userShippingAddress.userId}\n배송지: \n${userShippingAddress.shippingAddress}',
       );
     } else if (userShippingAddress.needsAgreement == false) {
       Log.e(_tag, '사용자 계정에 배송지 없음. 꼭 필요하다면 동의항목 설정에서 수집 기능을 활성화 해보세요.');
@@ -283,11 +283,11 @@ List<ListItem> createUserApis(CustomData customData) => <ListItem>[
       }
 
       try {
-        UserShippingAddresses userShippingAddresses = await UserApi.instance
-            .shippingAddresses();
+        final UserShippingAddress userShippingAddress = await UserApi.instance
+            .shippingAddress();
         Log.i(
           _tag,
-          '배송지 조회 성공\n회원번호: ${userShippingAddresses.userId}\n${userShippingAddresses.shippingAddresses?.join('\n')}',
+          '배송지 조회 성공\n회원번호: ${userShippingAddress.userId}\n${userShippingAddress.shippingAddress}',
         );
       } catch (e) {
         Log.e(_tag, '배송지 조회 실패', e);

@@ -4,7 +4,7 @@ class Constants {
   static const String v1LogoutPath = '/v1/user/logout';
   static const String v1UnlinkPath = '/v1/user/unlink';
   static const String v1AccessTokenInfoPath = '/v1/user/access_token_info';
-  static const String v1ShippingAddressesPath = '/v1/user/shipping_address';
+  static const String v2ShippingAddressPath = '/v2/user/shipping_address';
   static const String v2ServiceTermsPath = '/v2/user/service_terms';
   static const String v2RevokeServiceTermsPath =
       '/v2/user/revoke/service_terms';
@@ -18,8 +18,6 @@ class Constants {
 
   static const String propertyKeys = 'property_keys';
   static const String secureResource = 'secure_resource';
-  static const String fromUpdatedAt = 'from_updated_at';
-  static const String pageSize = 'page_size';
   static const String extra = 'extra';
   static const String tags = 'tags';
   static const String result = 'result';
