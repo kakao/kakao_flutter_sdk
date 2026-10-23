@@ -45,6 +45,9 @@ class PickerSettings {
     Constants.showSendToMe: ?showSendToMe,
   };
 
+  factory PickerSettings.fromJson(Map<String, dynamic> json) =>
+      _$PickerSettingsFromJson(json);
+
   Map<String, dynamic> toJson() => _$PickerSettingsToJson(this);
 
   @override
