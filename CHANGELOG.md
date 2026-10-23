@@ -1,3 +1,13 @@
+## 2.1.0
+
+- Added customization options for the Kakao Talk Share target selection screen
+- Added an option to configure the list type to display on the screen.
+- Added an option to configure the maximum number of selectable targets.
+- Added an option to hide the [Send to me] button.
+- Upgraded the Retrieve shipping address API version.
+- Changed to retrieve only a single shipping address.
+- Updated the internal source code.
+
 ## 2.0.1
 
 - Added id to the Retrieve Kakao Talk profile API response.
